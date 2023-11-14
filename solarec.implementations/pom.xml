@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>tech.renovus.solarec</groupId>
+    <artifactId>solarec.java</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>solarec.implementations</artifactId>
+  
+  	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>tech.renovus.solarec</groupId>
+			<artifactId>solarec.db</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency> <!-- Database access -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<version>2.6.4</version>
+		</dependency>
+		 
+		<dependency> <!-- PostgresSQL -->
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.19</version>
+		</dependency>
+
+		<!-- Registro de eventos para tracking -->
+		<dependency>
+		    <groupId>com.amplitude</groupId>
+		    <artifactId>java-sdk</artifactId>
+		    <version>1.2.3</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.json</groupId>
+    		<artifactId>json</artifactId>
+    		<version>20210307</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}-${project.version}-${timestamp}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-resources-plugin</artifactId>
+			    <version>3.1.0</version>
+			</plugin> 
+			
+			<plugin>
+			    <groupId>org.springframework.boot</groupId>
+			    <artifactId>spring-boot-maven-plugin</artifactId>
+			    <configuration>
+			        <executable>true</executable>
+			    </configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
