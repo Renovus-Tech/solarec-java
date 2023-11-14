@@ -27,12 +27,6 @@
 			<version>2.6.4</version>
 		</dependency>
 		 
-		<dependency> <!-- PostgresSQL -->
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.2.19</version>
-		</dependency>
-
 		<!-- Registro de eventos para tracking -->
 		<dependency>
 		    <groupId>com.amplitude</groupId>
