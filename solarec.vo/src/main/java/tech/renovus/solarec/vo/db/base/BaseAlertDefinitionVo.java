@@ -89,39 +89,4 @@ public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 	}
 
 	//--- Getters and Setters -------------------
-	public Integer getAlertDefId() {
-		return this.alertDefId;
-	}
-	public void setAlertDefId(Integer alertDefId) {
-		this.alertDefId = alertDefId;
-	}
-
-	public String getAlertDefName() {
-		return this.alertDefName;
-	}
-	public void setAlertDefName(String alertDefName) {
-		this.alertDefName = alertDefName;
-	}
-
-	public String getAlertDefDescription() {
-		return this.alertDefDescription;
-	}
-	public void setAlertDefDescription(String alertDefDescription) {
-		this.alertDefDescription = alertDefDescription;
-	}
-
-	public String getAlertDefExecutable() {
-		return this.alertDefExecutable;
-	}
-	public void setAlertDefExecutable(String alertDefExecutable) {
-		this.alertDefExecutable = alertDefExecutable;
-	}
-
-	public String getAlertDefFlags() {
-		return this.alertDefFlags;
-	}
-	public void setAlertDefFlags(String alertDefFlags) {
-		this.alertDefFlags = alertDefFlags;
-	}
-
 }
