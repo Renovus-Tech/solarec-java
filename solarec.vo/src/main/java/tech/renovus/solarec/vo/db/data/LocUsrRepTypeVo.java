@@ -1,7 +1,7 @@
 package tech.renovus.solarec.vo.db.data;
 
+import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.vo.db.relation.DbLocUsrRepTypeVo;
-import tech.renvous.solarec.util.FlagUtil;
 
 public class LocUsrRepTypeVo extends DbLocUsrRepTypeVo implements Comparable<LocUsrRepTypeVo> {
 

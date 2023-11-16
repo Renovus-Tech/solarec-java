@@ -23,12 +23,12 @@ import tech.renovus.solarec.api.rest.controller.EndPointFactory;
 import tech.renovus.solarec.api.rest.controller.RestFactory;
 import tech.renovus.solarec.business.GeneratorService;
 import tech.renovus.solarec.exceptions.CoreException;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.comparator.GeneratorGenCodeAsNumberComparator;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.rest.entity.Generator;
 import tech.renovus.solarec.vo.rest.entity.Location;
-import tech.renvous.solarec.util.CollectionUtil;
 
 @RestController
 public class GeneratorsController extends BasicController {

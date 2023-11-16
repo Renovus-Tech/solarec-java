@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.SecurityService;
+import tech.renovus.solarec.util.BooleanUtils;
+import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.util.interfaces.ISetting;
 import tech.renovus.solarec.vo.comparator.GeneratorGenCodeAsNumberComparator;
 import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
@@ -39,9 +42,6 @@ import tech.renovus.solarec.vo.rest.entity.Setting;
 import tech.renovus.solarec.vo.rest.entity.Station;
 import tech.renovus.solarec.vo.rest.entity.User;
 import tech.renovus.solarec.vo.rest.weather.WeatherDefinition;
-import tech.renvous.solarec.util.BooleanUtils;
-import tech.renvous.solarec.util.CollectionUtil;
-import tech.renvous.solarec.util.FlagUtil;
 
 public class RestFactory {
 

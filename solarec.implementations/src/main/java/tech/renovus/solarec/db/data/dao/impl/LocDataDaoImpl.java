@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import tech.renovus.solarec.db.data.dao.base.BaseLocDataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocDataDao;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.LocDataVo;
-import tech.renvous.solarec.util.CollectionUtil;
 
 @Repository
 public class LocDataDaoImpl extends BaseLocDataDao implements LocDataDao {

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import tech.renovus.solarec.db.data.dao.base.BaseGenAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GenAlertDao;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.GenAlertVo;
-import tech.renvous.solarec.util.CollectionUtil;
 
 @Repository
 public class GenAlertDaoImpl extends BaseGenAlertDao implements GenAlertDao {

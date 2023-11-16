@@ -1,8 +1,8 @@
 package tech.renovus.solarec.vo.db.data;
 
+import tech.renovus.solarec.util.ClassUtil;
+import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.vo.db.relation.DbFunctionalityVo;
-import tech.renvous.solarec.util.ClassUtil;
-import tech.renvous.solarec.util.FlagUtil;
 
 public class FunctionalityVo extends DbFunctionalityVo implements Comparable<FunctionalityVo> {
 

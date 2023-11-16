@@ -2,10 +2,10 @@ package tech.renovus.solarec.vo.db.data;
 
 import java.util.Date;
 
+import tech.renovus.solarec.util.ClassUtil;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.interfaces.IDataContainer;
 import tech.renovus.solarec.vo.db.relation.DbLocationVo;
-import tech.renvous.solarec.util.ClassUtil;
-import tech.renvous.solarec.util.CollectionUtil;
 
 public class LocationVo extends DbLocationVo implements IDataContainer, Comparable<LocationVo> {
 

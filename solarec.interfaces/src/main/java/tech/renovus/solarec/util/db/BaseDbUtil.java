@@ -1,10 +1,10 @@
-package tech.renvous.solarec.util.db;
+package tech.renovus.solarec.util.db;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.interfaces.ISynchronizable;
-import tech.renvous.solarec.util.CollectionUtil;
 
 
 /**
@@ -47,7 +47,7 @@ public final class BaseDbUtil {
 		if (CollectionUtil.notEmpty(col)) {
 			for (BaseDbVo object : col) {
 				object.setSyncType(type);
-				if (forceIfSynchronizable && object instanceof ISynchronizable) ((ISynchronizable) object).synchronizeForce(type);
+				if (forceIfSynchronizable && object instanceof ISynchronizable) ((ISynchronizable<?>) object).synchronizeForce(type);
 			}
 		}		
 	}
@@ -95,7 +95,7 @@ public final class BaseDbUtil {
 				
 				if (oldObject == null) { //If new, then it must be inserted
 					newObject.setSyncType(insertFlag);
-					if (newObject instanceof ISynchronizable) ((ISynchronizable) newObject).synchronizeForce(insertFlag);
+					if (newObject instanceof ISynchronizable) ((ISynchronizable<?>) newObject).synchronizeForce(insertFlag);
 				
 				} else if (! newObject.isSame(oldObject)) { //if not the same, then it must be updated
 					newObject.setSyncType(BaseDbVo.SYNC_UPDATE);

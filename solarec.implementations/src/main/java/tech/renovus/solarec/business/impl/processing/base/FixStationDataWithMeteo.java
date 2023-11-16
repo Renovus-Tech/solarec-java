@@ -14,12 +14,12 @@ import tech.renovus.solarec.db.data.dao.interfaces.DataProcessingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StaDataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StationDao;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.StaDataVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
-import tech.renvous.solarec.util.CollectionUtil;
 
 public class FixStationDataWithMeteo extends AbstractDataProcessing {
 

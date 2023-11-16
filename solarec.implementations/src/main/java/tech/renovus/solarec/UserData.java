@@ -5,11 +5,11 @@ import java.util.Locale;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.UsersVo;
-import tech.renvous.solarec.util.CollectionUtil;
 
 public class UserData {
 

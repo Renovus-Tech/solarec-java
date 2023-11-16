@@ -8,11 +8,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import tech.renovus.solarec.business.ProcessingException;
+import tech.renovus.solarec.util.DateUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
 import tech.renovus.solarec.vo.db.data.StatDefinitionVo;
 import tech.renovus.solarec.vo.db.data.StatProcessingVo;
-import tech.renvous.solarec.util.DateUtil;
-import tech.renvous.solarec.util.JsonUtil;
 
 public abstract class AbstractDataCalculation {
 

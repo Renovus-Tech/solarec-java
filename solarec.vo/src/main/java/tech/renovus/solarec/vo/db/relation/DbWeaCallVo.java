@@ -2,10 +2,10 @@ package tech.renovus.solarec.vo.db.relation;
 
 import java.util.Collection;
 
+import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseWeaCallVo;
-import tech.renvous.solarec.util.CollectionUtil;
-import tech.renvous.solarec.util.db.BaseDbVo;
 
 public class DbWeaCallVo extends BaseWeaCallVo implements ISynchronizable<DbWeaCallVo> {
 

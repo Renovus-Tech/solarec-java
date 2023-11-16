@@ -1,8 +1,8 @@
 package tech.renovus.solarec.vo.db.base;
 
+import tech.renovus.solarec.util.ClassUtil;
+import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.IFlags;
-import tech.renvous.solarec.util.ClassUtil;
-import tech.renvous.solarec.util.db.BaseDbVo;
 
 public class BaseChartVo extends BaseDbVo implements IFlags {
 

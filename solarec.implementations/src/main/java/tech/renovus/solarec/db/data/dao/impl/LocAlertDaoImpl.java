@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import tech.renovus.solarec.db.data.dao.base.BaseLocAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocAlertDao;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.LocAlertVo;
-import tech.renvous.solarec.util.CollectionUtil;
 
 @Repository
 public class LocAlertDaoImpl extends BaseLocAlertDao implements LocAlertDao {

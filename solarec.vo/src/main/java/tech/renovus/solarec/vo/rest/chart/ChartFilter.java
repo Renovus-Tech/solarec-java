@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import tech.renvous.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.CollectionUtil;
 
 public class ChartFilter implements IFilter {
 	

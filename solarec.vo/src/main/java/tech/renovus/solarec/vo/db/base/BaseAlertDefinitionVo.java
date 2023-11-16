@@ -1,9 +1,13 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tech.renovus.solarec.util.ClassUtil;
+import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.IFlags;
-import tech.renvous.solarec.util.ClassUtil;
-import tech.renvous.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
@@ -18,11 +22,11 @@ public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 	@Override public void setFlags(String alertDefFlags) { this.alertDefFlags = alertDefFlags; }
 
 	//--- Private properties --------------------
-	 private Integer alertDefId;
-	 private String alertDefName;
-	 private String alertDefDescription;
-	 private String alertDefExecutable;
-	 private String alertDefFlags;
+	 private @Getter @Setter Integer alertDefId;
+	 private @Getter @Setter String alertDefName;
+	 private @Getter @Setter String alertDefDescription;
+	 private @Getter @Setter String alertDefExecutable;
+	 private @Getter @Setter String alertDefFlags;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -80,7 +84,7 @@ public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.getAlertDefId());
+			this.setPk((Integer)aVo.alertDefId);
 		}
 	}
 

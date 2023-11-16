@@ -1,4 +1,4 @@
-package tech.renvous.solarec.util;
+package tech.renovus.solarec.util;
 
 /**
  * The <code>BooleanUtil</code> class contains useful methods to work with boolean values.

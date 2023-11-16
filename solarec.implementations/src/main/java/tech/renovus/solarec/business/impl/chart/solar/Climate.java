@@ -3,7 +3,7 @@ package tech.renovus.solarec.business.impl.chart.solar;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import tech.renovus.solarec.business.impl.chart.base.AbstractChart;
-import tech.renvous.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.CollectionUtil;
 
 public class Climate extends AbstractChart {
 

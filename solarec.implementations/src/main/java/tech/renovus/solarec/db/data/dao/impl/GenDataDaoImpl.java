@@ -15,10 +15,10 @@ import tech.renovus.solarec.db.data.dao.base.BaseGenDataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GenDataDao;
 import tech.renovus.solarec.db.data.dao.wrapper.GenDataRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.GeneratorMaxDataDate;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.rest.chart.ChartFilter;
-import tech.renvous.solarec.util.CollectionUtil;
 
 @Repository
 public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {

@@ -2,11 +2,11 @@ package tech.renovus.solarec.vo.db.relation;
 
 import java.util.Collection;
 
+import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseLocEstimationVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
-import tech.renvous.solarec.util.CollectionUtil;
-import tech.renvous.solarec.util.db.BaseDbVo;
 
 public class DbLocEstimationVo extends BaseLocEstimationVo implements ISynchronizable<DbLocEstimationVo> {
 

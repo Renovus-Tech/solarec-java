@@ -1,6 +1,6 @@
 package tech.renovus.solarec.util.interfaces;
 
-import tech.renvous.solarec.util.db.BaseDbVo;
+import tech.renovus.solarec.util.db.BaseDbVo;
 
 public interface ISynchronizable<T extends BaseDbVo> {
 	

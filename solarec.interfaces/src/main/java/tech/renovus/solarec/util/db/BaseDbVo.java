@@ -1,8 +1,8 @@
-package tech.renvous.solarec.util.db;
+package tech.renovus.solarec.util.db;
 
 import java.util.Date;
 
-import tech.renvous.solarec.util.StringUtil;
+import tech.renovus.solarec.util.StringUtil;
 
 /**
  * Represents an element of a database table row. Has information about what must be done in order to 

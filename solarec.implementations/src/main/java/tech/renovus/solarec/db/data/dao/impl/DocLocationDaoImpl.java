@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseDocLocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DocLocationDao;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.FullDocLocationRowWrapper;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.DocLocationVo;
-import tech.renvous.solarec.util.CollectionUtil;
 
 @Repository
 public class DocLocationDaoImpl extends BaseDocLocationDao implements DocLocationDao {

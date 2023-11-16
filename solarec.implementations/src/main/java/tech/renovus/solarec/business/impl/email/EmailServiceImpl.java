@@ -30,8 +30,8 @@ import org.springframework.stereotype.Component;
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.configuration.RenovusConfiguration;
 import tech.renovus.solarec.exceptions.CoreException;
-import tech.renvous.solarec.util.CollectionUtil;
-import tech.renvous.solarec.util.DateUtil;
+import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.DateUtil;
 
 /**
  * @source https://www.baeldung.com/spring-email

@@ -1,9 +1,9 @@
 package tech.renovus.solarec.vo.db.data;
 
+import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.util.interfaces.IDataContainer;
 import tech.renovus.solarec.vo.db.relation.DbClientVo;
-import tech.renvous.solarec.util.CollectionUtil;
-import tech.renvous.solarec.util.StringUtil;
 
 public class ClientVo extends DbClientVo {
 

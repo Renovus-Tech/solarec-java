@@ -5,9 +5,9 @@ import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import tech.renovus.solarec.util.ClassUtil;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.relation.DbDocumentVo;
-import tech.renvous.solarec.util.ClassUtil;
-import tech.renvous.solarec.util.CollectionUtil;
 
 public class DocumentVo extends DbDocumentVo {
 

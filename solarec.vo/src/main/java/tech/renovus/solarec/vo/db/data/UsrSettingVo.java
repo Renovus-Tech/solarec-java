@@ -1,8 +1,8 @@
 package tech.renovus.solarec.vo.db.data;
 
+import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.util.interfaces.ISetting;
 import tech.renovus.solarec.vo.db.relation.DbUsrSettingVo;
-import tech.renvous.solarec.util.StringUtil;
 
 public class UsrSettingVo extends DbUsrSettingVo implements ISetting {
 

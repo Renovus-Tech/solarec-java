@@ -2,10 +2,10 @@ package tech.renovus.solarec.vo.db.relation;
 
 import java.util.Collection;
 
+import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseGenDataVo;
-import tech.renvous.solarec.util.CollectionUtil;
-import tech.renvous.solarec.util.db.BaseDbVo;
 
 public class DbGenDataVo extends BaseGenDataVo implements ISynchronizable<DbGenDataVo> {
 

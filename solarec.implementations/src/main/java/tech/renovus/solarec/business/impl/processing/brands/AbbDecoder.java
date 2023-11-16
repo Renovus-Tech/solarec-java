@@ -1,7 +1,7 @@
 package tech.renovus.solarec.business.impl.processing.brands;
 
+import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
-import tech.renvous.solarec.util.StringUtil;
 
 public class AbbDecoder implements IVendorDataDecoder {
 

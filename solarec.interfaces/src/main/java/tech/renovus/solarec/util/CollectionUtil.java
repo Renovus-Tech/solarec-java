@@ -1,4 +1,4 @@
-package tech.renvous.solarec.util;
+package tech.renovus.solarec.util;
 
 import java.util.ArrayList;
 import java.util.Collection;

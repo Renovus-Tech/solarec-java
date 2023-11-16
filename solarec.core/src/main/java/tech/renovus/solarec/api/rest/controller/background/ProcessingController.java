@@ -21,10 +21,10 @@ import tech.renovus.solarec.api.rest.controller.EndPointFactory;
 import tech.renovus.solarec.api.rest.controller.RestFactory;
 import tech.renovus.solarec.business.ProcessingService;
 import tech.renovus.solarec.exceptions.CoreException;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
 import tech.renovus.solarec.vo.rest.background.Processing;
 import tech.renovus.solarec.vo.rest.entity.DataDefinitionTrigger;
-import tech.renvous.solarec.util.JsonUtil;
 
 @RestController
 public class ProcessingController extends BasicController {

@@ -1,4 +1,4 @@
-package tech.renvous.solarec.util;
+package tech.renovus.solarec.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

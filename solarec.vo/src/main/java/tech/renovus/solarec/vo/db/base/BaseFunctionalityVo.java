@@ -1,7 +1,7 @@
 package tech.renovus.solarec.vo.db.base;
 
-import tech.renvous.solarec.util.db.BaseDbVo;
-import tech.renvous.solarec.util.ClassUtil;
+import tech.renovus.solarec.util.ClassUtil;
+import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.IFlags;
 
 public class BaseFunctionalityVo extends BaseDbVo implements IFlags {

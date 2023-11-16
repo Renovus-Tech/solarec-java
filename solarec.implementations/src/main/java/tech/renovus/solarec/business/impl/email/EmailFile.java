@@ -1,6 +1,6 @@
 package tech.renovus.solarec.business.impl.email;
 
-import tech.renvous.solarec.util.FileUtil;
+import tech.renovus.solarec.util.FileUtil;
 
 public class EmailFile {
 

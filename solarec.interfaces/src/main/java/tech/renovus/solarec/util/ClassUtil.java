@@ -1,4 +1,4 @@
-package tech.renvous.solarec.util;
+package tech.renovus.solarec.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +56,9 @@ public final class ClassUtil {
 	public static final String TYPE_CLASS				= "class ";
 
 	//--- Public inner classes ------------------
-	public static class ClassLoadError extends java.lang.Error { }
+	public static class ClassLoadError extends java.lang.Error {
+		private static final long serialVersionUID = 2049532138523293516L; 
+	}
 	
 	//--- Constructor ---------------------------
 	private ClassUtil() {
@@ -383,7 +385,6 @@ public final class ClassUtil {
 	 * @param obj	The instance to check 
 	 * @return		<code>true</code> if <b>obj</b> is not <code>null</code> and is a instance of <code>Collection</code>
 	 */
-	@SuppressWarnings("unchecked")
 	public static boolean isCollection(Object obj) {
 		return obj != null && obj instanceof Collection;
 	}
