@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.GenAlertRowWrapper;
-import tech.renovus.solarec.db.data.vo.GenAlertVo;
+import tech.renovus.solarec.vo.db.data.GenAlertVo;
 
 public abstract class BaseGenAlertDao {
 

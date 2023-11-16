@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseLocWeaDataHourDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocWeaDataHourDao;
 import tech.renovus.solarec.db.data.dao.wrapper.LocWeaDataHourRowWrapper;
-import tech.renovus.solarec.db.data.vo.LocWeaDataHourVo;
+import tech.renovus.solarec.vo.db.data.LocWeaDataHourVo;
 
 @Repository
 public class LocWeaDataHourDaoImpl extends BaseLocWeaDataHourDao implements LocWeaDataHourDao {

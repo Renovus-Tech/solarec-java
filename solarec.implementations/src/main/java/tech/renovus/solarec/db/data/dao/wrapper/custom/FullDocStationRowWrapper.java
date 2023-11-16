@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.db.data.dao.wrapper.DocStationRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.StationRowWrapper;
-import tech.renovus.solarec.db.data.vo.DocStationVo;
+import tech.renovus.solarec.vo.db.data.DocStationVo;
 
 public class FullDocStationRowWrapper implements RowMapper<DocStationVo> {
 

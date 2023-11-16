@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.StatDefResultRowWrapper;
-import tech.renovus.solarec.db.data.vo.StatDefResultVo;
+import tech.renovus.solarec.vo.db.data.StatDefResultVo;
 
 public abstract class BaseStatDefResultDao {
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseDocumentDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DocumentDao;
 import tech.renovus.solarec.db.data.dao.wrapper.DocumentRowWrapper;
-import tech.renovus.solarec.db.data.vo.DocumentVo;
+import tech.renovus.solarec.vo.db.data.DocumentVo;
 import tech.renvous.solarec.util.DateUtil;
 import tech.renvous.solarec.util.FlagUtil;
 import tech.renvous.solarec.util.StringUtil;

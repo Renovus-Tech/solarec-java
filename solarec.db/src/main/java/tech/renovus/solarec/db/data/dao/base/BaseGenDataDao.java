@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.GenDataRowWrapper;
-import tech.renovus.solarec.db.data.vo.GenDataVo;
+import tech.renovus.solarec.vo.db.data.GenDataVo;
 
 public abstract class BaseGenDataDao {
 

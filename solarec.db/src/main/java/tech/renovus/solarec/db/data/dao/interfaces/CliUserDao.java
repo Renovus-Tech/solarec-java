@@ -3,7 +3,7 @@ package tech.renovus.solarec.db.data.dao.interfaces;
 import java.util.Collection;
 import java.util.Date;
 
-import tech.renovus.solarec.db.data.vo.CliUserVo;
+import tech.renovus.solarec.vo.db.data.CliUserVo;
 
 public interface CliUserDao {
 

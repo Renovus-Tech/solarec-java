@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import tech.renovus.solarec.db.data.dao.base.BaseStaAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StaAlertDao;
-import tech.renovus.solarec.db.data.vo.StaAlertVo;
+import tech.renovus.solarec.vo.db.data.StaAlertVo;
 import tech.renvous.solarec.util.CollectionUtil;
 
 @Repository

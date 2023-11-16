@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.wrapper.ClientRowWrapper;
-import tech.renovus.solarec.db.data.vo.ClientVo;
+import tech.renovus.solarec.vo.db.data.ClientVo;
 
 @Repository
 public class ClientDaoImpl extends BaseClientDao implements ClientDao {

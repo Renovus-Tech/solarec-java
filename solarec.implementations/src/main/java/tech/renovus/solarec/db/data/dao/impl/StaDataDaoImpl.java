@@ -15,7 +15,7 @@ import tech.renovus.solarec.db.data.dao.base.BaseStaDataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StaDataDao;
 import tech.renovus.solarec.db.data.dao.wrapper.StaDataRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.GeneratorMaxDataDate;
-import tech.renovus.solarec.db.data.vo.StaDataVo;
+import tech.renovus.solarec.vo.db.data.StaDataVo;
 import tech.renvous.solarec.util.CollectionUtil;
 
 @Repository

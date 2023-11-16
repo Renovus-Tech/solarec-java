@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.db.data.dao.wrapper.AlertDefinitionRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.DataDefAlertDefinitionRowWrapper;
-import tech.renovus.solarec.db.data.vo.DataDefAlertDefinitionVo;
+import tech.renovus.solarec.vo.db.data.DataDefAlertDefinitionVo;
 
 public class DataDefAlertDefinitionWithAlertDefinitionRowWrapper implements RowMapper<DataDefAlertDefinitionVo> {
 

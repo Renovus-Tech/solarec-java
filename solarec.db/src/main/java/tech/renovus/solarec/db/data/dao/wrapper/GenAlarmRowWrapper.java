@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.GenAlarmVo;
+import tech.renovus.solarec.vo.db.data.GenAlarmVo;
 
 public class GenAlarmRowWrapper implements RowMapper<GenAlarmVo> {
 

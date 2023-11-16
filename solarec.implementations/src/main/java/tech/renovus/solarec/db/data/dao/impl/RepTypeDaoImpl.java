@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseRepTypeDao;
 import tech.renovus.solarec.db.data.dao.interfaces.RepTypeDao;
 import tech.renovus.solarec.db.data.dao.wrapper.RepTypeRowWrapper;
-import tech.renovus.solarec.db.data.vo.RepTypeVo;
+import tech.renovus.solarec.vo.db.data.RepTypeVo;
 
 @Repository
 public class RepTypeDaoImpl extends BaseRepTypeDao implements RepTypeDao {

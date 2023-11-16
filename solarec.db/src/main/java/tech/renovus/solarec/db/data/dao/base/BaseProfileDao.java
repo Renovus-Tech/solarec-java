@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.ProfileRowWrapper;
-import tech.renovus.solarec.db.data.vo.ProfileVo;
+import tech.renovus.solarec.vo.db.data.ProfileVo;
 
 public abstract class BaseProfileDao {
 

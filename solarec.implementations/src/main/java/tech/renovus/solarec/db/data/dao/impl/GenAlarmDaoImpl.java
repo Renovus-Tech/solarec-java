@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseGenAlarmDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GenAlarmDao;
 import tech.renovus.solarec.db.data.dao.wrapper.GenAlarmRowWrapper;
-import tech.renovus.solarec.db.data.vo.GenAlarmVo;
+import tech.renovus.solarec.vo.db.data.GenAlarmVo;
 
 @Repository
 public class GenAlarmDaoImpl extends BaseGenAlarmDao implements GenAlarmDao {

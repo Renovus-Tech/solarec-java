@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.MlDataRunVo;
+import tech.renovus.solarec.vo.db.data.MlDataRunVo;
 
 public class MlDataRunRowWrapper implements RowMapper<MlDataRunVo> {
 

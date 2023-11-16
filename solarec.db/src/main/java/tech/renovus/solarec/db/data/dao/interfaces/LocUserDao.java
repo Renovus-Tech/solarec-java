@@ -2,7 +2,7 @@ package tech.renovus.solarec.db.data.dao.interfaces;
 
 import java.util.Collection;
 
-import tech.renovus.solarec.db.data.vo.LocUserVo;
+import tech.renovus.solarec.vo.db.data.LocUserVo;
 
 public interface LocUserDao {
 

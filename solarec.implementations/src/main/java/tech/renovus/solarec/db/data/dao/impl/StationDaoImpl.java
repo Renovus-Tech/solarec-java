@@ -13,7 +13,7 @@ import tech.renovus.solarec.db.data.dao.base.BaseStationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StationDao;
 import tech.renovus.solarec.db.data.dao.wrapper.StationRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.GeneratorMaxDataDate;
-import tech.renovus.solarec.db.data.vo.StationVo;
+import tech.renovus.solarec.vo.db.data.StationVo;
 
 @Repository
 public class StationDaoImpl extends BaseStationDao implements StationDao {

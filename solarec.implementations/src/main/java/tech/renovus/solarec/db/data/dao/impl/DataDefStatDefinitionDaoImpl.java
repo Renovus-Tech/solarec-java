@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseDataDefStatDefinitionDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefStatDefinitionDao;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.DataDefStatDefinitionWithStatDefinitionRowWrapper;
-import tech.renovus.solarec.db.data.vo.DataDefStatDefinitionVo;
+import tech.renovus.solarec.vo.db.data.DataDefStatDefinitionVo;
 
 @Repository
 public class DataDefStatDefinitionDaoImpl extends BaseDataDefStatDefinitionDao implements DataDefStatDefinitionDao {

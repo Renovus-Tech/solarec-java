@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseWeaCallDao;
 import tech.renovus.solarec.db.data.dao.interfaces.WeaCallDao;
 import tech.renovus.solarec.db.data.dao.wrapper.WeaCallRowWrapper;
-import tech.renovus.solarec.db.data.vo.WeaCallVo;
+import tech.renovus.solarec.vo.db.data.WeaCallVo;
 
 @Repository
 public class WeaCallDaoImpl extends BaseWeaCallDao implements WeaCallDao {

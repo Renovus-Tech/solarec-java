@@ -11,7 +11,7 @@ import tech.renovus.solarec.db.data.dao.wrapper.DataDefinitionRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.GeneratorRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.LocationRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.StationRowWrapper;
-import tech.renovus.solarec.db.data.vo.CliDataDefTriggerVo;
+import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 
 public class CliDataDefTriggerFullRowWrapper implements RowMapper<CliDataDefTriggerVo> {
 	

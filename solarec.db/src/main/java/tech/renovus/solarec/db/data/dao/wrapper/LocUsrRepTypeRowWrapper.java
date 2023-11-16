@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.LocUsrRepTypeVo;
+import tech.renovus.solarec.vo.db.data.LocUsrRepTypeVo;
 
 public class LocUsrRepTypeRowWrapper implements RowMapper<LocUsrRepTypeVo> {
 

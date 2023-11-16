@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.DataProAlertProcessingRowWrapper;
-import tech.renovus.solarec.db.data.vo.DataProAlertProcessingVo;
+import tech.renovus.solarec.vo.db.data.DataProAlertProcessingVo;
 
 public abstract class BaseDataProAlertProcessingDao {
 

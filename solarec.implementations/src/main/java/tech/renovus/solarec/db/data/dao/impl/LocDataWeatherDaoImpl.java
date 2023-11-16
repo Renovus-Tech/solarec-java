@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseLocDataWeatherDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocDataWeatherDao;
 import tech.renovus.solarec.db.data.dao.wrapper.LocDataWeatherRowWrapper;
-import tech.renovus.solarec.db.data.vo.LocDataWeatherVo;
+import tech.renovus.solarec.vo.db.data.LocDataWeatherVo;
 
 @Repository
 public class LocDataWeatherDaoImpl extends BaseLocDataWeatherDao implements LocDataWeatherDao {

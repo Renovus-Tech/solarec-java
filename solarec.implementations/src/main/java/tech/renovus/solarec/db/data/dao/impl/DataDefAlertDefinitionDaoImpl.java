@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseDataDefAlertDefinitionDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefAlertDefinitionDao;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.DataDefAlertDefinitionWithAlertDefinitionRowWrapper;
-import tech.renovus.solarec.db.data.vo.DataDefAlertDefinitionVo;
+import tech.renovus.solarec.vo.db.data.DataDefAlertDefinitionVo;
 
 @Repository
 public class DataDefAlertDefinitionDaoImpl extends BaseDataDefAlertDefinitionDao implements DataDefAlertDefinitionDao {

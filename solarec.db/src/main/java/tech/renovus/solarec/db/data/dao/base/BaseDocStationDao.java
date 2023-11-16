@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.DocStationRowWrapper;
-import tech.renovus.solarec.db.data.vo.DocStationVo;
+import tech.renovus.solarec.vo.db.data.DocStationVo;
 
 public abstract class BaseDocStationDao {
 

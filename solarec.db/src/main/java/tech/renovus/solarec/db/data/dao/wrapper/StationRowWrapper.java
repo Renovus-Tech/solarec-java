@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.StationVo;
+import tech.renovus.solarec.vo.db.data.StationVo;
 
 public class StationRowWrapper implements RowMapper<StationVo> {
 

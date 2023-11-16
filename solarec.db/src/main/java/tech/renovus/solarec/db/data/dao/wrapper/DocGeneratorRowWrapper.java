@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.DocGeneratorVo;
+import tech.renovus.solarec.vo.db.data.DocGeneratorVo;
 
 public class DocGeneratorRowWrapper implements RowMapper<DocGeneratorVo> {
 

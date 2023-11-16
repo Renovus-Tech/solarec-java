@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.LocWeaDataHourRowWrapper;
-import tech.renovus.solarec.db.data.vo.LocWeaDataHourVo;
+import tech.renovus.solarec.vo.db.data.LocWeaDataHourVo;
 
 public abstract class BaseLocWeaDataHourDao {
 

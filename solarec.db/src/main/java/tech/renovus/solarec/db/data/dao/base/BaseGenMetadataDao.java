@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.GenMetadataRowWrapper;
-import tech.renovus.solarec.db.data.vo.GenMetadataVo;
+import tech.renovus.solarec.vo.db.data.GenMetadataVo;
 
 public abstract class BaseGenMetadataDao {
 

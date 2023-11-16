@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.DocGeneratorRowWrapper;
-import tech.renovus.solarec.db.data.vo.DocGeneratorVo;
+import tech.renovus.solarec.vo.db.data.DocGeneratorVo;
 
 public abstract class BaseDocGeneratorDao {
 

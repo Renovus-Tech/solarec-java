@@ -3,7 +3,7 @@ package tech.renovus.solarec.db.data.dao.interfaces;
 import java.util.Collection;
 import java.util.Date;
 
-import tech.renovus.solarec.db.data.vo.StaDataVo;
+import tech.renovus.solarec.vo.db.data.StaDataVo;
 
 public interface StaDataDao {
 

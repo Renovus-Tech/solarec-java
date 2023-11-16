@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.ChartRowWrapper;
-import tech.renovus.solarec.db.data.vo.ChartVo;
+import tech.renovus.solarec.vo.db.data.ChartVo;
 
 public abstract class BaseChartDao {
 

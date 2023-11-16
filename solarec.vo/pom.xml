@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
   <parent>
     <groupId>tech.renovus.solarec</groupId>
     <artifactId>solarec.java</artifactId>
@@ -9,7 +10,7 @@
   <artifactId>solarec.vo</artifactId>
   
   <dependencies>
-		<dependency><!-- Dependencia para trabajar con archivos -->
+		<dependency><!-- HTTP File Management -->
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 		</dependency>
@@ -18,6 +19,15 @@
 			<groupId>tech.renovus.solarec</groupId>
 			<artifactId>solarec.interfaces</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency><!-- JSON -->
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
   </dependencies>
 </project>

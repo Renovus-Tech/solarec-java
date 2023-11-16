@@ -3,7 +3,7 @@ package tech.renovus.solarec.db.data.dao.interfaces;
 import java.util.Collection;
 import java.util.Date;
 
-import tech.renovus.solarec.db.data.vo.LocWeaDataHourVo;
+import tech.renovus.solarec.vo.db.data.LocWeaDataHourVo;
 
 public interface LocWeaDataHourDao {
 

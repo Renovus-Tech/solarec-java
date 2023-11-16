@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.CliDataDefTriggerRowWrapper;
-import tech.renovus.solarec.db.data.vo.CliDataDefTriggerVo;
+import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 
 public abstract class BaseCliDataDefTriggerDao {
 

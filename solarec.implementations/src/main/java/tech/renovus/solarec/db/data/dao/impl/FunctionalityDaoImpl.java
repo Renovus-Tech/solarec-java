@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseFunctionalityDao;
 import tech.renovus.solarec.db.data.dao.interfaces.FunctionalityDao;
 import tech.renovus.solarec.db.data.dao.wrapper.FunctionalityRowWrapper;
-import tech.renovus.solarec.db.data.vo.FunctionalityVo;
+import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 
 @Repository
 public class FunctionalityDaoImpl extends BaseFunctionalityDao implements FunctionalityDao {

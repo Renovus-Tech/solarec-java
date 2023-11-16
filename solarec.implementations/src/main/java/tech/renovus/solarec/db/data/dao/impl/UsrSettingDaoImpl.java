@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseUsrSettingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.UsrSettingDao;
 import tech.renovus.solarec.db.data.dao.wrapper.UsrSettingRowWrapper;
-import tech.renovus.solarec.db.data.vo.UsrSettingVo;
+import tech.renovus.solarec.vo.db.data.UsrSettingVo;
 
 @Repository
 public class UsrSettingDaoImpl extends BaseUsrSettingDao implements UsrSettingDao {

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseGenNeighbourDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GenNeighbourDao;
 import tech.renovus.solarec.db.data.dao.wrapper.GenNeighbourRowWrapper;
-import tech.renovus.solarec.db.data.vo.GenNeighbourVo;
+import tech.renovus.solarec.vo.db.data.GenNeighbourVo;
 
 @Repository
 public class GenNeighbourDaoImpl extends BaseGenNeighbourDao implements GenNeighbourDao {

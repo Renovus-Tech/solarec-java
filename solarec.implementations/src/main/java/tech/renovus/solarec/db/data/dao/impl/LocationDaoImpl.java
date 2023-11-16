@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseLocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.db.data.dao.wrapper.LocationRowWrapper;
-import tech.renovus.solarec.db.data.vo.LocationVo;
+import tech.renovus.solarec.vo.db.data.LocationVo;
 
 @Repository
 public class LocationDaoImpl extends BaseLocationDao implements LocationDao {

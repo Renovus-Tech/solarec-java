@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.EmberCountryOverviewVo;
+import tech.renovus.solarec.vo.db.data.EmberCountryOverviewVo;
 
 public class EmberCountryOverviewRowWrapper implements RowMapper<EmberCountryOverviewVo> {
 

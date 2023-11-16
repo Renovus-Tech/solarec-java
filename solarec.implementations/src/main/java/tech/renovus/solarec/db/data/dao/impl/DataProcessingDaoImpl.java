@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseDataProcessingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataProcessingDao;
 import tech.renovus.solarec.db.data.dao.wrapper.DataProcessingRowWrapper;
-import tech.renovus.solarec.db.data.vo.DataProcessingVo;
+import tech.renovus.solarec.vo.db.data.DataProcessingVo;
 
 @Repository
 public class DataProcessingDaoImpl extends BaseDataProcessingDao implements DataProcessingDao {

@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.LocUserRowWrapper;
-import tech.renovus.solarec.db.data.vo.LocUserVo;
+import tech.renovus.solarec.vo.db.data.LocUserVo;
 
 public abstract class BaseLocUserDao {
 

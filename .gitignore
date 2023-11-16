@@ -1,0 +1,8 @@
+#Eclipse IDE specific ignores
+.settings/
+.classpath
+.project
+
+#Maven specific ignores
+/target/
+**/target/**

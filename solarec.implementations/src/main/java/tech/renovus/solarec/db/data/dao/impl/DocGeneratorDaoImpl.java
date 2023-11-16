@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseDocGeneratorDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DocGeneratorDao;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.FullDocGeneratorRowWrapper;
-import tech.renovus.solarec.db.data.vo.DocGeneratorVo;
+import tech.renovus.solarec.vo.db.data.DocGeneratorVo;
 import tech.renvous.solarec.util.CollectionUtil;
 
 @Repository

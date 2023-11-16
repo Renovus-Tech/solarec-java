@@ -2,7 +2,7 @@ package tech.renovus.solarec.db.data.dao.interfaces;
 
 import java.util.Collection;
 
-import tech.renovus.solarec.db.data.vo.WeaCallVo;
+import tech.renovus.solarec.vo.db.data.WeaCallVo;
 
 public interface WeaCallDao {
 

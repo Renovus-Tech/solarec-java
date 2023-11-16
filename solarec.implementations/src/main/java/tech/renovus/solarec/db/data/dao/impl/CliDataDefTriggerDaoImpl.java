@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseCliDataDefTriggerDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliDataDefTriggerDao;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.CliDataDefTriggerFullRowWrapper;
-import tech.renovus.solarec.db.data.vo.CliDataDefTriggerVo;
+import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 
 @Repository
 public class CliDataDefTriggerDaoImpl extends BaseCliDataDefTriggerDao implements CliDataDefTriggerDao {

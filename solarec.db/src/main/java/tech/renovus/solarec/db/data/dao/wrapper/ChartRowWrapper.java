@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.ChartVo;
+import tech.renovus.solarec.vo.db.data.ChartVo;
 
 public class ChartRowWrapper implements RowMapper<ChartVo> {
 

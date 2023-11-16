@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseWeaDefinitionDao;
 import tech.renovus.solarec.db.data.dao.interfaces.WeaDefinitionDao;
 import tech.renovus.solarec.db.data.dao.wrapper.WeaDefinitionRowWrapper;
-import tech.renovus.solarec.db.data.vo.WeaDefinitionVo;
+import tech.renovus.solarec.vo.db.data.WeaDefinitionVo;
 
 @Repository
 public class WeaDefinitionDaoImpl extends BaseWeaDefinitionDao implements WeaDefinitionDao {

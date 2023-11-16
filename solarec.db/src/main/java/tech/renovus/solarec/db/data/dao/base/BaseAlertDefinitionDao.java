@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.AlertDefinitionRowWrapper;
-import tech.renovus.solarec.db.data.vo.AlertDefinitionVo;
+import tech.renovus.solarec.vo.db.data.AlertDefinitionVo;
 
 public abstract class BaseAlertDefinitionDao<T extends AlertDefinitionVo> {
 

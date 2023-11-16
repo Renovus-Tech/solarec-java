@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import tech.renovus.solarec.db.data.vo.MlDataRunDetailsVo;
+import tech.renovus.solarec.vo.db.data.MlDataRunDetailsVo;
 
 public interface MlDataRunDetailsDao {
 

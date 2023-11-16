@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.WeaCallVo;
+import tech.renovus.solarec.vo.db.data.WeaCallVo;
 
 public class WeaCallRowWrapper implements RowMapper<WeaCallVo> {
 

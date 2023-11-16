@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.DocLocationVo;
+import tech.renovus.solarec.vo.db.data.DocLocationVo;
 
 public class DocLocationRowWrapper implements RowMapper<DocLocationVo> {
 

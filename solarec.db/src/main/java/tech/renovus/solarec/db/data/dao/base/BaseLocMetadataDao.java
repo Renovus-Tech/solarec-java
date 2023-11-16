@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.LocMetadataRowWrapper;
-import tech.renovus.solarec.db.data.vo.LocMetadataVo;
+import tech.renovus.solarec.vo.db.data.LocMetadataVo;
 
 public abstract class BaseLocMetadataDao {
 

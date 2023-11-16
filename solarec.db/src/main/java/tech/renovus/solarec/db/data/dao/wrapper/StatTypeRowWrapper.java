@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.StatTypeVo;
+import tech.renovus.solarec.vo.db.data.StatTypeVo;
 
 public class StatTypeRowWrapper implements RowMapper<StatTypeVo> {
 

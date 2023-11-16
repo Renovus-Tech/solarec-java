@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.LocGenAlarmVo;
+import tech.renovus.solarec.vo.db.data.LocGenAlarmVo;
 
 public class LocGenAlarmRowWrapper implements RowMapper<LocGenAlarmVo> {
 

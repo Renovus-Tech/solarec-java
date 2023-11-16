@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.StaAlertRowWrapper;
-import tech.renovus.solarec.db.data.vo.StaAlertVo;
+import tech.renovus.solarec.vo.db.data.StaAlertVo;
 
 public abstract class BaseStaAlertDao {
 

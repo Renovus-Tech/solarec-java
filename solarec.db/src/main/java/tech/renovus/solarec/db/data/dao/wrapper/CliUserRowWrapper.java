@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.CliUserVo;
+import tech.renovus.solarec.vo.db.data.CliUserVo;
 
 public class CliUserRowWrapper implements RowMapper<CliUserVo> {
 

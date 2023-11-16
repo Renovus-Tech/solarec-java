@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.LocWeaDataHourVo;
+import tech.renovus.solarec.vo.db.data.LocWeaDataHourVo;
 
 public class LocWeaDataHourRowWrapper implements RowMapper<LocWeaDataHourVo> {
 

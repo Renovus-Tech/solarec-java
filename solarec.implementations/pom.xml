@@ -21,12 +21,22 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<groupId>tech.renovus.solarec</groupId>
+			<artifactId>solarec.vo</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<dependency> <!-- Database access -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
-			<version>2.6.4</version>
 		</dependency>
 		 
+ 		<dependency> <!-- Send mail -->
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 		<!-- Registro de eventos para tracking -->
 		<dependency>
 		    <groupId>com.amplitude</groupId>

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseLocGenAlarmDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocGenAlarmDao;
 import tech.renovus.solarec.db.data.dao.wrapper.LocGenAlarmRowWrapper;
-import tech.renovus.solarec.db.data.vo.LocGenAlarmVo;
+import tech.renovus.solarec.vo.db.data.LocGenAlarmVo;
 
 @Repository
 public class LocGenAlarmDaoImpl extends BaseLocGenAlarmDao implements LocGenAlarmDao {

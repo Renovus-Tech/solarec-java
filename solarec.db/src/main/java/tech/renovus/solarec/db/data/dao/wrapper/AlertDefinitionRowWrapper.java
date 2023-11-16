@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.AlertDefinitionVo;
+import tech.renovus.solarec.vo.db.data.AlertDefinitionVo;
 
 public class AlertDefinitionRowWrapper implements RowMapper<AlertDefinitionVo> {
 

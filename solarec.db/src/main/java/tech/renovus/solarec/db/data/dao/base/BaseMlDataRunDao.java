@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.MlDataRunRowWrapper;
-import tech.renovus.solarec.db.data.vo.MlDataRunVo;
+import tech.renovus.solarec.vo.db.data.MlDataRunVo;
 
 public abstract class BaseMlDataRunDao {
 

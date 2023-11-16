@@ -13,7 +13,7 @@ import tech.renovus.solarec.db.data.dao.base.BaseGeneratorDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
 import tech.renovus.solarec.db.data.dao.wrapper.GeneratorRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.GeneratorMaxDataDate;
-import tech.renovus.solarec.db.data.vo.GeneratorVo;
+import tech.renovus.solarec.vo.db.data.GeneratorVo;
 
 @Repository
 public class GeneratorDaoImpl extends BaseGeneratorDao implements GeneratorDao {

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.StaAlertVo;
+import tech.renovus.solarec.vo.db.data.StaAlertVo;
 
 public class StaAlertRowWrapper implements RowMapper<StaAlertVo> {
 

@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.RepTypeRowWrapper;
-import tech.renovus.solarec.db.data.vo.RepTypeVo;
+import tech.renovus.solarec.vo.db.data.RepTypeVo;
 
 public abstract class BaseRepTypeDao {
 

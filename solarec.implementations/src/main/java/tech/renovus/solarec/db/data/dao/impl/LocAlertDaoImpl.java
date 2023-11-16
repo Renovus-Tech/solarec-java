@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import tech.renovus.solarec.db.data.dao.base.BaseLocAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocAlertDao;
-import tech.renovus.solarec.db.data.vo.LocAlertVo;
+import tech.renovus.solarec.vo.db.data.LocAlertVo;
 import tech.renvous.solarec.util.CollectionUtil;
 
 @Repository

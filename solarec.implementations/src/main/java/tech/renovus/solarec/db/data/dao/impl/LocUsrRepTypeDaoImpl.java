@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseLocUsrRepTypeDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocUsrRepTypeDao;
 import tech.renovus.solarec.db.data.dao.wrapper.LocUsrRepTypeRowWrapper;
-import tech.renovus.solarec.db.data.vo.LocUsrRepTypeVo;
+import tech.renovus.solarec.vo.db.data.LocUsrRepTypeVo;
 
 @Repository
 public class LocUsrRepTypeDaoImpl extends BaseLocUsrRepTypeDao implements LocUsrRepTypeDao {

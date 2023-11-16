@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseCliSettingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliSettingDao;
 import tech.renovus.solarec.db.data.dao.wrapper.CliSettingRowWrapper;
-import tech.renovus.solarec.db.data.vo.CliSettingVo;
+import tech.renovus.solarec.vo.db.data.CliSettingVo;
 
 @Repository
 public class CliSettingDaoImpl extends BaseCliSettingDao implements CliSettingDao {

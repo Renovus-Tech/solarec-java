@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.EmberCountryOverviewRowWrapper;
-import tech.renovus.solarec.db.data.vo.EmberCountryOverviewVo;
+import tech.renovus.solarec.vo.db.data.EmberCountryOverviewVo;
 
 public abstract class BaseEmberCountryOverviewDao {
 

@@ -9,7 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import tech.renovus.solarec.db.data.dao.wrapper.StaStatisticRowWrapper;
-import tech.renovus.solarec.db.data.vo.StaStatisticVo;
+import tech.renovus.solarec.vo.db.data.StaStatisticVo;
 
 public abstract class BaseStaStatisticDao {
 

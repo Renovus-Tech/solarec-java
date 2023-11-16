@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseGenPowerDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GenPowerDao;
 import tech.renovus.solarec.db.data.dao.wrapper.GenPowerRowWrapper;
-import tech.renovus.solarec.db.data.vo.GenPowerVo;
+import tech.renovus.solarec.vo.db.data.GenPowerVo;
 
 @Repository
 public class GenPowerDaoImpl extends BaseGenPowerDao implements GenPowerDao {

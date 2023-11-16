@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import tech.renovus.solarec.db.data.vo.GenMetadataVo;
+import tech.renovus.solarec.vo.db.data.GenMetadataVo;
 
 public class GenMetadataRowWrapper implements RowMapper<GenMetadataVo> {
 

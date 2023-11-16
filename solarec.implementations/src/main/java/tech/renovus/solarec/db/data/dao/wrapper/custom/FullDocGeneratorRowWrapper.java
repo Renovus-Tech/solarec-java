@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.db.data.dao.wrapper.DocGeneratorRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.GeneratorRowWrapper;
-import tech.renovus.solarec.db.data.vo.DocGeneratorVo;
+import tech.renovus.solarec.vo.db.data.DocGeneratorVo;
 
 public class FullDocGeneratorRowWrapper implements RowMapper<DocGeneratorVo> {
 

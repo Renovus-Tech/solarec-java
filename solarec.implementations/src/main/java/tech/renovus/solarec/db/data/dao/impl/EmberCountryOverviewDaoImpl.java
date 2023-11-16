@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseEmberCountryOverviewDao;
 import tech.renovus.solarec.db.data.dao.interfaces.EmberCountryOverviewDao;
 import tech.renovus.solarec.db.data.dao.wrapper.EmberCountryOverviewRowWrapper;
-import tech.renovus.solarec.db.data.vo.EmberCountryOverviewVo;
+import tech.renovus.solarec.vo.db.data.EmberCountryOverviewVo;
 
 @Repository
 public class EmberCountryOverviewDaoImpl extends BaseEmberCountryOverviewDao implements EmberCountryOverviewDao {

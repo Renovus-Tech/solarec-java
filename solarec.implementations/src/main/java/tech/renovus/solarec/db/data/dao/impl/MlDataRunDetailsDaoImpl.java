@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseMlDataRunDetailsDao;
 import tech.renovus.solarec.db.data.dao.interfaces.MlDataRunDetailsDao;
 import tech.renovus.solarec.db.data.dao.wrapper.MlDataRunDetailsRowWrapper;
-import tech.renovus.solarec.db.data.vo.MlDataRunDetailsVo;
+import tech.renovus.solarec.vo.db.data.MlDataRunDetailsVo;
 
 @Repository
 public class MlDataRunDetailsDaoImpl extends BaseMlDataRunDetailsDao implements MlDataRunDetailsDao {
