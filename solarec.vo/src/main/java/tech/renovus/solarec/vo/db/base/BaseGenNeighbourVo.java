@@ -1,21 +1,26 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseGenNeighbourVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_GEN_ID = "gen_id";
-	 public static final String COLUMN_GEN_ID_NEIGHBOUR = "gen_id_neighbour";
-	 public static final String COLUMN_GEN_ID_NEIGHBOUR_POSITION = "gen_id_neighbour_position";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_GEN_ID = "gen_id";
+	public static final String COLUMN_GEN_ID_NEIGHBOUR = "gen_id_neighbour";
+	public static final String COLUMN_GEN_ID_NEIGHBOUR_POSITION = "gen_id_neighbour_position";
+
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Integer genId;
-	 private Integer genIdNeighbour;
-	 private Integer genIdNeighbourPosition;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Integer genId;
+	private @Getter @Setter Integer genIdNeighbour;
+	private @Getter @Setter Integer genIdNeighbourPosition;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -34,6 +39,7 @@ public class BaseGenNeighbourVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseGenNeighbourVo)) return false;
@@ -60,19 +66,9 @@ public class BaseGenNeighbourVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseGenNeighbourVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseGenNeighbourVo aObj = (BaseGenNeighbourVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.genId,aObj.genId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.genIdNeighbour,aObj.genIdNeighbour)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.genIdNeighbourPosition,aObj.genIdNeighbourPosition)) {
 			return false;
 		}
@@ -89,37 +85,8 @@ public class BaseGenNeighbourVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getGenId(), aVo.getGenIdNeighbour());
+			this.setPk(aVo.cliId, aVo.genId, aVo.genIdNeighbour);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Integer getGenId() {
-		return this.genId;
-	}
-	public void setGenId(Integer genId) {
-		this.genId = genId;
-	}
-
-	public Integer getGenIdNeighbour() {
-		return this.genIdNeighbour;
-	}
-	public void setGenIdNeighbour(Integer genIdNeighbour) {
-		this.genIdNeighbour = genIdNeighbour;
-	}
-
-	public Integer getGenIdNeighbourPosition() {
-		return this.genIdNeighbourPosition;
-	}
-	public void setGenIdNeighbourPosition(Integer genIdNeighbourPosition) {
-		this.genIdNeighbourPosition = genIdNeighbourPosition;
 	}
 
 }

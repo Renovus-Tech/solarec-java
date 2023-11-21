@@ -11,22 +11,27 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_ALERT_DEF_ID = "alert_def_id_auto";
-	 public static final String COLUMN_ALERT_DEF_NAME = "alert_def_name";
-	 public static final String COLUMN_ALERT_DEF_DESCRIPTION = "alert_def_description";
-	 public static final String COLUMN_ALERT_DEF_EXECUTABLE = "alert_def_executable";
-	 public static final String COLUMN_ALERT_DEF_FLAGS = "alert_def_flags";
+	public static final String COLUMN_ALERT_DEF_ID = "alert_def_id_auto";
+	public static final String COLUMN_ALERT_DEF_NAME = "alert_def_name";
+	public static final String COLUMN_ALERT_DEF_DESCRIPTION = "alert_def_description";
+	public static final String COLUMN_ALERT_DEF_EXECUTABLE = "alert_def_executable";
+	public static final String COLUMN_ALERT_DEF_FLAGS = "alert_def_flags";
+
+	public static final int LENGTH_COLUMN_ALERT_DEF_NAME =  100;
+	public static final int LENGTH_COLUMN_ALERT_DEF_DESCRIPTION =  500;
+	public static final int LENGTH_COLUMN_ALERT_DEF_EXECUTABLE =  500;
+	public static final int LENGTH_COLUMN_ALERT_DEF_FLAGS =  20;
 
 	//--- Implemented methods -------------------
 	@Override public String getFlags() { return this.alertDefFlags; }
 	@Override public void setFlags(String alertDefFlags) { this.alertDefFlags = alertDefFlags; }
 
 	//--- Private properties --------------------
-	 private @Getter @Setter Integer alertDefId;
-	 private @Getter @Setter String alertDefName;
-	 private @Getter @Setter String alertDefDescription;
-	 private @Getter @Setter String alertDefExecutable;
-	 private @Getter @Setter String alertDefFlags;
+	private @Getter @Setter Integer alertDefId;
+	private @Getter @Setter String alertDefName;
+	private @Getter @Setter String alertDefDescription;
+	private @Getter @Setter String alertDefExecutable;
+	private @Getter @Setter String alertDefFlags;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -36,6 +41,7 @@ public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseAlertDefinitionVo)) return false;
@@ -54,13 +60,9 @@ public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseAlertDefinitionVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseAlertDefinitionVo aObj = (BaseAlertDefinitionVo) obj;
-		if (!ClassUtil.equals(this.alertDefId,aObj.alertDefId)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.alertDefName,aObj.alertDefName)) {
 			return false;
 		}
@@ -88,5 +90,4 @@ public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 		}
 	}
 
-	//--- Getters and Setters -------------------
 }

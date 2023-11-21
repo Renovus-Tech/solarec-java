@@ -1,25 +1,30 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseWeaCallVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_WEA_ID = "wea_id";
-	 public static final String COLUMN_WEA_CALL_ID = "wea_call_id_auto";
-	 public static final String COLUMN_WEA_CALL_DATE = "wea_call_date";
-	 public static final String COLUMN_WEA_CALL_RESONSE_STATUS = "wea_call_resonse_status";
-	 public static final String COLUMN_WEA_CALL_RESPONSE = "wea_call_response";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_WEA_ID = "wea_id";
+	public static final String COLUMN_WEA_CALL_ID = "wea_call_id_auto";
+	public static final String COLUMN_WEA_CALL_DATE = "wea_call_date";
+	public static final String COLUMN_WEA_CALL_RESONSE_STATUS = "wea_call_resonse_status";
+	public static final String COLUMN_WEA_CALL_RESPONSE = "wea_call_response";
+
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Integer weaId;
-	 private Integer weaCallId;
-	 private java.util.Date weaCallDate;
-	 private Integer weaCallResonseStatus;
-	 private String weaCallResponse;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Integer weaId;
+	private @Getter @Setter Integer weaCallId;
+	private @Getter @Setter java.util.Date weaCallDate;
+	private @Getter @Setter Integer weaCallResonseStatus;
+	private @Getter @Setter String weaCallResponse;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -35,6 +40,7 @@ public class BaseWeaCallVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseWeaCallVo)) return false;
@@ -61,19 +67,9 @@ public class BaseWeaCallVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseWeaCallVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseWeaCallVo aObj = (BaseWeaCallVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.weaId,aObj.weaId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.weaCallId,aObj.weaCallId)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.weaCallDate,aObj.weaCallDate)) {
 			return false;
 		}
@@ -96,51 +92,8 @@ public class BaseWeaCallVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getWeaId(), aVo.getWeaCallId());
+			this.setPk(aVo.cliId, aVo.weaId, aVo.weaCallId);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Integer getWeaId() {
-		return this.weaId;
-	}
-	public void setWeaId(Integer weaId) {
-		this.weaId = weaId;
-	}
-
-	public Integer getWeaCallId() {
-		return this.weaCallId;
-	}
-	public void setWeaCallId(Integer weaCallId) {
-		this.weaCallId = weaCallId;
-	}
-
-	public java.util.Date getWeaCallDate() {
-		return this.weaCallDate;
-	}
-	public void setWeaCallDate(java.util.Date weaCallDate) {
-		this.weaCallDate = weaCallDate;
-	}
-
-	public Integer getWeaCallResonseStatus() {
-		return this.weaCallResonseStatus;
-	}
-	public void setWeaCallResonseStatus(Integer weaCallResonseStatus) {
-		this.weaCallResonseStatus = weaCallResonseStatus;
-	}
-
-	public String getWeaCallResponse() {
-		return this.weaCallResponse;
-	}
-	public void setWeaCallResponse(String weaCallResponse) {
-		this.weaCallResponse = weaCallResponse;
 	}
 
 }

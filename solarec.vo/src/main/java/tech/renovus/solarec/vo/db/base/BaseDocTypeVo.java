@@ -1,26 +1,34 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.IFlags;
 
+@NoArgsConstructor
 public class BaseDocTypeVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_DOC_TYPE_ID = "doc_type_id_auto";
-	 public static final String COLUMN_DOC_TYPE_NAME = "doc_type_name";
-	 public static final String COLUMN_DOC_TYPE_TITLE = "doc_type_title";
-	 public static final String COLUMN_DOC_TYPE_FLAGS = "doc_type_flags";
+	public static final String COLUMN_DOC_TYPE_ID = "doc_type_id_auto";
+	public static final String COLUMN_DOC_TYPE_NAME = "doc_type_name";
+	public static final String COLUMN_DOC_TYPE_TITLE = "doc_type_title";
+	public static final String COLUMN_DOC_TYPE_FLAGS = "doc_type_flags";
+
+	public static final int LENGTH_COLUMN_DOC_TYPE_NAME =  255;
+	public static final int LENGTH_COLUMN_DOC_TYPE_TITLE =  500;
+	public static final int LENGTH_COLUMN_DOC_TYPE_FLAGS =  20;
 
 	//--- Implemented methods -------------------
 	@Override public String getFlags() { return this.docTypeFlags; }
 	@Override public void setFlags(String docTypeFlags) { this.docTypeFlags = docTypeFlags; }
 
 	//--- Private properties --------------------
-	 private Integer docTypeId;
-	 private String docTypeName;
-	 private String docTypeTitle;
-	 private String docTypeFlags;
+	private @Getter @Setter Integer docTypeId;
+	private @Getter @Setter String docTypeName;
+	private @Getter @Setter String docTypeTitle;
+	private @Getter @Setter String docTypeFlags;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -36,6 +44,7 @@ public class BaseDocTypeVo extends BaseDbVo implements IFlags {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseDocTypeVo)) return false;
@@ -54,13 +63,9 @@ public class BaseDocTypeVo extends BaseDbVo implements IFlags {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseDocTypeVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseDocTypeVo aObj = (BaseDocTypeVo) obj;
-		if (!ClassUtil.equals(this.docTypeId,aObj.docTypeId)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.docTypeName,aObj.docTypeName)) {
 			return false;
 		}
@@ -81,37 +86,8 @@ public class BaseDocTypeVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.getDocTypeId());
+			this.setPk((Integer)aVo.docTypeId);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getDocTypeId() {
-		return this.docTypeId;
-	}
-	public void setDocTypeId(Integer docTypeId) {
-		this.docTypeId = docTypeId;
-	}
-
-	public String getDocTypeName() {
-		return this.docTypeName;
-	}
-	public void setDocTypeName(String docTypeName) {
-		this.docTypeName = docTypeName;
-	}
-
-	public String getDocTypeTitle() {
-		return this.docTypeTitle;
-	}
-	public void setDocTypeTitle(String docTypeTitle) {
-		this.docTypeTitle = docTypeTitle;
-	}
-
-	public String getDocTypeFlags() {
-		return this.docTypeFlags;
-	}
-	public void setDocTypeFlags(String docTypeFlags) {
-		this.docTypeFlags = docTypeFlags;
 	}
 
 }

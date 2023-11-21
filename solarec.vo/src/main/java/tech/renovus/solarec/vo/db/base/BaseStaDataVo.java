@@ -1,27 +1,32 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseStaDataVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_STA_ID = "sta_id";
-	 public static final String COLUMN_DATA_DATE = "data_date";
-	 public static final String COLUMN_DATA_TYPE_ID = "data_type_id";
-	 public static final String COLUMN_DATA_PRO_ID = "data_pro_id";
-	 public static final String COLUMN_DATA_VALUE = "data_value";
-	 public static final String COLUMN_DATA_DATE_ADDED = "data_date_added";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_STA_ID = "sta_id";
+	public static final String COLUMN_DATA_DATE = "data_date";
+	public static final String COLUMN_DATA_TYPE_ID = "data_type_id";
+	public static final String COLUMN_DATA_PRO_ID = "data_pro_id";
+	public static final String COLUMN_DATA_VALUE = "data_value";
+	public static final String COLUMN_DATA_DATE_ADDED = "data_date_added";
+
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Integer staId;
-	 private java.util.Date dataDate;
-	 private Integer dataTypeId;
-	 private Integer dataProId;
-	 private Double dataValue;
-	 private java.util.Date dataDateAdded;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Integer staId;
+	private @Getter @Setter java.util.Date dataDate;
+	private @Getter @Setter Integer dataTypeId;
+	private @Getter @Setter Integer dataProId;
+	private @Getter @Setter Double dataValue;
+	private @Getter @Setter java.util.Date dataDateAdded;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -49,6 +54,7 @@ public class BaseStaDataVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseStaDataVo)) return false;
@@ -60,7 +66,7 @@ public class BaseStaDataVo extends BaseDbVo {
 		if (!ClassUtil.equals(this.staId,aObj.staId)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.dataDate,aObj.dataDate)) {
+		if (!ClassUtil.equals(this.dataDate.getTime(),aObj.dataDate.getTime())) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.dataTypeId,aObj.dataTypeId)) {
@@ -79,22 +85,9 @@ public class BaseStaDataVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseStaDataVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseStaDataVo aObj = (BaseStaDataVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.staId,aObj.staId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.dataDate,aObj.dataDate)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.dataTypeId,aObj.dataTypeId)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.dataProId,aObj.dataProId)) {
 			return false;
 		}
@@ -118,58 +111,8 @@ public class BaseStaDataVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null, null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getStaId(), aVo.getDataDate(), aVo.getDataTypeId());
+			this.setPk(aVo.cliId, aVo.staId, aVo.dataDate, aVo.dataTypeId);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Integer getStaId() {
-		return this.staId;
-	}
-	public void setStaId(Integer staId) {
-		this.staId = staId;
-	}
-
-	public java.util.Date getDataDate() {
-		return this.dataDate;
-	}
-	public void setDataDate(java.util.Date dataDate) {
-		this.dataDate = dataDate;
-	}
-
-	public Integer getDataTypeId() {
-		return this.dataTypeId;
-	}
-	public void setDataTypeId(Integer dataTypeId) {
-		this.dataTypeId = dataTypeId;
-	}
-
-	public Integer getDataProId() {
-		return this.dataProId;
-	}
-	public void setDataProId(Integer dataProId) {
-		this.dataProId = dataProId;
-	}
-
-	public Double getDataValue() {
-		return this.dataValue;
-	}
-	public void setDataValue(Double dataValue) {
-		this.dataValue = dataValue;
-	}
-
-	public java.util.Date getDataDateAdded() {
-		return this.dataDateAdded;
-	}
-	public void setDataDateAdded(java.util.Date dataDateAdded) {
-		this.dataDateAdded = dataDateAdded;
 	}
 
 }

@@ -1,19 +1,24 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseDocLocationVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_DOC_ID = "doc_id";
-	 public static final String COLUMN_LOC_ID = "loc_id";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_DOC_ID = "doc_id";
+	public static final String COLUMN_LOC_ID = "loc_id";
+
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Integer docId;
-	 private Integer locId;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Integer docId;
+	private @Getter @Setter Integer locId;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -29,6 +34,7 @@ public class BaseDocLocationVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseDocLocationVo)) return false;
@@ -55,19 +61,9 @@ public class BaseDocLocationVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseDocLocationVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseDocLocationVo aObj = (BaseDocLocationVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.docId,aObj.docId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.locId,aObj.locId)) {
-			return false;
-		}
 		return true;
 	}
 
@@ -81,30 +77,8 @@ public class BaseDocLocationVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getDocId(), aVo.getLocId());
+			this.setPk(aVo.cliId, aVo.docId, aVo.locId);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Integer getDocId() {
-		return this.docId;
-	}
-	public void setDocId(Integer docId) {
-		this.docId = docId;
-	}
-
-	public Integer getLocId() {
-		return this.locId;
-	}
-	public void setLocId(Integer locId) {
-		this.locId = locId;
 	}
 
 }

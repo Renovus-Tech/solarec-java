@@ -1,17 +1,22 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseDataProStatProcessingVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_DATA_PRO_ID = "data_pro_id";
-	 public static final String COLUMN_STAT_PRO_ID = "stat_pro_id";
+	public static final String COLUMN_DATA_PRO_ID = "data_pro_id";
+	public static final String COLUMN_STAT_PRO_ID = "stat_pro_id";
+
 
 	//--- Private properties --------------------
-	 private Integer dataProId;
-	 private Integer statProId;
+	private @Getter @Setter Integer dataProId;
+	private @Getter @Setter Integer statProId;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -24,6 +29,7 @@ public class BaseDataProStatProcessingVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseDataProStatProcessingVo)) return false;
@@ -46,16 +52,9 @@ public class BaseDataProStatProcessingVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseDataProStatProcessingVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseDataProStatProcessingVo aObj = (BaseDataProStatProcessingVo) obj;
-		if (!ClassUtil.equals(this.dataProId,aObj.dataProId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.statProId,aObj.statProId)) {
-			return false;
-		}
 		return true;
 	}
 
@@ -68,23 +67,8 @@ public class BaseDataProStatProcessingVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null);
 		} else {
-			this.setPk(aVo.getDataProId(), aVo.getStatProId());
+			this.setPk(aVo.dataProId, aVo.statProId);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getDataProId() {
-		return this.dataProId;
-	}
-	public void setDataProId(Integer dataProId) {
-		this.dataProId = dataProId;
-	}
-
-	public Integer getStatProId() {
-		return this.statProId;
-	}
-	public void setStatProId(Integer statProId) {
-		this.statProId = statProId;
 	}
 
 }

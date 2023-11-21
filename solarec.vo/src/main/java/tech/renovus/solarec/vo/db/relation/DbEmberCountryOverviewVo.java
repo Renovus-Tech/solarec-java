@@ -13,8 +13,8 @@ public class DbEmberCountryOverviewVo extends BaseEmberCountryOverviewVo impleme
 	public DbEmberCountryOverviewVo() {
 	}
 
-	public DbEmberCountryOverviewVo(String countryOrRegion, Integer year) {
-		this.setPk(countryOrRegion, year);
+	public DbEmberCountryOverviewVo(Integer year, String countryOrRegion) {
+		this.setPk(year,countryOrRegion);
 	}
 
 	//--- Private methods -----------------------

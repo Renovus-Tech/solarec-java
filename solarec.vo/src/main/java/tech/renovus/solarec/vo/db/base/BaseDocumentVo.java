@@ -1,44 +1,54 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.IFlags;
 
+@NoArgsConstructor
 public class BaseDocumentVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_DOC_ID = "doc_id_auto";
-	 public static final String COLUMN_DOC_NAME = "doc_name";
-	 public static final String COLUMN_DOC_TYPE_ID = "doc_type_id";
-	 public static final String COLUMN_DOC_DATE_ADDED = "doc_date_added";
-	 public static final String COLUMN_DOC_DATE_FROM = "doc_date_from";
-	 public static final String COLUMN_DOC_DATE_TO = "doc_date_to";
-	 public static final String COLUMN_DOC_FLAGS = "doc_flags";
-	 public static final String COLUMN_DOC_OBSERVATIONS = "doc_observations";
-	 public static final String COLUMN_DOC_FILE = "doc_file";
-	 public static final String COLUMN_DOC_FILE_NAME = "doc_file_name";
-	 public static final String COLUMN_DOC_FILE_SIZE = "doc_file_size";
-	 public static final String COLUMN_DOC_FILE_CONTENT = "doc_file_content";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_DOC_ID = "doc_id_auto";
+	public static final String COLUMN_DOC_TYPE_ID = "doc_type_id";
+	public static final String COLUMN_DOC_DATE_ADDED = "doc_date_added";
+	public static final String COLUMN_DOC_DATE_FROM = "doc_date_from";
+	public static final String COLUMN_DOC_DATE_TO = "doc_date_to";
+	public static final String COLUMN_DOC_FILE_SIZE = "doc_file_size";
+	public static final String COLUMN_DOC_FLAGS = "doc_flags";
+	public static final String COLUMN_DOC_NAME = "doc_name";
+	public static final String COLUMN_DOC_OBSERVATIONS = "doc_observations";
+	public static final String COLUMN_DOC_FILE = "doc_file";
+	public static final String COLUMN_DOC_FILE_NAME = "doc_file_name";
+	public static final String COLUMN_DOC_FILE_CONTENT = "doc_file_content";
+
+	public static final int LENGTH_COLUMN_DOC_FLAGS =  20;
+	public static final int LENGTH_COLUMN_DOC_NAME =  200;
+	public static final int LENGTH_COLUMN_DOC_OBSERVATIONS =  500;
+	public static final int LENGTH_COLUMN_DOC_FILE =  200;
+	public static final int LENGTH_COLUMN_DOC_FILE_NAME =  200;
 
 	//--- Implemented methods -------------------
 	@Override public String getFlags() { return this.docFlags; }
 	@Override public void setFlags(String docFlags) { this.docFlags = docFlags; }
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Integer docId;
-	 private String docName;
-	 private Integer docTypeId;
-	 private java.util.Date docDateAdded;
-	 private java.util.Date docDateFrom;
-	 private java.util.Date docDateTo;
-	 private String docFlags;
-	 private String docObservations;
-	 private String docFile;
-	 private String docFileName;
-	 private Double docFileSize;
-	 private String docFileContent;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Integer docId;
+	private @Getter @Setter Integer docTypeId;
+	private @Getter @Setter java.util.Date docDateAdded;
+	private @Getter @Setter java.util.Date docDateFrom;
+	private @Getter @Setter java.util.Date docDateTo;
+	private @Getter @Setter Double docFileSize;
+	private @Getter @Setter String docFlags;
+	private @Getter @Setter String docName;
+	private @Getter @Setter String docObservations;
+	private @Getter @Setter String docFile;
+	private @Getter @Setter String docFileName;
+	private @Getter @Setter String docFileContent;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -51,6 +61,7 @@ public class BaseDocumentVo extends BaseDbVo implements IFlags {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseDocumentVo)) return false;
@@ -73,19 +84,9 @@ public class BaseDocumentVo extends BaseDbVo implements IFlags {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseDocumentVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseDocumentVo aObj = (BaseDocumentVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.docId,aObj.docId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.docName,aObj.docName)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.docTypeId,aObj.docTypeId)) {
 			return false;
 		}
@@ -98,7 +99,13 @@ public class BaseDocumentVo extends BaseDbVo implements IFlags {
 		if (!ClassUtil.equals(this.docDateTo,aObj.docDateTo)) {
 			return false;
 		}
+		if (!ClassUtil.equals(this.docFileSize,aObj.docFileSize)) {
+			return false;
+		}
 		if (!ClassUtil.equals(this.docFlags,aObj.docFlags)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.docName,aObj.docName)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.docObservations,aObj.docObservations)) {
@@ -108,9 +115,6 @@ public class BaseDocumentVo extends BaseDbVo implements IFlags {
 			return false;
 		}
 		if (!ClassUtil.equals(this.docFileName,aObj.docFileName)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.docFileSize,aObj.docFileSize)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.docFileContent,aObj.docFileContent)) {
@@ -128,100 +132,8 @@ public class BaseDocumentVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk(null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getDocId());
+			this.setPk(aVo.cliId, aVo.docId);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Integer getDocId() {
-		return this.docId;
-	}
-	public void setDocId(Integer docId) {
-		this.docId = docId;
-	}
-
-	public String getDocName() {
-		return this.docName;
-	}
-	public void setDocName(String docName) {
-		this.docName = docName;
-	}
-
-	public Integer getDocTypeId() {
-		return this.docTypeId;
-	}
-	public void setDocTypeId(Integer docTypeId) {
-		this.docTypeId = docTypeId;
-	}
-
-	public java.util.Date getDocDateAdded() {
-		return this.docDateAdded;
-	}
-	public void setDocDateAdded(java.util.Date docDateAdded) {
-		this.docDateAdded = docDateAdded;
-	}
-
-	public java.util.Date getDocDateFrom() {
-		return this.docDateFrom;
-	}
-	public void setDocDateFrom(java.util.Date docDateFrom) {
-		this.docDateFrom = docDateFrom;
-	}
-
-	public java.util.Date getDocDateTo() {
-		return this.docDateTo;
-	}
-	public void setDocDateTo(java.util.Date docDateTo) {
-		this.docDateTo = docDateTo;
-	}
-
-	public String getDocFlags() {
-		return this.docFlags;
-	}
-	public void setDocFlags(String docFlags) {
-		this.docFlags = docFlags;
-	}
-
-	public String getDocObservations() {
-		return this.docObservations;
-	}
-	public void setDocObservations(String docObservations) {
-		this.docObservations = docObservations;
-	}
-
-	public String getDocFile() {
-		return this.docFile;
-	}
-	public void setDocFile(String docFile) {
-		this.docFile = docFile;
-	}
-
-	public String getDocFileName() {
-		return this.docFileName;
-	}
-	public void setDocFileName(String docFileName) {
-		this.docFileName = docFileName;
-	}
-
-	public Double getDocFileSize() {
-		return this.docFileSize;
-	}
-	public void setDocFileSize(Double docFileSize) {
-		this.docFileSize = docFileSize;
-	}
-
-	public String getDocFileContent() {
-		return this.docFileContent;
-	}
-	public void setDocFileContent(String docFileContent) {
-		this.docFileContent = docFileContent;
 	}
 
 }

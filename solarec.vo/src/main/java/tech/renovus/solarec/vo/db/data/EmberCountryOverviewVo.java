@@ -8,8 +8,8 @@ public class EmberCountryOverviewVo extends DbEmberCountryOverviewVo {
 	public EmberCountryOverviewVo() {
 	}
 
-	public EmberCountryOverviewVo(String countryOrRegion, Integer year) {
-		this.setPk(countryOrRegion, year);
+	public EmberCountryOverviewVo(Integer year, String countryOrRegion) {
+		this.setPk(year, countryOrRegion);
 	}
 
 }

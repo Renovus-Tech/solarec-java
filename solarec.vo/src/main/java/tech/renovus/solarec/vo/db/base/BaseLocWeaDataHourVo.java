@@ -1,25 +1,30 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseLocWeaDataHourVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_LOC_ID = "loc_id";
-	 public static final String COLUMN_LOC_WEA_DATA_ID = "loc_wea_data_id";
-	 public static final String COLUMN_LOC_WEA_DATA_HOUR = "loc_wea_data_hour";
-	 public static final String COLUMN_LOC_WEA_DATA_RESPONSE = "loc_wea_data_response";
-	 public static final String COLUMN_LOC_WEA_DATA_RETRIEVE = "loc_wea_data_retrieve";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_LOC_ID = "loc_id";
+	public static final String COLUMN_LOC_WEA_DATA_ID = "loc_wea_data_id";
+	public static final String COLUMN_LOC_WEA_DATA_HOUR = "loc_wea_data_hour";
+	public static final String COLUMN_LOC_WEA_DATA_RETRIEVE = "loc_wea_data_retrieve";
+	public static final String COLUMN_LOC_WEA_DATA_RESPONSE = "loc_wea_data_response";
+
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Integer locId;
-	 private Integer locWeaDataId;
-	 private java.util.Date locWeaDataHour;
-	 private String locWeaDataResponse;
-	 private java.util.Date locWeaDataRetrieve;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Integer locId;
+	private @Getter @Setter Integer locWeaDataId;
+	private @Getter @Setter java.util.Date locWeaDataHour;
+	private @Getter @Setter java.util.Date locWeaDataRetrieve;
+	private @Getter @Setter String locWeaDataResponse;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -38,6 +43,7 @@ public class BaseLocWeaDataHourVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseLocWeaDataHourVo)) return false;
@@ -52,7 +58,7 @@ public class BaseLocWeaDataHourVo extends BaseDbVo {
 		if (!ClassUtil.equals(this.locWeaDataId,aObj.locWeaDataId)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.locWeaDataHour,aObj.locWeaDataHour)) {
+		if (!ClassUtil.equals(this.locWeaDataHour.getTime(),aObj.locWeaDataHour.getTime())) {
 			return false;
 		}
 		return true;
@@ -68,26 +74,13 @@ public class BaseLocWeaDataHourVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseLocWeaDataHourVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseLocWeaDataHourVo aObj = (BaseLocWeaDataHourVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.locId,aObj.locId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.locWeaDataId,aObj.locWeaDataId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.locWeaDataHour,aObj.locWeaDataHour)) {
+		if (!ClassUtil.equals(this.locWeaDataRetrieve,aObj.locWeaDataRetrieve)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.locWeaDataResponse,aObj.locWeaDataResponse)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.locWeaDataRetrieve,aObj.locWeaDataRetrieve)) {
 			return false;
 		}
 		return true;
@@ -104,51 +97,8 @@ public class BaseLocWeaDataHourVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null, null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getLocId(), aVo.getLocWeaDataId(), aVo.getLocWeaDataHour());
+			this.setPk(aVo.cliId, aVo.locId, aVo.locWeaDataId, aVo.locWeaDataHour);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Integer getLocId() {
-		return this.locId;
-	}
-	public void setLocId(Integer locId) {
-		this.locId = locId;
-	}
-
-	public Integer getLocWeaDataId() {
-		return this.locWeaDataId;
-	}
-	public void setLocWeaDataId(Integer locWeaDataId) {
-		this.locWeaDataId = locWeaDataId;
-	}
-
-	public java.util.Date getLocWeaDataHour() {
-		return this.locWeaDataHour;
-	}
-	public void setLocWeaDataHour(java.util.Date locWeaDataHour) {
-		this.locWeaDataHour = locWeaDataHour;
-	}
-
-	public String getLocWeaDataResponse() {
-		return this.locWeaDataResponse;
-	}
-	public void setLocWeaDataResponse(String locWeaDataResponse) {
-		this.locWeaDataResponse = locWeaDataResponse;
-	}
-
-	public java.util.Date getLocWeaDataRetrieve() {
-		return this.locWeaDataRetrieve;
-	}
-	public void setLocWeaDataRetrieve(java.util.Date locWeaDataRetrieve) {
-		this.locWeaDataRetrieve = locWeaDataRetrieve;
 	}
 
 }

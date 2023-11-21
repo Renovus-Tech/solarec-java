@@ -1,21 +1,26 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseCliUserVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_USR_ID = "usr_id";
-	 public static final String COLUMN_CLI_USER_DATE_ADDED = "cli_user_date_added";
-	 public static final String COLUMN_CLI_USER_DATE_ACCESS = "cli_user_date_access";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_USR_ID = "usr_id";
+	public static final String COLUMN_CLI_USER_DATE_ADDED = "cli_user_date_added";
+	public static final String COLUMN_CLI_USER_DATE_ACCESS = "cli_user_date_access";
+
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Integer usrId;
-	 private java.util.Date cliUserDateAdded;
-	 private java.util.Date cliUserDateAccess;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Integer usrId;
+	private @Getter @Setter java.util.Date cliUserDateAdded;
+	private @Getter @Setter java.util.Date cliUserDateAccess;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -31,6 +36,7 @@ public class BaseCliUserVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseCliUserVo)) return false;
@@ -53,16 +59,9 @@ public class BaseCliUserVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseCliUserVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseCliUserVo aObj = (BaseCliUserVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.usrId,aObj.usrId)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.cliUserDateAdded,aObj.cliUserDateAdded)) {
 			return false;
 		}
@@ -81,37 +80,8 @@ public class BaseCliUserVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getUsrId());
+			this.setPk(aVo.cliId, aVo.usrId);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Integer getUsrId() {
-		return this.usrId;
-	}
-	public void setUsrId(Integer usrId) {
-		this.usrId = usrId;
-	}
-
-	public java.util.Date getCliUserDateAdded() {
-		return this.cliUserDateAdded;
-	}
-	public void setCliUserDateAdded(java.util.Date cliUserDateAdded) {
-		this.cliUserDateAdded = cliUserDateAdded;
-	}
-
-	public java.util.Date getCliUserDateAccess() {
-		return this.cliUserDateAccess;
-	}
-	public void setCliUserDateAccess(java.util.Date cliUserDateAccess) {
-		this.cliUserDateAccess = cliUserDateAccess;
 	}
 
 }

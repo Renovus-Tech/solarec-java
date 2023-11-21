@@ -1,19 +1,26 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseUsrSettingVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_USR_ID = "usr_id";
-	 public static final String COLUMN_USR_SET_NAME = "usr_set_name";
-	 public static final String COLUMN_USR_SET_VALUE = "usr_set_value";
+	public static final String COLUMN_USR_ID = "usr_id";
+	public static final String COLUMN_USR_SET_NAME = "usr_set_name";
+	public static final String COLUMN_USR_SET_VALUE = "usr_set_value";
+
+	public static final int LENGTH_COLUMN_USR_SET_NAME =  200;
+	public static final int LENGTH_COLUMN_USR_SET_VALUE =  200;
 
 	//--- Private properties --------------------
-	 private Integer usrId;
-	 private String usrSetName;
-	 private String usrSetValue;
+	private @Getter @Setter Integer usrId;
+	private @Getter @Setter String usrSetName;
+	private @Getter @Setter String usrSetValue;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -26,6 +33,7 @@ public class BaseUsrSettingVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseUsrSettingVo)) return false;
@@ -48,16 +56,9 @@ public class BaseUsrSettingVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseUsrSettingVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseUsrSettingVo aObj = (BaseUsrSettingVo) obj;
-		if (!ClassUtil.equals(this.usrId,aObj.usrId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.usrSetName,aObj.usrSetName)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.usrSetValue,aObj.usrSetValue)) {
 			return false;
 		}
@@ -73,30 +74,8 @@ public class BaseUsrSettingVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null);
 		} else {
-			this.setPk(aVo.getUsrId(), aVo.getUsrSetName());
+			this.setPk(aVo.usrId, aVo.usrSetName);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getUsrId() {
-		return this.usrId;
-	}
-	public void setUsrId(Integer usrId) {
-		this.usrId = usrId;
-	}
-
-	public String getUsrSetName() {
-		return this.usrSetName;
-	}
-	public void setUsrSetName(String usrSetName) {
-		this.usrSetName = usrSetName;
-	}
-
-	public String getUsrSetValue() {
-		return this.usrSetValue;
-	}
-	public void setUsrSetValue(String usrSetValue) {
-		this.usrSetValue = usrSetValue;
 	}
 
 }

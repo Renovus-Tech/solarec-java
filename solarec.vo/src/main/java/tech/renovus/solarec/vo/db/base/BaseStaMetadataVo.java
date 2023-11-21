@@ -1,25 +1,33 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseStaMetadataVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_STA_ID = "sta_id";
-	 public static final String COLUMN_METADATA_NAME = "metadata_name";
-	 public static final String COLUMN_METADATA_TITLE = "metadata_title";
-	 public static final String COLUMN_METADATA_VALUE = "metadata_value";
-	 public static final String COLUMN_METADATA_DATE_ADDED = "metadata_date_added";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_STA_ID = "sta_id";
+	public static final String COLUMN_METADATA_DATE_ADDED = "metadata_date_added";
+	public static final String COLUMN_METADATA_NAME = "metadata_name";
+	public static final String COLUMN_METADATA_TITLE = "metadata_title";
+	public static final String COLUMN_METADATA_VALUE = "metadata_value";
+
+	public static final int LENGTH_COLUMN_METADATA_NAME =  100;
+	public static final int LENGTH_COLUMN_METADATA_TITLE =  200;
+	public static final int LENGTH_COLUMN_METADATA_VALUE =  200;
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Integer staId;
-	 private String metadataName;
-	 private String metadataTitle;
-	 private String metadataValue;
-	 private java.util.Date metadataDateAdded;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Integer staId;
+	private @Getter @Setter java.util.Date metadataDateAdded;
+	private @Getter @Setter String metadataName;
+	private @Getter @Setter String metadataTitle;
+	private @Getter @Setter String metadataValue;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -35,6 +43,7 @@ public class BaseStaMetadataVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseStaMetadataVo)) return false;
@@ -61,26 +70,16 @@ public class BaseStaMetadataVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseStaMetadataVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseStaMetadataVo aObj = (BaseStaMetadataVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.staId,aObj.staId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.metadataName,aObj.metadataName)) {
+		if (!ClassUtil.equals(this.metadataDateAdded,aObj.metadataDateAdded)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.metadataTitle,aObj.metadataTitle)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.metadataValue,aObj.metadataValue)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.metadataDateAdded,aObj.metadataDateAdded)) {
 			return false;
 		}
 		return true;
@@ -96,51 +95,8 @@ public class BaseStaMetadataVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getStaId(), aVo.getMetadataName());
+			this.setPk(aVo.cliId, aVo.staId, aVo.metadataName);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Integer getStaId() {
-		return this.staId;
-	}
-	public void setStaId(Integer staId) {
-		this.staId = staId;
-	}
-
-	public String getMetadataName() {
-		return this.metadataName;
-	}
-	public void setMetadataName(String metadataName) {
-		this.metadataName = metadataName;
-	}
-
-	public String getMetadataTitle() {
-		return this.metadataTitle;
-	}
-	public void setMetadataTitle(String metadataTitle) {
-		this.metadataTitle = metadataTitle;
-	}
-
-	public String getMetadataValue() {
-		return this.metadataValue;
-	}
-	public void setMetadataValue(String metadataValue) {
-		this.metadataValue = metadataValue;
-	}
-
-	public java.util.Date getMetadataDateAdded() {
-		return this.metadataDateAdded;
-	}
-	public void setMetadataDateAdded(java.util.Date metadataDateAdded) {
-		this.metadataDateAdded = metadataDateAdded;
 	}
 
 }

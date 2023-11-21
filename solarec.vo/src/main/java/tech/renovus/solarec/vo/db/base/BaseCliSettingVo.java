@@ -1,19 +1,26 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseCliSettingVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_CLI_SET_NAME = "cli_set_name";
-	 public static final String COLUMN_CLI_SET_VALUE = "cli_set_value";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_CLI_SET_NAME = "cli_set_name";
+	public static final String COLUMN_CLI_SET_VALUE = "cli_set_value";
+
+	public static final int LENGTH_COLUMN_CLI_SET_NAME =  200;
+	public static final int LENGTH_COLUMN_CLI_SET_VALUE =  200;
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private String cliSetName;
-	 private String cliSetValue;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter String cliSetName;
+	private @Getter @Setter String cliSetValue;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -26,6 +33,7 @@ public class BaseCliSettingVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseCliSettingVo)) return false;
@@ -48,16 +56,9 @@ public class BaseCliSettingVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseCliSettingVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseCliSettingVo aObj = (BaseCliSettingVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.cliSetName,aObj.cliSetName)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.cliSetValue,aObj.cliSetValue)) {
 			return false;
 		}
@@ -73,30 +74,8 @@ public class BaseCliSettingVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getCliSetName());
+			this.setPk(aVo.cliId, aVo.cliSetName);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public String getCliSetName() {
-		return this.cliSetName;
-	}
-	public void setCliSetName(String cliSetName) {
-		this.cliSetName = cliSetName;
-	}
-
-	public String getCliSetValue() {
-		return this.cliSetValue;
-	}
-	public void setCliSetValue(String cliSetValue) {
-		this.cliSetValue = cliSetValue;
 	}
 
 }

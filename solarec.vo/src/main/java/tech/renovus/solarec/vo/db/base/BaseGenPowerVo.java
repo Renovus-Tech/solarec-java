@@ -1,23 +1,28 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseGenPowerVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_GEN_ID = "gen_id";
-	 public static final String COLUMN_PWR_WIND_SPEED = "pwr_wind_speed";
-	 public static final String COLUMN_PWR_AIR_DENSITY = "pwr_air_density";
-	 public static final String COLUMN_GEN_POWER = "gen_power";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_GEN_ID = "gen_id";
+	public static final String COLUMN_PWR_WIND_SPEED = "pwr_wind_speed";
+	public static final String COLUMN_PWR_AIR_DENSITY = "pwr_air_density";
+	public static final String COLUMN_GEN_POWER = "gen_power";
+
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Integer genId;
-	 private Double pwrWindSpeed;
-	 private Double pwrAirDensity;
-	 private Double genPower;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Integer genId;
+	private @Getter @Setter Double pwrWindSpeed;
+	private @Getter @Setter Double pwrAirDensity;
+	private @Getter @Setter Double genPower;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -36,6 +41,7 @@ public class BaseGenPowerVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseGenPowerVo)) return false;
@@ -66,22 +72,9 @@ public class BaseGenPowerVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseGenPowerVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseGenPowerVo aObj = (BaseGenPowerVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.genId,aObj.genId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.pwrWindSpeed,aObj.pwrWindSpeed)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.pwrAirDensity,aObj.pwrAirDensity)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.genPower,aObj.genPower)) {
 			return false;
 		}
@@ -99,44 +92,8 @@ public class BaseGenPowerVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null, null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getGenId(), aVo.getPwrWindSpeed(), aVo.getPwrAirDensity());
+			this.setPk(aVo.cliId, aVo.genId, aVo.pwrWindSpeed, aVo.pwrAirDensity);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Integer getGenId() {
-		return this.genId;
-	}
-	public void setGenId(Integer genId) {
-		this.genId = genId;
-	}
-
-	public Double getPwrWindSpeed() {
-		return this.pwrWindSpeed;
-	}
-	public void setPwrWindSpeed(Double pwrWindSpeed) {
-		this.pwrWindSpeed = pwrWindSpeed;
-	}
-
-	public Double getPwrAirDensity() {
-		return this.pwrAirDensity;
-	}
-	public void setPwrAirDensity(Double pwrAirDensity) {
-		this.pwrAirDensity = pwrAirDensity;
-	}
-
-	public Double getGenPower() {
-		return this.genPower;
-	}
-	public void setGenPower(Double genPower) {
-		this.genPower = genPower;
 	}
 
 }

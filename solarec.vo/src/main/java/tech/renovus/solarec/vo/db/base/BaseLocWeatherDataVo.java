@@ -1,25 +1,30 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseLocWeatherDataVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_LOC_ID = "loc_id";
-	 public static final String COLUMN_LOC_WEA_DATA_ID = "loc_wea_data_id_auto";
-	 public static final String COLUMN_LOC_WEA_DATA_DATE = "loc_wea_data_date";
-	 public static final String COLUMN_LOC_WEA_DATA_RESONSE_STATUS = "loc_wea_data_resonse_status";
-	 public static final String COLUMN_LOC_WEA_DATA_RESPONSE = "loc_wea_data_response";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_LOC_ID = "loc_id";
+	public static final String COLUMN_LOC_WEA_DATA_ID = "loc_wea_data_id_auto";
+	public static final String COLUMN_LOC_WEA_DATA_DATE = "loc_wea_data_date";
+	public static final String COLUMN_LOC_WEA_DATA_RESONSE_STATUS = "loc_wea_data_resonse_status";
+	public static final String COLUMN_LOC_WEA_DATA_RESPONSE = "loc_wea_data_response";
+
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Integer locId;
-	 private Integer locWeaDataId;
-	 private java.util.Date locWeaDataDate;
-	 private Integer locWeaDataResonseStatus;
-	 private String locWeaDataResponse;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Integer locId;
+	private @Getter @Setter Integer locWeaDataId;
+	private @Getter @Setter java.util.Date locWeaDataDate;
+	private @Getter @Setter Integer locWeaDataResonseStatus;
+	private @Getter @Setter String locWeaDataResponse;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -35,6 +40,7 @@ public class BaseLocWeatherDataVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseLocWeatherDataVo)) return false;
@@ -61,19 +67,9 @@ public class BaseLocWeatherDataVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseLocWeatherDataVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseLocWeatherDataVo aObj = (BaseLocWeatherDataVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.locId,aObj.locId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.locWeaDataId,aObj.locWeaDataId)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.locWeaDataDate,aObj.locWeaDataDate)) {
 			return false;
 		}
@@ -96,51 +92,8 @@ public class BaseLocWeatherDataVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getLocId(), aVo.getLocWeaDataId());
+			this.setPk(aVo.cliId, aVo.locId, aVo.locWeaDataId);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Integer getLocId() {
-		return this.locId;
-	}
-	public void setLocId(Integer locId) {
-		this.locId = locId;
-	}
-
-	public Integer getLocWeaDataId() {
-		return this.locWeaDataId;
-	}
-	public void setLocWeaDataId(Integer locWeaDataId) {
-		this.locWeaDataId = locWeaDataId;
-	}
-
-	public java.util.Date getLocWeaDataDate() {
-		return this.locWeaDataDate;
-	}
-	public void setLocWeaDataDate(java.util.Date locWeaDataDate) {
-		this.locWeaDataDate = locWeaDataDate;
-	}
-
-	public Integer getLocWeaDataResonseStatus() {
-		return this.locWeaDataResonseStatus;
-	}
-	public void setLocWeaDataResonseStatus(Integer locWeaDataResonseStatus) {
-		this.locWeaDataResonseStatus = locWeaDataResonseStatus;
-	}
-
-	public String getLocWeaDataResponse() {
-		return this.locWeaDataResponse;
-	}
-	public void setLocWeaDataResponse(String locWeaDataResponse) {
-		this.locWeaDataResponse = locWeaDataResponse;
 	}
 
 }

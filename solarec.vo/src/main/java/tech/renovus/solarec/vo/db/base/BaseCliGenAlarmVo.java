@@ -1,21 +1,27 @@
 package tech.renovus.solarec.vo.db.base;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
+@NoArgsConstructor
 public class BaseCliGenAlarmVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	 public static final String COLUMN_CLI_ID = "cli_id";
-	 public static final String COLUMN_ALARM_CODE = "alarm_code";
-	 public static final String COLUMN_ALARM_DESCRIPTION = "alarm_description";
-	 public static final String COLUMN_DATA_CAT_ID = "data_cat_id";
+	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_ALARM_CODE = "alarm_code";
+	public static final String COLUMN_DATA_CAT_ID = "data_cat_id";
+	public static final String COLUMN_ALARM_DESCRIPTION = "alarm_description";
+
+	public static final int LENGTH_COLUMN_ALARM_DESCRIPTION =  1000;
 
 	//--- Private properties --------------------
-	 private Integer cliId;
-	 private Double alarmCode;
-	 private String alarmDescription;
-	 private Integer dataCatId;
+	private @Getter @Setter Integer cliId;
+	private @Getter @Setter Double alarmCode;
+	private @Getter @Setter Integer dataCatId;
+	private @Getter @Setter String alarmDescription;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -28,6 +34,7 @@ public class BaseCliGenAlarmVo extends BaseDbVo {
 		return true;
 	}
 
+	//--- Overriden methods ---------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseCliGenAlarmVo)) return false;
@@ -50,20 +57,13 @@ public class BaseCliGenAlarmVo extends BaseDbVo {
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseCliGenAlarmVo)) return false;
+		if (! this.equals(obj)) return false;
 		
 		BaseCliGenAlarmVo aObj = (BaseCliGenAlarmVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.alarmCode,aObj.alarmCode)) {
+		if (!ClassUtil.equals(this.dataCatId,aObj.dataCatId)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.alarmDescription,aObj.alarmDescription)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.dataCatId,aObj.dataCatId)) {
 			return false;
 		}
 		return true;
@@ -78,37 +78,8 @@ public class BaseCliGenAlarmVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk(null, null);
 		} else {
-			this.setPk(aVo.getCliId(), aVo.getAlarmCode());
+			this.setPk(aVo.cliId, aVo.alarmCode);
 		}
-	}
-
-	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
-	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
-	}
-
-	public Double getAlarmCode() {
-		return this.alarmCode;
-	}
-	public void setAlarmCode(Double alarmCode) {
-		this.alarmCode = alarmCode;
-	}
-
-	public String getAlarmDescription() {
-		return this.alarmDescription;
-	}
-	public void setAlarmDescription(String alarmDescription) {
-		this.alarmDescription = alarmDescription;
-	}
-
-	public Integer getDataCatId() {
-		return this.dataCatId;
-	}
-	public void setDataCatId(Integer dataCatId) {
-		this.dataCatId = dataCatId;
 	}
 
 }
