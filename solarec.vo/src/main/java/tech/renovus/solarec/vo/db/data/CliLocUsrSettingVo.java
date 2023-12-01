@@ -1,15 +1,15 @@
 package tech.renovus.solarec.vo.db.data;
 
-import tech.renovus.solarec.vo.db.relation.DbAlertDefinitionVo;
+import tech.renovus.solarec.vo.db.relation.DbCliLocUsrSettingVo;
 
-public class CliLocUsrSettingVo extends DbAlertDefinitionVo {
+public class CliLocUsrSettingVo extends DbCliLocUsrSettingVo {
 
 	//--- Constructors --------------------------
 	public CliLocUsrSettingVo() {
 	}
 
-	public CliLocUsrSettingVo(Integer alertDefId) {
-		this.setPk(alertDefId);
+	public CliLocUsrSettingVo(Integer cliId, Integer locId, Integer usrId) {
+		this.setPk(cliId, locId, usrId);
 	}
 
 }
