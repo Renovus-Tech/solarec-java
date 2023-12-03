@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import tech.renovus.solarec.UserData;
+import tech.renovus.solarec.business.ParserService;
 //import tech.renovus.solarec.business.AlarmService;
 import tech.renovus.solarec.business.SolarService;
 import tech.renovus.solarec.business.impl.base.BaseServiceImpl;
@@ -43,6 +44,9 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 
 	//--- Resources -----------------------------
 	@Autowired RenovusSolarConfiguration config;
+	
+	@Autowired ParserService parserService;
+	
 	@Autowired EmberCountryOverviewDao emberCountryDao;
 	@Autowired GeneratorDao generatorDao;
 	@Autowired CliLocAlertDao cliLocAlertDao;
@@ -69,6 +73,8 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 			
 			this.cliLocAlertDao.synchronize(toMarkAsSeen);
 		}
+		
+		if (CollectionUtil.notEmpty(alerts)) alerts.forEach(x -> x.setParsedMessage(this.parserService.parseAlert(x.getCliLocAlertData(), userData)));
 		
 		return alerts;
 	}
