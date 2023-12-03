@@ -15,7 +15,6 @@ import tech.renovus.solarec.util.interfaces.ISetting;
 import tech.renovus.solarec.vo.comparator.GeneratorGenCodeAsNumberComparator;
 import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
-import tech.renovus.solarec.vo.db.data.CliLocUsrAlertVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
@@ -155,7 +154,7 @@ public class RestFactory {
 		return result;
 	}
 	
-	public static List<Alert> convert(Collection<CliLocAlertVo> vos) {
+	public static List<Alert> convertAlerts(Collection<CliLocAlertVo> vos) {
 		List<Alert> result = new ArrayList<>(CollectionUtil.size(vos));
 		if (CollectionUtil.notEmpty(vos)) for (CliLocAlertVo vo : vos) result.add(convert(vo));
 		return result;

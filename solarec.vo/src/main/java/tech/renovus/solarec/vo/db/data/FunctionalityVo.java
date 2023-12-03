@@ -23,8 +23,7 @@ public class FunctionalityVo extends DbFunctionalityVo implements Comparable<Fun
 	public boolean isValidFor(String locType) {
 		return 
 			FlagUtil.getFlagValue(this, FLAG_SYSTEM) ||
-			(ClassUtil.equals(locType, LocationVo.TYPE_SOLAR) && FlagUtil.getFlagValue(this, FLAG_SOLAR)) ||
-			(ClassUtil.equals(locType, LocationVo.TYPE_WIND) && FlagUtil.getFlagValue(this, FLAG_WIND));
+			(ClassUtil.equals(locType, LocationVo.TYPE_SOLAR) && FlagUtil.getFlagValue(this, FLAG_SOLAR));
 	}
 
 	@Override
