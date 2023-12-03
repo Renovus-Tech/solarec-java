@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import tech.renovus.solarec.business.ProcessingException;
 import tech.renovus.solarec.db.data.dao.interfaces.DataProcessingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StaDataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StationDao;
+import tech.renovus.solarec.exceptions.ProcessingException;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;

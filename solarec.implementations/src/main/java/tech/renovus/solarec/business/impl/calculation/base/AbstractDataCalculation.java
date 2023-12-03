@@ -7,7 +7,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import tech.renovus.solarec.business.ProcessingException;
+import tech.renovus.solarec.exceptions.ProcessingException;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;

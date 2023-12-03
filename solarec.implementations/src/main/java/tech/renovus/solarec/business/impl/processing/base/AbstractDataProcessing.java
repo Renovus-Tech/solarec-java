@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import tech.renovus.solarec.business.ProcessingException;
 import tech.renovus.solarec.db.data.dao.interfaces.LocDataWeatherDao;
+import tech.renovus.solarec.exceptions.ProcessingException;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;

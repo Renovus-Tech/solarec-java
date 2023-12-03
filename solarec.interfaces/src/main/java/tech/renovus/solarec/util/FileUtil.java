@@ -618,6 +618,16 @@ public final class FileUtil {
 			}
 		}
 	}
+	
+	/**
+	 * Creates a file path if does not exists.
+	 * 
+	 * @param path			The path to create.
+	 * @throws IOException	If the path coundn't be created.
+	 */
+	public static void createPath(String path) throws IOException {
+		createPath(new File(path));
+	}
 
 	/**
 	 * Checks if the file exits.
