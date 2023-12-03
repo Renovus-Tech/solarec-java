@@ -22,15 +22,12 @@ public class SolarController extends BasicController {
 	@Resource SolarService service;
 
 	//--- Get mapping methods -------------------
-//	@GetMapping(path = { EndPointFactory.REST_API_SOLAR_DASHBOARD }, produces = { MediaType.APPLICATION_JSON_VALUE } )
-//	public Object getDashboard(HttpSession session) throws CoreException { return this.dashobard(session); }
-//	
-//	@GetMapping(path = { EndPointFactory.REST_API_SOLAR_DASHBOARD_NOW }, produces = { MediaType.APPLICATION_JSON_VALUE } )
-//	public Object getDashboardNow(HttpSession session) throws CoreException { return this.dashobardNow(session); }
-	
 	@GetMapping(path = { EndPointFactory.REST_API_SOLAR_OVERVIEW }, produces = { MediaType.APPLICATION_JSON_VALUE } )
 	public Object getOverview(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException { return this.overview(filter, session); }
 
+	@GetMapping(path = { EndPointFactory.REST_API_SOLAR_OVERVIEW_ALERTS }, produces = { MediaType.APPLICATION_JSON_VALUE } )
+	public Object getOverviewAlerts(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException { return this.overviewAlerts(filter, session); }
+	
 	@GetMapping(path = { EndPointFactory.REST_API_SOLAR_PERFORMANCE_INDEX }, produces = { MediaType.APPLICATION_JSON_VALUE } )
 	public Object getPerformanceIndex(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException { return this.performanceIndex(filter, session); }
 
@@ -40,22 +37,17 @@ public class SolarController extends BasicController {
 	@GetMapping(path = { EndPointFactory.REST_CHART_REVENUE_SALES }, produces = { MediaType.APPLICATION_JSON_VALUE } )
 	public Object getRevenueSales(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException { return this.revenueSales(filter, session); }
 	
-	
 	//--- Post mapping methods ------------------
-//	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_DASHBOARD }, produces = { MediaType.APPLICATION_JSON_VALUE } )
-//	public Object dashobard(HttpSession session) throws CoreException {
-//		return this.service.dashboard(false, this.getLoggedUserData(session));
-//	}
-//	
-//	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_DASHBOARD_NOW }, produces = { MediaType.APPLICATION_JSON_VALUE } )
-//	public Object dashobardNow(HttpSession session) throws CoreException {
-//		return this.service.dashboard(true, this.getLoggedUserData(session));
-//	}
-	
 	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_OVERVIEW }, produces = { MediaType.APPLICATION_JSON_VALUE } )
 	public Object overview(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException {
 		filter = this.service.validate(filter, this.getLoggedUserData(session));
 		return this.service.runOverview(filter, this.getLoggedUserData(session));
+	}
+	
+	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_OVERVIEW_ALERTS }, produces = { MediaType.APPLICATION_JSON_VALUE } )
+	public Object overviewAlerts(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException {
+		filter = this.service.validate(filter, this.getLoggedUserData(session));
+		return this.service.runOverviewAlerts(filter, this.getLoggedUserData(session));
 	}
 	
 	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_PERFORMANCE_INDEX }, produces = { MediaType.APPLICATION_JSON_VALUE } )

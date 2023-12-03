@@ -1,4 +1,4 @@
-package tech.renovus.solarec.business;
+package tech.renovus.solarec.exceptions;
 
 public class ReportException extends Exception {
 
