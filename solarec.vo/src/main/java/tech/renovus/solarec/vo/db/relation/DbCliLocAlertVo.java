@@ -4,10 +4,11 @@ import java.util.Collection;
 
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
+import tech.renovus.solarec.util.interfaces.IFlags;
 import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseCliLocAlertVo;
 
-public class DbCliLocAlertVo extends BaseCliLocAlertVo implements ISynchronizable<DbCliLocAlertVo> {
+public class DbCliLocAlertVo extends BaseCliLocAlertVo implements ISynchronizable<DbCliLocAlertVo>, IFlags {
 
 	//--- Constructors --------------------------
 	public DbCliLocAlertVo() {
@@ -39,5 +40,9 @@ public class DbCliLocAlertVo extends BaseCliLocAlertVo implements ISynchronizabl
 	@Override public void synchronizeForce(int syncType) {
 		//BaseDbUtil.setAll(this.xxxx, syncType);
 	}
+
+	@Override public String getFlags() { return this.getCliLocAlertFlags(); }
+
+	@Override public void setFlags(String flags) { this.setCliLocAlertFlags(flags); }
 
 }

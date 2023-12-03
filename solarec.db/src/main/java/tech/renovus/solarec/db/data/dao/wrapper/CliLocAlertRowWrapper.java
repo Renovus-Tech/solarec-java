@@ -20,6 +20,7 @@ public class CliLocAlertRowWrapper implements RowMapper<CliLocAlertVo> {
 	protected java.util.Date getResultSetCliLocAlertAdded(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return resultSet.getTimestamp(columnName); } else { return null; } }
 	protected Integer getResultSetCliLocAlertType(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return Integer.valueOf(resultSet.getInt(columnName)); } else { return null; } }
 	protected String getResultSetCliLocAlertData(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
+	protected String getResultSetCliLocAlertFlags(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
 
 	//--- Overridden methods --------------------
 	@Override public CliLocAlertVo mapRow(ResultSet resultSet, int arg1) throws SQLException {
@@ -31,6 +32,7 @@ public class CliLocAlertRowWrapper implements RowMapper<CliLocAlertVo> {
 		vo.setCliLocAlertAdded(this.getResultSetCliLocAlertAdded(resultSet, CliLocAlertVo.COLUMN_CLI_LOC_ALERT_ADDED));
 		vo.setCliLocAlertType(this.getResultSetCliLocAlertType(resultSet, CliLocAlertVo.COLUMN_CLI_LOC_ALERT_TYPE));
 		vo.setCliLocAlertData(this.getResultSetCliLocAlertData(resultSet, CliLocAlertVo.COLUMN_CLI_LOC_ALERT_DATA));
+		vo.setCliLocAlertFlags(this.getResultSetCliLocAlertFlags(resultSet, CliLocAlertVo.COLUMN_CLI_LOC_ALERT_FLAGS));
 
 		return vo;
 	}

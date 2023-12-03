@@ -5,9 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
+import tech.renovus.solarec.util.interfaces.IFlags;
 
 @NoArgsConstructor
-public class BaseCliLocAlertVo extends BaseDbVo {
+public class BaseCliLocAlertVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
 	public static final String COLUMN_CLI_ID = "cli_id";
@@ -16,7 +17,13 @@ public class BaseCliLocAlertVo extends BaseDbVo {
 	public static final String COLUMN_CLI_LOC_ALERT_ADDED = "cli_loc_alert_added";
 	public static final String COLUMN_CLI_LOC_ALERT_TYPE = "cli_loc_alert_type";
 	public static final String COLUMN_CLI_LOC_ALERT_DATA = "cli_loc_alert_data";
+	public static final String COLUMN_CLI_LOC_ALERT_FLAGS = "cli_loc_alert_flags";
 
+	public static final int LENGTH_COLUMN_CLI_LOC_ALERT_FLAGS =  20;
+
+	//--- Implemented methods -------------------
+	@Override public String getFlags() { return this.cliLocAlertFlags; }
+	@Override public void setFlags(String cliLocAlertFlags) { this.cliLocAlertFlags = cliLocAlertFlags; }
 
 	//--- Private properties --------------------
 	private @Getter @Setter Integer cliId;
@@ -25,6 +32,7 @@ public class BaseCliLocAlertVo extends BaseDbVo {
 	private @Getter @Setter java.util.Date cliLocAlertAdded;
 	private @Getter @Setter Integer cliLocAlertType;
 	private @Getter @Setter String cliLocAlertData;
+	private @Getter @Setter String cliLocAlertFlags;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -83,6 +91,9 @@ public class BaseCliLocAlertVo extends BaseDbVo {
 			return false;
 		}
 		if (!ClassUtil.equals(this.cliLocAlertData,aObj.cliLocAlertData)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.cliLocAlertFlags,aObj.cliLocAlertFlags)) {
 			return false;
 		}
 		return true;

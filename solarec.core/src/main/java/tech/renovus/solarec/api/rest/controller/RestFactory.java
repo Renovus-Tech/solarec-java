@@ -14,6 +14,8 @@ import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.util.interfaces.ISetting;
 import tech.renovus.solarec.vo.comparator.GeneratorGenCodeAsNumberComparator;
 import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
+import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
+import tech.renovus.solarec.vo.db.data.CliLocUsrAlertVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
@@ -29,6 +31,7 @@ import tech.renovus.solarec.vo.db.data.RepTypeVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
 import tech.renovus.solarec.vo.db.data.WeaDefinitionVo;
 import tech.renovus.solarec.vo.rest.background.Processing;
+import tech.renovus.solarec.vo.rest.entity.Alert;
 import tech.renovus.solarec.vo.rest.entity.Client;
 import tech.renovus.solarec.vo.rest.entity.DataDefinition;
 import tech.renovus.solarec.vo.rest.entity.DataDefinitionTrigger;
@@ -152,6 +155,11 @@ public class RestFactory {
 		return result;
 	}
 	
+	public static List<Alert> convert(Collection<CliLocAlertVo> vos) {
+		List<Alert> result = new ArrayList<>(CollectionUtil.size(vos));
+		if (CollectionUtil.notEmpty(vos)) for (CliLocAlertVo vo : vos) result.add(convert(vo));
+		return result;
+	}
 
 	//--- VO to JSON methods --------------------
 	public static Location convert(LocationVo vo) {
@@ -364,6 +372,20 @@ public class RestFactory {
 		report.setOrder(vo.getRepOrder());
 		
 		return report;
+	}
+	
+	public static Alert convert(CliLocAlertVo vo) {
+		if (vo == null) return null;
+		
+		Alert alert = new Alert();
+		
+		alert.setDate(vo.getCliLocAlertAdded());
+		alert.setFirstView(! FlagUtil.getFlagValue(vo, CliLocAlertVo.FLAG_SEEN));
+		alert.setType(vo.getCliLocAlertType());
+		alert.setMessage(vo.getParsedMessage());
+		alert.setExtraInfo(vo.getCliLocAlertData());
+		
+		return alert;
 	}
 	
 	//--- JSON to VO methods --------------------
