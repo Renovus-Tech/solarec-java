@@ -18,7 +18,7 @@ public class PowerCurve extends AbstractChart {
 		this.chartFilter.setGroupBy(null);
 		
 		try {
-			JsonNode jsonNode = this.retrieveChartInformation(this.config.getSolar().getChartPowerCurveUrl());
+			JsonNode jsonNode = this.retrieveChartInformation(this.config.getChartPowerCurveUrl());
 			
 			return jsonNode.toPrettyString();
 		} catch (Exception e) {

@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.impl.chart.ChartFactory;
-import tech.renovus.solarec.configuration.RenovusConfiguration;
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StationDao;
 import tech.renovus.solarec.util.CollectionUtil;
@@ -40,7 +40,7 @@ public abstract class AbstractChart {
 	@Resource GeneratorDao genDao;
 	@Resource StationDao staDao;
 	
-	protected RenovusConfiguration config;
+	protected RenovusSolarecConfiguration config;
 	protected UserData userData;
 
 	protected StatDefinitionVo statDefVo;
@@ -123,7 +123,7 @@ public abstract class AbstractChart {
 	}
 
 	//--- Public methods ------------------------
-	public final void prepareForExecution(StatDefinitionVo statDefVo, ChartFilter chartFilter, UserData userData, RenovusConfiguration config) {
+	public final void prepareForExecution(StatDefinitionVo statDefVo, ChartFilter chartFilter, UserData userData, RenovusSolarecConfiguration config) {
 		this.statDefVo		= statDefVo;
 		this.chartFilter	= chartFilter;
 		this.userData		= userData;

@@ -17,7 +17,7 @@ import tech.renovus.solarec.business.ParserService;
 //import tech.renovus.solarec.business.AlarmService;
 import tech.renovus.solarec.business.SolarService;
 import tech.renovus.solarec.business.impl.base.BaseServiceImpl;
-import tech.renovus.solarec.configuration.RenovusSolarConfiguration;
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliLocAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.EmberCountryOverviewDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
@@ -43,7 +43,7 @@ import tech.renovus.solarec.vo.rest.chart.ChartFilter;
 public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 
 	//--- Resources -----------------------------
-	@Autowired RenovusSolarConfiguration config;
+	@Autowired RenovusSolarecConfiguration config;
 	
 	@Autowired ParserService parserService;
 	

@@ -15,7 +15,7 @@ public class PerformanceIndex extends AbstractChart {
 		this.setAllStationsToFilter();
 
 		try {
-			JsonNode jsonNode = this.retrieveChartInformation(this.config.getSolar().getChartPerformanceIndexUrl());
+			JsonNode jsonNode = this.retrieveChartInformation(this.config.getChartPerformanceIndexUrl());
 			
 			return jsonNode.toPrettyString();
 		} catch (Exception e) {

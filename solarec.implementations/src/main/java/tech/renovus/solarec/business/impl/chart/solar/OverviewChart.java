@@ -29,7 +29,7 @@ public class OverviewChart extends AbstractChart {
 		this.chartFilter.setGroupBy(null);
 		
 		try {
-			JsonNode jsonNode = this.retrieveChartInformation(this.config.getSolar().getChartOverviewUrl());
+			JsonNode jsonNode = this.retrieveChartInformation(this.config.getChartOverviewUrl());
 			
 			return jsonNode.toPrettyString();
 		} catch (Exception e) {

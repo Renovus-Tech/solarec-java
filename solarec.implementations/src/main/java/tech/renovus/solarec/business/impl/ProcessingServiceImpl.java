@@ -25,7 +25,7 @@ import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.ProcessingService;
 import tech.renovus.solarec.business.impl.processing.DataProcessingFactory;
 import tech.renovus.solarec.business.impl.processing.base.AbstractDataProcessing;
-import tech.renovus.solarec.configuration.RenovusSolarConfiguration;
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliDataDefTriggerDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefAlertDefinitionDao;
@@ -67,7 +67,7 @@ import tech.renovus.solarec.vo.rest.entity.DataDefinitionTrigger;
 public class ProcessingServiceImpl implements ProcessingService {
 
 	//--- Resources -----------------------------
-	@Autowired RenovusSolarConfiguration config;
+	@Autowired RenovusSolarecConfiguration config;
 	@Autowired CalculationService calculationService;
 	@Autowired AlertService alertService;
 	@Autowired EmailService emailService;

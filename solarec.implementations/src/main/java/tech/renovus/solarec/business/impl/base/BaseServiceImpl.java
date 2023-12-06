@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.impl.chart.ChartFactory;
 import tech.renovus.solarec.business.impl.chart.base.AbstractChart;
-import tech.renovus.solarec.configuration.RenovusConfiguration;
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliSettingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GenDataDao;
@@ -38,7 +38,7 @@ public class BaseServiceImpl {
 	protected @Resource StaDataDao staDataDao;
 	
 	protected @Autowired ChartFactory factory;
-	protected @Autowired RenovusConfiguration config;
+	protected @Autowired RenovusSolarecConfiguration config;
 
 	//--- Util methods --------------------------
 	public ChartFilter validate(ChartFilter filter, UserData userData) {

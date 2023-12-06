@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.SecurityService;
-import tech.renovus.solarec.configuration.RenovusSolarConfiguration;
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliUserDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
@@ -50,7 +50,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 	//--- Resources -----------------------------
 	@Autowired EmailService emailService;
-	@Autowired RenovusSolarConfiguration configuration;
+	@Autowired RenovusSolarecConfiguration configuration;
 	@Autowired MessageSource messageSource;
 
 	@Resource DataDefinitionDao dataDefinitionDao;

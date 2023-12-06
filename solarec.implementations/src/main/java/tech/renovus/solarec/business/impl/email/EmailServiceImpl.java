@@ -28,7 +28,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import tech.renovus.solarec.business.EmailService;
-import tech.renovus.solarec.configuration.RenovusConfiguration;
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.exceptions.CoreException;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
@@ -43,7 +43,7 @@ public class EmailServiceImpl implements EmailService {
 
 	// --- Properties ----------------------------
 	@Autowired private JavaMailSender emailSender;
-	@Autowired private RenovusConfiguration config;
+	@Autowired private RenovusSolarecConfiguration config;
 
 	private static final String PROTOCOL = "imap";
     private static final String HOST = "imap.gmail.com";

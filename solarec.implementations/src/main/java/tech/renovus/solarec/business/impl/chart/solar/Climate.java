@@ -16,7 +16,7 @@ public class Climate extends AbstractChart {
 		if (CollectionUtil.isEmpty(this.chartFilter.getStations())) this.setAllStationsToFilter();
 		
 		try {
-			JsonNode jsonNode = this.retrieveChartInformation(this.config.getSolar().getChartClimateUrl());
+			JsonNode jsonNode = this.retrieveChartInformation(this.config.getChartClimateUrl());
 			
 			return jsonNode.toPrettyString();
 		} catch (Exception e) {

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import tech.renovus.solarec.business.AlertService;
 import tech.renovus.solarec.business.impl.alert.AlertProcessingFactory;
 import tech.renovus.solarec.business.impl.alert.base.AbstractAlertProcessing;
-import tech.renovus.solarec.configuration.RenovusSolarConfiguration;
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.AlertProcessingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GenAlertDao;
@@ -41,7 +41,7 @@ import tech.renovus.solarec.vo.db.data.StationVo;
 public class AlertServiceImpl implements AlertService {
 
 	//--- Resources -----------------------------
-	@Autowired RenovusSolarConfiguration config;
+	@Autowired RenovusSolarecConfiguration config;
 	
 	@Resource ClientDao clientDao;
 	@Resource AlertProcessingDao alertProcessingDao;
