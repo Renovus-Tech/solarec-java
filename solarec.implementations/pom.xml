@@ -9,9 +9,9 @@
   
   	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
+		<lombok.version>1.18.30</lombok.version>
 	</properties>
 	
 	<dependencies>
@@ -37,13 +37,14 @@
 		    <artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
-		<!-- Registro de eventos para tracking -->
-		<dependency>
-		    <groupId>com.amplitude</groupId>
-		    <artifactId>java-sdk</artifactId>
-		    <version>1.2.3</version>
+
+		<dependency><!--- Lombok -->
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
 		</dependency>
-		<dependency>
+
+		<dependency><!-- Json -->
     		<groupId>org.json</groupId>
     		<artifactId>json</artifactId>
     		<version>20210307</version>
