@@ -1,0 +1,42 @@
+#String boot web 
+server.port=
+spring.data.rest.base-path=/api
+spring.servlet.multipart.max-file-size=
+spring.servlet.multipart.max-request-size=
+spring.security.enabled = false
+
+server.servlet.session.timeout=20m
+
+#logging.level.org.springframework=DEBUG
+
+#spring.messages.basename=lang/labels
+
+#Database properties
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.hibernate.show-sql=true
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+
+#Email properties
+spring.mail.host=
+spring.mail.port=
+spring.mail.username=
+spring.mail.password=
+spring.mail.properties.mail.transport.protocol=
+spring.mail.properties.mail.smtp.auth=
+spring.mail.properties.mail.smtp.starttls.enable=
+spring.mail.properties.mail.debug=
+
+#Renovus Solarec configuration
+tech.renovus.solarec.path.log = 
+
+tech.renovus.solarec.mail.on_error.send_to = 
+tech.renovus.solarec.site.url = 
+
+#Renovus Solarec configuration python endpoints
+tech.renovus.solarec.python.overview.url = 
+tech.renovus.solarec.python.performanceIndex.url = 
+tech.renovus.solarec.python.climate.url = 
+tech.renovus.solarec.python.powerCurve.url = 
