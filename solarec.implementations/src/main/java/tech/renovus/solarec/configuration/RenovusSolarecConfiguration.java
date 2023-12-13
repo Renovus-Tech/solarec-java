@@ -25,4 +25,15 @@ public class RenovusSolarecConfiguration {
 	@Getter @Value("${tech.renovus.solarec.python.performanceIndex.url}")	private String chartPerformanceIndexUrl;
 	@Getter @Value("${tech.renovus.solarec.python.climate.url}")			private String chartClimateUrl;
 	@Getter @Value("${tech.renovus.solarec.python.powerCurve.url}")			private String chartPowerCurveUrl;
+	
+	
+	
+	
+	//--- DRecsService configurations -----------
+	@Getter @Value("USER")													private String drecsServiceUsername;
+	@Getter @Value("PASS")													private String drecsServicePassword;
+	
+	
+	
+	
 }
