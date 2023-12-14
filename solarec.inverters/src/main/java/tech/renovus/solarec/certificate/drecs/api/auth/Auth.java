@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "username", "password" })
 @Generated("jsonschema2pojo")
-public class AuthRequest {
+public class Auth {
 
 	@JsonProperty("username")
 	private String username;
@@ -32,7 +32,7 @@ public class AuthRequest {
 		this.username = username;
 	}
 
-	public AuthRequest withUsername(String username) {
+	public Auth withUsername(String username) {
 		this.username = username;
 		return this;
 	}
@@ -47,7 +47,7 @@ public class AuthRequest {
 		this.password = password;
 	}
 
-	public AuthRequest withPassword(String password) {
+	public Auth withPassword(String password) {
 		this.password = password;
 		return this;
 	}
@@ -62,7 +62,7 @@ public class AuthRequest {
 		this.additionalProperties.put(name, value);
 	}
 
-	public AuthRequest withAdditionalProperty(String name, Object value) {
+	public Auth withAdditionalProperty(String name, Object value) {
 		this.additionalProperties.put(name, value);
 		return this;
 	}

@@ -12,12 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "statusCode", "message" })
+@JsonPropertyOrder({ "statusCode", "accessToken", "message" })
 @Generated("jsonschema2pojo")
 public class AuthResponse {
 
 	@JsonProperty("statusCode")
 	private Integer statusCode;
+	@JsonProperty("accessToken")
+	private String accessToken;
 	@JsonProperty("message")
 	private String message;
 	@JsonIgnore
@@ -68,4 +70,18 @@ public class AuthResponse {
 		return this;
 	}
 
+	@JsonProperty("accessToken")
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	@JsonProperty("accessToken")
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public AuthResponse withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
 }
