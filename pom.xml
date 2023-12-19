@@ -25,12 +25,12 @@
 	</parent>
 	
 	<modules>
+		<module>solarec.vo</module>
 		<module>solarec.schedule</module>
 		<module>solarec.db</module>
 		<module>solarec.inverters</module>
 		<module>solarec.interfaces</module>
 		<module>solarec.core</module>
 		<module>solarec.implementations</module>
-		<module>solarec.vo</module>
 	</modules>
 </project>
