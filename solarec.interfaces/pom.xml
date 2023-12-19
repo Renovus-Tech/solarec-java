@@ -8,7 +8,6 @@
 	
 	<artifactId>solarec.interfaces</artifactId>
 
-
 	<dependencies>
 		<dependency> <!-- Invocar otras URLs -->
 			<groupId>org.springframework.boot</groupId>
