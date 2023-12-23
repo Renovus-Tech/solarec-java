@@ -1,7 +1,5 @@
 package tech.renovus.solarec.vo.db.data;
 
-import lombok.Getter;
-import lombok.Setter;
 import tech.renovus.solarec.vo.db.relation.DbCliLocAlertVo;
 
 public class CliLocAlertVo extends DbCliLocAlertVo {
@@ -10,7 +8,7 @@ public class CliLocAlertVo extends DbCliLocAlertVo {
 	public static final int FLAG_SEEN	= 0;
 	
 	//--- Private properties --------------------
-	private @Getter @Setter String parsedMessage;
+	private String parsedMessage;
 	
 	//--- Constructors --------------------------
 	public CliLocAlertVo() {
@@ -18,6 +16,15 @@ public class CliLocAlertVo extends DbCliLocAlertVo {
 
 	public CliLocAlertVo(Integer cliId, Integer locId, Integer cliLocAlertId) {
 		this.setPk(cliId, locId, cliLocAlertId);
+	}
+
+	//--- Getters and Setters -------------------
+	public String getParsedMessage() {
+		return parsedMessage;
+	}
+
+	public void setParsedMessage(String parsedMessage) {
+		this.parsedMessage = parsedMessage;
 	}
 
 }
