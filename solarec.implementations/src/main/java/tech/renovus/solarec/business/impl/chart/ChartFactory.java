@@ -1,5 +1,6 @@
 package tech.renovus.solarec.business.impl.chart;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,10 @@ public class ChartFactory {
 	//--- Private methods -----------------------
 	private AbstractChart get(Class<? extends AbstractChart> aClass) throws CoreException {
 		try {
-			AbstractChart anObject = aClass.newInstance();
+			AbstractChart anObject = aClass.getConstructor().newInstance();
 			this.autowireCapableBeanFactory.autowireBean(anObject);
 			return anObject;
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (NoSuchMethodException | InstantiationException| IllegalAccessException| IllegalArgumentException| InvocationTargetException e) {
 			throw new CoreException(e);
 		}
 	}
@@ -45,11 +46,11 @@ public class ChartFactory {
 		}
 	}
 	
-	public static final String generateChartResultErrorAsString(String chartName, String error, ChartFilter charFilter) {
+	public final String generateChartResultErrorAsString(String chartName, String error, ChartFilter charFilter) {
 		return generateChartResultErrorAsString(chartName, error, false, charFilter);
 	}
 	
-	public static final String generateChartResultErrorAsString(String chartName, String error, boolean noData, ChartFilter charFilter) {
+	public final String generateChartResultErrorAsString(String chartName, String error, boolean noData, ChartFilter charFilter) {
 		if (chartName == null) chartName = "n/a";
 		ChartResult result = new ChartResult();
 		
