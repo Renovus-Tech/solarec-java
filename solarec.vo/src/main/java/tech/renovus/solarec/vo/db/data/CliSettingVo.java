@@ -7,9 +7,10 @@ import tech.renovus.solarec.vo.db.relation.DbCliSettingVo;
 public class CliSettingVo extends DbCliSettingVo implements ISetting {
 
 	//--- Public constants ----------------------
-	public static final String FISCAL_YEAR_END_MONTH 	=	"fiscalYearEndMonth";
+	public static final String FISCAL_YEAR_END_MONTH 	= "fiscalYearEndMonth";
 	public static final String D_RECS_SOLD_PORCENTAGE	= "dRecsSoldPorcentage";
 	public static final String D_RECS_PRICE				= "dRecsPrice";
+	public static final String PREFER_LANGUAGE			= "language";
 	
 	public static final String DEFAULT_VALUE_FISCAL_YEAR_END_MONTH	= "12";
 	public static final String DEFAULT_VALUE_D_RECS_SOLD_PORCENTAGE	= "50";
@@ -36,6 +37,7 @@ public class CliSettingVo extends DbCliSettingVo implements ISetting {
 			case FISCAL_YEAR_END_MONTH:
 			case D_RECS_SOLD_PORCENTAGE:
 			case D_RECS_PRICE:
+			case PREFER_LANGUAGE:
 				return true;
 				
 			default:
