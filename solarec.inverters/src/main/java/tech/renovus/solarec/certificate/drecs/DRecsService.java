@@ -1,15 +1,13 @@
 package tech.renovus.solarec.certificate.drecs;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import tech.renovus.solarec.certificate.drecs.api.auth.Auth;
 import tech.renovus.solarec.certificate.drecs.api.auth.AuthResponse;
 import tech.renovus.solarec.certificate.drecs.api.organization.Organization;
 import tech.renovus.solarec.certificate.drecs.api.organization.OrganizationResponse;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
+import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 
 /**
@@ -26,31 +24,6 @@ public class DRecsService {
 	protected @Autowired RenovusSolarecConfiguration config;
 
 	//--- Private methods -----------------------
-	private <T extends Object> T post(String url, Object payload, Class<T> responseClass) {
-		WebClient webClient = WebClient.create();
-
-		return webClient.post()
-	            .uri("http://example.com/api/endpoint")
-	            .contentType(MediaType.APPLICATION_JSON)
-	            .body(BodyInserters.fromValue(payload))
-	            .retrieve()
-	            .bodyToMono(responseClass)
-	            .block();
-	}
-	
-	private <T extends Object> T post(String url, Object payload, String authCode, Class<T> responseClass) {
-		WebClient webClient = WebClient.create();
-
-		return webClient.post()
-	            .uri("http://example.com/api/endpoint")
-	            .contentType(MediaType.APPLICATION_JSON)
-	            .header("Authorization", "Bearer " + authCode)
-	            .body(BodyInserters.fromValue(payload))
-	            .retrieve()
-	            .bodyToMono(responseClass)
-	            .block();
-	}
-	
 	private Organization createOrganizationFrom(ClientVo clientVo) {
 		// TODO Auto-generated method stub
 		return null;
@@ -65,7 +38,7 @@ public class DRecsService {
 				.withUsername(this.config.getDrecsServiceUsername())
 				.withPassword(this.config.getDrecsServicePassword());
 
-		return this.post(ENDPOINT_AUTH, jsonRequest, AuthResponse.class);
+		return JsonCaller.post(ENDPOINT_AUTH, jsonRequest, AuthResponse.class);
 	}
 
 	/**
@@ -76,7 +49,7 @@ public class DRecsService {
 		AuthResponse authentication = this.authenticate();
 		
 		Organization organization = this.createOrganizationFrom(clientVo);
-		OrganizationResponse response = this.post(ENDPOINT_ORGANIZATION, organization, authentication.getAccessToken(), OrganizationResponse.class);
+		OrganizationResponse response = JsonCaller.bearerPost(ENDPOINT_ORGANIZATION, organization, authentication.getAccessToken(), OrganizationResponse.class);
 		
 		//do somthing with the response
 	}
@@ -99,4 +72,16 @@ public class DRecsService {
 	public void uploadMeterData() {
 	}
 
+	
+	public void checkCertificateStatus() {
+		
+	}
+	
+	public void generateCertificate() {
+		
+	}
+	
+	public void sellCertificate() {
+		
+	}
 }
