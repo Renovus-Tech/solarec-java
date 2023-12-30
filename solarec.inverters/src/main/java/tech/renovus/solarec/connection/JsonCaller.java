@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 public class JsonCaller {
 
+	//--- Post methods --------------------------
 	public static <T extends Object> T post(String url, Object payload, Class<T> responseClass) {
 		WebClient webClient = WebClient.create();
 
@@ -20,7 +21,33 @@ public class JsonCaller {
 	            .bodyToMono(responseClass)
 	            .block();
 	}
+	
+	public static <T extends Object> T post(String url, Map<String, String> headers, Object payload, Class<T> responseClass) {
+		WebClient webClient = WebClient.create();
 
+		return webClient.post()
+	            .uri(url)
+	            .contentType(MediaType.APPLICATION_JSON)
+	            .body(BodyInserters.fromValue(payload))
+	            .retrieve()
+	            .bodyToMono(responseClass)
+	            .block();
+	}
+
+	public static <T extends Object> T bearerPost(String url, Object payload, String authCode, Class<T> responseClass) {
+		WebClient webClient = WebClient.create();
+
+		return webClient.post()
+	            .uri(url)
+	            .contentType(MediaType.APPLICATION_JSON)
+	            .header("Authorization", "Bearer " + authCode)
+	            .body(BodyInserters.fromValue(payload))
+	            .retrieve()
+	            .bodyToMono(responseClass)
+	            .block();
+	}
+	
+	//--- Get methods ---------------------------
 	public static <T extends Object> T get(String url, Class<T> responseClass) {
 		return get(url, new HashMap<>(0), responseClass);
 	}
@@ -35,16 +62,19 @@ public class JsonCaller {
 	            .block();
 	}
 	
-	public static <T extends Object> T bearerPost(String url, Object payload, String authCode, Class<T> responseClass) {
+	public static <T extends Object> T get(String url, Map<String, String> headers, Map<String,String> params, Class<T> responseClass) {
 		WebClient webClient = WebClient.create();
 
-		return webClient.post()
-	            .uri(url)
-	            .contentType(MediaType.APPLICATION_JSON)
-	            .header("Authorization", "Bearer " + authCode)
-	            .body(BodyInserters.fromValue(payload))
+		return webClient.get()
+	            .uri(url, params)
+	            .headers(consumer -> {
+	            	if (headers != null && ! headers.isEmpty()) {
+	            		headers.entrySet().forEach(entry -> consumer.add(entry.getKey(), entry.getValue()));
+	            	}
+	            })
 	            .retrieve()
 	            .bodyToMono(responseClass)
 	            .block();
 	}
+	
 }
