@@ -63,6 +63,8 @@ public class JsonCaller {
 	}
 	
 	public static <T extends Object> T get(String url, Map<String, String> headers, Map<String,String> params, Class<T> responseClass) {
+		if (params == null) params = new HashMap<>();
+		
 		WebClient webClient = WebClient.create();
 
 		return webClient.get()
@@ -76,5 +78,4 @@ public class JsonCaller {
 	            .bodyToMono(responseClass)
 	            .block();
 	}
-	
 }
