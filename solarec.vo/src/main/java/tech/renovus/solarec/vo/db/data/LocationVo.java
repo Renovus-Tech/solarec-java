@@ -10,8 +10,9 @@ import tech.renovus.solarec.vo.db.relation.DbLocationVo;
 public class LocationVo extends DbLocationVo implements IDataContainer, Comparable<LocationVo> {
 
 	//--- Flags ---------------------------------
-	public static final int FLAG_REPORT_ENABLED			= 0;
-	public static final int FLAG_HIDE_FROM_DASHBOARD	= 1;
+	public static final int FLAG_REPORT_ENABLED				= 0;
+	public static final int FLAG_HIDE_FROM_DASHBOARD		= 1;
+	public static final int FLAG_ALERT_CALCULATION_ENABLED	= 2;
 
 	public static final String TYPE_SOLAR				= "solar";
 	

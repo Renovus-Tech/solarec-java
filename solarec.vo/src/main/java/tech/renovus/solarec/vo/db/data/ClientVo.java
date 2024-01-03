@@ -8,7 +8,8 @@ import tech.renovus.solarec.vo.db.relation.DbClientVo;
 public class ClientVo extends DbClientVo {
 
 	//--- Flags ---------------------------------
-	public static final int FLAG_REPORT_ENABLED	= 0;
+	public static final int FLAG_REPORT_ENABLED				= 0;
+	public static final int FLAG_ALERT_CALCULATION_ENABLED	= 1;
 	
 	//--- Constructors --------------------------
 	public ClientVo() {

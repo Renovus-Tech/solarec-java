@@ -27,7 +27,8 @@ public class LocationDaoImpl extends BaseLocationDao implements LocationDao {
 	private final static String SQL_UPDATE_DATA_DATE_MAX 		= "update location set loc_data_date_max = (select max(data_date) from loc_data where loc_data.cli_id = location.cli_id and loc_data.loc_id = location.loc_id_auto)";
 	private final static String SQL_UPDATE_DATA_DATE_MIN 		= "update location set loc_data_date_min = (select min(data_date) from loc_data where loc_data.cli_id = location.cli_id and loc_data.loc_id = location.loc_id_auto)";
 
-	private final static String SQL_GET_ALL_FOR_REPORT			= "SELECT l.* FROM client c, location l WHERE c.cli_flags like '1%' AND c.cli_id_auto = l.cli_id AND l.loc_flags like '1%'";
+	private final static String SQL_GET_ALL_FOR_REPORT				= "SELECT l.* FROM client c, location l WHERE c.cli_flags like '1%' AND c.cli_id_auto = l.cli_id AND l.loc_flags like '1%'";
+	private final static String SQL_GET_ALL_FOR_ALERT_CALCULATIOn	= "SELECT l.* FROM client c, location l WHERE c.cli_flags like '_1%' AND c.cli_id_auto = l.cli_id AND l.loc_flags like '__1%'";
 	
 	//--- Private properties --------------------
 	
@@ -100,6 +101,14 @@ public class LocationDaoImpl extends BaseLocationDao implements LocationDao {
 				.addValue("locType", locType),
 			LocationRowWrapper.getInstance()
 		);
+	}
+
+	@Override
+	public Collection<LocationVo> getAllForAlertCalculation() {
+		return this.jdbc.query(
+				SQL_GET_ALL_FOR_ALERT_CALCULATIOn,
+				LocationRowWrapper.getInstance()
+			);
 	}
 
 }

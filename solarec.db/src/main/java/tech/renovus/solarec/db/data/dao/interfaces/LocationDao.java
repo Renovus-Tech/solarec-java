@@ -13,12 +13,16 @@ public interface LocationDao {
 	void delete(LocationVo vo);
 	void synchronize(LocationVo vo);
 	void synchronize(Collection<LocationVo> vos);
+	
 	Collection<LocationVo> findAll(Integer cliId);
 	Collection<LocationVo> findAll(Integer cliId, String locType);
 	Collection<LocationVo> findAllForUser(Integer cliId, Integer usrId, String locType);
 	Collection<LocationVo> findAllForUser(Integer cliId, Integer usrId, boolean orderByLastAccess);
 	LocationVo findForUser(Integer usrId, Integer cliId, Integer locId);
+	
 	Collection<LocationVo> getAllForReport();
+	Collection<LocationVo> getAllForAlertCalculation();
+	
 	void updateDataDateMaxMin();
 
 }
