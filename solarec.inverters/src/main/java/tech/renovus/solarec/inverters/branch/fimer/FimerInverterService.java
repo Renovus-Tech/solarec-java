@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 
 import tech.renovus.solarec.connection.JsonCaller;
@@ -13,6 +14,7 @@ import tech.renovus.solarec.inverters.branch.fimer.api.authenticate.Authenticate
 import tech.renovus.solarec.inverters.branch.fimer.api.status.StatusResponse;
 import tech.renovus.solarec.inverters.common.InverterCofigurationVo;
 import tech.renovus.solarec.inverters.common.InverterService;
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
@@ -28,6 +30,9 @@ public class FimerInverterService implements InverterService {
 	private static final String ENDPOINT_STATUS			= "/status";
 	private static final String ENDPOINT_AUTHENTICATE	= "/authenticate";
 	
+	//--- Private properties --------------------
+	private Logger logger = LoggerService.schedulesLogger();
+		
 	//--- Private methods -----------------------
 	private String authenticate(InverterCofigurationVo configuration) {
 		String credentials = configuration.getUser() + ":" + configuration.getPassword();
@@ -45,7 +50,15 @@ public class FimerInverterService implements InverterService {
 	//--- Implemented methods -------------------
 	@Override
 	public Collection<GenDataVo> retrieveData(ClientVo client, InverterCofigurationVo configuration) {
+		long t = System.currentTimeMillis();
+		this.logger.info("[{t}] Start retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
 		String authenticationKey = this.authenticate(configuration);
+		
+		this.logger.info("[{t}] Authentication ok: ", t, StringUtil.notEmpty(authenticationKey));
+		
+		//do something here
+		
+		this.logger.info("[{t}] End retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
 		
 		return null;
 	}
