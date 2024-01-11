@@ -18,10 +18,10 @@ public class RenovusSolarecConfiguration {
 	
 	//--- Path configurations -------------------
 	@Getter @Value("${tech.renovus.solarec.path.log}")						private String pathLog;
-	@Getter @Value("${tech.renovus.solarec.site.url}")						private String chartOverviewUrl;
 
 	//--- Chart configuration -------------------
 	@Getter @Value("${tech.renovus.solarec.python.url.method:get}")			private String chartMethod;
+	@Getter @Value("${tech.renovus.solarec.python.overview.url}")			private String chartOverviewUrl;
 	@Getter @Value("${tech.renovus.solarec.python.performanceIndex.url}")	private String chartPerformanceIndexUrl;
 	@Getter @Value("${tech.renovus.solarec.python.climate.url}")			private String chartClimateUrl;
 	@Getter @Value("${tech.renovus.solarec.python.powerCurve.url}")			private String chartPowerCurveUrl;
