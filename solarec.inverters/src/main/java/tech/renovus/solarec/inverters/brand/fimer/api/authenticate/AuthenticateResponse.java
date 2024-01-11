@@ -1,4 +1,4 @@
-package tech.renovus.solarec.inverters.branch.fimer.api.status;
+package tech.renovus.solarec.inverters.brand.fimer.api.authenticate;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "result" })
 @Generated("jsonschema2pojo")
-public class StatusResponse {
+public class AuthenticateResponse {
 
 	@JsonProperty("result")
 	private String result;
@@ -30,7 +30,7 @@ public class StatusResponse {
 		this.result = result;
 	}
 
-	public StatusResponse withResult(String result) {
+	public AuthenticateResponse withResult(String result) {
 		this.result = result;
 		return this;
 	}
@@ -45,7 +45,7 @@ public class StatusResponse {
 		this.additionalProperties.put(name, value);
 	}
 
-	public StatusResponse withAdditionalProperty(String name, Object value) {
+	public AuthenticateResponse withAdditionalProperty(String name, Object value) {
 		this.additionalProperties.put(name, value);
 		return this;
 	}

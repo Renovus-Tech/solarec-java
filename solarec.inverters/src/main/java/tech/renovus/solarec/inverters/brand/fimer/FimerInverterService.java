@@ -1,4 +1,4 @@
-package tech.renovus.solarec.inverters.branch.fimer;
+package tech.renovus.solarec.inverters.brand.fimer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 
 import tech.renovus.solarec.connection.JsonCaller;
-import tech.renovus.solarec.inverters.branch.fimer.api.authenticate.AuthenticateResponse;
-import tech.renovus.solarec.inverters.branch.fimer.api.status.StatusResponse;
+import tech.renovus.solarec.inverters.brand.fimer.api.authenticate.AuthenticateResponse;
+import tech.renovus.solarec.inverters.brand.fimer.api.status.StatusResponse;
 import tech.renovus.solarec.inverters.common.InverterCofigurationVo;
 import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.logger.LoggerService;

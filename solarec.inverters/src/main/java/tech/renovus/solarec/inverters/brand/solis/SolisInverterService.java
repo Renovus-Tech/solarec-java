@@ -1,4 +1,4 @@
-package tech.renovus.solarec.inverters.branch.sma;
+package tech.renovus.solarec.inverters.brand.solis;
 
 import java.util.Collection;
 
@@ -7,10 +7,7 @@ import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 
-/**
- * URL: https://sandbox.smaapis.de/monitoring/index.html
- */
-public class SmaInverterService implements InverterService {
+public class SolisInverterService implements InverterService {
 
 	@Override
 	public Collection<GenDataVo> retrieveData(ClientVo client, InverterCofigurationVo configuration) {
