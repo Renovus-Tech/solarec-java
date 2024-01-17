@@ -15,9 +15,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.UserData;
+import tech.renovus.solarec.business.ClientService;
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.SecurityService;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
+import tech.renovus.solarec.db.data.dao.interfaces.CliSettingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliUserDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
@@ -29,6 +31,7 @@ import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.StringUtil;
+import tech.renovus.solarec.vo.db.data.CliSettingVo;
 import tech.renovus.solarec.vo.db.data.CliUserVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.FunctionalityVo;
@@ -49,6 +52,7 @@ import tech.renovus.solarec.vo.rest.security.PasswordReset;
 public class SecurityServiceImpl implements SecurityService {
 
 	//--- Resources -----------------------------
+	@Autowired ClientService clientService;
 	@Autowired EmailService emailService;
 	@Autowired RenovusSolarecConfiguration configuration;
 	@Autowired MessageSource messageSource;
@@ -60,6 +64,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Resource CliUserDao cliUserDao;
 	@Resource FunctionalityDao functionalitiesDao;
 	@Resource LocationDao locationDao;
+	@Resource CliSettingDao cliSettingDao;
 	
 	//--- Private methods -----------------------
 	private void logout(UserData userData) {
@@ -121,6 +126,9 @@ public class SecurityServiceImpl implements SecurityService {
 		
 		Collection<FunctionalityVo> functionalities = this.functionalitiesDao.findFor(usrVo.getUsrId(), cliVo.getCliId());
 		usrVo.setSettings(this.usrSettingDao.findAllFor(usrVo.getUsrId()));
+		
+		Collection<CliSettingVo> dbSettings = this.cliSettingDao.findAllFor(cliVo.getCliId());
+		cliVo.setSettings(this.clientService.populateCliSettings(cliVo, dbSettings));
 		
 		this.login(userData, usrVo, cliVo, functionalities);
 		this.setDefaultLocation(userData);

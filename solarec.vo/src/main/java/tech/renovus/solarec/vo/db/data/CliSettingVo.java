@@ -18,6 +18,7 @@ public class CliSettingVo extends DbCliSettingVo implements ISetting {
 	public static final String DEFAULT_VALUE_FISCAL_YEAR_END_MONTH						= "12";
 	public static final String DEFAULT_VALUE_D_RECS_SOLD_PORCENTAGE						= "50";
 	public static final String DEFAULT_VALUE_D_RECS_PRICE								= "20";
+	public static final String DEFAULT_PREFER_LANGUAGE									= "en";
 	public static final String DEFAULT_VALUE_ALERT_DATA_AVAILABILITY_LOWER_THAN			= "90";
 	public static final String DEFAULT_VALUE_ALERT_NEGATIVE_CHANGE_EXCEEDING			= "6";
 	public static final String DEFAULT_VALUE_ALERT_TIME_BASED_AVAILABILITY_LOWER_THAN	= "90";
