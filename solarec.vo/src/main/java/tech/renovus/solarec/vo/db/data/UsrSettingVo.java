@@ -6,7 +6,8 @@ import tech.renovus.solarec.vo.db.relation.DbUsrSettingVo;
 
 public class UsrSettingVo extends DbUsrSettingVo implements ISetting {
 
-	//--- Public constants ----------------------
+	//--- Private properties --------------------
+	private SettingsVo settingVo;
 	
 	//--- Constructors --------------------------
 	public UsrSettingVo() {
@@ -34,5 +35,14 @@ public class UsrSettingVo extends DbUsrSettingVo implements ISetting {
 	//--- Implemented methods -------------------
 	@Override public String getName() { return this.getUsrSetName(); }
 	@Override public String getValue() { return this.getUsrSetValue(); }
+
+	//--- Getters and Setters -------------------
+	public SettingsVo getSettingVo() {
+		return settingVo;
+	}
+
+	public void setSettingVo(SettingsVo settingVo) {
+		this.settingVo = settingVo;
+	}
 
 }

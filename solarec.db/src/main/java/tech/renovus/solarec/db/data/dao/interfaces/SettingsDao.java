@@ -13,5 +13,7 @@ public interface SettingsDao {
 	void delete(SettingsVo vo);
 	void synchronize(SettingsVo vo);
 	void synchronize(Collection<SettingsVo> vos);
+	
+	Collection<String> getAllNamesForClient();
 
 }

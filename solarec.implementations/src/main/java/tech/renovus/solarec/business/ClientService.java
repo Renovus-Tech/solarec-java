@@ -11,5 +11,4 @@ public interface ClientService {
 
 	ClientVo getCurrent(UserData userData);
 	void setToCurrent(Client client, UserData userData);
-	Collection<CliSettingVo> populateCliSettings(ClientVo vo, Collection<CliSettingVo> dbSettings);
 }

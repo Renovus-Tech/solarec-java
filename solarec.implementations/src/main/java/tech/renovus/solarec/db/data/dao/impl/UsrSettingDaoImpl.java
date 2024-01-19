@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
 
 import tech.renovus.solarec.db.data.dao.base.BaseUsrSettingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.UsrSettingDao;
-import tech.renovus.solarec.db.data.dao.wrapper.UsrSettingRowWrapper;
+import tech.renovus.solarec.db.data.dao.wrapper.custom.UsrSettingAndSettingsRowWrapper;
 import tech.renovus.solarec.vo.db.data.UsrSettingVo;
 
 @Repository
 public class UsrSettingDaoImpl extends BaseUsrSettingDao implements UsrSettingDao {
 	
 	//--- Private properties --------------------
-	protected final String SQL_SELECT_ALL_FOR_USER		= "SELECT * FROM usr_setting WHERE usr_id = :usr_id";
+	protected final String SQL_SELECT_ALL_FOR_USER		= "SELECT * FROM vw_usr_setting WHERE usr_id = :usr_id";
 	protected final String SQL_DELETE_ALL_FOR_USER		= "DELETE FROM usr_setting WHERE usr_id = :usr_id";
 	
 	//--- Constructors --------------------------
@@ -31,7 +31,7 @@ public class UsrSettingDaoImpl extends BaseUsrSettingDao implements UsrSettingDa
 				SQL_SELECT_ALL_FOR_USER,
 				new MapSqlParameterSource()
 					.addValue("usr_id", usrId),
-				UsrSettingRowWrapper.getInstance()
+				UsrSettingAndSettingsRowWrapper.getInstance()
 			);
 	}
 

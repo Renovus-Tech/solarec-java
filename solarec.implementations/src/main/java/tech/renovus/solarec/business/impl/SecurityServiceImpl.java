@@ -124,13 +124,10 @@ public class SecurityServiceImpl implements SecurityService {
 		this.usersDao.setLoginDate(usrVo.getUsrId(), currentDate);
 		this.cliUserDao.setAccessDate(cliVo.getCliId(), usrVo.getUsrId(), currentDate);
 		
-		Collection<FunctionalityVo> functionalities = this.functionalitiesDao.findFor(usrVo.getUsrId(), cliVo.getCliId());
 		usrVo.setSettings(this.usrSettingDao.findAllFor(usrVo.getUsrId()));
+		cliVo.setSettings(this.cliSettingDao.findAllFor(cliVo.getCliId()));
 		
-		Collection<CliSettingVo> dbSettings = this.cliSettingDao.findAllFor(cliVo.getCliId());
-		cliVo.setSettings(this.clientService.populateCliSettings(cliVo, dbSettings));
-		
-		this.login(userData, usrVo, cliVo, functionalities);
+		this.login(userData, usrVo, cliVo, this.functionalitiesDao.findFor(usrVo.getUsrId(), cliVo.getCliId()));
 		this.setDefaultLocation(userData);
 	}
 

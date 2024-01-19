@@ -36,6 +36,7 @@ import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
 import tech.renovus.solarec.vo.db.data.CliSettingVo;
 import tech.renovus.solarec.vo.db.data.EmberCountryOverviewVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
+import tech.renovus.solarec.vo.db.data.SettingsVo;
 import tech.renovus.solarec.vo.db.data.StatDefinitionVo;
 import tech.renovus.solarec.vo.rest.chart.ChartFilter;
 
@@ -108,7 +109,7 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 			PerformanceIndex chartPerformance	= JsonUtil.toObject(callPerformance, PerformanceIndex.class);
 			Revenue result = new Revenue();
 			
-			CliSettingVo cliSettingVo = this.cliSettingDao.findVoOrDefault(userData.getCliId(), CliSettingVo.D_RECS_SOLD_PORCENTAGE, CliSettingVo.DEFAULT_VALUE_D_RECS_SOLD_PORCENTAGE);
+			CliSettingVo cliSettingVo = this.cliSettingDao.findVoWithSetting(userData.getCliId(), SettingsVo.D_RECS_SOLD_PORCENTAGE);
 			
 			Calendar cal = GregorianCalendar.getInstance();
 			cal.setTime(filter.getFrom());
@@ -150,7 +151,7 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 	@Override public Revenue revenueSales(ChartFilter filter, UserData userData) {
 		Revenue result = this.revenue(filter, userData);
 
-		CliSettingVo cliSettingVo = this.cliSettingDao.findVoOrDefault(userData.getCliId(), CliSettingVo.D_RECS_PRICE, CliSettingVo.DEFAULT_VALUE_D_RECS_PRICE);
+		CliSettingVo cliSettingVo = this.cliSettingDao.findVoWithSetting(userData.getCliId(), SettingsVo.D_RECS_PRICE);
 		double price = cliSettingVo.doubleValue();
 		
 		if (CollectionUtil.notEmpty(result.getMonths())) {

@@ -16,7 +16,7 @@ public interface CliSettingDao {
 
 	Collection<CliSettingVo> findAllFor(Integer cliId);
 	void deleteAllFor(Integer cliId);
-	CliSettingVo findVoOrDefault(Integer cliId, String cliSetName, String defaultValue);
+	CliSettingVo findVoWithSetting(Integer cliId, String cliSetName);
 
 }
 
