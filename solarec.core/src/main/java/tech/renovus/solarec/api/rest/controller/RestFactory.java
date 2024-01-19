@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.SecurityService;
+import tech.renovus.solarec.interfaces.ISetting;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.FlagUtil;
-import tech.renovus.solarec.util.interfaces.ISetting;
 import tech.renovus.solarec.vo.comparator.GeneratorGenCodeAsNumberComparator;
 import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
@@ -287,6 +287,19 @@ public class RestFactory {
 		
 		result.setName(vo.getName());
 		result.setValue(vo.getValue());
+		
+		if (vo.getSettingVo() != null) {
+			result.setLabel("label.setting." + vo.getSettingVo().getSetName());
+			result.setCategoryLabel("label.category." + vo.getSettingVo().getSetCatName());
+			
+			result.setName(vo.getSettingVo().getSetName());
+			result.setCategory(vo.getSettingVo().getSetCatName());
+			result.setType(vo.getSettingVo().getSetType());
+			result.setUnits(vo.getSettingVo().getSetUnit());
+			result.setMin(vo.getSettingVo().getSetValueMin());
+			result.setMax(vo.getSettingVo().getSetValueMax());
+			result.setValueDefault(vo.getSettingVo().getSetValueDefault());
+		}
 		
 		return result;
 	}

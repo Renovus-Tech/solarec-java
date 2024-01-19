@@ -1,7 +1,7 @@
 package tech.renovus.solarec.vo.db.data;
 
+import tech.renovus.solarec.interfaces.ISetting;
 import tech.renovus.solarec.util.StringUtil;
-import tech.renovus.solarec.util.interfaces.ISetting;
 import tech.renovus.solarec.vo.db.relation.DbUsrSettingVo;
 
 public class UsrSettingVo extends DbUsrSettingVo implements ISetting {
@@ -35,12 +35,9 @@ public class UsrSettingVo extends DbUsrSettingVo implements ISetting {
 	//--- Implemented methods -------------------
 	@Override public String getName() { return this.getUsrSetName(); }
 	@Override public String getValue() { return this.getUsrSetValue(); }
+	@Override public SettingsVo getSettingVo() { return settingVo; }
 
 	//--- Getters and Setters -------------------
-	public SettingsVo getSettingVo() {
-		return settingVo;
-	}
-
 	public void setSettingVo(SettingsVo settingVo) {
 		this.settingVo = settingVo;
 	}

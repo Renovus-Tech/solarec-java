@@ -1,7 +1,7 @@
 package tech.renovus.solarec.vo.db.data;
 
+import tech.renovus.solarec.interfaces.ISetting;
 import tech.renovus.solarec.util.StringUtil;
-import tech.renovus.solarec.util.interfaces.ISetting;
 import tech.renovus.solarec.vo.db.relation.DbCliSettingVo;
 
 public class CliSettingVo extends DbCliSettingVo implements ISetting {
@@ -30,12 +30,9 @@ public class CliSettingVo extends DbCliSettingVo implements ISetting {
 	//--- Implemented methods -------------------
 	@Override public String getName() { return this.getCliSetName(); }
 	@Override public String getValue() { return this.getCliSetValue(); }
+	@Override public SettingsVo getSettingVo() { return settingVo; }
 
 	//--- Getters and Setters -------------------
-	public SettingsVo getSettingVo() {
-		return settingVo;
-	}
-
 	public void setSettingVo(SettingsVo settingVo) {
 		this.settingVo = settingVo;
 	}
