@@ -18,7 +18,7 @@ public class SettingsRowWrapper implements RowMapper<SettingsVo> {
 	protected String getResultSetSetCatName(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
 	protected String getResultSetSetType(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
 	protected String getResultSetSetUnit(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
-	protected String getResultSetSetValueDefult(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
+	protected String getResultSetSetValueDefault(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
 	protected String getResultSetSetValueMin(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
 	protected String getResultSetSetValueMax(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
 	protected String getResultSetSetFlags(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
@@ -31,7 +31,7 @@ public class SettingsRowWrapper implements RowMapper<SettingsVo> {
 		vo.setSetCatName(this.getResultSetSetCatName(resultSet, SettingsVo.COLUMN_SET_CAT_NAME));
 		vo.setSetType(this.getResultSetSetType(resultSet, SettingsVo.COLUMN_SET_TYPE));
 		vo.setSetUnit(this.getResultSetSetUnit(resultSet, SettingsVo.COLUMN_SET_UNIT));
-		vo.setSetValueDefult(this.getResultSetSetValueDefult(resultSet, SettingsVo.COLUMN_SET_VALUE_DEFULT));
+		vo.setSetValueDefault(this.getResultSetSetValueDefault(resultSet, SettingsVo.COLUMN_SET_VALUE_DEFAULT));
 		vo.setSetValueMin(this.getResultSetSetValueMin(resultSet, SettingsVo.COLUMN_SET_VALUE_MIN));
 		vo.setSetValueMax(this.getResultSetSetValueMax(resultSet, SettingsVo.COLUMN_SET_VALUE_MAX));
 		vo.setSetFlags(this.getResultSetSetFlags(resultSet, SettingsVo.COLUMN_SET_FLAGS));

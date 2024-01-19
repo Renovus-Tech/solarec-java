@@ -11,7 +11,7 @@ public class BaseSettingsVo extends BaseDbVo implements IFlags {
 	public static final String COLUMN_SET_CAT_NAME = "set_cat_name";
 	public static final String COLUMN_SET_TYPE = "set_type";
 	public static final String COLUMN_SET_UNIT = "set_unit";
-	public static final String COLUMN_SET_VALUE_DEFULT = "set_value_defult";
+	public static final String COLUMN_SET_VALUE_DEFAULT = "set_value_default";
 	public static final String COLUMN_SET_VALUE_MIN = "set_value_min";
 	public static final String COLUMN_SET_VALUE_MAX = "set_value_max";
 	public static final String COLUMN_SET_FLAGS = "set_flags";
@@ -20,7 +20,7 @@ public class BaseSettingsVo extends BaseDbVo implements IFlags {
 	public static final int LENGTH_COLUMN_SET_CAT_NAME =  200;
 	public static final int LENGTH_COLUMN_SET_TYPE =  200;
 	public static final int LENGTH_COLUMN_SET_UNIT =  100;
-	public static final int LENGTH_COLUMN_SET_VALUE_DEFULT =  200;
+	public static final int LENGTH_COLUMN_SET_VALUE_DEFAULT =  200;
 	public static final int LENGTH_COLUMN_SET_VALUE_MIN =  100;
 	public static final int LENGTH_COLUMN_SET_VALUE_MAX =  100;
 	public static final int LENGTH_COLUMN_SET_FLAGS =  20;
@@ -34,7 +34,7 @@ public class BaseSettingsVo extends BaseDbVo implements IFlags {
 	private String setCatName;
 	private String setType;
 	private String setUnit;
-	private String setValueDefult;
+	private String setValueDefault;
 	private String setValueMin;
 	private String setValueMax;
 	private String setFlags;
@@ -84,7 +84,7 @@ public class BaseSettingsVo extends BaseDbVo implements IFlags {
 		if (!ClassUtil.equals(this.setUnit,aObj.setUnit)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.setValueDefult,aObj.setValueDefult)) {
+		if (!ClassUtil.equals(this.setValueDefault,aObj.setValueDefault)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.setValueMin,aObj.setValueMin)) {
@@ -140,11 +140,11 @@ public class BaseSettingsVo extends BaseDbVo implements IFlags {
 		this.setUnit = setUnit;
 	}
 
-	public String getSetValueDefult() {
-		return this.setValueDefult;
+	public String getSetValueDefault() {
+		return this.setValueDefault;
 	}
-	public void setSetValueDefult(String setValueDefult) {
-		this.setValueDefult = setValueDefult;
+	public void setSetValueDefault(String setValueDefault) {
+		this.setValueDefault = setValueDefault;
 	}
 
 	public String getSetValueMin() {
