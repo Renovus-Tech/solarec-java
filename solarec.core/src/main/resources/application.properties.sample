@@ -9,7 +9,10 @@ server.servlet.session.timeout=20m
 
 #logging.level.org.springframework=DEBUG
 
-#spring.messages.basename=lang/labels
+#Translaton and labels
+spring.mvc.locale: en
+spring.messages.basename =lang/labels
+spring.messages.encoding = UTF-8
 
 #Database properties
 spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect

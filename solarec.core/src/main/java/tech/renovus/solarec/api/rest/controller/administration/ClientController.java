@@ -30,7 +30,7 @@ public class ClientController extends BasicController {
 	public Client current(HttpSession session) throws CoreException {
 		UserData userData = this.getLoggedUserData(session);
 		ClientVo vo = this.service.getCurrent(userData);
-		return RestFactory.convert(vo);
+		return RestFactory.getInstance().convert(vo, userData);
 	}
 
 	@PostMapping(EndPointFactory.REST_ADMINISTRATION_CLIENTS + "/current")

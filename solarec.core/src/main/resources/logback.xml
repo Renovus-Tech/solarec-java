@@ -1,0 +1,54 @@
+<configuration>
+
+	<property name="logFilePath" value="C:/development/eclipse/workspace/solarec-java/_files/logs"/>
+
+    <!-- Console Appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Appenders -->
+    <appender name="schedule_daily_appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}/schedule/schedule.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}/schedule/schedule.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory> <!-- Keep logs for 7 days -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="inverter_daily_appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}/inverters/invertes.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}/inverters/inverters.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory> <!-- Keep logs for 7 days -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="drec_daily_appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}/drec/drec.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}/drec/drec.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory> <!-- Keep logs for 7 days -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Loggers -->
+    <logger name="schedule" level="info" additivity="false"><appender-ref ref="schedule_daily_appender"/></logger>
+    <logger name="drec" 	level="info" additivity="false"><appender-ref ref="inverter_daily_appender"/></logger>
+    <logger name="inverter" level="info" additivity="false"><appender-ref ref="drec_daily_appender"/></logger>
+
+    <!-- Root Logger -->
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

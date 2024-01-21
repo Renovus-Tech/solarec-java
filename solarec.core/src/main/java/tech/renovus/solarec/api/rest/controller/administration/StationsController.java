@@ -41,7 +41,7 @@ public class StationsController extends BasicController {
 		UserData userData = this.getLoggedUserData(session);
 		
 		try {
-			return RestFactory.convertStations(this.service.findAll(offset, size, name, userData));
+			return RestFactory.getInstance().convertStations(this.service.findAll(offset, size, name, userData));
 		} catch (CoreException exc) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_STATIONS, exc);
 		}
@@ -52,7 +52,7 @@ public class StationsController extends BasicController {
 		UserData userData = this.getLoggedUserData(session);
 		
 		try {
-			return RestFactory.convert(this.service.findVo(id, userData));
+			return RestFactory.getInstance().convert(this.service.findVo(id, userData));
 		} catch (CoreException exc) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_STATIONS, exc);
 		}
@@ -63,7 +63,7 @@ public class StationsController extends BasicController {
 		UserData userData = this.getLoggedUserData(session);
 		
 		try {
-			return RestFactory.convertStations(this.service.findAllForLocation(userData.getLocId(), userData));
+			return RestFactory.getInstance().convertStations(this.service.findAllForLocation(userData.getLocId(), userData));
 		} catch (CoreException exc) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
 		}
@@ -71,16 +71,16 @@ public class StationsController extends BasicController {
 	
 	@PostMapping(EndPointFactory.REST_ADMINISTRATION_STATIONS)
 	public Station create(@RequestBody Station Station, HttpSession session) {
-		StationVo vo = RestFactory.convert(Station);
+		StationVo vo = RestFactory.getInstance().convert(Station);
 		this.service.create(vo, this.getLoggedUserData(session));
-		return RestFactory.convert(vo);
+		return RestFactory.getInstance().convert(vo);
 	}
 	
 	@PutMapping(EndPointFactory.REST_ADMINISTRATION_STATIONS)
 	public Station update(@RequestBody Station Station, HttpSession session) {
-		StationVo vo = RestFactory.convert(Station);
+		StationVo vo = RestFactory.getInstance().convert(Station);
 		this.service.update(vo, this.getLoggedUserData(session));
-		return RestFactory.convert(vo);
+		return RestFactory.getInstance().convert(vo);
 	}
 		
 }

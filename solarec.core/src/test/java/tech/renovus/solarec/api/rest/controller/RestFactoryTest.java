@@ -92,29 +92,29 @@ public class RestFactoryTest {
 	//--- Test methods --------------------------
 	@Test
 	public void testCollections() {
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertProcessings(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertDataDefinitions(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertLocations(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertStations(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertGenerators(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertFunctionalities(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertSettings(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertClients(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertDocTypes(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertDocuments(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertPower(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertWeatherDefinitions(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertRestPowerCurve(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertReportTypes(null)));
-		assertTrue(CollectionUtil.isEmpty(RestFactory.convertAlerts(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertProcessings(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertDataDefinitions(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertLocations(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertStations(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertGenerators(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertFunctionalities(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertSettings(null, null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertClients(null, null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertDocTypes(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertDocuments(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertPower(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertWeatherDefinitions(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertRestPowerCurve(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertReportTypes(null)));
+		assertTrue(CollectionUtil.isEmpty(RestFactory.getInstance().convertAlerts(null)));
 	}
 	
 	@Test
 	public void testLocation() {
 		LocationVo vo = this.createLocationSampleVo();
-		Location result = RestFactory.convert(vo);
+		Location result = RestFactory.getInstance().convert(vo);
 		
-		assertNull(RestFactory.convert((GeneratorVo) null));
+		assertNull(RestFactory.getInstance().convert((GeneratorVo) null));
 		
 		assertEquals(result.getId(), vo.getLocId());
 		assertEquals(result.getCode(), vo.getLocCode());
