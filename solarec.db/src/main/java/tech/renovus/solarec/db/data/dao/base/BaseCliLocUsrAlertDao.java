@@ -7,17 +7,17 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import tech.renovus.solarec.vo.db.data.CliLocUsrAlertVo;
 import tech.renovus.solarec.db.data.dao.wrapper.CliLocUsrAlertRowWrapper;
+import tech.renovus.solarec.vo.db.data.CliLocUsrAlertVo;
 
-public abstract class BaseCliLocUsrAlertDao {
+public abstract class BaseCliLocUsrAlertDao <T extends CliLocUsrAlertVo > {
 	//--- Protected constants -------------------
 	protected final String SQL_SELECT_ALL		= "SELECT * FROM cli_loc_usr_alert";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_loc_usr_alert WHERE cli_id = :cli_idAND loc_id = :loc_idAND usr_id = :usr_idAND cli_loc_alert_id = :cli_loc_alert_id";
+	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_loc_usr_alert WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id AND cli_loc_alert_id = :cli_loc_alert_id";
 	protected String SQL_INSERT					= "INSERT INTO cli_loc_usr_alert (cli_id, loc_id, usr_id, cli_loc_alert_id, cli_loc_usr_alert_send_date, cli_loc_usr_alert_send_result) VALUES (:cli_id, :loc_id, :usr_id, :cli_loc_alert_id, :cli_loc_usr_alert_send_date, :cli_loc_usr_alert_send_result)";
-	protected String SQL_UPDATE					= "UPDATE cli_loc_usr_alert SET cli_loc_usr_alert_send_date = :cli_loc_usr_alert_send_dateAND cli_loc_usr_alert_send_result = :cli_loc_usr_alert_send_result WHERE cli_id = :cli_idAND loc_id = :loc_idAND usr_id = :usr_idAND cli_loc_alert_id = :cli_loc_alert_id";
-	protected String SQL_DELETE					= "DELETE FROM cli_loc_usr_alert WHERE cli_id = :cli_idAND loc_id = :loc_idAND usr_id = :usr_idAND cli_loc_alert_id = :cli_loc_alert_id";
-	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id, loc_id, usr_id, cli_loc_alert_id) SET cli_loc_usr_alert_send_date = EXCLUDED.cli_loc_usr_alert_send_date, cli_loc_usr_alert_send_result = EXCLUDED.cli_loc_usr_alert_send_result";
+	protected String SQL_UPDATE					= "UPDATE cli_loc_usr_alert SET cli_loc_usr_alert_send_date = :cli_loc_usr_alert_send_date, cli_loc_usr_alert_send_result = :cli_loc_usr_alert_send_result WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id AND cli_loc_alert_id = :cli_loc_alert_id";
+	protected String SQL_DELETE					= "DELETE FROM cli_loc_usr_alert WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id AND cli_loc_alert_id = :cli_loc_alert_id";
+	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id, loc_id, usr_id, cli_loc_alert_id) DO UPDATE SET cli_loc_usr_alert_send_date = EXCLUDED.cli_loc_usr_alert_send_date, cli_loc_usr_alert_send_result = EXCLUDED.cli_loc_usr_alert_send_result";
 
 
 	//--- Protected properties ------------------
@@ -29,7 +29,7 @@ public abstract class BaseCliLocUsrAlertDao {
 	}
 
 	//--- Protected methods ---------------------
-	private MapSqlParameterSource createInsertMapSqlParameterSource(CliLocUsrAlertVo vo) {
+	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
 			.addValue("cli_id", vo.getCliId())
 			.addValue("loc_id", vo.getLocId())
@@ -39,7 +39,7 @@ public abstract class BaseCliLocUsrAlertDao {
 			.addValue("cli_loc_usr_alert_send_result", vo.getCliLocUsrAlertSendResult());
 	}
 	
-	private MapSqlParameterSource craeteUpdateMapSqlParameterSource(CliLocUsrAlertVo vo) {
+	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
 			.addValue("cli_loc_usr_alert_send_date", vo.getCliLocUsrAlertSendDate())
 			.addValue("cli_loc_usr_alert_send_result", vo.getCliLocUsrAlertSendResult())
@@ -49,11 +49,11 @@ public abstract class BaseCliLocUsrAlertDao {
 			.addValue("cli_loc_alert_id", vo.getCliLocAlertId());
 	}
 	
-	private MapSqlParameterSource craeteDeleteMapSqlParameterSource(CliLocUsrAlertVo vo) {
+	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
 		return this.createPkMapSqlParameterSource(vo.getCliId(), vo.getLocId(), vo.getUsrId(), vo.getCliLocAlertId());
 	}
 	
-	private MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, Integer usrId, Integer cliLocAlertId) {
+	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, Integer usrId, Integer cliLocAlertId) {
 		return new MapSqlParameterSource()
 			.addValue("cli_id", cliId)
 			.addValue("loc_id", locId)
@@ -61,27 +61,27 @@ public abstract class BaseCliLocUsrAlertDao {
 			.addValue("cli_loc_alert_id", cliLocAlertId);
 	}
 	//--- Public methods ------------------------
-	public Collection<CliLocUsrAlertVo> findAll() { return this.jdbc.query(SQL_SELECT_ALL, CliLocUsrAlertRowWrapper.getInstance()); }
-	public CliLocUsrAlertVo findVo(Integer cliId, Integer locId, Integer usrId, Integer cliLocAlertId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, locId, usrId, cliLocAlertId), CliLocUsrAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliLocUsrAlertRowWrapper.getInstance()); }
+	public CliLocUsrAlertVo findVo(Integer cliId, Integer locId, Integer usrId, Integer cliLocAlertId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, locId, usrId, cliLocAlertId), CliLocUsrAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
-	public void insert(CliLocUsrAlertVo vo) {
+	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();
 		this.jdbc.update( SQL_INSERT, this.createInsertMapSqlParameterSource(vo), holder);
 	}
 
-	public void update(CliLocUsrAlertVo vo) { this.jdbc.update(SQL_UPDATE, this.craeteUpdateMapSqlParameterSource(vo)); }
-	public void delete(CliLocUsrAlertVo vo) { this.jdbc.update(SQL_DELETE, this.craeteDeleteMapSqlParameterSource(vo)); }
+	public void update(T vo) { this.jdbc.update(SQL_UPDATE, this.craeteUpdateMapSqlParameterSource(vo)); }
+	public void delete(T vo) { this.jdbc.update(SQL_DELETE, this.craeteDeleteMapSqlParameterSource(vo)); }
 
-	public void synchronize(CliLocUsrAlertVo vo) {
+	public void synchronize(T vo) {
 		if (vo == null) return;
 		switch (vo.getSyncType()) {
-			case CliLocUsrAlertVo.SYNC_INSERT: this.insert(vo); break;
-			case CliLocUsrAlertVo.SYNC_UPDATE: this.update(vo); break;
-			case CliLocUsrAlertVo.SYNC_DELETE: this.delete(vo); break;
+			case T.SYNC_INSERT: this.insert(vo); break;
+			case T.SYNC_UPDATE: this.update(vo); break;
+			case T.SYNC_DELETE: this.delete(vo); break;
 		}
 	}
-	public void synchronize(Collection<CliLocUsrAlertVo> vos) {
+	public void synchronize(Collection<T> vos) {
 		if (vos == null) return;
-		for (CliLocUsrAlertVo vo : vos) this.synchronize(vo);
+		for (T vo : vos) this.synchronize(vo);
 	}
 }

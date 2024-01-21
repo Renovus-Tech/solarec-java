@@ -1,7 +1,6 @@
 package tech.renovus.solarec.db.data.dao.base;
 
 import java.util.Collection;
-
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -11,86 +10,80 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.StaAlertRowWrapper;
 import tech.renovus.solarec.vo.db.data.StaAlertVo;
 
-public abstract class BaseStaAlertDao {
-
+public abstract class BaseStaAlertDao <T extends StaAlertVo > {
 	//--- Protected constants -------------------
 	protected final String SQL_SELECT_ALL		= "SELECT * FROM sta_alert";
 	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM sta_alert WHERE cli_id = :cli_id AND sta_id = :sta_id AND alert_def_id = :alert_def_id AND alert_date_added = :alert_date_added";
-	protected String SQL_INSERT					= "INSERT INTO sta_alert (cli_id,sta_id,alert_def_id,alert_date_added,alert_date_send,alert_message,alert_pro_id) VALUES (:cli_id,:sta_id,:alert_def_id,:alert_date_added,:alert_date_send,:alert_message,:alert_pro_id)";
-	protected String SQL_UPDATE					= "UPDATE sta_alert SET alert_date_send = :alert_date_send,alert_message = :alert_message,alert_pro_id = :alert_pro_id WHERE cli_id = :cli_id AND sta_id = :sta_id AND alert_def_id = :alert_def_id AND alert_date_added = :alert_date_added";
+	protected String SQL_INSERT					= "INSERT INTO sta_alert (cli_id, sta_id, alert_def_id, alert_pro_id, alert_date_added, alert_date_send, alert_message) VALUES (:cli_id, :sta_id, :alert_def_id, :alert_pro_id, :alert_date_added, :alert_date_send, :alert_message)";
+	protected String SQL_UPDATE					= "UPDATE sta_alert SET alert_pro_id = :alert_pro_id, alert_date_send = :alert_date_send, alert_message = :alert_message WHERE cli_id = :cli_id AND sta_id = :sta_id AND alert_def_id = :alert_def_id AND alert_date_added = :alert_date_added";
 	protected String SQL_DELETE					= "DELETE FROM sta_alert WHERE cli_id = :cli_id AND sta_id = :sta_id AND alert_def_id = :alert_def_id AND alert_date_added = :alert_date_added";
-	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id, sta_id, alert_def_id, alert_date_added) DO UPDATE SET alert_date_send = EXCLUDED.alert_date_send, alert_message = EXCLUDED.alert_message, alert_pro_id = EXCLUDED.alert_pro_id";
+	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id, sta_id, alert_def_id, alert_date_added) DO UPDATE SET alert_pro_id = EXCLUDED.alert_pro_id, alert_date_send = EXCLUDED.alert_date_send, alert_message = EXCLUDED.alert_message";
 
-	protected String[] AUTO_INCREMENT_COLUMNS	= new String[] {};
 
 	//--- Protected properties ------------------
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
 	public BaseStaAlertDao(NamedParameterJdbcTemplate jdbc) {
-		this.jdbc = jdbc; 
-	} 
+		this.jdbc = jdbc;
+	}
 
 	//--- Protected methods ---------------------
-	private MapSqlParameterSource createInsertMapSqlParameterSource(StaAlertVo vo) {
+	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
 			.addValue("cli_id", vo.getCliId())
 			.addValue("sta_id", vo.getStaId())
 			.addValue("alert_def_id", vo.getAlertDefId())
+			.addValue("alert_pro_id", vo.getAlertProId())
 			.addValue("alert_date_added", vo.getAlertDateAdded())
 			.addValue("alert_date_send", vo.getAlertDateSend())
-			.addValue("alert_message", vo.getAlertMessage())
-			.addValue("alert_pro_id", vo.getAlertProId());
+			.addValue("alert_message", vo.getAlertMessage());
 	}
-
-	private MapSqlParameterSource craeteUpdateMapSqlParameterSource(StaAlertVo vo) {
+	
+	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
+			.addValue("alert_pro_id", vo.getAlertProId())
 			.addValue("alert_date_send", vo.getAlertDateSend())
 			.addValue("alert_message", vo.getAlertMessage())
-			.addValue("alert_pro_id", vo.getAlertProId())
 			.addValue("cli_id", vo.getCliId())
 			.addValue("sta_id", vo.getStaId())
 			.addValue("alert_def_id", vo.getAlertDefId())
 			.addValue("alert_date_added", vo.getAlertDateAdded());
 	}
-
-	private MapSqlParameterSource craeteDeleteMapSqlParameterSource(StaAlertVo vo) {
+	
+	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
 		return this.createPkMapSqlParameterSource(vo.getCliId(), vo.getStaId(), vo.getAlertDefId(), vo.getAlertDateAdded());
 	}
-
-	private MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer staId, Integer alertDefId, java.util.Date alertDateAdded) {
+	
+	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer staId, Integer alertDefId, java.util.Date alertDateAdded) {
 		return new MapSqlParameterSource()
 			.addValue("cli_id", cliId)
 			.addValue("sta_id", staId)
 			.addValue("alert_def_id", alertDefId)
 			.addValue("alert_date_added", alertDateAdded);
 	}
-
 	//--- Public methods ------------------------
-	public Collection<StaAlertVo> findAll() { return this.jdbc.query(SQL_SELECT_ALL, StaAlertRowWrapper.getInstance()); }
-	public StaAlertVo findVo(Integer cliId, Integer staId, Integer alertDefId, java.util.Date alertDateAdded) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, staId, alertDefId, alertDateAdded), StaAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StaAlertRowWrapper.getInstance()); }
+	public StaAlertVo findVo(Integer cliId, Integer staId, Integer alertDefId, java.util.Date alertDateAdded) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, staId, alertDefId, alertDateAdded), StaAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
-	public void insert(StaAlertVo vo) {
+	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();
-		this.jdbc.update( SQL_INSERT, this.createInsertMapSqlParameterSource(vo), holder, AUTO_INCREMENT_COLUMNS );
+		this.jdbc.update( SQL_INSERT, this.createInsertMapSqlParameterSource(vo), holder);
 	}
 
-	public void update(StaAlertVo vo) { this.jdbc.update(SQL_UPDATE, this.craeteUpdateMapSqlParameterSource(vo)); }
-	public void delete(StaAlertVo vo) { this.jdbc.update(SQL_DELETE, this.craeteDeleteMapSqlParameterSource(vo)); }
+	public void update(T vo) { this.jdbc.update(SQL_UPDATE, this.craeteUpdateMapSqlParameterSource(vo)); }
+	public void delete(T vo) { this.jdbc.update(SQL_DELETE, this.craeteDeleteMapSqlParameterSource(vo)); }
 
-	public void synchronize(StaAlertVo vo) {
+	public void synchronize(T vo) {
 		if (vo == null) return;
 		switch (vo.getSyncType()) {
-			case StaAlertVo.SYNC_INSERT: this.insert(vo); break;
-			case StaAlertVo.SYNC_UPDATE: this.update(vo); break;
-			case StaAlertVo.SYNC_DELETE: this.delete(vo); break;
+			case T.SYNC_INSERT: this.insert(vo); break;
+			case T.SYNC_UPDATE: this.update(vo); break;
+			case T.SYNC_DELETE: this.delete(vo); break;
 		}
 	}
-	public void synchronize(Collection<StaAlertVo> vos) {
+	public void synchronize(Collection<T> vos) {
 		if (vos == null) return;
-		for (StaAlertVo vo : vos) this.synchronize(vo);
+		for (T vo : vos) this.synchronize(vo);
+	}
 }
-
-
-}
-
