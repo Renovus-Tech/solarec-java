@@ -47,7 +47,7 @@ public class SolarController extends BasicController {
 	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_OVERVIEW_ALERTS }, produces = { MediaType.APPLICATION_JSON_VALUE } )
 	public Object overviewAlerts(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException {
 		filter = this.service.validate(filter, this.getLoggedUserData(session));
-		return this.service.runOverviewAlerts(filter, this.getLoggedUserData(session));
+		return this.service.retrieveOverviewAlerts(filter, this.getLoggedUserData(session));
 	}
 	
 	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_PERFORMANCE_INDEX }, produces = { MediaType.APPLICATION_JSON_VALUE } )

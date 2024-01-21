@@ -1,6 +1,7 @@
 package tech.renovus.solarec.db.data.dao.interfaces;
 
 import java.util.Collection;
+import java.util.Date;
 
 import tech.renovus.solarec.vo.db.data.CliGenAlertVo;
 
@@ -13,5 +14,7 @@ public interface CliGenAlertDao {
 	void delete(CliGenAlertVo vo);
 	void synchronize(CliGenAlertVo vo);
 	void synchronize(Collection<CliGenAlertVo> vos);
+	
+	Collection<CliGenAlertVo> retrieveFor(Integer cliId, Integer locId, Date from, Date to);
 
 }

@@ -20,8 +20,9 @@ public interface SolarService {
 //	Object dashboard(boolean forNow, UserData userData) throws CoreException;
 	
 	//--- Chart methods -------------------------
+	Object retrieveOverviewAlerts(ChartFilter filter, UserData userData) throws CoreException;
+	
 	Object runOverview(ChartFilter filter, UserData userData) throws CoreException;
-	Object runOverviewAlerts(ChartFilter filter, UserData userData) throws CoreException;
 	Object runClimate(ChartFilter filter, UserData userData) throws CoreException;
 	Object runPerformanceIndex(ChartFilter filter, UserData loggedUserData) throws CoreException;
 

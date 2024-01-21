@@ -1,6 +1,7 @@
 package tech.renovus.solarec.business.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -18,6 +19,7 @@ import tech.renovus.solarec.business.ParserService;
 import tech.renovus.solarec.business.SolarService;
 import tech.renovus.solarec.business.impl.base.BaseServiceImpl;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
+import tech.renovus.solarec.db.data.dao.interfaces.CliGenAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliLocAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.EmberCountryOverviewDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
@@ -32,6 +34,7 @@ import tech.renovus.solarec.vo.custom.chart.performanceIndex.Datum;
 import tech.renovus.solarec.vo.custom.chart.performanceIndex.PerformanceIndex;
 import tech.renovus.solarec.vo.custom.chart.revenue.Month;
 import tech.renovus.solarec.vo.custom.chart.revenue.Revenue;
+import tech.renovus.solarec.vo.db.data.CliGenAlertVo;
 import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
 import tech.renovus.solarec.vo.db.data.CliSettingVo;
 import tech.renovus.solarec.vo.db.data.EmberCountryOverviewVo;
@@ -39,6 +42,7 @@ import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.SettingsVo;
 import tech.renovus.solarec.vo.db.data.StatDefinitionVo;
 import tech.renovus.solarec.vo.rest.chart.ChartFilter;
+import tech.renovus.solarec.vo.rest.entity.Alert;
 
 @Service
 public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
@@ -51,31 +55,84 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 	@Autowired EmberCountryOverviewDao emberCountryDao;
 	@Autowired GeneratorDao generatorDao;
 	@Autowired CliLocAlertDao cliLocAlertDao;
+	@Autowired CliGenAlertDao cliGenAlertDao;
 	
 	//--- Private methods -----------------------
+	private Collection<Alert> retrieveLocationAlerts(ChartFilter filter, UserData userData) {
+		Collection<CliLocAlertVo> alerts = this.cliLocAlertDao.retrieveFor(userData.getCliId(), userData.getLocId(), filter.getFrom(), filter.getTo());
+		Collection<Alert> result = new ArrayList<>(CollectionUtil.size(alerts));
+		
+		if (CollectionUtil.notEmpty(alerts)) {
+			alerts.forEach(x -> {
+				
+				Alert alert = new Alert()
+						.withDate(x.getCliLocAlertTrigger())
+						.withFirstView(! FlagUtil.getFlagValue(x, CliLocAlertVo.FLAG_SEEN))
+						.withMessage(this.parserService.parseAlert(x.getCliLocAlertData(), userData))
+						.withType(x.getCliLocAlertType())
+					;
+				
+				result.add(alert);
+			});
+			
+			Collection<CliLocAlertVo> toMarkAsSeen = alerts.stream().filter(x -> ! FlagUtil.getFlagValue(x, CliLocAlertVo.FLAG_SEEN)).collect(Collectors.toList());
+			if (CollectionUtil.notEmpty(toMarkAsSeen)) {
+				toMarkAsSeen.forEach(x -> {
+					x.setSyncType(CliLocAlertVo.SYNC_UPDATE);
+					FlagUtil.setFlagValue(x, CliLocAlertVo.FLAG_SEEN, true);
+				});
+				
+				this.cliLocAlertDao.synchronize(toMarkAsSeen);
+			}
+		}
+		
+		
+		return result;
+	}
+	
+	private Collection<Alert> retrieveGeneratorsAlerts(ChartFilter filter, UserData userData) {
+		Collection<CliGenAlertVo> alerts = this.cliGenAlertDao.retrieveFor(userData.getCliId(), userData.getLocId(), filter.getFrom(), filter.getTo());
+		Collection<Alert> result = new ArrayList<>(CollectionUtil.size(alerts));
+
+		if (CollectionUtil.notEmpty(alerts)) {
+			alerts.forEach(x -> {
+				
+				Alert alert = new Alert()
+						.withDate(x.getCliGenAlertTrigger())
+						.withFirstView(! FlagUtil.getFlagValue(x, CliGenAlertVo.FLAG_SEEN))
+						.withMessage(this.parserService.parseAlert(x.getCliGenAlertData(), userData))
+						.withType(x.getCliGenAlertType())
+					;
+				
+				result.add(alert);
+			});
+			
+			Collection<CliGenAlertVo> toMarkAsSeen = alerts.stream().filter(x -> ! FlagUtil.getFlagValue(x, CliGenAlertVo.FLAG_SEEN)).collect(Collectors.toList());
+			if (CollectionUtil.notEmpty(toMarkAsSeen)) {
+				toMarkAsSeen.forEach(x -> {
+					x.setSyncType(CliGenAlertVo.SYNC_UPDATE);
+					FlagUtil.setFlagValue(x, CliGenAlertVo.FLAG_SEEN, true);
+				});
+				
+				this.cliGenAlertDao.synchronize(toMarkAsSeen);
+			}
+		}
+		
+		return result;
+	}
 	
 	//--- Implemented methods -------------------
 	@Override public Object runOverview(ChartFilter filter, UserData userData) throws CoreException				{ return this.execute(StatDefinitionVo.ID_SOLAR_OVERVIEW, filter, userData); }
 	@Override public Object runClimate(ChartFilter filter, UserData userData) throws CoreException				{ return this.execute(StatDefinitionVo.ID_SOLAR_CLIMATE, filter, userData); }
 	@Override public Object runPerformanceIndex(ChartFilter filter, UserData userData) throws CoreException		{ return this.execute(StatDefinitionVo.ID_SOLAR_PERFORMANCE_INDEX, filter, userData); }
 
-	@Override public Object runOverviewAlerts(ChartFilter filter, UserData userData) throws CoreException		{
+	@Override public Object retrieveOverviewAlerts(ChartFilter filter, UserData userData) throws CoreException		{
 		if (filter == null) filter = new ChartFilter();
 		filter = this.validate(filter, userData);
 		
-		Collection<CliLocAlertVo> alerts = this.cliLocAlertDao.retrieveFor(userData.getCliId(), userData.getLocId(), filter.getFrom(), filter.getTo());
-
-		Collection<CliLocAlertVo> toMarkAsSeen = alerts.stream().filter(x -> ! FlagUtil.getFlagValue(x, CliLocAlertVo.FLAG_SEEN)).collect(Collectors.toList());
-		if (CollectionUtil.notEmpty(toMarkAsSeen)) {
-			toMarkAsSeen.forEach(x -> {
-				x.setSyncType(CliLocAlertVo.SYNC_UPDATE);
-				FlagUtil.setFlagValue(x, CliLocAlertVo.FLAG_SEEN, true);
-			});
-			
-			this.cliLocAlertDao.synchronize(toMarkAsSeen);
-		}
-		
-		if (CollectionUtil.notEmpty(alerts)) alerts.forEach(x -> x.setParsedMessage(this.parserService.parseAlert(x.getCliLocAlertData(), userData)));
+		Collection<Alert> alerts = new ArrayList<>();
+		CollectionUtil.addAll(alerts, this.retrieveLocationAlerts(filter, userData));
+		CollectionUtil.addAll(alerts, this.retrieveGeneratorsAlerts(filter, userData));
 		
 		return alerts;
 	}
@@ -164,5 +221,4 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 		
 		return result;
 	}
-
 }

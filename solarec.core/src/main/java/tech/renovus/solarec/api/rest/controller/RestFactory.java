@@ -163,12 +163,6 @@ public class RestFactory {
 		return result;
 	}
 	
-	public List<Alert> convertAlerts(Collection<CliLocAlertVo> vos) {
-		List<Alert> result = new ArrayList<>(CollectionUtil.size(vos));
-		if (CollectionUtil.notEmpty(vos)) for (CliLocAlertVo vo : vos) result.add(convert(vo));
-		return result;
-	}
-
 	//--- VO to JSON methods --------------------
 	public Location convert(LocationVo vo) {
 		if (vo == null) return null;
@@ -394,20 +388,6 @@ public class RestFactory {
 		report.setOrder(vo.getRepOrder());
 		
 		return report;
-	}
-	
-	public Alert convert(CliLocAlertVo vo) {
-		if (vo == null) return null;
-		
-		Alert alert = new Alert();
-		
-		alert.setDate(vo.getCliLocAlertAdded());
-		alert.setFirstView(! FlagUtil.getFlagValue(vo, CliLocAlertVo.FLAG_SEEN));
-		alert.setType(vo.getCliLocAlertType());
-		alert.setMessage(vo.getParsedMessage());
-		alert.setExtraInfo(vo.getCliLocAlertData());
-		
-		return alert;
 	}
 	
 	//--- JSON to VO methods --------------------
