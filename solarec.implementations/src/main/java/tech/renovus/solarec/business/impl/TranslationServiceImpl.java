@@ -2,12 +2,15 @@ package tech.renovus.solarec.business.impl;
 
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.TranslationService;
 
+@Service
 public class TranslationServiceImpl implements TranslationService {
 
 	//--- Private constants ---------------------
@@ -15,11 +18,11 @@ public class TranslationServiceImpl implements TranslationService {
 	private static final String PREFIX_SETTING_CATEGORY	= "setting.category.";
 	
 	//--- Private properties --------------------
-	@Autowired private MessageSource messageSource;
+	@Resource private MessageSource messageSource;
 	
 	//--- Implemented methods -------------------
 	@Override public Locale getLocale(UserData userData) {
-		return userData == null || userData.getLocale() == null ? Locale.ENGLISH : null;
+		return userData == null || userData.getLocale() == null ? Locale.ENGLISH : userData.getLocale();
 	}
 	
 	@Override public String forLabel(Locale locale, String labe, Object[] params)		{ return this.messageSource.getMessage(labe, params, locale); }

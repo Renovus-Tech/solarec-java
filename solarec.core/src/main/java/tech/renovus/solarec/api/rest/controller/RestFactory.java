@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.SecurityService;
@@ -49,16 +50,12 @@ import tech.renovus.solarec.vo.rest.entity.Station;
 import tech.renovus.solarec.vo.rest.entity.User;
 import tech.renovus.solarec.vo.rest.weather.WeatherDefinition;
 
+@Service
 public class RestFactory {
 	
 	//--- Resources -----------------------------
 	@Autowired private TranslationService translation;
 	
-	//--- Constructors --------------------------
-	private RestFactory() {}
-	private static RestFactory instance = new RestFactory();
-	public static RestFactory getInstance() { return RestFactory.instance; }
-
 	//--- Collection public methods-------
 	public List<Processing> convertProcessings(Collection<DataProcessingVo> vos) {
 		List<Processing> result = new ArrayList<>(CollectionUtil.size(vos));
@@ -301,12 +298,9 @@ public class RestFactory {
 		result.setValue(vo.getValue());
 		
 		if (vo.getSettingVo() != null) {
-			result.setLabel("label.setting." + vo.getSettingVo().getSetName());
-			result.setCategoryLabel("label.category." + vo.getSettingVo().getSetCatName());
-			
 			Locale locale = this.translation.getLocale(userData);
 			result.setLabel(this.translation.forSetting(locale, vo.getSettingVo().getSetName()));
-			result.setLabel(this.translation.forSettingCategory(locale, vo.getSettingVo().getSetCatName()));
+			result.setCategoryLabel(this.translation.forSettingCategory(locale, vo.getSettingVo().getSetCatName()));
 			
 			result.setName(vo.getSettingVo().getSetName());
 			result.setCategory(vo.getSettingVo().getSetCatName());

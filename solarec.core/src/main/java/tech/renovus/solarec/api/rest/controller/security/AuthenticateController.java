@@ -32,59 +32,60 @@ public class AuthenticateController extends BasicController {
 
 	//--- Resources -----------------------------
 	@Resource SecurityService service;
+	@Resource RestFactory restFactory;
 	
 	//--- Mapping methods -----------------------
 	@GetMapping(EndPointFactory.REST_SECURITY_AUTHENTICATE)
 	public List<Client> listClients(HttpSession session) throws CoreException {
 		UserData userData = this.getLoggedUserData(session);
-		return RestFactory.getInstance().convertClients(this.service.listClients(userData), userData);
+		return this.restFactory.convertClients(this.service.listClients(userData), userData);
 	}
 	
 	@GetMapping(EndPointFactory.REST_SECURITY_AUTHENTICATE + "/current")
 	public User current(HttpSession session) throws CoreException {
 		UserData userData = this.getLoggedUserData(session);
-		return RestFactory.getInstance().convert(userData);
+		return this.restFactory.convert(userData);
 	}
 	
 	@PostMapping(EndPointFactory.REST_SECURITY_AUTHENTICATE + "/current")
 	public User setToCurrent(@RequestBody User user, HttpSession session) throws CoreException {
 		UserData userData = this.getLoggedUserData(session);
 		this.service.setUserData(user, userData);
-		return RestFactory.getInstance().convert(userData);
+		return this.restFactory.convert(userData);
 	}
 	
 	@GetMapping(EndPointFactory.REST_SECURITY_AUTHENTICATE + "/{id}")
 	public User setClient(@PathVariable Integer id, HttpSession session) {
 		UserData userData = this.getLoggedUserData(session);
 		this.service.setClient(id, userData);
-		return RestFactory.getInstance().convert(userData);
+		return this.restFactory.convert(userData);
 	}
 	
 	@GetMapping(EndPointFactory.REST_SECURITY_AUTHENTICATE_LOCATION)
 	public List<Location> getLocations(HttpSession session) {
 		UserData userData = this.getLoggedUserData(session);
-		return RestFactory.getInstance().convertLocations(this.service.getLocations(userData));
+		return this.restFactory.convertLocations(this.service.getLocations(userData));
 	}
 	
 	@GetMapping(EndPointFactory.REST_SECURITY_AUTHENTICATE_LOCATION + "/{id}")
 	public User setLocation(@PathVariable Integer id, HttpSession session) {
 		UserData userData = this.getLoggedUserData(session);
 		this.service.setLocation(id, userData);
-		return RestFactory.getInstance().convert(userData);
+		return this.restFactory.convert(userData);
 	}
 	
 	@PostMapping(EndPointFactory.REST_SECURITY_AUTHENTICATE)
 	public User authenticate(@RequestBody Authentication authentication, HttpSession session) throws CoreException {
 		UserData userData = this.getUserData(session);
 		this.service.authenticate(authentication, userData);
-		return RestFactory.getInstance().convert(userData);
+		return this.restFactory.convert(userData);
 	}
 	
 	@DeleteMapping(EndPointFactory.REST_SECURITY_AUTHENTICATE)
 	public User logout(HttpSession session) throws CoreException {
 		UserData userData = this.getUserData(session);
 		this.service.doLogout(userData);
-		return RestFactory.getInstance().convert(userData);
+		return this.restFactory.convert(userData);
 	}
 	
 	//--- Password reset ------------------------

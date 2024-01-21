@@ -31,6 +31,7 @@ public class ProcessingController extends BasicController {
 
 	//--- Resources -----------------------------
 	@Resource ProcessingService service;
+	@Resource RestFactory restFactory;
 
 	//--- Mapping methods -----------------------
 	@GetMapping(EndPointFactory.REST_BACKGROUND_PROCESSING)
@@ -38,7 +39,7 @@ public class ProcessingController extends BasicController {
 		HttpSession session
 	) {
 		UserData userData = this.getLoggedUserData(session);
-		return RestFactory.getInstance().convertProcessings(this.service.findAllClient(userData.getCliId(), userData));
+		return this.restFactory.convertProcessings(this.service.findAllClient(userData.getCliId(), userData));
 	}
 	
 	@PostMapping(EndPointFactory.REST_BACKGROUND_PROCESSING)
@@ -60,7 +61,7 @@ public class ProcessingController extends BasicController {
 			
 			response.setStatus(HttpServletResponse.SC_OK);
 			
-			return RestFactory.getInstance().convertProcessings(result);
+			return this.restFactory.convertProcessings(result);
 		} catch (JsonProcessingException e) {
 			throw new CoreException(e);
 		}
@@ -85,7 +86,7 @@ public class ProcessingController extends BasicController {
 			
 			response.setStatus(HttpServletResponse.SC_OK);
 			
-			return RestFactory.getInstance().convertProcessings(result);
+			return this.restFactory.convertProcessings(result);
 		} catch (JsonProcessingException e) {
 			throw new CoreException(e);
 		}

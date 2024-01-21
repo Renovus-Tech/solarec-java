@@ -35,6 +35,7 @@ public class GeneratorsController extends BasicController {
 	
 	//--- Resources -----------------------------
 	@Resource GeneratorService service;
+	@Resource RestFactory restFactory;
 	
 	//--- Mapping methods -----------------------
 	@GetMapping(EndPointFactory.REST_ADMINISTRATION_GENERATORS)
@@ -47,7 +48,7 @@ public class GeneratorsController extends BasicController {
 		UserData userData = this.getLoggedUserData(session);
 		
 		try {
-			return RestFactory.getInstance().convertGenerators(this.service.findAll(offset, size, name, userData));
+			return this.restFactory.convertGenerators(this.service.findAll(offset, size, name, userData));
 		} catch (CoreException exc) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
 		}
@@ -58,7 +59,7 @@ public class GeneratorsController extends BasicController {
 		UserData userData = this.getLoggedUserData(session);
 		
 		try {
-			return RestFactory.getInstance().convert(this.service.findFullVo(id, userData));
+			return this.restFactory.convert(this.service.findFullVo(id, userData));
 		} catch (CoreException exc) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
 		}
@@ -71,7 +72,7 @@ public class GeneratorsController extends BasicController {
 		try {
 			Collection<GeneratorVo> generators = new TreeSet<>(GeneratorGenCodeAsNumberComparator.getInstance());
 			CollectionUtil.addAll(generators, this.service.findAllForLocation(userData.getLocId(), userData));
-			return RestFactory.getInstance().convertGenerators(generators);
+			return this.restFactory.convertGenerators(generators);
 		} catch (CoreException exc) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
 		}
@@ -79,28 +80,28 @@ public class GeneratorsController extends BasicController {
 	
 	@PostMapping(EndPointFactory.REST_ADMINISTRATION_GENERATORS)
 	public Generator create(@RequestBody Generator Generator, HttpSession session) {
-		GeneratorVo vo = RestFactory.getInstance().convert(Generator);
+		GeneratorVo vo = this.restFactory.convert(Generator);
 		this.service.create(vo, this.getLoggedUserData(session));
-		return RestFactory.getInstance().convert(vo);
+		return this.restFactory.convert(vo);
 	}
 	
 	@PutMapping(EndPointFactory.REST_ADMINISTRATION_GENERATORS)
 	public Generator update(@RequestBody Generator Generator, HttpSession session) {
-		GeneratorVo vo = RestFactory.getInstance().convert(Generator);
+		GeneratorVo vo = this.restFactory.convert(Generator);
 		vo = this.service.update(vo, this.getLoggedUserData(session));
-		return RestFactory.getInstance().convert(vo);
+		return this.restFactory.convert(vo);
 	}
 
 	@GetMapping(EndPointFactory.REST_ADMINISTRATION_GENERATORS + "/neighbors")
 	public List<Location> getEstimations(HttpSession session) {
 		Collection<LocationVo> locations = this.service.getNeighbors(this.getLoggedUserData(session));
-		return RestFactory.getInstance().convertLocations(locations);
+		return this.restFactory.convertLocations(locations);
 	}
 
 	@PostMapping(EndPointFactory.REST_ADMINISTRATION_GENERATORS + "/neighbors")
 	public List<Location> setEstimations(@RequestBody List<Location> generators, HttpSession session) {
 		Collection<LocationVo> vos = this.service.setNeighbors(generators, this.getLoggedUserData(session));
-		return RestFactory.getInstance().convertLocations(vos);
+		return this.restFactory.convertLocations(vos);
 	}
 
 }

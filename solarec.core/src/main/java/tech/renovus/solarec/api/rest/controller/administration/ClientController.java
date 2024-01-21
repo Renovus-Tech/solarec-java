@@ -24,13 +24,14 @@ public class ClientController extends BasicController {
 
 	//--- Resources -----------------------------
 	@Resource ClientService service;
+	@Resource RestFactory restFactory;
 	
 	//--- Mapping methods -----------------------
 	@GetMapping(EndPointFactory.REST_ADMINISTRATION_CLIENTS + "/current")
 	public Client current(HttpSession session) throws CoreException {
 		UserData userData = this.getLoggedUserData(session);
 		ClientVo vo = this.service.getCurrent(userData);
-		return RestFactory.getInstance().convert(vo, userData);
+		return this.restFactory.convert(vo, userData);
 	}
 
 	@PostMapping(EndPointFactory.REST_ADMINISTRATION_CLIENTS + "/current")

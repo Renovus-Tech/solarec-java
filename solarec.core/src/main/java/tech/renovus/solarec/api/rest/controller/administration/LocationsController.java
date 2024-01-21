@@ -30,6 +30,7 @@ public class LocationsController extends BasicController {
 	
 	//--- Resources -----------------------------
 	@Resource LocationService service;
+	@Resource RestFactory restFactory;
 	
 	//--- Mapping methods -----------------------
 	@GetMapping(EndPointFactory.REST_ADMINISTRATION_LOCATIONS)
@@ -42,7 +43,7 @@ public class LocationsController extends BasicController {
 		UserData userData = this.getLoggedUserData(session);
 		
 		try {
-			return RestFactory.getInstance().convertLocations(this.service.findAll(offset, size, name, userData));
+			return this.restFactory.convertLocations(this.service.findAll(offset, size, name, userData));
 		} catch (CoreException exc) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_LOCATIONS, exc);
 		}
@@ -57,7 +58,7 @@ public class LocationsController extends BasicController {
 			
 			LocationVo locVo = this.service.findFullVo(id, userData);
 			userData.setLocationVo(locVo);
-			return RestFactory.getInstance().convert(locVo);
+			return this.restFactory.convert(locVo);
 		} catch (CoreException exc) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_LOCATIONS, exc);
 		}
@@ -65,28 +66,28 @@ public class LocationsController extends BasicController {
 	
 	@PostMapping(EndPointFactory.REST_ADMINISTRATION_LOCATIONS)
 	public Location create(@RequestBody Location location, HttpSession session) {
-		LocationVo vo = RestFactory.getInstance().convert(location);
+		LocationVo vo = this.restFactory.convert(location);
 		this.service.create(vo, this.getLoggedUserData(session));
-		return RestFactory.getInstance().convert(vo);
+		return this.restFactory.convert(vo);
 	}
 	
 	@PutMapping(EndPointFactory.REST_ADMINISTRATION_LOCATIONS)
 	public Location update(@RequestBody Location location, HttpSession session) {
-		LocationVo vo = RestFactory.getInstance().convert(location);
+		LocationVo vo = this.restFactory.convert(location);
 		this.service.update(vo, this.getLoggedUserData(session));
-		return RestFactory.getInstance().convert(vo);
+		return this.restFactory.convert(vo);
 	}
 
 	@GetMapping(EndPointFactory.REST_ADMINISTRATION_LOCATIONS + "/estimations")
 	public List<Location> getEstimations(HttpSession session) {
 		Collection<LocationVo> locations = this.service.getEstimations(this.getLoggedUserData(session));
-		return RestFactory.getInstance().convertLocations(locations);
+		return this.restFactory.convertLocations(locations);
 	}
 
 	@PostMapping(EndPointFactory.REST_ADMINISTRATION_LOCATIONS + "/estimations")
 	public List<Location> setEstimations(@RequestBody List<Location> locations, HttpSession session) {
 		Collection<LocationVo> vos = this.service.setEstimations(locations, this.getLoggedUserData(session));
-		return RestFactory.getInstance().convertLocations(vos);
+		return this.restFactory.convertLocations(vos);
 	}
 	
 	

@@ -21,17 +21,18 @@ public class DataDefinitionsController extends BasicController {
 	
 	//--- Resources -----------------------------
 	@Resource DataDefinitionService service;
+	@Resource RestFactory restFactory;
 	
 	//--- Mapping methods -----------------------
 	@GetMapping(EndPointFactory.REST_ADMINISTRATION_DATA_DEFINITIONS)
 	public List<DataDefinition> list ( HttpSession session ) {
 		UserData userData = this.getLoggedUserData(session);
-		return RestFactory.getInstance().convertDataDefinitions(this.service.findAll(userData));
+		return this.restFactory.convertDataDefinitions(this.service.findAll(userData));
 	}
 	
 	@GetMapping(EndPointFactory.REST_ADMINISTRATION_DATA_DEFINITIONS_TRIGGERS)
 	public List<DataDefinitionTrigger> listTriggers ( HttpSession session ) {
 		UserData userData = this.getLoggedUserData(session);
-		return RestFactory.getInstance().convertTriggers(this.service.findAllTriggers(userData), userData);
+		return this.restFactory.convertTriggers(this.service.findAllTriggers(userData), userData);
 	}
 }
