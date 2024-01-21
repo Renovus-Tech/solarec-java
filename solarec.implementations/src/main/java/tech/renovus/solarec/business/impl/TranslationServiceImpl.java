@@ -14,6 +14,7 @@ import tech.renovus.solarec.business.TranslationService;
 public class TranslationServiceImpl implements TranslationService {
 
 	//--- Private constants ---------------------
+	private static final String PREFIX_ALERT			= "alert.";
 	private static final String PREFIX_SETTING			= "setting.";
 	private static final String PREFIX_SETTING_CATEGORY	= "setting.category.";
 	
@@ -25,15 +26,10 @@ public class TranslationServiceImpl implements TranslationService {
 		return userData == null || userData.getLocale() == null ? Locale.ENGLISH : userData.getLocale();
 	}
 	
-	@Override public String forLabel(Locale locale, String labe, Object[] params)		{ return this.messageSource.getMessage(labe, params, locale); }
-	@Override public String forSetting(Locale locale, String setting)					{ return this.forLabel(locale, PREFIX_SETTING + setting, null); }
-	@Override public String forSettingCategory(Locale locale, String settingCategory)	{ return this.forLabel(locale, PREFIX_SETTING_CATEGORY + settingCategory, null); }
-
-	@Override
-	public String forAlert(Locale locale, String alert, Object[] params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	@Override public String forLabel(Locale locale, String labe, Object... params)		{ return this.messageSource.getMessage(labe, params, locale); }
+	@Override public String forSetting(Locale locale, String setting)					{ return this.forLabel(locale, PREFIX_SETTING + setting); }
+	@Override public String forSettingCategory(Locale locale, String settingCategory)	{ return this.forLabel(locale, PREFIX_SETTING_CATEGORY + settingCategory); }
+	@Override public String forAlert(Locale locale, String alertType, Object... params)	{ return this.forLabel(locale, PREFIX_ALERT + alertType, params); }
 
 	
 }

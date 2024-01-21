@@ -9,7 +9,7 @@ import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
 public class CliLocAlertRowWrapper implements RowMapper<CliLocAlertVo> {
 
 	//--- Constructors --------------------------
-	private CliLocAlertRowWrapper() {}
+	protected CliLocAlertRowWrapper() {}
 	private static CliLocAlertRowWrapper instance = new CliLocAlertRowWrapper();
 	public static CliLocAlertRowWrapper getInstance() { return CliLocAlertRowWrapper.instance; }
 

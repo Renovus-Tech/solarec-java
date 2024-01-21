@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import tech.renovus.solarec.db.data.dao.base.BaseCliGenAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliGenAlertDao;
-import tech.renovus.solarec.db.data.dao.wrapper.CliGenAlertRowWrapper;
+import tech.renovus.solarec.db.data.dao.wrapper.custom.CliGeAlertWithOtherRowWrapper;
 import tech.renovus.solarec.vo.db.data.CliGenAlertVo;
 
 @Repository
@@ -33,7 +33,7 @@ public class CliGenAlertDaoImpl extends BaseCliGenAlertDao implements CliGenAler
 					.addValue("locId", locId)
 					.addValue("from", from)
 					.addValue("to", to),
-					CliGenAlertRowWrapper.getInstance()
+					CliGeAlertWithOtherRowWrapper.getInstance()
 			);
 	}
 

@@ -68,7 +68,7 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 				Alert alert = new Alert()
 						.withDate(x.getCliLocAlertTrigger())
 						.withFirstView(! FlagUtil.getFlagValue(x, CliLocAlertVo.FLAG_SEEN))
-						.withMessage(this.parserService.parseAlert(x.getCliLocAlertData(), userData))
+						.withMessage(this.parserService.parseAlert(x, userData))
 						.withType(x.getCliLocAlertType())
 					;
 				
@@ -100,7 +100,7 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 				Alert alert = new Alert()
 						.withDate(x.getCliGenAlertTrigger())
 						.withFirstView(! FlagUtil.getFlagValue(x, CliGenAlertVo.FLAG_SEEN))
-						.withMessage(this.parserService.parseAlert(x.getCliGenAlertData(), userData))
+						.withMessage(this.parserService.parseAlert(x, userData))
 						.withType(x.getCliGenAlertType())
 					;
 				
