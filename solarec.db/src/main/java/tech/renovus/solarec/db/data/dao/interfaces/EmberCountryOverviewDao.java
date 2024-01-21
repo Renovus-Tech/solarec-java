@@ -7,7 +7,7 @@ import tech.renovus.solarec.vo.db.data.EmberCountryOverviewVo;
 public interface EmberCountryOverviewDao {
 
 	Collection<EmberCountryOverviewVo> findAll();
-	EmberCountryOverviewVo findVo(String countryOrRegion, Integer year);
+	EmberCountryOverviewVo findVo(Integer year, String countryOrRegion);
 	void insert(EmberCountryOverviewVo vo);
 	void update(EmberCountryOverviewVo vo);
 	void delete(EmberCountryOverviewVo vo);
