@@ -62,6 +62,27 @@ public class JsonCaller {
 	            .block();
 	}
 	
+	public static <T extends Object> T bearerGet(String url, Map<String,String> params, String authCode, Class<T> responseClass) {
+		WebClient webClient = WebClient.create();
+		
+		return webClient.get()
+				.uri(url, params)
+				.header("Authorization", "Bearer " + authCode)
+				.retrieve()
+				.bodyToMono(responseClass)
+				.block();
+	}
+	
+	public static <T extends Object> T post(String url, Map<String,String> params, Class<T> responseClass) {
+		WebClient webClient = WebClient.create();
+
+		return webClient.post()
+	            .uri(url, params)
+	            .retrieve()
+	            .bodyToMono(responseClass)
+	            .block();
+	}
+	
 	public static <T extends Object> T get(String url, Map<String, String> headers, Map<String,String> params, Class<T> responseClass) {
 		if (params == null) params = new HashMap<>();
 		
