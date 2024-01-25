@@ -22,6 +22,10 @@ public class TranslationServiceImpl implements TranslationService {
 	@Resource private MessageSource messageSource;
 	
 	//--- Implemented methods -------------------
+	@Override public Locale getLocale(String language) {
+		return new Locale(language);
+	}
+	
 	@Override public Locale getLocale(UserData userData) {
 		return userData == null || userData.getLocale() == null ? Locale.ENGLISH : userData.getLocale();
 	}

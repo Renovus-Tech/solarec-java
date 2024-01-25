@@ -1,7 +1,6 @@
 package tech.renovus.solarec.vo.db.data;
 
 import tech.renovus.solarec.interfaces.ISetting;
-import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.relation.DbUsrSettingVo;
 
 public class UsrSettingVo extends DbUsrSettingVo implements ISetting {
@@ -23,14 +22,6 @@ public class UsrSettingVo extends DbUsrSettingVo implements ISetting {
 	}
 	
 	//--- Static methods ------------------------
-	public static boolean validName(String name) {
-		if (StringUtil.isEmpty(name)) return false;
-		
-		switch (name) {
-			default:
-				return false;
-		}
-	}
 	
 	//--- Implemented methods -------------------
 	@Override public String getName() { return this.getUsrSetName(); }

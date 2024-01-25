@@ -10,6 +10,7 @@ public interface TranslationService {
 	static final String ERROR_PARSING = "error.parsing";
 	
 	//--- Methods -------------------------------
+	Locale getLocale(String language);
 	Locale getLocale(UserData userData);
 	
 	String forLabel(Locale locale, String labe, Object... params);

@@ -50,7 +50,7 @@ public class AuthenticateController extends BasicController {
 	@PostMapping(EndPointFactory.REST_SECURITY_AUTHENTICATE + "/current")
 	public User setToCurrent(@RequestBody User user, HttpSession session) throws CoreException {
 		UserData userData = this.getLoggedUserData(session);
-		this.service.setUserData(user, userData);
+		this.service.saveUserData(user, userData);
 		return this.restFactory.convert(userData);
 	}
 	

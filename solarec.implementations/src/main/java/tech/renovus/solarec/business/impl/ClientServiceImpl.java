@@ -40,7 +40,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void setToCurrent(Client client, UserData userData) {
+	public void saveToCurrent(Client client, UserData userData) {
 		Collection<CliSettingVo> settings = new ArrayList<>();
 		
 		if (client != null && CollectionUtil.notEmpty(client.getSettings())) {

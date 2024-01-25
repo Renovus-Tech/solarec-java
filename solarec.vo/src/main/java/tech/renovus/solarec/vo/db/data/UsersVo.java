@@ -1,5 +1,8 @@
 package tech.renovus.solarec.vo.db.data;
 
+import tech.renovus.solarec.util.ClassUtil;
+import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.relation.DbUsersVo;
 
 public class UsersVo extends DbUsersVo {
@@ -16,4 +19,14 @@ public class UsersVo extends DbUsersVo {
 		this.setPk(usrId);
 	}
 
+	//--- Public methods ------------------------
+	public UsrSettingVo getSetting(String setName) {
+		if (StringUtil.isEmpty(setName) || CollectionUtil.isEmpty(this.getSettings())) return null;
+		
+		for (UsrSettingVo setVo : this.getSettings()) {
+			if (ClassUtil.equals(setVo.getName(), setName)) return setVo;
+		}
+		
+		return null;
+	}
 }

@@ -29,5 +29,5 @@ public interface SecurityService {
 	
 	void startPasswordReset(String email, Locale locale);
 	PasswordReset doPassworReset(PasswordReset passwordReset, UserData userData);
-	void setUserData(User user, UserData userData);
+	void saveUserData(User user, UserData userData);
 }

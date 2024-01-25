@@ -18,6 +18,7 @@ import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.ClientService;
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.SecurityService;
+import tech.renovus.solarec.business.TranslationService;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliSettingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliUserDao;
@@ -25,17 +26,18 @@ import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
 import tech.renovus.solarec.db.data.dao.interfaces.FunctionalityDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
+import tech.renovus.solarec.db.data.dao.interfaces.SettingsDao;
 import tech.renovus.solarec.db.data.dao.interfaces.UsersDao;
 import tech.renovus.solarec.db.data.dao.interfaces.UsrSettingDao;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.StringUtil;
-import tech.renovus.solarec.vo.db.data.CliSettingVo;
 import tech.renovus.solarec.vo.db.data.CliUserVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.SettingsVo;
 import tech.renovus.solarec.vo.db.data.UsersVo;
 import tech.renovus.solarec.vo.db.data.UsrSettingVo;
 import tech.renovus.solarec.vo.rest.entity.Setting;
@@ -56,7 +58,8 @@ public class SecurityServiceImpl implements SecurityService {
 	@Autowired EmailService emailService;
 	@Autowired RenovusSolarecConfiguration configuration;
 	@Autowired MessageSource messageSource;
-
+	@Autowired TranslationService translationService;
+	
 	@Resource DataDefinitionDao dataDefinitionDao;
 	@Resource UsersDao usersDao;
 	@Resource UsrSettingDao usrSettingDao;
@@ -65,6 +68,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Resource FunctionalityDao functionalitiesDao;
 	@Resource LocationDao locationDao;
 	@Resource CliSettingDao cliSettingDao;
+	@Resource SettingsDao settingsDao;
 	
 	//--- Private methods -----------------------
 	private void logout(UserData userData) {
@@ -80,6 +84,9 @@ public class SecurityServiceImpl implements SecurityService {
 		userData.setClientVo(cliVo);
 		userData.setFunctionalities(functionalities);
 		userData.setLogged(true);
+		
+		UsrSettingVo settingVo = usrVo.getSetting(SettingsVo.PREFER_LANGUAGE);
+		if (settingVo != null) userData.setLocale(this.translationService.getLocale(settingVo.getValue()));
 	}
 
 	private boolean accessEnable(UsersVo usrVo, ClientVo cliVo) {
@@ -236,12 +243,14 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	public void setUserData(User user, UserData userData) {
+	public void saveUserData(User user, UserData userData) {
 		Collection<UsrSettingVo> settings = new ArrayList<>();
 		
 		if (user != null && CollectionUtil.notEmpty(user.getSettings())) {
+			Collection<String> settingsNames = this.settingsDao.getAllNamesForUser();
 			for (Setting setting : user.getSettings()) {
-				if (! UsrSettingVo.validName(setting.getName())) continue;
+				if (! settingsNames.contains(setting.getName())) continue;
+				
 				UsrSettingVo usrSetVo = new UsrSettingVo(userData.getUsrId(), setting.getName(), setting.getValue());
 				usrSetVo.setSyncType(UsrSettingVo.SYNC_INSERT);
 				settings.add(usrSetVo);

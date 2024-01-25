@@ -37,7 +37,7 @@ public class ClientController extends BasicController {
 	@PostMapping(EndPointFactory.REST_ADMINISTRATION_CLIENTS + "/current")
 	public Client setToCurrent(@RequestBody Client client, HttpSession session) throws CoreException {
 		UserData userData = this.getLoggedUserData(session);
-		this.service.setToCurrent(client, userData);
+		this.service.saveToCurrent(client, userData);
 		return this.current(session);
 	}
 

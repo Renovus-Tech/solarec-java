@@ -15,6 +15,7 @@ public class SettingsDaoImpl extends BaseSettingsDao implements SettingsDao {
 	
 	//--- Private properties --------------------
 	private final String SQL_GET_ALL_NAMES_FOR_CLIENT			= "SELECT set_name FROM settings WHERE set_flags ilike '_1%'";
+	private final String SQL_GET_ALL_NAMES_FOR_USER				= "SELECT set_name FROM settings WHERE set_flags ilike '1%'";
 	
 	//--- Constructors --------------------------
 	@Autowired public SettingsDaoImpl(NamedParameterJdbcTemplate jdbc) {
@@ -26,4 +27,8 @@ public class SettingsDaoImpl extends BaseSettingsDao implements SettingsDao {
 		return this.jdbc.queryForList(SQL_GET_ALL_NAMES_FOR_CLIENT, Collections.emptyMap(), String.class);
 	}
 
+	public Collection<String> getAllNamesForUser() {
+		return this.jdbc.queryForList(SQL_GET_ALL_NAMES_FOR_USER, Collections.emptyMap(), String.class);
+	}
+	
 }

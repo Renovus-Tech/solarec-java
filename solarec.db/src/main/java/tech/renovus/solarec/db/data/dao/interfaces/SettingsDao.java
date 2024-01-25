@@ -15,5 +15,6 @@ public interface SettingsDao {
 	void synchronize(Collection<SettingsVo> vos);
 	
 	Collection<String> getAllNamesForClient();
+	Collection<String> getAllNamesForUser();
 
 }
