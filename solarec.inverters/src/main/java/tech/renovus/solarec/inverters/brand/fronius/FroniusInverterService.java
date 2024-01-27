@@ -1,11 +1,18 @@
 package tech.renovus.solarec.inverters.brand.fronius;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import reactor.core.publisher.Mono;
 import tech.renovus.solarec.connection.JsonCaller;
+import tech.renovus.solarec.inverters.brand.fronius.api.ErrorResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.InfoReleaseResponse;
+import tech.renovus.solarec.inverters.brand.fronius.api.history.data.HistoryDataResponse;
+import tech.renovus.solarec.inverters.brand.fronius.api.metadata.PvSystemsListResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.user.InfoUserResponse;
 import tech.renovus.solarec.inverters.common.InverterCofigurationVo;
 import tech.renovus.solarec.inverters.common.InverterService;
@@ -28,8 +35,10 @@ public class FroniusInverterService implements InverterService {
 	private static final String URL_PRD		= "https://api.solarweb.com/swqapi";
 	private static final String URL_BETA	= "https://swqapi-beta.solarweb.com";
 	
-	private static final String ENDPOINT_INFO_RELEASE	= "/info/release";
-	private static final String ENDPOINT_INFO_USER		= "/info/user";
+	private static final String ENDPOINT_INFO_RELEASE				= "/info/release";
+	private static final String ENDPOINT_INFO_USER					= "/info/user";
+	private static final String ENDPOINT_PV_SYSTEMS_LIST			= "/pvsystems-list";
+	private static final String ENDPOINT_PV_SYSTEMS_HISTORY_DATA	= "/pvsystems/{pvSystemId}/histdata";
 	
 	//--- Private methods -----------------------
 	private Map<String, String> getAuthenticationHeaders(String accessKeyId, String accessKeyValue) {
@@ -63,5 +72,41 @@ public class FroniusInverterService implements InverterService {
 				null,
 				InfoUserResponse.class);
 	}
+	
+	public PvSystemsListResponse getPvSystemsList(String accessKeyId, String accessKeyValue) {
+		return JsonCaller.get(
+				URL_PRD + ENDPOINT_PV_SYSTEMS_LIST,
+				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
+				null,
+				PvSystemsListResponse.class);
+	}
 
+	public HistoryDataResponse getPvSystemsHistData(String accessKeyId, String accessKeyValue, String pvSystemsId) {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -1);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		cal.set(Calendar.AM_PM, Calendar.AM);
+		
+		Date from = cal.getTime();
+		
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+		cal.add(Calendar.MILLISECOND, -1);
+		
+		Date to = cal.getTime();
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+		Map<String, String> params = new HashMap<>(2);
+		params.put("from", formatter.format(from));
+		params.put("to", formatter.format(to));
+		
+		return JsonCaller.get(
+				URL_PRD + ENDPOINT_PV_SYSTEMS_HISTORY_DATA.replaceFirst("\\{pvSystemId\\}", pvSystemsId),
+				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
+				params,
+				HistoryDataResponse.class
+			);
+	}
 }

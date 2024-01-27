@@ -57,7 +57,7 @@ public class SmaInverterService implements InverterService {
 	
 	private BcAuthorizeResponse retrieveBcAuthorizeStatus(AuthResponse auth, String clientEmail) {
 		return JsonCaller.bearerGet(
-				(URL + ENDPOINT_BC_AUTHROIZE_STATUS).replaceFirst("{emailAddressResourceOwner}", clientEmail), 
+				(URL + ENDPOINT_BC_AUTHROIZE_STATUS).replaceFirst("\\{emailAddressResourceOwner\\}", clientEmail), 
 				null, 
 				auth.getBearer(),
 				BcAuthorizeResponse.class
@@ -66,7 +66,7 @@ public class SmaInverterService implements InverterService {
 	
 	private BcAuthroizeTokenResponse retrieveBcAutorizeToken(AuthResponse auth, String clientEmail) {
 		return JsonCaller.bearerGet(
-				(URL + ENDPOINT_BC_AUTHROIZE_TOKEN).replaceFirst("{emailAddressResourceOwner}", clientEmail), 
+				(URL + ENDPOINT_BC_AUTHROIZE_TOKEN).replaceFirst("\\{emailAddressResourceOwner\\}", clientEmail), 
 				null, 
 				auth.getBearer(),
 				BcAuthroizeTokenResponse.class

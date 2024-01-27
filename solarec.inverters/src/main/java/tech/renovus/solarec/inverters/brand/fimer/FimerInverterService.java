@@ -178,7 +178,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_ASSET_INFO.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_ASSET_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		AssetInfoResponse response = JsonCaller.get(url, headers, null, AssetInfoResponse.class);
 
 		return response == null ? null : response;
@@ -216,7 +216,7 @@ public class FimerInverterService implements InverterService {
 		params.put("page", "0"); // If not entered, the API always returns the first page.
 									// Default value : 0 ( = First Page )
 
-		String url = URL + ENDPOINT_PORTFOLIO_PLANTS.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PORTFOLIO_PLANTS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PortfolioPlantsResponse response = JsonCaller.get(url, headers, params, PortfolioPlantsResponse.class);
 
 		return response == null ? null : response;
@@ -236,7 +236,7 @@ public class FimerInverterService implements InverterService {
 		params.put("page", "0"); // If not entered, the API always returns the first page.
 									// Default value : 0 ( = First Page )
 
-		String url = URL + ENDPOINT_PORTFOLIO_PLANT_GROUP.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PORTFOLIO_PLANT_GROUP.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PortfolioPlantGroupResponse response = JsonCaller.get(url, headers, params, PortfolioPlantGroupResponse.class);
 
 		return response == null ? null : response;
@@ -252,7 +252,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_PORTFOLIO_INFO.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PORTFOLIO_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PortfolioInfoResponse response = JsonCaller.get(url, headers, null, PortfolioInfoResponse.class);
 
 		return response == null ? null : response;
@@ -271,7 +271,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> params = new HashMap<>(1);
 		params.put("plantStatus", plantStatus); // Available values : HIGH, MEDIUM, LOW, NORM, INFO
 
-		String url = URL + ENDPOINT_PLANT_GROUPS_PLANTS.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PLANT_GROUPS_PLANTS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PlantsResponse response = JsonCaller.get(url, headers, params, PlantsResponse.class);
 
 		return response == null ? null : response;
@@ -287,7 +287,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_PLANT_GROUPS_INFO.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PLANT_GROUPS_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		InfoResponse response = JsonCaller.get(url, headers, null, InfoResponse.class);
 
 		return response == null ? null : response;
@@ -303,7 +303,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_PLANT_LOGGERS.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PLANT_LOGGERS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		LoggersResponse response = JsonCaller.get(url, headers, null, LoggersResponse.class);
 
 		return response == null ? null : response;
@@ -319,7 +319,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_PLANT_BILLING_DATA.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PLANT_BILLING_DATA.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		BillingDataResponse response = JsonCaller.get(url, headers, null, BillingDataResponse.class);
 
 		return response == null ? null : response;
@@ -337,7 +337,7 @@ public class FimerInverterService implements InverterService {
 	 * startDate); // Pattern: yyyyMMdd params.put("endDate", endDate); // Pattern:
 	 * yyyyMMdd
 	 * 
-	 * String url = URL + ENDPOINT_PLANT_DIALY_PROD.replaceFirst("{entityID}",
+	 * String url = URL + ENDPOINT_PLANT_DIALY_PROD.replaceFirst("\\{entityID\\}"
 	 * String.valueOf(entityID)); asdf response = JsonCaller.get(url, headers, null,
 	 * asdf.class);
 	 * 
@@ -354,7 +354,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_PLANT_INFO.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PLANT_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PlantInfoResponse response = JsonCaller.get(url, headers, null, PlantInfoResponse.class);
 
 		return response == null ? null : response;
@@ -372,7 +372,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_PLANT_STATUS.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PLANT_STATUS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PlantStatusResponse response = JsonCaller.get(url, headers, null, PlantStatusResponse.class);
 
 		return response == null ? null : response;
@@ -401,7 +401,7 @@ public class FimerInverterService implements InverterService {
 		params.put("eventsOccurrence", eventsOccurrence); // Available values : H24, D7, D30
 		params.put("page", String.valueOf(page)); // Default value : 0 ( = First Page )
 
-		String url = URL + ENDPOINT_PLANT_EVENTS.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PLANT_EVENTS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PlantEventsResponse response = JsonCaller.get(url, headers, params, PlantEventsResponse.class);
 
 		return response == null ? null : response;
@@ -417,7 +417,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_PLANT_WEATHER.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_PLANT_WEATHER.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PlantWeatherResponse response = JsonCaller.get(url, headers, null, PlantWeatherResponse.class);
 
 		return response == null ? null : response;
@@ -433,7 +433,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_LOGGER_DEVICES.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_LOGGER_DEVICES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		LoggerDevicesResponse response = JsonCaller.get(url, headers, null, LoggerDevicesResponse.class);
 
 		return response == null ? null : response;
@@ -449,7 +449,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_LOGGER_INFO.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_LOGGER_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		LoggerInfoResponse response = JsonCaller.get(url, headers, null, LoggerInfoResponse.class);
 
 		return response == null ? null : response;
@@ -467,7 +467,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_LOGGER_STATUS.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_LOGGER_STATUS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		LoggerStatusResponse response = JsonCaller.get(url, headers, null, LoggerStatusResponse.class);
 
 		return response == null ? null : response;
@@ -491,7 +491,7 @@ public class FimerInverterService implements InverterService {
 		params.put("eventsOccurrence", eventsOccurrence); // Available values : H24, D7, D30
 		params.put("page", String.valueOf(page)); // Default value : 0 ( = First Page )
 
-		String url = URL + ENDPOINT_LOGGER_EVENTS.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_LOGGER_EVENTS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		LoggerEventsResponse response = JsonCaller.get(url, headers, params, LoggerEventsResponse.class);
 
 		return response == null ? null : response;
@@ -529,7 +529,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_DEVICE_INFO.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_DEVICE_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		DevicesInfoResponse response = JsonCaller.get(url, headers, null, DevicesInfoResponse.class);
 
 		return response == null ? null : response;
@@ -545,7 +545,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>(1);
 		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
 
-		String url = URL + ENDPOINT_DEVICE_STATUS.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_DEVICE_STATUS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		DevicesStatusResponse response = JsonCaller.get(url, headers, null, DevicesStatusResponse.class);
 
 		return response == null ? null : response;
@@ -573,7 +573,7 @@ public class FimerInverterService implements InverterService {
 		params.put("eventsOccurrence", eventsOccurrence); // Available values : H24, D7, D30
 		params.put("page", String.valueOf(page)); // Default value : 0 ( = First Page )
 
-		String url = URL + ENDPOINT_DEVICE_EVENTS.replaceFirst("{entityID}", String.valueOf(entityID));
+		String url = URL + ENDPOINT_DEVICE_EVENTS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		DevicesEventsResponse response = JsonCaller.get(url, headers, params, DevicesEventsResponse.class);
 
 		return response == null ? null : response;
@@ -598,11 +598,11 @@ public class FimerInverterService implements InverterService {
 											// )
 											// Example: Europe/Rome
 
-		String url = URL + ENDPOINT_TELEMETRY_DATA_POWER_AGGREGATED.replaceFirst("{entityID}", String.valueOf(entityID))
-				.replaceFirst("{dataType}", dataType) // REQUIRED - Available values : GenerationPower,
+		String url = URL + ENDPOINT_TELEMETRY_DATA_POWER_AGGREGATED.replaceFirst("\\{entityID\\}", String.valueOf(entityID))
+				.replaceFirst("\\{dataType\\}", dataType) // REQUIRED - Available values : GenerationPower,
 														// DCGenerationPower,
 														// Irradiance, GridPowerExport, StoredPower, ActivePowerEV
-				.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+				.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataPowerAggregatedResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataPowerAggregatedResponse.class);
 
@@ -628,11 +628,11 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL + ENDPOINT_TELEMETRY_DATA_FREQUENCY_AGGREGATED
-				.replaceFirst("{entityID}", String.valueOf(entityID)).replaceFirst("{dataType}", dataType) // REQUIRED -
+				.replaceFirst("\\{entityID\\}", String.valueOf(entityID)).replaceFirst("\\{dataType\\}", dataType) // REQUIRED -
 																											// Available
 																											// values :
 																											// LineFrequency
-				.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+				.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataFrequencyAggregatedResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataFrequencyAggregatedResponse.class);
 
@@ -657,9 +657,9 @@ public class FimerInverterService implements InverterService {
 											// )
 											// Example: Europe/Rome
 
-		String url = URL + ENDPOINT_TELEMETRY_DATA_WIND_AGGREGATED.replaceFirst("{entityID}", String.valueOf(entityID))
-				.replaceFirst("{dataType}", dataType) // REQUIRED - Available values : WindDirection, WindSpeed
-				.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+		String url = URL + ENDPOINT_TELEMETRY_DATA_WIND_AGGREGATED.replaceFirst("\\{entityID\\}", String.valueOf(entityID))
+				.replaceFirst("\\{dataType\\}", dataType) // REQUIRED - Available values : WindDirection, WindSpeed
+				.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataWindAggregatedResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataWindAggregatedResponse.class);
 
@@ -685,12 +685,12 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL + ENDPOINT_TELEMETRY_DATA_TEMPERATURE_AGGREGATED
-				.replaceFirst("{entityID}", String.valueOf(entityID)).replaceFirst("{dataType}", dataType) // REQUIRED -
+				.replaceFirst("\\{entityID\\}", String.valueOf(entityID)).replaceFirst("\\{dataType\\}", dataType) // REQUIRED -
 																											// Available
 																											// values :
 																											// CellTemp,
 																											// AmbientTemp
-				.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+				.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataTemperatureAggregatedResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataTemperatureAggregatedResponse.class);
 
@@ -716,12 +716,12 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL + ENDPOINT_TELEMETRY_DATA_VOLTAGE_AGGREGATED
-				.replaceFirst("{entityID}", String.valueOf(entityID)).replaceFirst("{dataType}", dataType) // REQUIRED -
+				.replaceFirst("\\{entityID\\}", String.valueOf(entityID)).replaceFirst("\\{dataType\\}", dataType) // REQUIRED -
 																											// Available
 																											// values :
 																											// Voltage,
 																											// DCVoltage
-				.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+				.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataVoltageAggregatedResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataVoltageAggregatedResponse.class);
 
@@ -747,12 +747,12 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL + ENDPOINT_TELEMETRY_DATA_CURRENT_AGGREGATED
-				.replaceFirst("{entityID}", String.valueOf(entityID)).replaceFirst("{dataType}", dataType) // REQUIRED -
+				.replaceFirst("\\{entityID\\}", String.valueOf(entityID)).replaceFirst("\\{dataType\\}", dataType) // REQUIRED -
 																											// Available
 																											// values :
 																											// Current,
 																											// DCCurrent
-				.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+				.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataCurrentAggregatedResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataCurrentAggregatedResponse.class);
 
@@ -779,7 +779,7 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL + ENDPOINT_TELEMETRY_DATA_ENERGY_AGGREGATED
-				.replaceFirst("{entityID}", String.valueOf(entityID)).replaceFirst("{dataType}", dataType) // REQUIRED -
+				.replaceFirst("\\{entityID\\}", String.valueOf(entityID)).replaceFirst("\\{dataType\\}", dataType) // REQUIRED -
 																											// Available
 																											// values :
 																											// GenerationEnergy,
@@ -792,7 +792,7 @@ public class FimerInverterService implements InverterService {
 																											// SelfConsumedEnergy,
 																											// ActiveEnergyEV,
 																											// SessionEnergyEV
-				.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : cumulative, delta
+				.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : cumulative, delta
 		TelemetryDataEnergyAggregatedResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataEnergyAggregatedResponse.class);
 
@@ -819,11 +819,11 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL
-				+ ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES.replaceFirst("{entityID}", String.valueOf(entityID));
-		url = url.replaceFirst("{dataType}", dataType); // REQUIRED - Available values : GenerationPower,
+				+ ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
+		url = url.replaceFirst("\\{dataType\\}", dataType); // REQUIRED - Available values : GenerationPower,
 														// DCGenerationPower, Irradiance, GridPowerExport, StoredPower,
 														// ActivePowerEV
-		url = url.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+		url = url.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataPowerTimeseriesResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataPowerTimeseriesResponse.class);
 
@@ -850,9 +850,9 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL
-				+ ENDPOINT_TELEMETRY_DATA_VOLTAGE_TIMESERIES.replaceFirst("{entityID}", String.valueOf(entityID));
-		url = url.replaceFirst("{dataType}", dataType); // REQUIRED - Available values : Voltage, DCVoltage
-		url = url.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+				+ ENDPOINT_TELEMETRY_DATA_VOLTAGE_TIMESERIES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
+		url = url.replaceFirst("\\{dataType\\}", dataType); // REQUIRED - Available values : Voltage, DCVoltage
+		url = url.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataVoltageTimeseriesResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataVoltageTimeseriesResponse.class);
 
@@ -879,9 +879,9 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL
-				+ ENDPOINT_TELEMETRY_DATA_FREQUENCY_TIMESERIES.replaceFirst("{entityID}", String.valueOf(entityID));
-		url = url.replaceFirst("{dataType}", dataType); // REQUIRED - Available values : LineFrequency
-		url = url.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+				+ ENDPOINT_TELEMETRY_DATA_FREQUENCY_TIMESERIES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
+		url = url.replaceFirst("\\{dataType\\}", dataType); // REQUIRED - Available values : LineFrequency
+		url = url.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataFrequencyTimeseriesResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataFrequencyTimeseriesResponse.class);
 
@@ -906,9 +906,9 @@ public class FimerInverterService implements InverterService {
 		params.put("timeZone", timeZone); // REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City)
 											// Example: Europe/Rome
 
-		String url = URL + ENDPOINT_TELEMETRY_DATA_WIND_TIMESERIES.replaceFirst("{entityID}", String.valueOf(entityID));
-		url = url.replaceFirst("{dataType}", dataType); // REQUIRED - Available values : WindDirection, WindSpeed
-		url = url.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+		String url = URL + ENDPOINT_TELEMETRY_DATA_WIND_TIMESERIES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
+		url = url.replaceFirst("\\{dataType\\}", dataType); // REQUIRED - Available values : WindDirection, WindSpeed
+		url = url.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataWindTimeseriesResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataWindTimeseriesResponse.class);
 
@@ -935,9 +935,9 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL
-				+ ENDPOINT_TELEMETRY_DATA_TEMPERATURE_TIMESERIES.replaceFirst("{entityID}", String.valueOf(entityID));
-		url = url.replaceFirst("{dataType}", dataType); // REQUIRED - Available values : CellTemp, AmbientTemp
-		url = url.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+				+ ENDPOINT_TELEMETRY_DATA_TEMPERATURE_TIMESERIES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
+		url = url.replaceFirst("\\{dataType\\}", dataType); // REQUIRED - Available values : CellTemp, AmbientTemp
+		url = url.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataTemperatureTimeseriesResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataTemperatureTimeseriesResponse.class);
 
@@ -964,9 +964,9 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL
-				+ ENDPOINT_TELEMETRY_DATA_CURRENT_TIMESERIES.replaceFirst("{entityID}", String.valueOf(entityID));
-		url = url.replaceFirst("{dataType}", dataType); // REQUIRED - Available values : Current, DCCurrent
-		url = url.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+				+ ENDPOINT_TELEMETRY_DATA_CURRENT_TIMESERIES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
+		url = url.replaceFirst("\\{dataType\\}", dataType); // REQUIRED - Available values : Current, DCCurrent
+		url = url.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataCurrentTimeseriesResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataCurrentTimeseriesResponse.class);
 
@@ -992,12 +992,12 @@ public class FimerInverterService implements InverterService {
 											// Example: Europe/Rome
 
 		String url = URL
-				+ ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES.replaceFirst("{entityID}", String.valueOf(entityID));
-		url = url.replaceFirst("{dataType}", dataType); // REQUIRED - Available values : GenerationEnergy,
+				+ ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
+		url = url.replaceFirst("\\{dataType\\}", dataType); // REQUIRED - Available values : GenerationEnergy,
 														// DCGenerationEnergy, Insolation, StorageInEnergy,
 														// StorageOutEnergy, GridEnergyExport, GridEnergyImport,
 														// SelfConsumedEnergy, ActiveEnergyEV, SessionEnergyEV
-		url = url.replaceFirst("{valueType}", valueType); // REQUIRED - Available values : maximum, minimum, average
+		url = url.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
 		TelemetryDataEnergyTimeseriesResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataEnergyTimeseriesResponse.class);
 
@@ -1022,11 +1022,11 @@ public class FimerInverterService implements InverterService {
 		params.put("timeZone", timeZone); // REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City)
 											// Example: Europe/Rome
 
-		String url = URL + ENDPOINT_KPI_TIMESERIES.replaceFirst("{entityID}", String.valueOf(entityID));
-		url = url.replaceFirst("{dataType}", dataType); // REQUIRED - based on type
+		String url = URL + ENDPOINT_KPI_TIMESERIES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
+		url = url.replaceFirst("\\{dataType\\}", dataType); // REQUIRED - based on type
 								// Power-Based KPIs: StateofCharge, StateofHealth, LoadsPowerConsumed, LoadsPowerConsumedPV
 								// Energy-Based KPIs: PerformanceRatio, SelfConsumption, SelfSufficiency, LoadsEnergyConsumed, LoadsEnergyConsumedPV
-		url = url.replaceFirst("{valueType}", valueType); // REQUIRED - based on type
+		url = url.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - based on type
 								// Power-Based KPIs: maximum, minimum, average
 								// Energy-Based KPIs: cumulative, delta
 		KpiTimeseriesResponse response = JsonCaller.get(url, headers, params, KpiTimeseriesResponse.class);
@@ -1052,11 +1052,11 @@ public class FimerInverterService implements InverterService {
 		params.put("timeZone", timeZone); // REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City)
 											// Example: Europe/Rome
 
-		String url = URL + ENDPOINT_KPI_AGGREGATED.replaceFirst("{entityID}", String.valueOf(entityID));
-		url = url.replaceFirst("{dataType}", dataType); // REQUIRED - based on type
+		String url = URL + ENDPOINT_KPI_AGGREGATED.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
+		url = url.replaceFirst("\\{dataType\\}", dataType); // REQUIRED - based on type
 								// Power-Based KPIs: StateofCharge, StateofHealth, LoadsPowerConsumed, LoadsPowerConsumedPV
 								// Energy-Based KPIs: PerformanceRatio, SelfConsumption, SelfSufficiency, LoadsEnergyConsumed, LoadsEnergyConsumedPV
-		url = url.replaceFirst("{valueType}", valueType); // REQUIRED - based on type
+		url = url.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - based on type
 								// Power-Based KPIs: maximum, minimum, average
 								// Energy-Based KPIs: cumulative, delta
 		KpiAggregatedResponse response = JsonCaller.get(url, headers, params, KpiAggregatedResponse.class);
