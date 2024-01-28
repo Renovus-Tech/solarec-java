@@ -54,64 +54,62 @@ public class JsonCaller {
 	public static <T extends Object> T post(String url, Object payload, Class<T> responseClass) {
 		WebClient webClient = WebClient.create();
 
-		return webClient.post()
-	            .uri(url)
-	            .contentType(MediaType.APPLICATION_JSON)
-	            .body(BodyInserters.fromValue(payload))
-	            .retrieve()
-	            .bodyToMono(responseClass)
-	            .block();
+		try {
+			return webClient.post()
+		            .uri(url)
+		            .contentType(MediaType.APPLICATION_JSON)
+		            .body(BodyInserters.fromValue(payload))
+		            .retrieve()
+		            .bodyToMono(responseClass)
+		            .block();
+		} catch (WebClientResponseException webClientError) {
+			try {
+				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
+			} catch (JsonProcessingException e) {
+				return null;
+			}
+		}
 	}
 	
 	public static <T extends Object> T post(String url, Map<String, String> headers, Object payload, Class<T> responseClass) {
 		WebClient webClient = WebClient.create();
 
-		return webClient.post()
-	            .uri(url)
-	            .contentType(MediaType.APPLICATION_JSON)
-	            .body(BodyInserters.fromValue(payload))
-	            .retrieve()
-	            .bodyToMono(responseClass)
-	            .block();
+		try {
+			return webClient.post()
+		            .uri(url)
+		            .contentType(MediaType.APPLICATION_JSON)
+		            .body(BodyInserters.fromValue(payload))
+		            .retrieve()
+		            .bodyToMono(responseClass)
+		            .block();
+		} catch (WebClientResponseException webClientError) {
+			try {
+				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
+			} catch (JsonProcessingException e) {
+				return null;
+			}
+		}
 	}
 
 	public static <T extends Object> T bearerPost(String url, Object payload, String authCode, Class<T> responseClass) {
 		WebClient webClient = WebClient.create();
 
-		return webClient.post()
-	            .uri(url)
-	            .contentType(MediaType.APPLICATION_JSON)
-	            .header("Authorization", "Bearer " + authCode)
-	            .body(BodyInserters.fromValue(payload))
-	            .retrieve()
-	            .bodyToMono(responseClass)
-	            .block();
-	}
-	
-	//--- Get methods ---------------------------
-	public static <T extends Object> T get(String url, Class<T> responseClass) {
-		return get(url, new HashMap<>(0), responseClass);
-	}
-	
-	public static <T extends Object> T get(String url, Map<String,String> queryParams, Class<T> responseClass) {
-		WebClient webClient = WebClient.create();
-
-		return webClient.get()
-	            .uri(generateCompleteURL(url, queryParams))
-	            .retrieve()
-	            .bodyToMono(responseClass)
-	            .block();
-	}
-	
-	public static <T extends Object> T bearerGet(String url, Map<String,String> queryParams, String authCode, Class<T> responseClass) {
-		WebClient webClient = WebClient.create();
-		
-		return webClient.get()
-				.uri(generateCompleteURL(url, queryParams))
-				.header("Authorization", "Bearer " + authCode)
-				.retrieve()
-				.bodyToMono(responseClass)
-				.block();
+		try {
+			return webClient.post()
+		            .uri(url)
+		            .contentType(MediaType.APPLICATION_JSON)
+		            .header("Authorization", "Bearer " + authCode)
+		            .body(BodyInserters.fromValue(payload))
+		            .retrieve()
+		            .bodyToMono(responseClass)
+		            .block();
+		} catch (WebClientResponseException webClientError) {
+			try {
+				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
+			} catch (JsonProcessingException e) {
+				return null;
+			}
+		}
 	}
 	
 	public static <T extends Object> T post(String url, Map<String,String> queryParams, Class<T> responseClass) {
@@ -123,6 +121,48 @@ public class JsonCaller {
 		            .retrieve()
 		            .bodyToMono(responseClass)
 		            .block();
+		} catch (WebClientResponseException webClientError) {
+			try {
+				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
+			} catch (JsonProcessingException e) {
+				return null;
+			}
+		}
+	}
+	
+	//--- Get methods ---------------------------
+	public static <T extends Object> T get(String url, Class<T> responseClass) {
+		return get(url, new HashMap<>(0), responseClass);
+	}
+	
+	public static <T extends Object> T get(String url, Map<String,String> queryParams, Class<T> responseClass) {
+		WebClient webClient = WebClient.create();
+
+		try {
+			return webClient.get()
+		            .uri(generateCompleteURL(url, queryParams))
+		            .retrieve()
+		            .bodyToMono(responseClass)
+		            .block();
+		} catch (WebClientResponseException webClientError) {
+			try {
+				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
+			} catch (JsonProcessingException e) {
+				return null;
+			}
+		}
+	}
+	
+	public static <T extends Object> T bearerGet(String url, Map<String,String> queryParams, String authCode, Class<T> responseClass) {
+		WebClient webClient = WebClient.create();
+		
+		try {
+			return webClient.get()
+					.uri(generateCompleteURL(url, queryParams))
+					.header("Authorization", "Bearer " + authCode)
+					.retrieve()
+					.bodyToMono(responseClass)
+				.block();
 		} catch (WebClientResponseException webClientError) {
 			try {
 				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
