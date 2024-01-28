@@ -128,18 +128,10 @@ public class FimerInverterService implements InverterService {
 	private Logger logger = LoggerService.schedulesLogger();
 
 	// --- Private methods -----------------------
-	private String authenticate(InverterCofigurationVo configuration) {
-		String credentials = configuration.getUser() + ":" + configuration.getPassword();
-		String base64Credentials = new String(Base64.getEncoder().encode(credentials.getBytes(StandardCharsets.UTF_8)));
-
-		Map<String, String> headers = new HashMap<>(2);
-		headers.put(HttpHeaders.AUTHORIZATION, "Basic " + base64Credentials);
-		headers.put("X-AuroraVision-ApiKey", configuration.getKey());
-
-		AuthenticateResponse response = JsonCaller.get(URL + ENDPOINT_AUTHENTICATE, headers, null,
-				AuthenticateResponse.class);
-
-		return response == null ? null : response.getResult();
+	private Map<String, String> generateHeaders(String auroraVisionApiKey) {
+		Map<String, String> headers = new HashMap<>(1);
+		headers.put("X-AuroraVision-Token", auroraVisionApiKey);
+		return headers;
 	}
 
 	// --- Implemented methods -------------------
@@ -147,7 +139,8 @@ public class FimerInverterService implements InverterService {
 	public Collection<GenDataVo> retrieveData(ClientVo client, InverterCofigurationVo configuration) {
 		long t = System.currentTimeMillis();
 		this.logger.info("[{t}] Start retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
-		String authenticationKey = this.authenticate(configuration);
+		AuthenticateResponse authentication = this.authenticate(configuration.getUser(), configuration.getPassword(), configuration.getKey());
+		String authenticationKey = authentication == null ? null : authentication.getResult();
 
 		this.logger.info("[{t}] Authentication ok: ", t, StringUtil.notEmpty(authenticationKey));
 
@@ -159,12 +152,27 @@ public class FimerInverterService implements InverterService {
 	}
 
 	// --- Public methods ------------------------
+	public AuthenticateResponse authenticate(String user, String password, String key) {
+		String credentials = user + ":" + password;
+		String base64Credentials = new String(Base64.getEncoder().encode(credentials.getBytes(StandardCharsets.UTF_8)));
+
+		Map<String, String> headers = new HashMap<>(2);
+		headers.put(HttpHeaders.AUTHORIZATION, "Basic " + base64Credentials);
+		headers.put("X-AuroraVision-ApiKey", key);
+
+		AuthenticateResponse response = JsonCaller.get(URL + ENDPOINT_AUTHENTICATE, headers, null,
+				AuthenticateResponse.class);
+
+		return response;
+	}
+	
 	public StatusResponse status() {
 		return JsonCaller.get(URL + ENDPOINT_STATUS, StatusResponse.class);
 	}
 
 	public boolean validateConfiguration(InverterCofigurationVo configuration) {
-		return StringUtil.notEmpty(this.authenticate(configuration));
+		AuthenticateResponse authentication = this.authenticate(configuration.getUser(), configuration.getPassword(), configuration.getKey());
+		return authentication != null && StringUtil.notEmpty(authentication.getResult());
 	}
 
 	public AssetInfoResponse assetInfo(String auroraVisionApiKey, int entityID) {
@@ -175,8 +183,7 @@ public class FimerInverterService implements InverterService {
 		// Allows to retrieve info on an Aurora Vision Asset.
 		// An Asset can be a Portfolio, Plant, Plant Group, Logger or Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_ASSET_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		AssetInfoResponse response = JsonCaller.get(url, headers, null, AssetInfoResponse.class);
@@ -193,8 +200,7 @@ public class FimerInverterService implements InverterService {
 		// associated with together with the list of active portfolios contained in the
 		// Organization (portfolioGroupPortfolios).
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		OrganizationResponse response = JsonCaller.get(URL + ENDPOINT_ORGANIZATION, headers, null,
 				OrganizationResponse.class);
@@ -209,8 +215,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve the list of Plants in a Portfolio.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(1);
 		params.put("page", "0"); // If not entered, the API always returns the first page.
@@ -229,8 +234,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve the list of Plant Groups in a Portfolio.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(1);
 		params.put("page", "0"); // If not entered, the API always returns the first page.
@@ -249,8 +253,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve info of a Portfolio.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_PORTFOLIO_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PortfolioInfoResponse response = JsonCaller.get(url, headers, null, PortfolioInfoResponse.class);
@@ -265,8 +268,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve the list of Plant(s) in a Plant Group.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(1);
 		params.put("plantStatus", plantStatus); // Available values : HIGH, MEDIUM, LOW, NORM, INFO
@@ -284,8 +286,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve info on a Plant Group.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_PLANT_GROUPS_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		InfoResponse response = JsonCaller.get(url, headers, null, InfoResponse.class);
@@ -300,8 +301,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve the list of Loggers in a Plant.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_PLANT_LOGGERS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		LoggersResponse response = JsonCaller.get(url, headers, null, LoggersResponse.class);
@@ -316,8 +316,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve Plant’s lifetime and current day produced energy (kWh).
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_PLANT_BILLING_DATA.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		BillingDataResponse response = JsonCaller.get(url, headers, null, BillingDataResponse.class);
@@ -351,8 +350,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve detailed info of a Plant.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_PLANT_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PlantInfoResponse response = JsonCaller.get(url, headers, null, PlantInfoResponse.class);
@@ -369,8 +367,7 @@ public class FimerInverterService implements InverterService {
 		// NORMAL, returns the hierarchical explosion of loggers/devices affected by a
 		// status different from NORMAL.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_PLANT_STATUS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PlantStatusResponse response = JsonCaller.get(url, headers, null, PlantStatusResponse.class);
@@ -386,8 +383,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve the list of Plant's Events.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(5);
 		params.put("eventsKind", eventsKind); // REQUIRED - Available values : PROFILE, SOURCE
@@ -414,8 +410,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve weather data of a Plant.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_PLANT_WEATHER.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		PlantWeatherResponse response = JsonCaller.get(url, headers, null, PlantWeatherResponse.class);
@@ -430,8 +425,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve the list of Devices monitored by a Logger.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_LOGGER_DEVICES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		LoggerDevicesResponse response = JsonCaller.get(url, headers, null, LoggerDevicesResponse.class);
@@ -446,8 +440,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve info of a Logger.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_LOGGER_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		LoggerInfoResponse response = JsonCaller.get(url, headers, null, LoggerInfoResponse.class);
@@ -464,8 +457,7 @@ public class FimerInverterService implements InverterService {
 		// NORMAL, returns the hierarchical explosion of devices affected by a status
 		// different from NORMAL.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_LOGGER_STATUS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		LoggerStatusResponse response = JsonCaller.get(url, headers, null, LoggerStatusResponse.class);
@@ -481,8 +473,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve the list of Logger's Events.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(5);
 		params.put("eventsKind", eventsKind); // REQUIRED - Available values : PROFILE, SOURCE
@@ -507,8 +498,7 @@ public class FimerInverterService implements InverterService {
 		// The compact hierarchy dynamically adapts according to the type of device
 		// inserted in the request.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(1);
 		params.put("serialNumber", serialNumber); // REQUIRED
@@ -526,8 +516,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve info of a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_DEVICE_INFO.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		DevicesInfoResponse response = JsonCaller.get(url, headers, null, DevicesInfoResponse.class);
@@ -542,8 +531,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve Device staus.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_DEVICE_STATUS.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
 		DevicesStatusResponse response = JsonCaller.get(url, headers, null, DevicesStatusResponse.class);
@@ -559,8 +547,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve the list of Devices's Events.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(5);
 		params.put("eventsKind", eventsKind); // REQUIRED - Available values : PROFILE, SOURCE
@@ -588,8 +575,7 @@ public class FimerInverterService implements InverterService {
 		// Allows to retrieve aggregated Power or Irradiance values of a Plant or a
 		// Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(3);
 		params.put("startDate", startDate); // REQUIRED - Pattern: yyyyMMdd
@@ -617,8 +603,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve aggregated Frequency values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(3);
 		params.put("startDate", startDate); // REQUIRED - Pattern: yyyyMMdd
@@ -647,8 +632,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve aggregated Wind values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(3);
 		params.put("startDate", startDate); // REQUIRED - Pattern: yyyyMMdd
@@ -674,8 +658,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve aggregated Temperature values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(3);
 		params.put("startDate", startDate); // REQUIRED - Pattern: yyyyMMdd
@@ -705,8 +688,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve aggregated Voltage values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(3);
 		params.put("startDate", startDate); // REQUIRED - Pattern: yyyyMMdd
@@ -736,8 +718,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve aggregated Current values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(3);
 		params.put("startDate", startDate); // REQUIRED - Pattern: yyyyMMdd
@@ -768,8 +749,7 @@ public class FimerInverterService implements InverterService {
 		// Allows to retrieve aggregated Energy or Insolation values of a Plant or a
 		// Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(3);
 		params.put("startDate", startDate); // REQUIRED - Pattern: yyyyMMdd
@@ -808,8 +788,7 @@ public class FimerInverterService implements InverterService {
 		// Allows to retrieve a timeseried Power or Irradiance values of a Plant or a
 		// Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(4);
 		params.put("sampleSize", sampleSize); // REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
@@ -839,8 +818,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve a timeseried Voltage values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(4);
 		params.put("sampleSize", sampleSize); // REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
@@ -868,8 +846,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve a timeseried Frequency values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(4);
 		params.put("sampleSize", sampleSize); // REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
@@ -896,8 +873,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve a timeseried Wind values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(4);
 		params.put("sampleSize", sampleSize); // REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
@@ -924,8 +900,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve a timeseried Temperature values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(4);
 		params.put("sampleSize", sampleSize); // REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
@@ -953,8 +928,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve a timeseried Current values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(4);
 		params.put("sampleSize", sampleSize); // REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
@@ -981,8 +955,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve a timeseried Energy or Insolation values of a Plant or a Device.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(4);
 		params.put("sampleSize", sampleSize); // REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
@@ -1012,8 +985,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve timeseried Power-Based KPIs or Energy-Based KPIs values of a Plant.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(4);
 		params.put("sampleSize", sampleSize); // REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
@@ -1042,8 +1014,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve aggregated Power-Data KPIs or Energy-Data KPIs values of a Plant.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(4);
 		params.put("sampleSize", sampleSize); // REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
@@ -1071,8 +1042,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve available regions/states in a Country as stored in Aurora Vision.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 		
 		Map<String, String> params = new HashMap<>(1);
 		params.put("countryCode", countryCode); // REQUIRED - ISO 3166 Alpha2 Country Code Format Standard
@@ -1090,8 +1060,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve IP/CIDR couples used by devices to contact and connect to Aurora vision.
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_IP_RANGE_DATALOGGER;
 		IpRangeDataloggerResponse response = JsonCaller.get(url, headers, null, IpRangeDataloggerResponse.class);
@@ -1106,8 +1075,7 @@ public class FimerInverterService implements InverterService {
 		// Description
 		// Allows to retrieve IP/CIDR couples of the devices that are contatcted by Aurora vision. 
 
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("X-AuroraVision-ApiKey", auroraVisionApiKey);
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_IP_RANGE_WEB;
 		IpRangeWebResponse response = JsonCaller.get(url, headers, null, IpRangeWebResponse.class);
