@@ -16,6 +16,7 @@ import tech.renovus.solarec.vo.db.data.GenDataVo;
 
 /**
  * URL: https://sandbox.smaapis.de/monitoring/index.html
+ * URL: https://sandbox.smaapis.de/live/index.html
  * Documentation: https://developer.sma.de/api-access-control#c59102
  * Postman template: https://cdn.sma.de/fileadmin/content/www.developer.sma.de/docs/SMA_CustomFlowSandbox_v6.postman_collection.json?v=1698749440
  */
