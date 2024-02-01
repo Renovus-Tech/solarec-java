@@ -33,20 +33,20 @@ public class BaseEmberCountryOverviewVo extends BaseDbVo {
 
 	//--- Private properties --------------------
 	private Integer cleanDeadline;
-	private Integer oecdDemandRank;
-	private Integer euDemandRank;
+	private Double oecdDemandRank;
+	private Double euDemandRank;
 	private Integer latestYear;
 	private Integer coalDeadline;
 	private Integer year;
 	private Double demandTwh;
 	private Double demandMwhPerCapita;
 	private Double emissionsIntensityGco2PerKwh;
-	private Integer euFlag;
-	private Integer g20Flag;
-	private Integer g7Flag;
-	private Integer oecdFlag;
-	private Integer worldDemandRank;
-	private Integer regionDemandRank;
+	private Double euFlag;
+	private Double g20Flag;
+	private Double g7Flag;
+	private Double oecdFlag;
+	private Double worldDemandRank;
+	private Double regionDemandRank;
 	private String countryCode;
 	private String countryOrRegion;
 	private String continent;
@@ -164,17 +164,17 @@ public class BaseEmberCountryOverviewVo extends BaseDbVo {
 		this.cleanDeadline = cleanDeadline;
 	}
 
-	public Integer getOecdDemandRank() {
+	public Double getOecdDemandRank() {
 		return this.oecdDemandRank;
 	}
-	public void setOecdDemandRank(Integer oecdDemandRank) {
+	public void setOecdDemandRank(Double oecdDemandRank) {
 		this.oecdDemandRank = oecdDemandRank;
 	}
 
-	public Integer getEuDemandRank() {
+	public Double getEuDemandRank() {
 		return this.euDemandRank;
 	}
-	public void setEuDemandRank(Integer euDemandRank) {
+	public void setEuDemandRank(Double euDemandRank) {
 		this.euDemandRank = euDemandRank;
 	}
 
@@ -220,45 +220,45 @@ public class BaseEmberCountryOverviewVo extends BaseDbVo {
 		this.emissionsIntensityGco2PerKwh = emissionsIntensityGco2PerKwh;
 	}
 
-	public Integer getEuFlag() {
+	public Double getEuFlag() {
 		return this.euFlag;
 	}
-	public void setEuFlag(Integer euFlag) {
+	public void setEuFlag(Double euFlag) {
 		this.euFlag = euFlag;
 	}
 
-	public Integer getG20Flag() {
+	public Double getG20Flag() {
 		return this.g20Flag;
 	}
-	public void setG20Flag(Integer g20Flag) {
+	public void setG20Flag(Double g20Flag) {
 		this.g20Flag = g20Flag;
 	}
 
-	public Integer getG7Flag() {
+	public Double getG7Flag() {
 		return this.g7Flag;
 	}
-	public void setG7Flag(Integer g7Flag) {
+	public void setG7Flag(Double g7Flag) {
 		this.g7Flag = g7Flag;
 	}
 
-	public Integer getOecdFlag() {
+	public Double getOecdFlag() {
 		return this.oecdFlag;
 	}
-	public void setOecdFlag(Integer oecdFlag) {
+	public void setOecdFlag(Double oecdFlag) {
 		this.oecdFlag = oecdFlag;
 	}
 
-	public Integer getWorldDemandRank() {
+	public Double getWorldDemandRank() {
 		return this.worldDemandRank;
 	}
-	public void setWorldDemandRank(Integer worldDemandRank) {
+	public void setWorldDemandRank(Double worldDemandRank) {
 		this.worldDemandRank = worldDemandRank;
 	}
 
-	public Integer getRegionDemandRank() {
+	public Double getRegionDemandRank() {
 		return this.regionDemandRank;
 	}
-	public void setRegionDemandRank(Integer regionDemandRank) {
+	public void setRegionDemandRank(Double regionDemandRank) {
 		this.regionDemandRank = regionDemandRank;
 	}
 

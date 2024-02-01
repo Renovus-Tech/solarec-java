@@ -15,8 +15,8 @@ import tech.renovus.solarec.vo.db.data.EmberCountryOverviewVo;
 public class EmberCountryOverviewDaoImpl extends BaseEmberCountryOverviewDao implements EmberCountryOverviewDao {
 	
 	//--- Private properties --------------------
-	protected final String SQL_FIND_LAST_FROM		= "SELECT * FROM ember_country_overview WHERE country_or_region = :country_or_region AND year <= :year ORDER BY year DESC";
-	protected final String SQL_FIND_FIRST_FROM		= "SELECT * FROM ember_country_overview WHERE country_or_region = :country_or_region AND year >= :year ORDER BY year ASC";
+	protected final String SQL_FIND_LAST_FROM		= "SELECT * FROM ember_country_overview WHERE country_or_region = :country_or_region AND year <= :year ORDER BY year DESC LIMIT 1";
+	protected final String SQL_FIND_FIRST_FROM		= "SELECT * FROM ember_country_overview WHERE country_or_region = :country_or_region AND year >= :year ORDER BY year ASC LIMIT 1";
 	
 	//--- Constructors --------------------------
 	@Autowired public EmberCountryOverviewDaoImpl(NamedParameterJdbcTemplate jdbc) {
