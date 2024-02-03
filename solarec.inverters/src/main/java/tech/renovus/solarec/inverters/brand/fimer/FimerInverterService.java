@@ -1,8 +1,13 @@
 package tech.renovus.solarec.inverters.brand.fimer;
 
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +46,7 @@ import tech.renovus.solarec.inverters.brand.fimer.api.status.StatusResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.current.aggregated.TelemetryDataCurrentAggregatedResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.current.timeseries.TelemetryDataCurrentTimeseriesResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.energy.aggregated.TelemetryDataEnergyAggregatedResponse;
+import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.energy.timeseries.Result;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.energy.timeseries.TelemetryDataEnergyTimeseriesResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.frequency.aggregated.TelemetryDataFrequencyAggregatedResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.frequency.timeseries.TelemetryDataFrequencyTimeseriesResponse;
@@ -54,77 +60,111 @@ import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.wind.aggrega
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.wind.timeseries.TelemetryDataWindTimeseriesResponse;
 import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.logger.LoggerService;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
+import tech.renovus.solarec.vo.db.data.GeneratorVo;
+import tech.renovus.solarec.vo.db.data.LocationVo;
 
 /**
- * URL:
- * https://solis-service.solisinverters.com/en/support/solutions/articles/44002212561-api-access-soliscloud
+ * URL: https://solis-service.solisinverters.com/en/support/solutions/articles/44002212561-api-access-soliscloud
  * URL: https://documentation.auroravision.net/index.html%3Fp=1267.html <--
+ * URL pasos: https://documentation.auroravision.net/es/index.html%3Fp=6884.html
  * swagger
  */
 public class FimerInverterService implements InverterService {
 
 	// --- Private constants ---------------------
-	private static final String URL = "https://api.auroravision.net/api/rest";
-	private static final String ENDPOINT_STATUS = "/status";
-	private static final String ENDPOINT_AUTHENTICATE = "/authenticate";
-	private static final String ENDPOINT_ASSET_INFO = "/v1/asset/{entityID}/info";
-	private static final String ENDPOINT_ORGANIZATION = "/v1/portfolioGroup";
+	private static final String URL												= "https://api.auroravision.net/api/rest";
+	private static final String ENDPOINT_STATUS									= "/status";
+	private static final String ENDPOINT_AUTHENTICATE							= "/authenticate";
+	private static final String ENDPOINT_ASSET_INFO								= "/v1/asset/{entityID}/info";
+	private static final String ENDPOINT_ORGANIZATION							= "/v1/portfolioGroup";
 
-	private static final String ENDPOINT_PORTFOLIO_PLANTS = "/v1/portfolio/{entityID}/plants";
-	private static final String ENDPOINT_PORTFOLIO_PLANT_GROUP = "/v1/portfolio/{entityID}/plantGroups";
-	private static final String ENDPOINT_PORTFOLIO_INFO = "/v1/portfolio/{entityID}/info";
+	private static final String ENDPOINT_PORTFOLIO_PLANTS						= "/v1/portfolio/{entityID}/plants";
+	private static final String ENDPOINT_PORTFOLIO_PLANT_GROUP					= "/v1/portfolio/{entityID}/plantGroups";
+	private static final String ENDPOINT_PORTFOLIO_INFO							= "/v1/portfolio/{entityID}/info";
 
-	private static final String ENDPOINT_PLANT_GROUPS_PLANTS = "/v1/plantGroup/{entityID}/plants";
-	private static final String ENDPOINT_PLANT_GROUPS_INFO = "/v1/plantGroup/{entityID}/info";
+	private static final String ENDPOINT_PLANT_GROUPS_PLANTS					= "/v1/plantGroup/{entityID}/plants";
+	private static final String ENDPOINT_PLANT_GROUPS_INFO						= "/v1/plantGroup/{entityID}/info";
 
-	private static final String ENDPOINT_PLANT_LOGGERS = "/v1/plant/{entityID}/loggers";
-	private static final String ENDPOINT_PLANT_BILLING_DATA = "/v1/plant/{entityID}/billingData";
-	private static final String ENDPOINT_PLANT_DIALY_PROD = "/v1/plant/{entityID}/dailyProduction";
-	private static final String ENDPOINT_PLANT_INFO = "/v1/plant/{entityID}/info";
-	private static final String ENDPOINT_PLANT_STATUS = "/v1/plant/{entityID}/status";
-	private static final String ENDPOINT_PLANT_EVENTS = "/v1/plant/{entityID}/events";
-	private static final String ENDPOINT_PLANT_WEATHER = "/v1/plant/{entityID}/weather";
+	private static final String ENDPOINT_PLANT_LOGGERS 							= "/v1/plant/{entityID}/loggers";
+	private static final String ENDPOINT_PLANT_BILLING_DATA						= "/v1/plant/{entityID}/billingData";
+	private static final String ENDPOINT_PLANT_DIALY_PROD						= "/v1/plant/{entityID}/dailyProduction";
+	private static final String ENDPOINT_PLANT_INFO								= "/v1/plant/{entityID}/info";
+	private static final String ENDPOINT_PLANT_STATUS							= "/v1/plant/{entityID}/status";
+	private static final String ENDPOINT_PLANT_EVENTS							= "/v1/plant/{entityID}/events";
+	private static final String ENDPOINT_PLANT_WEATHER							= "/v1/plant/{entityID}/weather";
 
-	private static final String ENDPOINT_LOGGER_DEVICES = "/v1/logger/{entityID}/devices";
-	private static final String ENDPOINT_LOGGER_INFO = "/v1/logger/{entityID}/info";
-	private static final String ENDPOINT_LOGGER_STATUS = "/v1/logger/{entityID}/status";
-	private static final String ENDPOINT_LOGGER_EVENTS = "/v1/logger/{entityID}/events";
+	private static final String ENDPOINT_LOGGER_DEVICES							= "/v1/logger/{entityID}/devices";
+	private static final String ENDPOINT_LOGGER_INFO							= "/v1/logger/{entityID}/info";
+	private static final String ENDPOINT_LOGGER_STATUS							= "/v1/logger/{entityID}/status";
+	private static final String ENDPOINT_LOGGER_EVENTS							= "/v1/logger/{entityID}/events";
 
-	private static final String ENDPOINT_DEVICE = "/v1/device/";
-	private static final String ENDPOINT_DEVICE_INFO = "/v1/device/{entityID}/info";
-	private static final String ENDPOINT_DEVICE_STATUS = "/v1/device/{entityID}/status";
-	private static final String ENDPOINT_DEVICE_EVENTS = "/v1/device/{entityID}/events";
+	private static final String ENDPOINT_DEVICE									= "/v1/device/";
+	private static final String ENDPOINT_DEVICE_INFO							= "/v1/device/{entityID}/info";
+	private static final String ENDPOINT_DEVICE_STATUS							= "/v1/device/{entityID}/status";
+	private static final String ENDPOINT_DEVICE_EVENTS							= "/v1/device/{entityID}/events";
 
-	private static final String ENDPOINT_TELEMETRY_DATA_POWER_AGGREGATED = "/v1/stats/power/aggregated/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_FREQUENCY_AGGREGATED = "/v1/stats/frequency/aggregated/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_WIND_AGGREGATED = "/v1/stats/wind/aggregated/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_TEMPERATURE_AGGREGATED = "/v1/stats/temperature/aggregated/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_VOLTAGE_AGGREGATED = "/v1/stats/voltage/aggregated/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_CURRENT_AGGREGATED = "/v1/stats/current/aggregated/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_ENERGY_AGGREGATED = "/v1/stats/energy/aggregated/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_POWER_AGGREGATED		= "/v1/stats/power/aggregated/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_FREQUENCY_AGGREGATED	= "/v1/stats/frequency/aggregated/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_WIND_AGGREGATED			= "/v1/stats/wind/aggregated/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_TEMPERATURE_AGGREGATED	= "/v1/stats/temperature/aggregated/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_VOLTAGE_AGGREGATED		= "/v1/stats/voltage/aggregated/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_CURRENT_AGGREGATED 		= "/v1/stats/current/aggregated/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_ENERGY_AGGREGATED		= "/v1/stats/energy/aggregated/{entityID}/{dataType}/{valueType}";
 
-	private static final String ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES = "/v1/stats/power/timeseries/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_FREQUENCY_TIMESERIES = "/v1/stats/frequency/timeseries/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_WIND_TIMESERIES = "/v1/stats/wind/timeseries/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_TEMPERATURE_TIMESERIES = "/v1/stats/temperature/timeseries/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_VOLTAGE_TIMESERIES = "/v1/stats/voltage/timeseries/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_CURRENT_TIMESERIES = "/v1/stats/current/timeseries/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES = "/v1/stats/energy/timeseries/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES		= "/v1/stats/power/timeseries/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_FREQUENCY_TIMESERIES	= "/v1/stats/frequency/timeseries/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_WIND_TIMESERIES			= "/v1/stats/wind/timeseries/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_TEMPERATURE_TIMESERIES	= "/v1/stats/temperature/timeseries/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_VOLTAGE_TIMESERIES		= "/v1/stats/voltage/timeseries/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_CURRENT_TIMESERIES		= "/v1/stats/current/timeseries/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES		= "/v1/stats/energy/timeseries/{entityID}/{dataType}/{valueType}";
 	
-	private static final String ENDPOINT_KPI_AGGREGATED = "/v1/kpis/aggregated/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_KPI_TIMESERIES = "/v1/kpis/timeseries/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_KPI_AGGREGATED							= "/v1/kpis/aggregated/{entityID}/{dataType}/{valueType}";
+	private static final String ENDPOINT_KPI_TIMESERIES							= "/v1/kpis/timeseries/{entityID}/{dataType}/{valueType}";
 	
-	private static final String ENDPOINT_REGION = "/v1/region";
+	private static final String ENDPOINT_REGION									= "/v1/region";
 	
-	private static final String ENDPOINT_IP_RANGE_DATALOGGER = "/v1/ip-ranges/datalogger";
-	private static final String ENDPOINT_IP_RANGE_WEB = "/v1/ip-ranges/web";
+	private static final String ENDPOINT_IP_RANGE_DATALOGGER					= "/v1/ip-ranges/datalogger";
+	private static final String ENDPOINT_IP_RANGE_WEB							= "/v1/ip-ranges/web";
 	
-	private static final String PARAM_USER		= "fimer.user";
-	private static final String PARAM_PASSWORD	= "fimer.password";
-	private static final String PARAM_KEY		= "fimer.key";
+	
+	private static final String DATA_TYPE_GENERATION_ENERGY			= "GenerationEnergy";
+	private static final String DATA_TYPE_DC_GENERATION_ENERGY		= "DCGenerationEnergy";
+	private static final String DATA_TYPE_INSOLATION				= "Insolation";
+	private static final String DATA_TYPE_STORAGE_IN_ENERGY			= "StorageInEnergy";
+	private static final String DATA_TYPE_STORAGE_OUT_ENERGY		= "StorageOutEnergy";
+	private static final String DATA_TYPE_GRID_ENERGY_EXPORT		= "GridEnergyExport";
+	private static final String DATA_TYPE_GRID_ENERGY_IMPORT		= "GridEnergyImport";
+	private static final String DATA_TYPE_SELF_CONSUME_ENERGY		= "SelfConsumedEnergy";
+	private static final String DATA_TYPE_ACTIVE_ENERGY_EV			= "ActiveEnergyEV";
+	private static final String DATA_TYPE_SESSION_ENERGY_EV			= "SessionEnergyEV";
+	
+	
+	private static final String VALUE_TYPE_MAXIMUM		= "maximum";
+	private static final String VALUE_TYPE_MINIMUM		= "minimum";
+	private static final String VALUE_TYPE_AVERAGE		= "average";
+	private static final String VALUE_TYPE_DELTA		= "delta";
+	
+	private static final String SAMPLE_SIZE_MIN_5		= "Min5";
+	private static final String SAMPLE_SIZE_MIN_15		= "Min15";
+	private static final String SAMPLE_SIZE_HOUR		= "Hour";
+	private static final String SAMPLE_SIZE_DAY			= "Day";
+	private static final String SAMPLE_SIZE_MONTH		= "Month";
+	private static final String SAMPLE_SIZE_YEAR		= "Year";
+	
+	//--- Public constants ----------------------
+	public static final String PARAM_USER				= "fimer.client.user";
+	public static final String PARAM_PASSWORD			= "fimer.client.password";
+	public static final String PARAM_KEY				= "fimer.client.key";
+	public static final String PARAM_TIME_ZONE			= "fimer.client.timezone";
+	public static final String PARAM_PORTAFOLIO_ID		= "fimer.client.portafolioId";
+	public static final String PARAM_PLANT_ID			= "fimer.location.plantId";
+	public static final String PARAM_DEVICE_ID			= "fimer.generator.deviceId";
 
 	// --- Private properties --------------------
 	private Logger logger = LoggerService.schedulesLogger();
@@ -136,9 +176,27 @@ public class FimerInverterService implements InverterService {
 		return headers;
 	}
 
+	private Collection<GenDataVo> process(GeneratorVo generator, TelemetryDataEnergyTimeseriesResponse data) {
+		Collection<GenDataVo> result = new ArrayList<>();
+		
+		if (data != null && CollectionUtil.notEmpty(data.getResult())) {
+			for (Result aData : data.getResult()) {
+				GenDataVo genData = new GenDataVo();
+				genData.setCliId(generator.getCliId());
+				genData.setGenId(generator.getGenId());
+				genData.setDataDate(new Date(aData.getStart().intValue() * 1000));
+				genData.setDataTypeId(DataTypeVo.TYPE_GENERATOR_POWER_KWH);
+				genData.setDataValue(aData.getValue());
+				
+				result.add(genData);
+			}
+		}
+		
+		return result;
+	}
+
 	// --- Implemented methods -------------------
-	@Override
-	public Collection<GenDataVo> retrieveData(ClientVo client) {
+	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
 		long t = System.currentTimeMillis();
 		this.logger.info("[{t}] Start retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
 		AuthenticateResponse authentication = this.authenticate(
@@ -150,11 +208,52 @@ public class FimerInverterService implements InverterService {
 
 		this.logger.info("[{t}] Authentication ok: ", t, StringUtil.notEmpty(authenticationKey));
 
-		// do something here
+		String portafolioId = this.getParameter(client, PARAM_PORTAFOLIO_ID);
+		String timeZone = this.getParameter(client, PARAM_TIME_ZONE);
+		
+		SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
+		
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.set(Calendar.HOUR,0);
+		calendar.set(Calendar.MINUTE,0);
+		calendar.set(Calendar.SECOND,0);
+		calendar.set(Calendar.MILLISECOND,0);
+		calendar.set(Calendar.AM_PM,Calendar.AM);
+		calendar.add(Calendar.DAY_OF_YEAR, -1);
+		
+		String startDate = formater.format(calendar.getTime());
+		String endDate = startDate;
+		
+		Collection<GenDataVo> result = new ArrayList<>();
+		
+		if (CollectionUtil.notEmpty(client.getLocations())) {
+			for (LocationVo location : client.getLocations()) {
+				String plnatId = this.getParameter(location, PARAM_PLANT_ID);
+				
+				if (CollectionUtil.notEmpty(location.getGenerators())) {
+					for (GeneratorVo generator : location.getGenerators()) {
+						int deviceId = Integer.parseInt(this.getParameter(generator, PARAM_DEVICE_ID));
+						
+						TelemetryDataEnergyTimeseriesResponse data = this.telemetryDataEnergyTimeseries(
+								authenticationKey, 
+								deviceId, 
+								DATA_TYPE_GENERATION_ENERGY, 
+								VALUE_TYPE_DELTA,
+								SAMPLE_SIZE_MIN_15, 
+								startDate, 
+								endDate, 
+								timeZone
+							);
+						
+						CollectionUtil.addAll(result, this.process(generator, data));
+					}
+				}
+			}
+		}
 
 		this.logger.info("[{t}] End retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
 
-		return null;
+		return result;
 	}
 
 	// --- Public methods ------------------------
@@ -181,6 +280,7 @@ public class FimerInverterService implements InverterService {
 				this.getParameter(client, PARAM_USER),
 				this.getParameter(client, PARAM_PASSWORD),
 				this.getParameter(client, PARAM_KEY));
+		
 		return authentication != null && StringUtil.notEmpty(authentication.getResult());
 	}
 
@@ -749,8 +849,7 @@ public class FimerInverterService implements InverterService {
 		return response == null ? null : response;
 	}
 
-	public TelemetryDataEnergyAggregatedResponse telemetryDataEnergyAggregated(String auroraVisionApiKey, int entityID,
-			String dataType, String valueType, String startDate, String endDate, String timeZone) {
+	public TelemetryDataEnergyAggregatedResponse telemetryDataEnergyAggregated(String auroraVisionApiKey, int entityID, String dataType, String valueType, String startDate, String endDate, String timeZone) {
 		// Package api.telemetryData.energy.aggregated
 		// Payload -
 		// Response TelemetryDataEnergyAggregatedResponse
@@ -763,24 +862,13 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> params = new HashMap<>(3);
 		params.put("startDate", startDate); // REQUIRED - Pattern: yyyyMMdd
 		params.put("endDate", endDate); // REQUIRED - Pattern: yyyyMMdd
-		params.put("timeZone", timeZone); // REQUIRED - Plant Time Zone ( Format: Civilian abbreviation or Country/City
-											// )
-											// Example: Europe/Rome
+		params.put("timeZone", timeZone); // REQUIRED - Plant Time Zone ( Format: Civilian abbreviation or Country/City ) - Example: Europe/Rome
 
+
+		// REQUIRED - Available values : GenerationEnergy, DCGenerationEnergy, Insolation, StorageInEnergy, StorageOutEnergy, GridEnergyExport, GridEnergyImport, SelfConsumedEnergy, ActiveEnergyEV, SessionEnergyEV
+		
 		String url = URL + ENDPOINT_TELEMETRY_DATA_ENERGY_AGGREGATED
-				.replaceFirst("\\{entityID\\}", String.valueOf(entityID)).replaceFirst("\\{dataType\\}", dataType) // REQUIRED -
-																											// Available
-																											// values :
-																											// GenerationEnergy,
-																											// DCGenerationEnergy,
-																											// Insolation,
-																											// StorageInEnergy,
-																											// StorageOutEnergy,
-																											// GridEnergyExport,
-																											// GridEnergyImport,
-																											// SelfConsumedEnergy,
-																											// ActiveEnergyEV,
-																											// SessionEnergyEV
+				.replaceFirst("\\{entityID\\}", String.valueOf(entityID)).replaceFirst("\\{dataType\\}", dataType) 
 				.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : cumulative, delta
 		TelemetryDataEnergyAggregatedResponse response = JsonCaller.get(url, headers, params,
 				TelemetryDataEnergyAggregatedResponse.class);
@@ -956,8 +1044,16 @@ public class FimerInverterService implements InverterService {
 		return response == null ? null : response;
 	}
 
-	public TelemetryDataEnergyTimeseriesResponse telemetryDataEnergyTimeseries(String auroraVisionApiKey, int entityID,
-			String dataType, String valueType, String sampleSize, String startDate, String endDate, String timeZone) {
+	public TelemetryDataEnergyTimeseriesResponse telemetryDataEnergyTimeseries(
+		String auroraVisionApiKey, 
+		int entityID, 
+		String dataType, 	// REQUIRED - Available values : GenerationEnergy, DCGenerationEnergy, Insolation, StorageInEnergy, StorageOutEnergy, GridEnergyExport, GridEnergyImport, SelfConsumedEnergy, ActiveEnergyEV, SessionEnergyEV
+		String valueType, 	// REQUIRED - Available values : maximum, minimum, average, delta
+		String sampleSize,	// REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
+		String startDate, 	// REQUIRED - Pattern: yyyyMMdd
+		String endDate, 	// REQUIRED - Pattern: yyyyMMdd
+		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
+	) {
 		// Package api.telemetryData.energy.timeseries
 		// Payload -
 		// Response TelemetryDataEnergyTimeseriesResponse
@@ -967,21 +1063,16 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		Map<String, String> params = new HashMap<>(4);
-		params.put("sampleSize", sampleSize); // REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
-		params.put("startDate", startDate); // REQUIRED - Pattern: yyyyMMdd
-		params.put("endDate", endDate); // REQUIRED - Pattern: yyyyMMdd
-		params.put("timeZone", timeZone); // REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City)
-											// Example: Europe/Rome
+		params.put("sampleSize", sampleSize); 
+		params.put("startDate", startDate);
+		params.put("endDate", endDate); 
+		params.put("timeZone", timeZone); 
 
-		String url = URL
-				+ ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
-		url = url.replaceFirst("\\{dataType\\}", dataType); // REQUIRED - Available values : GenerationEnergy,
-														// DCGenerationEnergy, Insolation, StorageInEnergy,
-														// StorageOutEnergy, GridEnergyExport, GridEnergyImport,
-														// SelfConsumedEnergy, ActiveEnergyEV, SessionEnergyEV
-		url = url.replaceFirst("\\{valueType\\}", valueType); // REQUIRED - Available values : maximum, minimum, average
-		TelemetryDataEnergyTimeseriesResponse response = JsonCaller.get(url, headers, params,
-				TelemetryDataEnergyTimeseriesResponse.class);
+		String url = URL + ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES;
+		url = url.replaceFirst("\\{entityID\\}", String.valueOf(entityID));
+		url = url.replaceFirst("\\{dataType\\}", dataType); 
+		url = url.replaceFirst("\\{valueType\\}", valueType); 
+		TelemetryDataEnergyTimeseriesResponse response = JsonCaller.get(url, headers, params, TelemetryDataEnergyTimeseriesResponse.class);
 
 		return response == null ? null : response;
 	}

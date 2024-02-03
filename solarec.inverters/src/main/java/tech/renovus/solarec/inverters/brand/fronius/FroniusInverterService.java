@@ -1,22 +1,24 @@
 package tech.renovus.solarec.inverters.brand.fronius;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import reactor.core.publisher.Mono;
 import tech.renovus.solarec.connection.JsonCaller;
-import tech.renovus.solarec.inverters.brand.fronius.api.ErrorResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.InfoReleaseResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.history.data.HistoryDataResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.metadata.PvSystemsListResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.user.InfoUserResponse;
 import tech.renovus.solarec.inverters.common.InverterService;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
+import tech.renovus.solarec.vo.db.data.GeneratorVo;
+import tech.renovus.solarec.vo.db.data.LocationVo;
 
 /**
  * URL: https://www.fronius.com/en/solarweb-query-api
@@ -39,6 +41,10 @@ public class FroniusInverterService implements InverterService {
 	private static final String ENDPOINT_PV_SYSTEMS_LIST			= "/pvsystems-list";
 	private static final String ENDPOINT_PV_SYSTEMS_HISTORY_DATA	= "/pvsystems/{pvSystemId}/histdata";
 	
+	private static final String PARAM_ACCESS_KEY_ID		= "fronius.key_id";
+	private static final String PARAM_ACCESS_KEY_VALUE	= "fronius.key_value";
+	private static final String PARAM_PV_SYSTEM_ID		= "froniys.pv_systems_id";
+	
 	//--- Private methods -----------------------
 	private Map<String, String> getAuthenticationHeaders(String accessKeyId, String accessKeyValue) {
 		Map<String, String> result = new HashMap<>(2);
@@ -49,10 +55,32 @@ public class FroniusInverterService implements InverterService {
 		return result;
 	}
 	
-	//--- Implemented methods -------------------
-	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
+	private Collection<GenDataVo> process(HistoryDataResponse data, GeneratorVo generator) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	//--- Implemented methods -------------------
+	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
+		String accessKeyId = this.getParameter(client, PARAM_ACCESS_KEY_ID);
+		String accessKeyValue = this.getParameter(client, PARAM_ACCESS_KEY_VALUE);
+
+		Collection<GenDataVo> result = new ArrayList<>();
+		
+		if (CollectionUtil.notEmpty(client.getLocations())) {
+			for (LocationVo location : client.getLocations()) {
+				if (CollectionUtil.notEmpty(location.getGenerators())) {
+					for (GeneratorVo generator : location.getGenerators()) {
+						String pvSystemsId = this.getParameter(generator, PARAM_PV_SYSTEM_ID);
+						HistoryDataResponse data = this.getPvSystemsHistData(accessKeyId, accessKeyValue, pvSystemsId);
+						
+						CollectionUtil.addAll(result, this.process(data, generator));
+					}
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	//--- Public methods ------------------------
