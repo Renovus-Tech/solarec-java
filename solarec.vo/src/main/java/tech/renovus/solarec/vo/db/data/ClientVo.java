@@ -1,5 +1,8 @@
 package tech.renovus.solarec.vo.db.data;
 
+import java.util.Optional;
+
+import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.util.interfaces.IDataContainer;
@@ -31,6 +34,12 @@ public class ClientVo extends DbClientVo {
 		}
 		
 		return null;
+	}
+
+	public CliDataDefParameterVo getDataDefParameterVo(String name) {
+		if (CollectionUtil.isEmpty(this.dataDefParameters)) return null;
+		Optional<CliDataDefParameterVo> option =  this.dataDefParameters.stream().filter(x -> ClassUtil.equals(name, x.getDataDefParameter().getDataDefParName())).findFirst();
+		return option.isPresent() ? option.get() : null;
 	}
 	
 }

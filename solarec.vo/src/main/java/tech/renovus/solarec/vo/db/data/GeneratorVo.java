@@ -1,7 +1,10 @@
 package tech.renovus.solarec.vo.db.data;
 
 import java.util.Date;
+import java.util.Optional;
 
+import tech.renovus.solarec.util.ClassUtil;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.interfaces.IDataContainer;
 import tech.renovus.solarec.vo.db.relation.DbGeneratorVo;
 
@@ -34,5 +37,12 @@ public class GeneratorVo extends DbGeneratorVo implements IDataContainer {
 	//--- Getters and setters -------------------
 	public void setRequired(boolean required) {
 		this.required = required;
+	}
+
+	public GenDataDefParameterVo getDataDefParameterVo(String name) {
+		if (CollectionUtil.isEmpty(this.dataDefParameters)) return null;
+		Optional<GenDataDefParameterVo> option =  this.dataDefParameters.stream().filter(x -> ClassUtil.equals(name, x.getDataDefParameter().getDataDefParName())).findFirst();
+		return option.isPresent() ? option.get() : null;
+
 	}
 }

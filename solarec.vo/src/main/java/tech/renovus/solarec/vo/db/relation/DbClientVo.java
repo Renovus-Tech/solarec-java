@@ -8,6 +8,7 @@ import tech.renovus.solarec.util.db.BaseDbUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseClientVo;
+import tech.renovus.solarec.vo.db.data.CliDataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.CliSettingVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
@@ -15,9 +16,10 @@ import tech.renovus.solarec.vo.db.data.LocationVo;
 public class DbClientVo extends BaseClientVo implements ISynchronizable<DbClientVo> {
 
 	//--- Private properties --------------------
-	private Collection<CliSettingVo> settings;
+	protected Collection<CliSettingVo> settings;
 	protected DataDefinitionVo dataDefinitionVo;
-	private Collection<LocationVo> locations;
+	protected Collection<LocationVo> locations;
+	protected Collection<CliDataDefParameterVo> dataDefParameters; 
 	
 	//--- Constructors --------------------------
 	public DbClientVo() {
@@ -34,6 +36,8 @@ public class DbClientVo extends BaseClientVo implements ISynchronizable<DbClient
 		for (BaseDbVo obj : col) {
 			if (obj instanceof CliSettingVo) {
 				((CliSettingVo) obj).setCliId(this.getCliId());
+			} else if (obj instanceof CliDataDefParameterVo) {
+				((CliDataDefParameterVo) obj).setCliId(this.getCliId());
 			}
 		}
 	}
@@ -41,16 +45,19 @@ public class DbClientVo extends BaseClientVo implements ISynchronizable<DbClient
 	//--- Implemented methods ISynchronizable ---
 	@Override public void setChildrensId() {
 		this.setChildrensId(this.settings);
+		this.setChildrensId(this.dataDefParameters);
 	}
 
 	@Override public void synchronize(DbClientVo dbVo) {
 		this.setChildrensId();
 		
-		this.settings	= BaseDbUtil.compareCollections(this.settings,	(dbVo != null)?dbVo.settings:null,		BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
+		this.settings			= BaseDbUtil.compareCollections(this.settings,			(dbVo != null)?dbVo.settings:null,				BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
+		this.dataDefParameters	= BaseDbUtil.compareCollections(this.dataDefParameters,	(dbVo != null)?dbVo.dataDefParameters:null,		BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
 	}
 
 	@Override public void synchronizeForce(int syncType) {
 		BaseDbUtil.setAll(this.settings, syncType);
+		BaseDbUtil.setAll(this.dataDefParameters, syncType);
 	}
 	
 	//--- Public methods ------------------------
@@ -60,6 +67,12 @@ public class DbClientVo extends BaseClientVo implements ISynchronizable<DbClient
 		this.locations.add(vo);
 	}
 
+	public void add(CliDataDefParameterVo vo) {
+		if (vo == null) return;
+		if (this.dataDefParameters == null) this.dataDefParameters = new ArrayList<>(1);
+		this.dataDefParameters.add(vo);
+	}
+	
 	//--- Public methods ------------------------
 	public Collection<LocationVo> getLocations() {
 		return locations;
@@ -82,5 +95,13 @@ public class DbClientVo extends BaseClientVo implements ISynchronizable<DbClient
 
 	public void setSettings(Collection<CliSettingVo> settings) {
 		this.settings = settings;
+	}
+
+	public Collection<CliDataDefParameterVo> getDataDefParameters() {
+		return dataDefParameters;
+	}
+
+	public void setDataDefParameters(Collection<CliDataDefParameterVo> dataDefParameters) {
+		this.dataDefParameters = dataDefParameters;
 	}
 }

@@ -10,6 +10,7 @@ import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseGeneratorVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.GenAlertVo;
+import tech.renovus.solarec.vo.db.data.GenDataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GenNeighbourVo;
 import tech.renovus.solarec.vo.db.data.GenPowerVo;
@@ -23,7 +24,8 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 	protected Collection<GenDataVo> datas;
 	protected Collection<GenAlertVo> alerts;
 	protected Collection<GenNeighbourVo> neighbours;
-	
+	protected Collection<GenDataDefParameterVo> dataDefParameters; 
+
 	//--- Constructors --------------------------
 	public DbGeneratorVo() {
 	}
@@ -52,6 +54,10 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 			} else if (obj instanceof GenNeighbourVo) {
 				((GenNeighbourVo) obj).setCliId(this.getCliId());
 				((GenNeighbourVo) obj).setGenId(this.getGenId());
+				
+			} else if (obj instanceof GenDataDefParameterVo) {
+				((GenDataDefParameterVo) obj).setCliId(this.getCliId());
+				((GenDataDefParameterVo) obj).setGenId(this.getGenId());
 			}
 			
 			if (obj instanceof ISynchronizable) ((ISynchronizable) obj).setChildrensId();
@@ -64,18 +70,21 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 		this.setChildrensId(this.alerts);
 		this.setChildrensId(this.powerCurve);
 		this.setChildrensId(this.neighbours);
+		this.setChildrensId(this.dataDefParameters);
 	}
 
 	@Override public void synchronize(DbGeneratorVo dbVo) {
 		this.setChildrensId();
 		
-		this.powerCurve	= BaseDbUtil.compareCollections(this.powerCurve,	(dbVo != null)?dbVo.powerCurve:null,		BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
-		this.neighbours	= BaseDbUtil.compareCollections(this.neighbours,	(dbVo != null)?dbVo.neighbours:null,		BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
+		this.powerCurve			= BaseDbUtil.compareCollections(this.powerCurve,		(dbVo != null)?dbVo.powerCurve:null,			BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
+		this.neighbours			= BaseDbUtil.compareCollections(this.neighbours,		(dbVo != null)?dbVo.neighbours:null,			BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
+		this.dataDefParameters	= BaseDbUtil.compareCollections(this.dataDefParameters,	(dbVo != null)?dbVo.dataDefParameters:null,		BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
 	}
 
 	@Override public void synchronizeForce(int syncType) {
 		BaseDbUtil.setAll(this.powerCurve, syncType);
 		BaseDbUtil.setAll(this.neighbours, syncType);
+		BaseDbUtil.setAll(this.dataDefParameters, syncType);
 	}
 
 	//--- Public methods ------------------------
@@ -95,6 +104,12 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 		if (vo == null) return;
 		if (this.neighbours == null) this.neighbours = new ArrayList<>(1);
 		this.neighbours.add(vo);
+	}
+	
+	public void add(GenDataDefParameterVo vo) {
+		if (vo == null) return;
+		if (this.dataDefParameters == null) this.dataDefParameters = new ArrayList<>(1);
+		this.dataDefParameters.add(vo);
 	}
 	
 	//--- Getters and Setters -------------------

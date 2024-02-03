@@ -9,7 +9,6 @@ import tech.renovus.solarec.inverters.brand.sma.api.authorization.AuthResponse;
 import tech.renovus.solarec.inverters.brand.sma.api.authorization.BcAuthorizeRequest;
 import tech.renovus.solarec.inverters.brand.sma.api.authorization.BcAuthorizeResponse;
 import tech.renovus.solarec.inverters.brand.sma.api.authorization.BcAuthroizeTokenResponse;
-import tech.renovus.solarec.inverters.common.InverterCofigurationVo;
 import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
@@ -75,7 +74,7 @@ public class SmaInverterService implements InverterService {
 	}
 	
 	//--- Implemented methods -------------------
-	@Override public Collection<GenDataVo> retrieveData(ClientVo client, InverterCofigurationVo configuration) {
+	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
 		String clientId		= "";
 		String clientSecret	= "";
 		String clientEmail	= "";

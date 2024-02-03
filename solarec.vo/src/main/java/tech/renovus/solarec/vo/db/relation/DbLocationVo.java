@@ -11,6 +11,7 @@ import tech.renovus.solarec.vo.db.base.BaseLocationVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocAlertVo;
+import tech.renovus.solarec.vo.db.data.LocDataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.LocDataVo;
 import tech.renovus.solarec.vo.db.data.LocEstimationVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
@@ -28,6 +29,7 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 	protected Collection<LocDataVo> datas;
 	protected Collection<LocAlertVo> alerts;
 	protected Collection<LocEstimationVo> estimations;
+	protected Collection<LocDataDefParameterVo> dataDefParameters; 
 	
 	//--- Constructors --------------------------
 	public DbLocationVo() {
@@ -53,6 +55,10 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 			} else if (obj instanceof LocEstimationVo) {
 				((LocEstimationVo) obj).setCliId(this.getCliId());
 				((LocEstimationVo) obj).setLocId(this.getLocId());
+				
+			} else if (obj instanceof LocDataDefParameterVo) {
+				((LocDataDefParameterVo) obj).setCliId(this.getCliId());
+				((LocDataDefParameterVo) obj).setLocId(this.getLocId());
 			}
 			
 			if (obj instanceof ISynchronizable) ((ISynchronizable) obj).setChildrensId();
@@ -64,12 +70,14 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 		this.setChildrensId(this.datas);
 		this.setChildrensId(this.alerts);
 		this.setChildrensId(this.estimations);
+		this.setChildrensId(this.dataDefParameters);
 	}
 
 	@Override public void synchronize(DbLocationVo dbVo) {
 		this.setChildrensId();
 		
-		this.estimations	= BaseDbUtil.compareCollections(this.estimations,	(dbVo != null)?dbVo.estimations:null,		BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
+		this.estimations		= BaseDbUtil.compareCollections(this.estimations,		(dbVo != null)?dbVo.estimations:null,			BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
+		this.dataDefParameters	= BaseDbUtil.compareCollections(this.dataDefParameters,	(dbVo != null)?dbVo.dataDefParameters:null,		BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
 	}
 
 	@Override public void synchronizeForce(int syncType) {
@@ -105,6 +113,12 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 		if (vo == null) return;
 		if (this.estimations == null) this.estimations = new ArrayList<>(1);
 		this.estimations.add(vo);
+	}
+	
+	public void add(LocDataDefParameterVo vo) {
+		if (vo == null) return;
+		if (this.dataDefParameters == null) this.dataDefParameters = new ArrayList<>(1);
+		this.dataDefParameters.add(vo);
 	}
 	
 	public void addGenerators(Collection<GeneratorVo> vos) {
@@ -158,5 +172,13 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 	}
 	public void setEstimations(Collection<LocEstimationVo> estimations) {
 		this.estimations = estimations;
+	}
+
+	public Collection<LocDataDefParameterVo> getDataDefParameters() {
+		return dataDefParameters;
+	}
+
+	public void setDataDefParameters(Collection<LocDataDefParameterVo> dataDefParameters) {
+		this.dataDefParameters = dataDefParameters;
 	}
 }

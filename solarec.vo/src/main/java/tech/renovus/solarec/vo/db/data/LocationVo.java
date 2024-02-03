@@ -1,6 +1,7 @@
 package tech.renovus.solarec.vo.db.data;
 
 import java.util.Date;
+import java.util.Optional;
 
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.CollectionUtil;
@@ -48,5 +49,12 @@ public class LocationVo extends DbLocationVo implements IDataContainer, Comparab
 	//--- Getters and setters -------------------
 	public void setRequired(boolean required) {
 		this.required = required;
+	}
+
+	public LocDataDefParameterVo getDataDefParameterVo(String name) {
+		if (CollectionUtil.isEmpty(this.dataDefParameters)) return null;
+		Optional<LocDataDefParameterVo> option =  this.dataDefParameters.stream().filter(x -> ClassUtil.equals(name, x.getDataDefParameter().getDataDefParName())).findFirst();
+		return option.isPresent() ? option.get() : null;
+
 	}
 }

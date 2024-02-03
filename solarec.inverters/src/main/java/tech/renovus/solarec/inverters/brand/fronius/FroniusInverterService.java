@@ -14,7 +14,6 @@ import tech.renovus.solarec.inverters.brand.fronius.api.InfoReleaseResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.history.data.HistoryDataResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.metadata.PvSystemsListResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.user.InfoUserResponse;
-import tech.renovus.solarec.inverters.common.InverterCofigurationVo;
 import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
@@ -51,7 +50,7 @@ public class FroniusInverterService implements InverterService {
 	}
 	
 	//--- Implemented methods -------------------
-	@Override public Collection<GenDataVo> retrieveData(ClientVo client, InverterCofigurationVo configuration) {
+	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
 		// TODO Auto-generated method stub
 		return null;
 	}

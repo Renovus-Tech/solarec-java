@@ -52,7 +52,6 @@ import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.voltage.aggr
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.voltage.timeseries.TelemetryDataVoltageTimeseriesResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.wind.aggregated.TelemetryDataWindAggregatedResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.wind.timeseries.TelemetryDataWindTimeseriesResponse;
-import tech.renovus.solarec.inverters.common.InverterCofigurationVo;
 import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.StringUtil;
@@ -123,6 +122,9 @@ public class FimerInverterService implements InverterService {
 	private static final String ENDPOINT_IP_RANGE_DATALOGGER = "/v1/ip-ranges/datalogger";
 	private static final String ENDPOINT_IP_RANGE_WEB = "/v1/ip-ranges/web";
 	
+	private static final String PARAM_USER		= "fimer.user";
+	private static final String PARAM_PASSWORD	= "fimer.password";
+	private static final String PARAM_KEY		= "fimer.key";
 
 	// --- Private properties --------------------
 	private Logger logger = LoggerService.schedulesLogger();
@@ -136,10 +138,14 @@ public class FimerInverterService implements InverterService {
 
 	// --- Implemented methods -------------------
 	@Override
-	public Collection<GenDataVo> retrieveData(ClientVo client, InverterCofigurationVo configuration) {
+	public Collection<GenDataVo> retrieveData(ClientVo client) {
 		long t = System.currentTimeMillis();
 		this.logger.info("[{t}] Start retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
-		AuthenticateResponse authentication = this.authenticate(configuration.getUser(), configuration.getPassword(), configuration.getKey());
+		AuthenticateResponse authentication = this.authenticate(
+				this.getParameter(client, PARAM_USER),
+				this.getParameter(client, PARAM_PASSWORD),
+				this.getParameter(client, PARAM_KEY)
+			);
 		String authenticationKey = authentication == null ? null : authentication.getResult();
 
 		this.logger.info("[{t}] Authentication ok: ", t, StringUtil.notEmpty(authenticationKey));
@@ -170,8 +176,11 @@ public class FimerInverterService implements InverterService {
 		return JsonCaller.get(URL + ENDPOINT_STATUS, StatusResponse.class);
 	}
 
-	public boolean validateConfiguration(InverterCofigurationVo configuration) {
-		AuthenticateResponse authentication = this.authenticate(configuration.getUser(), configuration.getPassword(), configuration.getKey());
+	public boolean validateConfiguration(ClientVo client) {
+		AuthenticateResponse authentication = this.authenticate(
+				this.getParameter(client, PARAM_USER),
+				this.getParameter(client, PARAM_PASSWORD),
+				this.getParameter(client, PARAM_KEY));
 		return authentication != null && StringUtil.notEmpty(authentication.getResult());
 	}
 
