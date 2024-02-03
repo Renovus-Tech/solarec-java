@@ -16,6 +16,7 @@ import tech.renovus.solarec.vo.db.data.GenDataVo;
 
 /**
  * URL: https://sandbox.smaapis.de/monitoring/index.html
+ * URL: https://sandbox.smaapis.de/live/index.html
  * Documentation: https://developer.sma.de/api-access-control#c59102
  * Postman template: https://cdn.sma.de/fileadmin/content/www.developer.sma.de/docs/SMA_CustomFlowSandbox_v6.postman_collection.json?v=1698749440
  */
@@ -57,7 +58,7 @@ public class SmaInverterService implements InverterService {
 	
 	private BcAuthorizeResponse retrieveBcAuthorizeStatus(AuthResponse auth, String clientEmail) {
 		return JsonCaller.bearerGet(
-				(URL + ENDPOINT_BC_AUTHROIZE_STATUS).replaceFirst("{emailAddressResourceOwner}", clientEmail), 
+				(URL + ENDPOINT_BC_AUTHROIZE_STATUS).replaceFirst("\\{emailAddressResourceOwner\\}", clientEmail), 
 				null, 
 				auth.getBearer(),
 				BcAuthorizeResponse.class
@@ -66,7 +67,7 @@ public class SmaInverterService implements InverterService {
 	
 	private BcAuthroizeTokenResponse retrieveBcAutorizeToken(AuthResponse auth, String clientEmail) {
 		return JsonCaller.bearerGet(
-				(URL + ENDPOINT_BC_AUTHROIZE_TOKEN).replaceFirst("{emailAddressResourceOwner}", clientEmail), 
+				(URL + ENDPOINT_BC_AUTHROIZE_TOKEN).replaceFirst("\\{emailAddressResourceOwner\\}", clientEmail), 
 				null, 
 				auth.getBearer(),
 				BcAuthroizeTokenResponse.class
