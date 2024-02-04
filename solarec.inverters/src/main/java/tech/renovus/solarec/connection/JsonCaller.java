@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.JsonUtil;
 
 public class JsonCaller {
@@ -66,6 +67,7 @@ public class JsonCaller {
 			try {
 				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
 			} catch (JsonProcessingException e) {
+				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
 				return null;
 			}
 		}
@@ -86,6 +88,7 @@ public class JsonCaller {
 			try {
 				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
 			} catch (JsonProcessingException e) {
+				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
 				return null;
 			}
 		}
@@ -107,6 +110,7 @@ public class JsonCaller {
 			try {
 				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
 			} catch (JsonProcessingException e) {
+				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
 				return null;
 			}
 		}
@@ -125,6 +129,7 @@ public class JsonCaller {
 			try {
 				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
 			} catch (JsonProcessingException e) {
+				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
 				return null;
 			}
 		}
@@ -148,6 +153,7 @@ public class JsonCaller {
 			try {
 				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
 			} catch (JsonProcessingException e) {
+				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
 				return null;
 			}
 		}
@@ -167,6 +173,7 @@ public class JsonCaller {
 			try {
 				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
 			} catch (JsonProcessingException e) {
+				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
 				return null;
 			}
 		}
@@ -192,6 +199,7 @@ public class JsonCaller {
 			try {
 				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
 			} catch (JsonProcessingException e) {
+				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
 				return null;
 			}
 		}
