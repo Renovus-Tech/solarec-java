@@ -11,7 +11,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 
 import tech.renovus.solarec.connection.JsonCaller;
@@ -166,9 +165,6 @@ public class FimerInverterService implements InverterService {
 	public static final String PARAM_PLANT_ID			= "fimer.location.plantId";
 	public static final String PARAM_DEVICE_ID			= "fimer.generator.deviceId";
 
-	// --- Private properties --------------------
-	private Logger logger = LoggerService.schedulesLogger();
-
 	// --- Private methods -----------------------
 	private Map<String, String> generateHeaders(String auroraVisionApiKey) {
 		Map<String, String> headers = new HashMap<>(1);
@@ -198,7 +194,7 @@ public class FimerInverterService implements InverterService {
 	// --- Implemented methods -------------------
 	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
 		long t = System.currentTimeMillis();
-		this.logger.info("[{t}] Start retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
+		LoggerService.inverterLogger().info("[{t}] Start retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
 		AuthenticateResponse authentication = this.authenticate(
 				this.getParameter(client, PARAM_USER),
 				this.getParameter(client, PARAM_PASSWORD),
@@ -206,7 +202,7 @@ public class FimerInverterService implements InverterService {
 			);
 		String authenticationKey = authentication == null ? null : authentication.getResult();
 
-		this.logger.info("[{t}] Authentication ok: ", t, StringUtil.notEmpty(authenticationKey));
+		LoggerService.inverterLogger().info("[{t}] Authentication ok: ", t, StringUtil.notEmpty(authenticationKey));
 
 		String portafolioId = this.getParameter(client, PARAM_PORTAFOLIO_ID);
 		String timeZone = this.getParameter(client, PARAM_TIME_ZONE);
@@ -251,7 +247,7 @@ public class FimerInverterService implements InverterService {
 			}
 		}
 
-		this.logger.info("[{t}] End retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
+		LoggerService.inverterLogger().info("[{t}] End retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
 
 		return result;
 	}
