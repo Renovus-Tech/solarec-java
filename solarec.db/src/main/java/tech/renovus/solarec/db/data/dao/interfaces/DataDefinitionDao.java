@@ -13,6 +13,8 @@ public interface DataDefinitionDao {
 	void delete(DataDefinitionVo vo);
 	void synchronize(DataDefinitionVo vo);
 	void synchronize(Collection<DataDefinitionVo> vos);
+	
+	Collection<DataDefinitionVo> getAllInvertersDefinitions();
 
 }
 

@@ -19,14 +19,15 @@ import tech.renovus.solarec.vo.db.data.GeneratorVo;
 public class GeneratorDaoImpl extends BaseGeneratorDao implements GeneratorDao {
 	
 	//--- Private constants ---------------------
-	private final static String SQL_SELECT_ALL_FOR_CLIENT			= "SELECT * FROM generator WHERE cli_id = :cliId ORDER BY gen_code";
-	private final static String SQL_SELECT_ALL_FOR_LOCATION			= "SELECT * FROM generator WHERE cli_id = :cliId AND loc_id = :locId ORDER BY gen_code";
-	private final static String SQL_FIND_BY_SERIAL_NUM				= "SELECT * FROM generator WHERE cli_id = :cliId AND gen_serial_num = :serailNum";
+	private final static String SQL_SELECT_ALL_FOR_CLIENT						= "SELECT * FROM generator WHERE cli_id = :cliId ORDER BY gen_code";
+	private final static String SQL_SELECT_ALL_FOR_LOCATION						= "SELECT * FROM generator WHERE cli_id = :cliId AND loc_id = :locId ORDER BY gen_code";
+	private final static String SQL_FIND_BY_SERIAL_NUM							= "SELECT * FROM generator WHERE cli_id = :cliId AND gen_serial_num = :serailNum";
 
-	private final static String SQL_UPDATE_DATA_DATE_MAX 			= "update generator set gen_data_date_max = (select max(data_date) from gen_data where gen_data.cli_id = generator.cli_id and gen_data.gen_id = generator.gen_id_auto)";
-	private final static String SQL_UPDATE_DATA_DATE_MIN 			= "update generator set gen_data_date_min = (select min(data_date) from gen_data where gen_data.cli_id = generator.cli_id and gen_data.gen_id = generator.gen_id_auto)";
+	private final static String SQL_UPDATE_DATA_DATE_MAX 						= "update generator set gen_data_date_max = (select max(data_date) from gen_data where gen_data.cli_id = generator.cli_id and gen_data.gen_id = generator.gen_id_auto)";
+	private final static String SQL_UPDATE_DATA_DATE_MIN 						= "update generator set gen_data_date_min = (select min(data_date) from gen_data where gen_data.cli_id = generator.cli_id and gen_data.gen_id = generator.gen_id_auto)";
 	
-	private final static String SQL_GET_MAX_DATA_DATE_FOR_CLIENT			= "SELECT max(gen_data_date_max) FROM generator WHERE cli_id = :cliId AND gen_data_date_max <= :genDataDateMax" ;
+	private final static String SQL_GET_MAX_DATA_DATE_FOR_CLIENT				= "SELECT max(gen_data_date_max) FROM generator WHERE cli_id = :cliId AND gen_data_date_max <= :genDataDateMax" ;
+	private final static String SQL_SELECT_ALL_WITHD_DATA_DEFINITION_INVERTER	= "SELECT g.* FROM genreator g, data_definition dd WHERE g.data_def_id = dd.data_def_id_auto AND dd.data_def_flags like '__1%'";
 
 	//--- Constructors --------------------------
 	@Autowired public GeneratorDaoImpl(NamedParameterJdbcTemplate jdbc) {
@@ -82,6 +83,13 @@ public class GeneratorDaoImpl extends BaseGeneratorDao implements GeneratorDao {
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
+	}
+	
+	@Override public Collection<GeneratorVo> getAllGeneratorsWithDataDefinitionInverter() {
+		return this.jdbc.query(
+				SQL_SELECT_ALL_WITHD_DATA_DEFINITION_INVERTER, 
+				GeneratorRowWrapper.getInstance()
+			);
 	}
 	
 }

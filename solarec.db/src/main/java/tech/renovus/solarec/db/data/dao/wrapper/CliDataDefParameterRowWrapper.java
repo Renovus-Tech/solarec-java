@@ -9,7 +9,7 @@ import tech.renovus.solarec.vo.db.data.CliDataDefParameterVo;
 public class CliDataDefParameterRowWrapper implements RowMapper<CliDataDefParameterVo> {
 
 	//--- Constructors --------------------------
-	private CliDataDefParameterRowWrapper() {}
+	protected CliDataDefParameterRowWrapper() {}
 	private static CliDataDefParameterRowWrapper instance = new CliDataDefParameterRowWrapper();
 	public static CliDataDefParameterRowWrapper getInstance() { return CliDataDefParameterRowWrapper.instance; }
 

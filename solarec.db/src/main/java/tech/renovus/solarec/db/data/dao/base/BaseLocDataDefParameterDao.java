@@ -14,10 +14,10 @@ public abstract class BaseLocDataDefParameterDao <T extends LocDataDefParameterV
 	//--- Protected constants -------------------
 	protected final String SQL_SELECT_ALL		= "SELECT * FROM loc_data_def_parameter";
 	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_data_def_parameter WHERE cli_id = :cli_id AND loc_id = :loc_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
-	protected String SQL_INSERT					= "INSERT INTO loc_data_def_parameter (cli_id, loc_id, data_def_id, data_def_par_id, cli_data_def_par_value) VALUES (:cli_id, :loc_id, :data_def_id, :data_def_par_id, :cli_data_def_par_value)";
-	protected String SQL_UPDATE					= "UPDATE loc_data_def_parameter SET cli_data_def_par_value = :cli_data_def_par_value WHERE cli_id = :cli_id AND loc_id = :loc_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
+	protected String SQL_INSERT					= "INSERT INTO loc_data_def_parameter (cli_id, loc_id, data_def_id, data_def_par_id, loc_data_def_par_value) VALUES (:cli_id, :loc_id, :data_def_id, :data_def_par_id, :loc_data_def_par_value)";
+	protected String SQL_UPDATE					= "UPDATE loc_data_def_parameter SET loc_data_def_par_value = :loc_data_def_par_value WHERE cli_id = :cli_id AND loc_id = :loc_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
 	protected String SQL_DELETE					= "DELETE FROM loc_data_def_parameter WHERE cli_id = :cli_id AND loc_id = :loc_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
-	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id, loc_id, data_def_id, data_def_par_id) DO UPDATE SET cli_data_def_par_value = EXCLUDED.cli_data_def_par_value";
+	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id, loc_id, data_def_id, data_def_par_id) DO UPDATE SET loc_data_def_par_value = EXCLUDED.loc_data_def_par_value";
 
 
 	//--- Protected properties ------------------
@@ -35,12 +35,12 @@ public abstract class BaseLocDataDefParameterDao <T extends LocDataDefParameterV
 			.addValue("loc_id", vo.getLocId())
 			.addValue("data_def_id", vo.getDataDefId())
 			.addValue("data_def_par_id", vo.getDataDefParId())
-			.addValue("cli_data_def_par_value", vo.getCliDataDefParValue());
+			.addValue("loc_data_def_par_value", vo.getLocDataDefParValue());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_data_def_par_value", vo.getCliDataDefParValue())
+			.addValue("loc_data_def_par_value", vo.getLocDataDefParValue())
 			.addValue("cli_id", vo.getCliId())
 			.addValue("loc_id", vo.getLocId())
 			.addValue("data_def_id", vo.getDataDefId())

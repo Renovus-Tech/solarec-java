@@ -21,6 +21,7 @@ public interface GeneratorDao {
 	void updateDataDateMaxMin();
 	
 	Date getMaxDataDate(Integer cliId, Date beforeDate);
+	Collection<GeneratorVo> getAllGeneratorsWithDataDefinitionInverter();
 
 }
 

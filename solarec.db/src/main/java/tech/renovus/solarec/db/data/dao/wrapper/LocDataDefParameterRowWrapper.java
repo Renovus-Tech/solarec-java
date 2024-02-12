@@ -9,7 +9,7 @@ import tech.renovus.solarec.vo.db.data.LocDataDefParameterVo;
 public class LocDataDefParameterRowWrapper implements RowMapper<LocDataDefParameterVo> {
 
 	//--- Constructors --------------------------
-	private LocDataDefParameterRowWrapper() {}
+	protected LocDataDefParameterRowWrapper() {}
 	private static LocDataDefParameterRowWrapper instance = new LocDataDefParameterRowWrapper();
 	public static LocDataDefParameterRowWrapper getInstance() { return LocDataDefParameterRowWrapper.instance; }
 
@@ -18,7 +18,7 @@ public class LocDataDefParameterRowWrapper implements RowMapper<LocDataDefParame
 	protected Integer getResultSetLocId(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return Integer.valueOf(resultSet.getInt(columnName)); } else { return null; } }
 	protected Integer getResultSetDataDefId(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return Integer.valueOf(resultSet.getInt(columnName)); } else { return null; } }
 	protected Integer getResultSetDataDefParId(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return Integer.valueOf(resultSet.getInt(columnName)); } else { return null; } }
-	protected String getResultSetCliDataDefParValue(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
+	protected String getResultSetLocDataDefParValue(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
 
 	//--- Overridden methods --------------------
 	@Override public LocDataDefParameterVo mapRow(ResultSet resultSet, int arg1) throws SQLException {
@@ -28,7 +28,7 @@ public class LocDataDefParameterRowWrapper implements RowMapper<LocDataDefParame
 		vo.setLocId(this.getResultSetLocId(resultSet, LocDataDefParameterVo.COLUMN_LOC_ID));
 		vo.setDataDefId(this.getResultSetDataDefId(resultSet, LocDataDefParameterVo.COLUMN_DATA_DEF_ID));
 		vo.setDataDefParId(this.getResultSetDataDefParId(resultSet, LocDataDefParameterVo.COLUMN_DATA_DEF_PAR_ID));
-		vo.setCliDataDefParValue(this.getResultSetCliDataDefParValue(resultSet, LocDataDefParameterVo.COLUMN_CLI_DATA_DEF_PAR_VALUE));
+		vo.setLocDataDefParValue(this.getResultSetLocDataDefParValue(resultSet, LocDataDefParameterVo.COLUMN_LOC_DATA_DEF_PAR_VALUE));
 
 		return vo;
 	}

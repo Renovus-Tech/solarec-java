@@ -13,5 +13,7 @@ public interface GenDataDefParameterDao {
 	void delete(GenDataDefParameterVo vo);
 	void synchronize(GenDataDefParameterVo vo);
 	void synchronize(Collection<GenDataDefParameterVo> vos);
+	
+	Collection<GenDataDefParameterVo> getAllFor(Integer cliId, Integer genId);
 
 }

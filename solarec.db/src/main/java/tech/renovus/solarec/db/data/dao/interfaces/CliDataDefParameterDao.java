@@ -13,5 +13,7 @@ public interface CliDataDefParameterDao {
 	void delete(CliDataDefParameterVo vo);
 	void synchronize(CliDataDefParameterVo vo);
 	void synchronize(Collection<CliDataDefParameterVo> vos);
+	
+	Collection<CliDataDefParameterVo> getAllFor(Integer cliId);
 
 }
