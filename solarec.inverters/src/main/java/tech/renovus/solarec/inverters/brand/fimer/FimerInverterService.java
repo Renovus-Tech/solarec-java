@@ -58,6 +58,7 @@ import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.voltage.time
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.wind.aggregated.TelemetryDataWindAggregatedResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.wind.timeseries.TelemetryDataWindTimeseriesResponse;
 import tech.renovus.solarec.inverters.common.InverterService;
+import tech.renovus.solarec.inverters.common.InvertersUtil;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.StringUtil;
@@ -196,16 +197,16 @@ public class FimerInverterService implements InverterService {
 		long t = System.currentTimeMillis();
 		LoggerService.inverterLogger().info("[{t}] Start retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
 		AuthenticateResponse authentication = this.authenticate(
-				this.getParameter(client, PARAM_USER),
-				this.getParameter(client, PARAM_PASSWORD),
-				this.getParameter(client, PARAM_KEY)
+				InvertersUtil.getParameter(client, PARAM_USER),
+				InvertersUtil.getParameter(client, PARAM_PASSWORD),
+				InvertersUtil.getParameter(client, PARAM_KEY)
 			);
 		String authenticationKey = authentication == null ? null : authentication.getResult();
 
 		LoggerService.inverterLogger().info("[{t}] Authentication ok: ", t, StringUtil.notEmpty(authenticationKey));
 
-		String portafolioId = this.getParameter(client, PARAM_PORTAFOLIO_ID);
-		String timeZone = this.getParameter(client, PARAM_TIME_ZONE);
+		String portafolioId = InvertersUtil.getParameter(client, PARAM_PORTAFOLIO_ID);
+		String timeZone = InvertersUtil.getParameter(client, PARAM_TIME_ZONE);
 		
 		SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
 		
@@ -224,11 +225,11 @@ public class FimerInverterService implements InverterService {
 		
 		if (CollectionUtil.notEmpty(client.getLocations())) {
 			for (LocationVo location : client.getLocations()) {
-				String plnatId = this.getParameter(location, PARAM_PLANT_ID);
+				String plnatId = InvertersUtil.getParameter(location, PARAM_PLANT_ID);
 				
 				if (CollectionUtil.notEmpty(location.getGenerators())) {
 					for (GeneratorVo generator : location.getGenerators()) {
-						int deviceId = Integer.parseInt(this.getParameter(generator, PARAM_DEVICE_ID));
+						int deviceId = Integer.parseInt(InvertersUtil.getParameter(generator, PARAM_DEVICE_ID));
 						
 						TelemetryDataEnergyTimeseriesResponse data = this.telemetryDataEnergyTimeseries(
 								authenticationKey, 
@@ -273,9 +274,9 @@ public class FimerInverterService implements InverterService {
 
 	public boolean validateConfiguration(ClientVo client) {
 		AuthenticateResponse authentication = this.authenticate(
-				this.getParameter(client, PARAM_USER),
-				this.getParameter(client, PARAM_PASSWORD),
-				this.getParameter(client, PARAM_KEY));
+				InvertersUtil.getParameter(client, PARAM_USER),
+				InvertersUtil.getParameter(client, PARAM_PASSWORD),
+				InvertersUtil.getParameter(client, PARAM_KEY));
 		
 		return authentication != null && StringUtil.notEmpty(authentication.getResult());
 	}
