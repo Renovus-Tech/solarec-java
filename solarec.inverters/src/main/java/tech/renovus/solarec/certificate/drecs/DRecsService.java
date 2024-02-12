@@ -10,6 +10,7 @@ import tech.renovus.solarec.certificate.drecs.api.organization.Organization;
 import tech.renovus.solarec.certificate.drecs.api.organization.OrganizationResponse;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.connection.JsonCaller;
+import tech.renovus.solarec.inverters.common.InvertersUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 
@@ -23,6 +24,8 @@ public class DRecsService {
 	private static final String ENDPOINT_AUTH			= DREC_API_URL + "/auth/login";
 	private static final String ENDPOINT_ORGANIZATION	= DREC_API_URL + "/Organization";
 	private static final String ENDPOINT_DEVICE 		= DREC_API_URL + "/device";
+	
+	private static final String PARAM_CLIENT_ID	= "drec.client.id";
 	
 	//--- Protected properties ------------------
 	protected @Autowired RenovusSolarecConfiguration config;
@@ -91,7 +94,7 @@ public class DRecsService {
 		Organization organization = this.createOrganizationFrom(clientVo);
 		OrganizationResponse response = JsonCaller.bearerPost(ENDPOINT_ORGANIZATION, organization, authentication.getAccessToken(), OrganizationResponse.class);
 		
-		//do somthing with the response
+		InvertersUtil.setParameter(clientVo, PARAM_CLIENT_ID, response.getId().toString());
 	}
 
 	/**
@@ -101,8 +104,7 @@ public class DRecsService {
 		AuthResponse authentication = this.authenticate();
 
 		Device device = this.createDeviceFrom(generatorVo);
-		DeviceResponse response = JsonCaller.bearerPost(ENDPOINT_DEVICE, device, authentication.getAccessToken(),
-				DeviceResponse.class);
+		DeviceResponse response = JsonCaller.bearerPost(ENDPOINT_DEVICE, device, authentication.getAccessToken(), DeviceResponse.class);
 
 		// do somthing with the response
 	}
