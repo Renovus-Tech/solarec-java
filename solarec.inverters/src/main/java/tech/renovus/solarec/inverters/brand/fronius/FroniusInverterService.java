@@ -5,8 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import tech.renovus.solarec.connection.JsonCaller;
@@ -18,8 +20,10 @@ import tech.renovus.solarec.inverters.brand.fronius.api.history.data.HistoryData
 import tech.renovus.solarec.inverters.brand.fronius.api.metadata.PvSystemsListResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.user.InfoUserResponse;
 import tech.renovus.solarec.inverters.common.InverterService;
+import tech.renovus.solarec.inverters.common.InvertersUtil;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
@@ -39,24 +43,36 @@ import tech.renovus.solarec.vo.db.data.LocationVo;
 public class FroniusInverterService implements InverterService {
 
 	//--- Private constants ---------------------
-	private static final String URL_PRD		= "https://api.solarweb.com/swqapi";
-	private static final String URL_BETA	= "https://swqapi-beta.solarweb.com";
+	protected static final String URL_PRD											= "https://api.solarweb.com/swqapi";
+	protected static final String URL_BETA											= "https://swqapi-beta.solarweb.com";
+
+	protected static final String URL_TO_USE										= URL_PRD;
+
+	protected static final String ENDPOINT_INFO_RELEASE								= "/info/release";
+	protected static final String ENDPOINT_INFO_USER								= "/info/user";
+	protected static final String ENDPOINT_PV_SYSTEMS_LIST							= "/pvsystems-list";
+	protected static final String ENDPOINT_PV_SYSTEMS_HISTORY_DATA					= "/pvsystems/{pvSystemId}/histdata";
+	protected static final String ENDPOINT_PV_SYSTEM_AGGREGATED_DATA_SPECIFIC_DATE	= "/pvsystems/{pvSystemId}/aggdata/years/{year}/months/{month}/days/{day}";
 	
-	private static final String URL_TO_USE	= URL_PRD;
+	protected static final String PARAM_ACCESS_KEY_ID								= "fronius.client.key_id";
+	protected static final String PARAM_ACCESS_KEY_VALUE							= "fronius.client.key_value";
+	protected static final String PARAM_CLI_LAST_DATE_RETRIEVE						= "fronius.client.last_retrieve";
+	protected static final String PARAM_LOC_LAST_DATE_RETRIEVE						= "fronius.location.last_retrieve";
+	protected static final String PARAM_GEN_PV_SYSTEM_ID							= "fronius.generator.pv_systems_id";
+	protected static final String PARAM_GEN_LAST_DATE_RETRIEVE						= "fronius.generator.last_retrieve";
 	
-	private static final String ENDPOINT_INFO_RELEASE								= "/info/release";
-	private static final String ENDPOINT_INFO_USER									= "/info/user";
-	private static final String ENDPOINT_PV_SYSTEMS_LIST							= "/pvsystems-list";
-	private static final String ENDPOINT_PV_SYSTEMS_HISTORY_DATA					= "/pvsystems/{pvSystemId}/histdata";
-	private static final String ENDPOINT_PV_SYSTEM_AGGREGATED_DATA_SPECIFIC_DATE	= "/pvsystems/{pvSystemId}/aggdata/years/{year}/months/{month}/days/{day}";
-	
-	private static final String PARAM_ACCESS_KEY_ID		= "fronius.key_id";
-	private static final String PARAM_ACCESS_KEY_VALUE	= "fronius.key_value";
-	private static final String PARAM_PV_SYSTEM_ID		= "froniys.pv_systems_id";
-	
-	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+	private static final SimpleDateFormat DATE_FORMATTER							= new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
 	
 	//--- Private methods -----------------------
+	private String getParameterValue(String param, ClientVo cliVo, LocationVo locVo, GeneratorVo genVo) {
+		String result = InvertersUtil.getParameter(cliVo, param);
+		if (StringUtil.isEmpty(result))result = InvertersUtil.getParameter(locVo, param);
+		if (StringUtil.isEmpty(result))result = InvertersUtil.getParameter(genVo, param);
+		
+		return result;
+	}
+	
+	
 	private Map<String, String> getAuthenticationHeaders(String accessKeyId, String accessKeyValue) {
 		Map<String, String> result = new HashMap<>(2);
 		
@@ -66,8 +82,8 @@ public class FroniusInverterService implements InverterService {
 		return result;
 	}
 	
-	private Collection<GenDataVo> process(GeneratorVo generator, HistoryDataResponse data) throws ParseException {
-		Collection<GenDataVo> result = new ArrayList<>();
+	private List<GenDataVo> process(GeneratorVo generator, HistoryDataResponse data) throws ParseException {
+		List<GenDataVo> result = new ArrayList<>();
 		
 		if (data != null && CollectionUtil.notEmpty(data.getData())) {
 			for (Datum aData : data.getData()) {
@@ -104,23 +120,7 @@ public class FroniusInverterService implements InverterService {
 	
 	//--- Implemented methods -------------------
 	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
-		String accessKeyId = this.getParameter(client, PARAM_ACCESS_KEY_ID);
-		String accessKeyValue = this.getParameter(client, PARAM_ACCESS_KEY_VALUE);
-
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -1);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		cal.set(Calendar.AM_PM, Calendar.AM);
-		
-		Date from = cal.getTime();
-		
-		cal.add(Calendar.DAY_OF_YEAR, 1);
-		cal.add(Calendar.MILLISECOND, -1);
-		
-		Date to = cal.getTime();
 		
 		Collection<GenDataVo> result = new ArrayList<>();
 		
@@ -128,11 +128,32 @@ public class FroniusInverterService implements InverterService {
 			for (LocationVo location : client.getLocations()) {
 				if (CollectionUtil.notEmpty(location.getGenerators())) {
 					for (GeneratorVo generator : location.getGenerators()) {
-						String pvSystemsId = this.getParameter(generator, PARAM_PV_SYSTEM_ID);
+						String accessKeyId		= this.getParameterValue(PARAM_ACCESS_KEY_ID, client, location, generator);
+						String accessKeyValue	= this.getParameterValue(PARAM_ACCESS_KEY_VALUE, client, location, generator);
+						String pvSystemsId		= this.getParameterValue(PARAM_GEN_PV_SYSTEM_ID, client, location, generator);
+						
+						String genLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE);
+						Date from 				= this.calculateFrom(genLastRetrieve);
+
+						cal.setTime(from);
+						cal.add(Calendar.DAY_OF_YEAR, 1);
+						cal.add(Calendar.MILLISECOND, -1);
+						
+						Date to = cal.getTime();
+						
 						HistoryDataResponse data = this.getPvSystemsHistData(accessKeyId, accessKeyValue, pvSystemsId, from, to);
 						
 						try {
-							CollectionUtil.addAll(result, this.process(generator, data));
+							List<GenDataVo> generatorData = this.process(generator, data);
+							
+							if (CollectionUtil.notEmpty(generatorData)) {
+								CollectionUtil.addAll(result, generatorData);
+								
+								Collections.reverse(generatorData);
+								GenDataVo lastData = generatorData.iterator().next();
+								
+								InvertersUtil.setParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
+							}
 						} catch (ParseException e) {
 							LoggerService.inverterLogger().error("Error parsing data: " + e.getLocalizedMessage(), e);
 						}
@@ -144,6 +165,24 @@ public class FroniusInverterService implements InverterService {
 		return result;
 	}
 	
+	private Date calculateFrom(String genLastRetrieve) {
+		Calendar cal = Calendar.getInstance();
+		
+		if (StringUtil.isEmpty(genLastRetrieve)) {
+			cal.add(Calendar.DAY_OF_YEAR, -1);
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			cal.set(Calendar.MILLISECOND, 0);
+			cal.set(Calendar.AM_PM, Calendar.AM);
+		} else {
+			cal.setTimeInMillis(Long.parseLong(genLastRetrieve));
+		}
+		
+		return cal.getTime();
+	}
+
+
 	//--- Public methods ------------------------
 	public InfoReleaseResponse getInfoRelease(String accessKeyId, String accessKeyValue) {
 		return JsonCaller.get(

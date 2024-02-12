@@ -105,7 +105,6 @@ public class FroniusInverterServiceTest {
 		
 		Date to = cal.getTime();
 
-		
 		HistoryDataResponse data = service.getPvSystemsHistData(this.accessKeyId, this.accessKeyValue, pvSystemsId, from, to);
 		assertNotNull(data);
 		assertFalse(response.hasError());
