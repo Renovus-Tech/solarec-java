@@ -146,4 +146,12 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 		this.neighbours = neighbours;
 	}
 
+	public Collection<GenDataDefParameterVo> getDataDefParameters() {
+		return dataDefParameters;
+	}
+
+	public void setDataDefParameters(Collection<GenDataDefParameterVo> dataDefParameters) {
+		this.dataDefParameters = dataDefParameters;
+	}
+
 }

@@ -10,16 +10,16 @@ public class BaseLocDataDefParameterVo extends BaseDbVo {
 	public static final String COLUMN_LOC_ID = "loc_id";
 	public static final String COLUMN_DATA_DEF_ID = "data_def_id";
 	public static final String COLUMN_DATA_DEF_PAR_ID = "data_def_par_id";
-	public static final String COLUMN_CLI_DATA_DEF_PAR_VALUE = "cli_data_def_par_value";
+	public static final String COLUMN_LOC_DATA_DEF_PAR_VALUE = "loc_data_def_par_value";
 
-	public static final int LENGTH_COLUMN_CLI_DATA_DEF_PAR_VALUE =  255;
+	public static final int LENGTH_COLUMN_LOC_DATA_DEF_PAR_VALUE =  255;
 
 	//--- Private properties --------------------
 	private Integer cliId;
 	private Integer locId;
 	private Integer dataDefId;
 	private Integer dataDefParId;
-	private String cliDataDefParValue;
+	private String locDataDefParValue;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -35,7 +35,7 @@ public class BaseLocDataDefParameterVo extends BaseDbVo {
 		if (this.dataDefParId == null) {
 			return false;
 		}
-		if (this.cliDataDefParValue == null) {
+		if (this.locDataDefParValue == null) {
 			return false;
 		}
 		return true;
@@ -75,7 +75,7 @@ public class BaseLocDataDefParameterVo extends BaseDbVo {
 		if (! this.equals(obj)) return false;
 		
 		BaseLocDataDefParameterVo aObj = (BaseLocDataDefParameterVo) obj;
-		if (!ClassUtil.equals(this.cliDataDefParValue,aObj.cliDataDefParValue)) {
+		if (!ClassUtil.equals(this.locDataDefParValue,aObj.locDataDefParValue)) {
 			return false;
 		}
 		return true;
@@ -125,11 +125,11 @@ public class BaseLocDataDefParameterVo extends BaseDbVo {
 		this.dataDefParId = dataDefParId;
 	}
 
-	public String getCliDataDefParValue() {
-		return this.cliDataDefParValue;
+	public String getLocDataDefParValue() {
+		return this.locDataDefParValue;
 	}
-	public void setCliDataDefParValue(String cliDataDefParValue) {
-		this.cliDataDefParValue = cliDataDefParValue;
+	public void setLocDataDefParValue(String locDataDefParValue) {
+		this.locDataDefParValue = locDataDefParValue;
 	}
 
 }
