@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import tech.renovus.solarec.inverters.brand.sma.api.ErrorResponse;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
 "access_token",
@@ -19,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 "refresh_expires_in"
 })
 @Generated("jsonschema2pojo")
-public class BcAuthroizeTokenResponse {
+public class BcAuthroizeTokenResponse extends ErrorResponse {
 
 @JsonProperty("access_token")
 private String accessToken;

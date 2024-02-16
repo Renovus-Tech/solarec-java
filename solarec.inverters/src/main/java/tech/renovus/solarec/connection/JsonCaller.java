@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -119,9 +121,14 @@ public class JsonCaller {
 	public static <T extends Object> T post(String url, Map<String,String> queryParams, Class<T> responseClass) {
 		WebClient webClient = WebClient.create();
 
+		MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+		queryParams.forEach(formData::add);
+
 		try {
 			return webClient.post()
-		            .uri(generateCompleteURL(url, queryParams))
+		            .uri(url)
+		            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+		            .bodyValue(formData)
 		            .retrieve()
 		            .bodyToMono(responseClass)
 		            .block();

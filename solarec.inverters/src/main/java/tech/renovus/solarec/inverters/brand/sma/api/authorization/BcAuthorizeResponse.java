@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import tech.renovus.solarec.inverters.brand.sma.api.ErrorResponse;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
 "loginHint",
@@ -18,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 "interval"
 })
 @Generated("jsonschema2pojo")
-public class BcAuthorizeResponse {
+public class BcAuthorizeResponse extends ErrorResponse {
 
 @JsonProperty("loginHint")
 private String loginHint;
