@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpHeaders;
@@ -158,14 +160,17 @@ public class FimerInverterService implements InverterService {
 	private static final String SAMPLE_SIZE_YEAR		= "Year";
 	
 	//--- Public constants ----------------------
-	public static final String PARAM_USER				= "fimer.client.user";
-	public static final String PARAM_PASSWORD			= "fimer.client.password";
-	public static final String PARAM_KEY				= "fimer.client.key";
-	public static final String PARAM_TIME_ZONE			= "fimer.client.timezone";
-	public static final String PARAM_PORTAFOLIO_ID		= "fimer.client.portafolioId";
-	public static final String PARAM_PLANT_ID			= "fimer.location.plantId";
-	public static final String PARAM_DEVICE_ID			= "fimer.generator.deviceId";
-
+	public static final String PARAM_USER						= "fimer.client.user";
+	public static final String PARAM_PASSWORD					= "fimer.client.password";
+	public static final String PARAM_KEY						= "fimer.client.key";
+	public static final String PARAM_TIME_ZONE					= "fimer.client.timezone";
+	public static final String PARAM_PORTAFOLIO_ID				= "fimer.client.portafolioId";
+	public static final String PARAM_PLANT_ID					= "fimer.location.plantId";
+	public static final String PARAM_DEVICE_ID					= "fimer.generator.deviceId";
+	public static final String PARAM_CLIENT_LAST_RETRIEVE		= "fimer.client.last_retrieve";
+	public static final String PARAM_LOCATION_LAST_RETRIEVE		= "fimer.location.last_retrieve";
+	public static final String PARAM_GENERATOR_LAST_RETRIEVE	= "fimer.generator.last_retrieve";
+	
 	// --- Private methods -----------------------
 	private Map<String, String> generateHeaders(String auroraVisionApiKey) {
 		Map<String, String> headers = new HashMap<>(1);
@@ -173,15 +178,18 @@ public class FimerInverterService implements InverterService {
 		return headers;
 	}
 
-	private Collection<GenDataVo> process(GeneratorVo generator, TelemetryDataEnergyTimeseriesResponse data) {
-		Collection<GenDataVo> result = new ArrayList<>();
+	private List<GenDataVo> process(GeneratorVo generator, TelemetryDataEnergyTimeseriesResponse data, Date dateFrom) {
+		List<GenDataVo> result = new ArrayList<>();
 		
 		if (data != null && CollectionUtil.notEmpty(data.getResult())) {
 			for (Result aData : data.getResult()) {
+				Date dataDate = new Date(aData.getStart().intValue() * 1000);
+				if (dataDate.before(dateFrom)) continue;
+				
 				GenDataVo genData = new GenDataVo();
 				genData.setCliId(generator.getCliId());
 				genData.setGenId(generator.getGenId());
-				genData.setDataDate(new Date(aData.getStart().intValue() * 1000));
+				genData.setDataDate(dataDate);
 				genData.setDataTypeId(DataTypeVo.TYPE_GENERATOR_POWER_KWH);
 				genData.setDataValue(aData.getValue());
 				
@@ -192,6 +200,23 @@ public class FimerInverterService implements InverterService {
 		return result;
 	}
 
+	private Date calculateFrom(String genLastRetrieve) {
+		Calendar cal = Calendar.getInstance();
+		
+		if (StringUtil.isEmpty(genLastRetrieve)) {
+			cal.add(Calendar.DAY_OF_YEAR, -1);
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			cal.set(Calendar.MILLISECOND, 0);
+			cal.set(Calendar.AM_PM, Calendar.AM);
+		} else {
+			cal.setTimeInMillis(Long.parseLong(genLastRetrieve));
+		}
+		
+		return cal.getTime();
+	}
+	
 	// --- Implemented methods -------------------
 	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
 		long t = System.currentTimeMillis();
@@ -208,18 +233,8 @@ public class FimerInverterService implements InverterService {
 		String portafolioId = InvertersUtil.getParameter(client, PARAM_PORTAFOLIO_ID);
 		String timeZone = InvertersUtil.getParameter(client, PARAM_TIME_ZONE);
 		
+		Calendar cal = GregorianCalendar.getInstance();
 		SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
-		
-		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.set(Calendar.HOUR,0);
-		calendar.set(Calendar.MINUTE,0);
-		calendar.set(Calendar.SECOND,0);
-		calendar.set(Calendar.MILLISECOND,0);
-		calendar.set(Calendar.AM_PM,Calendar.AM);
-		calendar.add(Calendar.DAY_OF_YEAR, -1);
-		
-		String startDate = formater.format(calendar.getTime());
-		String endDate = startDate;
 		
 		Collection<GenDataVo> result = new ArrayList<>();
 		
@@ -228,21 +243,39 @@ public class FimerInverterService implements InverterService {
 				String plnatId = InvertersUtil.getParameter(location, PARAM_PLANT_ID);
 				
 				if (CollectionUtil.notEmpty(location.getGenerators())) {
+					
 					for (GeneratorVo generator : location.getGenerators()) {
-						int deviceId = Integer.parseInt(InvertersUtil.getParameter(generator, PARAM_DEVICE_ID));
+						int deviceId			= Integer.parseInt(InvertersUtil.getParameter(generator, PARAM_DEVICE_ID));
+						String getLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE);
+						Date startDate 			= this.calculateFrom(getLastRetrieve);
 						
+						cal.setTime(startDate);
+						cal.add(Calendar.DAY_OF_YEAR, 1);
+						cal.add(Calendar.MILLISECOND, -1);
+						
+						Date endDate = cal.getTime();
+
 						TelemetryDataEnergyTimeseriesResponse data = this.telemetryDataEnergyTimeseries(
 								authenticationKey, 
 								deviceId, 
 								DATA_TYPE_GENERATION_ENERGY, 
 								VALUE_TYPE_DELTA,
 								SAMPLE_SIZE_MIN_15, 
-								startDate, 
-								endDate, 
+								formater.format(startDate), 
+								formater.format(endDate), 
 								timeZone
 							);
 						
-						CollectionUtil.addAll(result, this.process(generator, data));
+						List<GenDataVo> generatorData = this.process(generator, data, startDate);
+						
+						if (CollectionUtil.notEmpty(generatorData)) {
+							CollectionUtil.addAll(result, generatorData);
+							
+							Collections.reverse(generatorData);
+							GenDataVo lastData = generatorData.iterator().next();
+							
+							InvertersUtil.setParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
+						}
 					}
 				}
 			}
