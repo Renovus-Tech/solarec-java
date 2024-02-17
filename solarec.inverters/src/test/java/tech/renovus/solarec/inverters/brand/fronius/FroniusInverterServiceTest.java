@@ -22,6 +22,7 @@ public class FroniusInverterServiceTest {
 	//--- Private properties --------------------
 	private String accessKeyId;
 	private String accessKeyValue;
+	private boolean betaMode = true;
 	
 	//--- Init methods --------------------------
 	@Before
@@ -47,7 +48,7 @@ public class FroniusInverterServiceTest {
 	@Test
 	public void testInfoRelease() {
 		FroniusInverterService service = new FroniusInverterService();
-		InfoReleaseResponse response = service.getInfoRelease(this.accessKeyId, this.accessKeyValue);
+		InfoReleaseResponse response = service.getInfoRelease(this.betaMode, this.accessKeyId, this.accessKeyValue);
 		assertNotNull(response);
 		assertFalse(response.hasError());
 		assertNotNull(response.getReleaseVersion());
@@ -57,7 +58,7 @@ public class FroniusInverterServiceTest {
 	@Test
 	public void testInfoUser() {
 		FroniusInverterService service = new FroniusInverterService();
-		InfoUserResponse response = service.getInfoUser(this.accessKeyId, this.accessKeyValue);
+		InfoUserResponse response = service.getInfoUser(this.betaMode, this.accessKeyId, this.accessKeyValue);
 		assertNotNull(response);
 		assertFalse(response.hasError());
 		assertNotNull(response.getName());
@@ -68,7 +69,7 @@ public class FroniusInverterServiceTest {
 	@Test
 	public void testPvSystemsList() {
 		FroniusInverterService service = new FroniusInverterService();
-		PvSystemsListResponse response = service.getPvSystemsList(this.accessKeyId, this.accessKeyValue);
+		PvSystemsListResponse response = service.getPvSystemsList(this.betaMode, this.accessKeyId, this.accessKeyValue);
 		assertNotNull(response);
 		assertFalse(response.hasError());
 		assertNotNull(response.getPvSystemIds());
@@ -78,7 +79,7 @@ public class FroniusInverterServiceTest {
 	@Test
 	public void testPvSystemsHistoryData() {
 		FroniusInverterService service = new FroniusInverterService();
-		PvSystemsListResponse response = service.getPvSystemsList(this.accessKeyId, this.accessKeyValue);
+		PvSystemsListResponse response = service.getPvSystemsList(this.betaMode, this.accessKeyId, this.accessKeyValue);
 		assertNotNull(response);
 		assertFalse(response.hasError());
 		assertNotNull(response.getPvSystemIds());
@@ -105,7 +106,7 @@ public class FroniusInverterServiceTest {
 		
 		Date to = cal.getTime();
 
-		HistoryDataResponse data = service.getPvSystemsHistData(this.accessKeyId, this.accessKeyValue, pvSystemsId, from, to);
+		HistoryDataResponse data = service.getPvSystemsHistData(this.betaMode, this.accessKeyId, this.accessKeyValue, pvSystemsId, from, to);
 		assertNotNull(data);
 		assertFalse(response.hasError());
 		assertEquals(data.getPvSystemId(), pvSystemsId);
