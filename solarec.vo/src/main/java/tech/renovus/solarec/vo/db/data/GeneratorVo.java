@@ -10,6 +10,9 @@ import tech.renovus.solarec.vo.db.relation.DbGeneratorVo;
 
 public class GeneratorVo extends DbGeneratorVo implements IDataContainer {
 
+	//--- Flags ---------------------------------
+	public static final int FLAG_ENABLED	= 0;
+	
 	//--- Private properties --------------------
 	private boolean required = true;
 	

@@ -11,6 +11,7 @@ public class CliDataDefTriggerVo extends DbCliDataDefTriggerVo {
 	public static final int SOURCE_EMAIL	= 1;
 	public static final int SOURCE_MANUAL	= 2;
 	public static final int SOURCE_DAILY	= 3;
+	public static final int SOURCE_INVERTER	= 4;
 	
 	public static final String SOURCE_AS_EMAIL	= "email";
 	public static final String SOURCE_AS_MANUAL	= "manual";

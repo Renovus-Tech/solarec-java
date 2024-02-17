@@ -82,6 +82,7 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 
 	@Override public void synchronizeForce(int syncType) {
 		BaseDbUtil.setAll(this.estimations, syncType);
+		BaseDbUtil.setAll(this.dataDefParameters, syncType);
 	}
 	
 	//--- Public methods ------------------------

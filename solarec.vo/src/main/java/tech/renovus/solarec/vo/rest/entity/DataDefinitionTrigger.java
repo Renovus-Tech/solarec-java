@@ -27,8 +27,8 @@ public class DataDefinitionTrigger {
 	private Integer result;
 	private String filePath;
 	
-	@JsonIgnore
-	private MultipartFile filePart;
+	@JsonIgnore private MultipartFile filePart;
+	@JsonIgnore private int dataDefTrigger;
 	
 	//--- Getters and Setters -------------------
 	public String getSource() {
@@ -132,5 +132,11 @@ public class DataDefinitionTrigger {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getDataDefTrigger() {
+		return dataDefTrigger;
+	}
+	public void setDataDefTrigger(int dataDefTrigger) {
+		this.dataDefTrigger = dataDefTrigger;
 	}
 }
