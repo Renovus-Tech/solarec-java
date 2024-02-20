@@ -1,5 +1,8 @@
 package tech.renovus.solarec.inverters.common;
 
+import java.text.MessageFormat;
+
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.vo.db.data.CliDataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataDefParameterVo;
@@ -10,11 +13,31 @@ import tech.renovus.solarec.vo.db.data.LocationVo;
 
 public class InvertersUtil {
 	
+	//--- Public constants ----------------------
+	public static final String INFO_DATA_RETRIEVE_START	= "Start data retrieve for: {0} | {1} | {2} for date {3}";
+	public static final String INFO_DATA_RETRIEVE_END	= "Ended data retrieve for: {0} | {1} | {2} - with {3} records of data";
+	
 	//--- Constructors --------------------------
 	private InvertersUtil() {}
 	
-	//--- Public methods ------------------------
+	//--- Log methods ---------------------------
+	public static final void logInfo(String message, Object... params) {
+		LoggerService.inverterLogger().info(MessageFormat.format(message, params));
+	}
 	
+	public static final void logError(String message, Object... params) {
+		LoggerService.inverterLogger().error(MessageFormat.format(message, params));
+	}
+	
+	public static final void logError(String message, Exception exception, Object... params) {
+		LoggerService.inverterLogger().error(MessageFormat.format(message, params), exception);
+	}
+	
+	public static final void logDebug(String message, Object... params) {
+		LoggerService.inverterLogger().debug(MessageFormat.format(message, params));
+	}
+	
+	//--- Public methods ------------------------
 	public static String getParameter(ClientVo vo, String name) {
 		if (vo == null) return null;
 		CliDataDefParameterVo paramVo = vo.getDataDefParameterVo(name);
@@ -32,7 +55,6 @@ public class InvertersUtil {
 		GenDataDefParameterVo paramVo = vo.getDataDefParameterVo(name);
 		return paramVo == null ? null : paramVo.getGenDataDefParValue();
 	}
-	
 	
 	public static void setParameter(ClientVo vo, String name, String value) {
 		if (vo == null) return;

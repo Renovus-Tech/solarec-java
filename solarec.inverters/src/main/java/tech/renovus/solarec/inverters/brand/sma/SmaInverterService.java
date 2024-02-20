@@ -20,9 +20,11 @@ import tech.renovus.solarec.inverters.brand.sma.api.monitoring.plant.PlantDevice
 import tech.renovus.solarec.inverters.brand.sma.api.monitoring.plant.PlantsResponse;
 import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.inverters.common.InvertersUtil;
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
@@ -58,7 +60,8 @@ public class SmaInverterService implements InverterService {
 	private static final String PARAM_SANBOX						= "sma.sandbox";
 	private static final String PARAM_CLIENT_CLIENT_ID				= "sma.client.client_id";
 	private static final String PARAM_CLIENT_CLIENT_SECRET			= "sma.client.client_secret";
-	private static final String PARAM_CLIENT_RESOURCE_OWNER			= "sma.client_resource_owner";
+	private static final String PARAM_CLIENT_RESOURCE_OWNER			= "sma.client.resource_owner";
+	private static final String PARAM_LOCATION_PLANT_ID				= "sma.location.plant_id";
 	private static final String PARAM_GENERATOR_DEVICE_ID			= "sma.generator.device_id";
 	private static final String PARAM_GEN_LAST_DATE_RETRIEVE		= "sma.generator.last_retrieve";
 	
@@ -157,6 +160,8 @@ public class SmaInverterService implements InverterService {
 							String genLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE);
 							Date dateFrom			= this.calculateFrom(genLastRetrieve);
 	
+							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, client.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
+							
 							MeasurementsResponse data = this.retrieveDeviceData(
 									sandboxMode, 
 									auth, 
@@ -176,6 +181,8 @@ public class SmaInverterService implements InverterService {
 								
 								InvertersUtil.setParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
 							}
+							
+							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, client.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
 						}
 					}
 				}

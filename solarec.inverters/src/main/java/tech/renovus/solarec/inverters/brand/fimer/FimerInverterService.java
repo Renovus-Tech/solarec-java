@@ -63,6 +63,7 @@ import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.inverters.common.InvertersUtil;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
@@ -247,26 +248,28 @@ public class FimerInverterService implements InverterService {
 					for (GeneratorVo generator : location.getGenerators()) {
 						int deviceId			= Integer.parseInt(InvertersUtil.getParameter(generator, PARAM_DEVICE_ID));
 						String getLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE);
-						Date startDate 			= this.calculateFrom(getLastRetrieve);
+						Date dateFrom 			= this.calculateFrom(getLastRetrieve);
 						
-						cal.setTime(startDate);
+						cal.setTime(dateFrom);
 						cal.add(Calendar.DAY_OF_YEAR, 1);
 						cal.add(Calendar.MILLISECOND, -1);
 						
-						Date endDate = cal.getTime();
+						Date dateTo = cal.getTime();
 
+						InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, client.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
+						
 						TelemetryDataEnergyTimeseriesResponse data = this.telemetryDataEnergyTimeseries(
 								authenticationKey, 
 								deviceId, 
 								DATA_TYPE_GENERATION_ENERGY, 
 								VALUE_TYPE_DELTA,
 								SAMPLE_SIZE_MIN_15, 
-								formater.format(startDate), 
-								formater.format(endDate), 
+								formater.format(dateFrom), 
+								formater.format(dateTo), 
 								timeZone
 							);
 						
-						List<GenDataVo> generatorData = this.process(generator, data, startDate);
+						List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
 						
 						if (CollectionUtil.notEmpty(generatorData)) {
 							CollectionUtil.addAll(result, generatorData);
@@ -276,6 +279,8 @@ public class FimerInverterService implements InverterService {
 							
 							InvertersUtil.setParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
 						}
+						
+						InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, client.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
 					}
 				}
 			}
