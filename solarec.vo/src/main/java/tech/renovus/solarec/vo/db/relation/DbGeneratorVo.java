@@ -14,6 +14,7 @@ import tech.renovus.solarec.vo.db.data.GenDataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GenNeighbourVo;
 import tech.renovus.solarec.vo.db.data.GenPowerVo;
+import tech.renovus.solarec.vo.db.data.LocDataDefParameterVo;
 
 public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<DbGeneratorVo> {
 
@@ -58,6 +59,7 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 			} else if (obj instanceof GenDataDefParameterVo) {
 				((GenDataDefParameterVo) obj).setCliId(this.getCliId());
 				((GenDataDefParameterVo) obj).setGenId(this.getGenId());
+				((GenDataDefParameterVo) obj).setDataDefId(this.getDataDefId());
 			}
 			
 			if (obj instanceof ISynchronizable) ((ISynchronizable) obj).setChildrensId();

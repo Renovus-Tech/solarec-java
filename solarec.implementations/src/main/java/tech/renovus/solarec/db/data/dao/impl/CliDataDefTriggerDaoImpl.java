@@ -65,7 +65,11 @@ public class CliDataDefTriggerDaoImpl extends BaseCliDataDefTriggerDao implement
 	}
 	
 	@Override public Collection<CliDataDefTriggerVo> findAllFor(Integer cliId) {
-		return this.jdbc.query(SQL_SELECT_FULL_ALL_FOR_CLIENT, new MapSqlParameterSource().addValue("cli_id", cliId), CliDataDefTriggerFullRowWrapper.getInstance());
+		return this.jdbc.query(
+				SQL_SELECT_FULL_ALL_FOR_CLIENT, 
+				new MapSqlParameterSource().addValue("cli_id", cliId),
+				CliDataDefTriggerFullRowWrapper.getInstance()
+			);
 	}
 
 	@Override

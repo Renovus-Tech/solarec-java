@@ -38,6 +38,7 @@ public class DbClientVo extends BaseClientVo implements ISynchronizable<DbClient
 				((CliSettingVo) obj).setCliId(this.getCliId());
 			} else if (obj instanceof CliDataDefParameterVo) {
 				((CliDataDefParameterVo) obj).setCliId(this.getCliId());
+				((CliDataDefParameterVo) obj).setDataDefId(this.getDataDefId());
 			}
 		}
 	}

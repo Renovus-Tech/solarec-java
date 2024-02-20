@@ -22,11 +22,6 @@
 			<artifactId>httpclient</artifactId>
 		</dependency>
 
-		<dependency> <!-- Spring dependencies -->
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
 		<!-- TESTING DEPENDENCIES -->
         <dependency>
             <groupId>junit</groupId>

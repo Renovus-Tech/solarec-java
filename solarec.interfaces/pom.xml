@@ -12,6 +12,12 @@
 		<dependency> <!-- Invocar otras URLs -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId> <!-- Exclude Tomcat -->
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 </project>

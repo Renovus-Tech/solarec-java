@@ -13,5 +13,6 @@ public interface DataDefParameterDao {
 	void delete(DataDefParameterVo vo);
 	void synchronize(DataDefParameterVo vo);
 	void synchronize(Collection<DataDefParameterVo> vos);
-
+	
+	Collection<DataDefParameterVo> findAllFor(Integer dataDefId);
 }

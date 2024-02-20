@@ -59,6 +59,7 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 			} else if (obj instanceof LocDataDefParameterVo) {
 				((LocDataDefParameterVo) obj).setCliId(this.getCliId());
 				((LocDataDefParameterVo) obj).setLocId(this.getLocId());
+				((LocDataDefParameterVo) obj).setDataDefId(this.getDataDefId());
 			}
 			
 			if (obj instanceof ISynchronizable) ((ISynchronizable) obj).setChildrensId();
