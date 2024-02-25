@@ -3,6 +3,7 @@ package tech.renovus.solarec.inverters.common;
 import java.text.MessageFormat;
 
 import tech.renovus.solarec.logger.LoggerService;
+import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.CliDataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataDefParameterVo;
@@ -38,6 +39,14 @@ public class InvertersUtil {
 	}
 	
 	//--- Public methods ------------------------
+	public static String getParameter(GeneratorVo genVo, LocationVo locVo, ClientVo cliVo, String param) {
+		String result = InvertersUtil.getParameter(genVo, param);
+		if (StringUtil.isEmpty(result)) result = InvertersUtil.getParameter(locVo, param);
+		if (StringUtil.isEmpty(result)) result = InvertersUtil.getParameter(cliVo, param);
+		
+		return result;
+	}
+	
 	public static String getParameter(ClientVo vo, String name) {
 		if (vo == null) return null;
 		CliDataDefParameterVo paramVo = vo.getDataDefParameterVo(name);

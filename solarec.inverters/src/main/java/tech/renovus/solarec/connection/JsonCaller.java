@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
@@ -20,6 +21,14 @@ import tech.renovus.solarec.util.JsonUtil;
 public class JsonCaller {
 
 	//--- Private methods -----------------------
+	private static WebClient buildWebClient() {
+		WebClient webClient = WebClient.builder()
+				.exchangeStrategies(ExchangeStrategies.builder()
+						.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024)).build())
+				.build();
+		return webClient;
+	}
+	
 	private static String generateCompleteURL(String baseEndpoint, Map<String, String> queryParams) {
         try {
             // Create a URI with the base endpoint
@@ -55,10 +64,9 @@ public class JsonCaller {
 	
 	//--- Post methods --------------------------
 	public static <T extends Object> T post(String url, Object payload, Class<T> responseClass) {
-		WebClient webClient = WebClient.create();
-
 		try {
-			return webClient.post()
+			return buildWebClient()
+					.post()
 		            .uri(url)
 		            .contentType(MediaType.APPLICATION_JSON)
 		            .body(BodyInserters.fromValue(payload))
@@ -76,10 +84,9 @@ public class JsonCaller {
 	}
 	
 	public static <T extends Object> T post(String url, Map<String, String> headers, Object payload, Class<T> responseClass) {
-		WebClient webClient = WebClient.create();
-
 		try {
-			return webClient.post()
+			return buildWebClient()
+					.post()
 		            .uri(url)
 		            .contentType(MediaType.APPLICATION_JSON)
 		            .body(BodyInserters.fromValue(payload))
@@ -97,10 +104,9 @@ public class JsonCaller {
 	}
 
 	public static <T extends Object> T bearerPost(String url, Object payload, String authCode, Class<T> responseClass) {
-		WebClient webClient = WebClient.create();
-
 		try {
-			return webClient.post()
+			return buildWebClient()
+					.post()
 		            .uri(url)
 		            .contentType(MediaType.APPLICATION_JSON)
 		            .header("Authorization", "Bearer " + authCode)
@@ -119,13 +125,12 @@ public class JsonCaller {
 	}
 	
 	public static <T extends Object> T post(String url, Map<String,String> queryParams, Class<T> responseClass) {
-		WebClient webClient = WebClient.create();
-
 		MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
 		queryParams.forEach(formData::add);
 
 		try {
-			return webClient.post()
+			return buildWebClient()
+					.post()
 		            .uri(url)
 		            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
 		            .bodyValue(formData)
@@ -148,10 +153,9 @@ public class JsonCaller {
 	}
 	
 	public static <T extends Object> T get(String url, Map<String,String> queryParams, Class<T> responseClass) {
-		WebClient webClient = WebClient.create();
-
 		try {
-			return webClient.get()
+			return buildWebClient()
+					.get()
 		            .uri(generateCompleteURL(url, queryParams))
 		            .retrieve()
 		            .bodyToMono(responseClass)
@@ -167,10 +171,10 @@ public class JsonCaller {
 	}
 	
 	public static <T extends Object> T bearerGet(String url, Map<String,String> queryParams, String authCode, Class<T> responseClass) {
-		WebClient webClient = WebClient.create();
 		
 		try {
-			return webClient.get()
+			return buildWebClient()
+					.get()
 					.uri(generateCompleteURL(url, queryParams))
 					.header("Authorization", "Bearer " + authCode)
 					.retrieve()
@@ -187,12 +191,10 @@ public class JsonCaller {
 	}
 	
 	public static <T extends Object> T get(String url, Map<String, String> headers, final Map<String,String> queryParams, Class<T> responseClass) {
-		WebClient webClient = WebClient
-				.builder()
-				.build();
 		
 		try {
-			return webClient.get()
+			return buildWebClient()
+					.get()
 		            .uri(generateCompleteURL(url, queryParams))
 		            .headers(consumer -> {
 		            	if (headers != null && ! headers.isEmpty()) {

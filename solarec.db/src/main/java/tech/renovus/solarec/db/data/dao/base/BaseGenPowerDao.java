@@ -72,6 +72,9 @@ public abstract class BaseGenPowerDao <T extends GenPowerVo > {
 
 	public void synchronize(T vo) {
 		if (vo == null) return;
+	
+		if (T.SYNC_INSERT_UPDATE == vo.getSyncType()) vo.setSyncType(this.findVo(vo.getCliId(), vo.getGenId(), vo.getPwrWindSpeed(), vo.getPwrAirDensity()) == null ? T.SYNC_INSERT : T.SYNC_UPDATE);
+	
 		switch (vo.getSyncType()) {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;

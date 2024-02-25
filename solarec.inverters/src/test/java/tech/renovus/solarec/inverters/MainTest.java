@@ -6,11 +6,13 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import tech.renovus.solarec.inverters.brand.fimer.FimerInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.fronius.FroniusInverterServiceTest;
+import tech.renovus.solarec.inverters.brand.sma.SmaInverterServiceTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
 	FimerInverterServiceTest.class, 
 	FroniusInverterServiceTest.class, 
+	SmaInverterServiceTest.class 
 })
 
 public class MainTest {

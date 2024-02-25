@@ -24,7 +24,7 @@ public class LocDataDefParameterDaoImpl extends BaseLocDataDefParameterDao<LocDa
 	}
 
 	//--- Overridden methods --------------------
-	@Override public Collection<LocDataDefParameterVo> getAlLFor(Integer cliId, Integer locId) {
+	@Override public Collection<LocDataDefParameterVo> getAllFor(Integer cliId, Integer locId) {
 		return this.jdbc.query(
 				SQL_SELECT_ALL_FOR_CLIENT,
 				new MapSqlParameterSource()

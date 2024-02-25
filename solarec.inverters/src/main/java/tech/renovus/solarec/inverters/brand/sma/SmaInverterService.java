@@ -86,6 +86,12 @@ public class SmaInverterService implements InverterService {
 	
 	public static final String DEVICE_TYPE_SOLAR_INVETER	= "Solar Inverters";
 
+	//--- Private properties --------------------
+	private ClientVo cliVo;
+	private AuthResponse auth;
+	private BcAuthorizeResponse authorize;
+
+	
 	//--- Private methods -----------------------
 	private String getUrlAuth(boolean sandboxMode) { return sandboxMode ? SANDBOX_URL_AUTH : PROD_URL_AUTH; }
 	private String getUrlData(boolean sandboxMode) { return sandboxMode ? SANDBOX_URL_DATA : PROD_URL_DATA; }
@@ -136,35 +142,47 @@ public class SmaInverterService implements InverterService {
 		return result;
 	}
 	
+	private boolean isAuthorized() {
+		return AUTHORIZE_ACCEPTED.equals(this.authorize.getState());
+	}
+	
 	//--- Implemented methods -------------------
-	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
-		String clientId			= InvertersUtil.getParameter(client, PARAM_CLIENT_CLIENT_ID);
-		String clientSecret		= InvertersUtil.getParameter(client, PARAM_CLIENT_CLIENT_SECRET);
-		String resourceOwner	= InvertersUtil.getParameter(client, PARAM_CLIENT_RESOURCE_OWNER);
-		boolean sandboxMode		= BooleanUtils.isTrue(InvertersUtil.getParameter(client, PARAM_SANBOX));
-		
-		AuthResponse auth				= this.retrieveToken(sandboxMode, clientId, clientSecret);
-		BcAuthorizeResponse authorize	= this.retrieveBcAutorizeToken(sandboxMode, auth, resourceOwner);
-		
+	@Override public void prepareFor(ClientVo client) {
+		this.cliVo = client;
+	}
+	
+	@Override public boolean canRetrieve() { return true; }
+	@Override public boolean continueWithStats() { return this.isAuthorized(); }
+	@Override public String getReasonWhyCantRetrieve() { return null; }
+	
+	@Override public Collection<GenDataVo> retrieveData() {
 		Collection<GenDataVo> result = new ArrayList<>();
-		
-		if (AUTHORIZE_ACCEPTED.equals(authorize.getState())) {
-			if (CollectionUtil.notEmpty(client.getLocations())) {
-				Calendar cal = Calendar.getInstance();
-				SimpleDateFormat formater = new SimpleDateFormat("yyyy'-'MM'-'dd");
-				
-				for (LocationVo location : client.getLocations()) {
-					if (CollectionUtil.notEmpty(location.getGenerators())) {
-						for (GeneratorVo generator : location.getGenerators()) {
+
+		if (CollectionUtil.notEmpty(this.cliVo.getLocations())) {
+			Calendar cal = Calendar.getInstance();
+			SimpleDateFormat formater = new SimpleDateFormat("yyyy'-'MM'-'dd");
+			
+			for (LocationVo location : this.cliVo.getLocations()) {
+				if (CollectionUtil.notEmpty(location.getGenerators())) {
+					for (GeneratorVo generator : location.getGenerators()) {
+						String clientId			= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_CLIENT_CLIENT_ID);
+						String clientSecret		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_CLIENT_CLIENT_SECRET);
+						String resourceOwner	= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_CLIENT_RESOURCE_OWNER);
+						boolean sandboxMode		= BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_SANBOX));
+						
+						this.auth		= this.retrieveToken(sandboxMode, clientId, clientSecret);
+						this.authorize	= this.retrieveBcAutorizeToken(sandboxMode, this.auth, resourceOwner);
+
+						if (this.isAuthorized()) {
 							String deviceId			= InvertersUtil.getParameter(generator, PARAM_GENERATOR_DEVICE_ID);
 							String genLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE);
 							Date dateFrom			= this.calculateFrom(genLastRetrieve);
 	
-							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, client.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
+							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
 							
 							MeasurementsResponse data = this.retrieveDeviceData(
 									sandboxMode, 
-									auth, 
+									this.auth, 
 									deviceId,
 									SmaInverterService.SET_TYPE_ENERGY_AND_POWER_PV, 
 									SmaInverterService.PERIOD_DAY, 
@@ -182,7 +200,7 @@ public class SmaInverterService implements InverterService {
 								InvertersUtil.setParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
 							}
 							
-							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, client.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
+							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
 						}
 					}
 				}

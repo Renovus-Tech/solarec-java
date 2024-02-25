@@ -7,6 +7,10 @@ import tech.renovus.solarec.vo.db.relation.DbGenDataVo;
 
 public class GenDataVo extends DbGenDataVo implements IData {
 
+	//--- Private properties --------------------
+	private double amount = 0;
+	private double value = 0;
+	
 	//--- Constructors --------------------------
 	public GenDataVo() {
 	}
@@ -25,4 +29,14 @@ public class GenDataVo extends DbGenDataVo implements IData {
 
 	//--- Overridden methods --------------------
 	@Override public int compareTo(IData data) { return this.getDataDate().compareTo(data.getDataDate()); }
+	
+	//--- Public methods ------------------------
+	public void add(double value) {
+		this.amount ++;
+		this.value += value;
+	}
+	
+	public void aggregate() {
+		this.setDataValue(Double.valueOf(this.amount == 0 ? 0 : this.value / this.amount));
+	}
 }

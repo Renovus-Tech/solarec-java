@@ -15,7 +15,7 @@ import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 public class DataDefinitionDaoImpl extends BaseDataDefinitionDao implements DataDefinitionDao {
 	
 	//--- Private properties --------------------
-	protected final String SQL_GET_ALL_INVETERS_DEFINITION		= "SELECT * FROM data_definition WHERE data_def_flags like '__1%";
+	protected final String SQL_GET_ALL_INVETERS_DEFINITION		= "SELECT * FROM data_definition WHERE data_def_flags like '__1%'";
 
 	//--- Constructors --------------------------
 	@Autowired public DataDefinitionDaoImpl(NamedParameterJdbcTemplate jdbc) {

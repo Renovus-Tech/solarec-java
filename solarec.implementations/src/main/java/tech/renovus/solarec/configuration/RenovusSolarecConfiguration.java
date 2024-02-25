@@ -3,34 +3,70 @@ package tech.renovus.solarec.configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
-import lombok.Getter;
-
 @Configuration
 public class RenovusSolarecConfiguration {
 	
 	//--- Site configuration --------------------
-	@Getter @Value("${tech.renovus.solarec.site.url}")						private String siteUrl;
+	@Value("${tech.renovus.solarec.site.url}")						private String siteUrl;
 	
 	
 	//--- Mail configuration --------------------
-	@Getter @Value("${tech.renovus.solarec.mail.send_from:Solarec}")		private String mailSendFrom;
-	@Getter @Value("${tech.renovus.solarec.mail.on_error.send_to}")			private String onErrorSendEmailTo;
+	@Value("${tech.renovus.solarec.mail.send_from:Solarec}")		private String mailSendFrom;
+	@Value("${tech.renovus.solarec.mail.on_error.send_to}")			private String onErrorSendEmailTo;
 	
 	//--- Path configurations -------------------
-	@Getter @Value("${tech.renovus.solarec.path.log}")						private String pathLog;
+	@Value("${tech.renovus.solarec.path.log}")						private String pathLog;
 
 	//--- Chart configuration -------------------
-	@Getter @Value("${tech.renovus.solarec.python.url.method:get}")			private String chartMethod;
-	@Getter @Value("${tech.renovus.solarec.python.overview.url}")			private String chartOverviewUrl;
-	@Getter @Value("${tech.renovus.solarec.python.performanceIndex.url}")	private String chartPerformanceIndexUrl;
-	@Getter @Value("${tech.renovus.solarec.python.climate.url}")			private String chartClimateUrl;
-	@Getter @Value("${tech.renovus.solarec.python.powerCurve.url}")			private String chartPowerCurveUrl;
+	@Value("${tech.renovus.solarec.python.url.method:get}")			private String chartMethod;
+	@Value("${tech.renovus.solarec.python.overview.url}")			private String chartOverviewUrl;
+	@Value("${tech.renovus.solarec.python.performanceIndex.url}")	private String chartPerformanceIndexUrl;
+	@Value("${tech.renovus.solarec.python.climate.url}")			private String chartClimateUrl;
+	@Value("${tech.renovus.solarec.python.powerCurve.url}")			private String chartPowerCurveUrl;
 	
-	@Getter @Value("${tech.renovus.solarec.python.alertCalculations.url}")	private String alertCalculations;
+	@Value("${tech.renovus.solarec.python.alertCalculations.url}")	private String alertCalculations;
 	
 	//--- DRecsService configurations -----------
-	@Getter @Value("USER")													private String drecsServiceUsername;
-	@Getter @Value("PASS")													private String drecsServicePassword;
+	@Value("USER")													private String drecsServiceUsername;
+	@Value("PASS")													private String drecsServicePassword;
+	
+	//--- Getters -------------------------------
+	public String getSiteUrl() {
+		return siteUrl;
+	}
+	public String getMailSendFrom() {
+		return mailSendFrom;
+	}
+	public String getOnErrorSendEmailTo() {
+		return onErrorSendEmailTo;
+	}
+	public String getPathLog() {
+		return pathLog;
+	}
+	public String getChartMethod() {
+		return chartMethod;
+	}
+	public String getChartOverviewUrl() {
+		return chartOverviewUrl;
+	}
+	public String getChartPerformanceIndexUrl() {
+		return chartPerformanceIndexUrl;
+	}
+	public String getChartClimateUrl() {
+		return chartClimateUrl;
+	}
+	public String getChartPowerCurveUrl() {
+		return chartPowerCurveUrl;
+	}
+	public String getAlertCalculations() {
+		return alertCalculations;
+	}
+	public String getDrecsServiceUsername() {
+		return drecsServiceUsername;
+	}
+	public String getDrecsServicePassword() {
+		return drecsServicePassword;
+	}
 	
 	
 	

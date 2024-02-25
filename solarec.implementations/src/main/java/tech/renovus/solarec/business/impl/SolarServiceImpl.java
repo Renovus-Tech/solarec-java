@@ -127,12 +127,12 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 	@Override public Object runPerformanceIndex(ChartFilter filter, UserData userData) throws CoreException		{ return this.execute(StatDefinitionVo.ID_SOLAR_PERFORMANCE_INDEX, filter, userData); }
 
 	@Override public Object retrieveOverviewAlerts(ChartFilter filter, UserData userData) throws CoreException		{
-		if (filter == null) filter = new ChartFilter();
+		if (filter == null) filter = new ChartFilter(ChartFilter.PERIOD_YESTERDAY);
 		filter = this.validate(filter, userData);
 		
 		Collection<Alert> alerts = new ArrayList<>();
-		CollectionUtil.addAll(alerts, this.retrieveLocationAlerts(filter, userData));
-		CollectionUtil.addAll(alerts, this.retrieveGeneratorsAlerts(filter, userData));
+		CollectionUtil.addAll(alerts, this.retrieveLocationAlerts(filter.createCopy(), userData));
+		CollectionUtil.addAll(alerts, this.retrieveGeneratorsAlerts(filter.createCopy(), userData));
 		
 		return alerts;
 	}

@@ -20,6 +20,8 @@ public class LocDataDefParameterWithParametersRowWrapper extends LocDataDefParam
 		LocDataDefParameterVo vo = super.mapRow(resultSet, arg1);
 		vo.setDataDefParameter(DataDefParameterRowWrapper.getInstance().mapRow(resultSet, arg1));
 
+		if (vo.getDataDefParId() == null) vo.setDataDefParId(vo.getDataDefParameter().getDataDefParId());
+		
 		return vo;
 	}
 }

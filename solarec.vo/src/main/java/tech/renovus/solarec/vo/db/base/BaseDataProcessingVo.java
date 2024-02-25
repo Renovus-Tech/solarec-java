@@ -6,41 +6,43 @@ import tech.renovus.solarec.util.db.BaseDbVo;
 public class BaseDataProcessingVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	public static final String COLUMN_DATA_PRO_RESULT = "data_pro_result";
 	public static final String COLUMN_DATA_PRO_ID = "data_pro_id_auto";
+	public static final String COLUMN_DATA_DEF_ID = "data_def_id";
 	public static final String COLUMN_CLI_ID = "cli_id";
 	public static final String COLUMN_LOC_ID = "loc_id";
 	public static final String COLUMN_TRI_ID = "tri_id";
-	public static final String COLUMN_DATA_DEF_ID = "data_def_id";
+	public static final String COLUMN_DATA_PRO_RESULT = "data_pro_result";
+	public static final String COLUMN_GEN_ID = "gen_id";
 	public static final String COLUMN_DATA_PRO_DATE_START = "data_pro_date_start";
 	public static final String COLUMN_DATA_PRO_DATE_END = "data_pro_date_end";
-	public static final String COLUMN_DATA_PRO_FILE_LOG = "data_pro_file_log";
 	public static final String COLUMN_DATA_PRO_FILE_NAME = "data_pro_file_name";
+	public static final String COLUMN_DATA_PRO_FILE_LOG = "data_pro_file_log";
 
-	public static final int LENGTH_COLUMN_DATA_PRO_FILE_LOG =  100;
 	public static final int LENGTH_COLUMN_DATA_PRO_FILE_NAME =  100;
+	public static final int LENGTH_COLUMN_DATA_PRO_FILE_LOG =  100;
 
 	//--- Private properties --------------------
-	private Integer dataProResult;
 	private Integer dataProId;
+	private Integer dataDefId;
 	private Integer cliId;
 	private Integer locId;
 	private Integer triId;
-	private Integer dataDefId;
+	private Integer dataProResult;
+	private Integer genId;
 	private java.util.Date dataProDateStart;
 	private java.util.Date dataProDateEnd;
-	private String dataProFileLog;
 	private String dataProFileName;
+	private String dataProFileLog;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
 		if (this.dataProId == null) {
 			return false;
 		}
-		if (this.cliId == null) {
+		if (this.dataDefId == null) {
 			return false;
 		}
-		if (this.dataDefId == null) {
+		if (this.cliId == null) {
 			return false;
 		}
 		return true;
@@ -68,7 +70,7 @@ public class BaseDataProcessingVo extends BaseDbVo {
 		if (! this.equals(obj)) return false;
 		
 		BaseDataProcessingVo aObj = (BaseDataProcessingVo) obj;
-		if (!ClassUtil.equals(this.dataProResult,aObj.dataProResult)) {
+		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
@@ -80,7 +82,10 @@ public class BaseDataProcessingVo extends BaseDbVo {
 		if (!ClassUtil.equals(this.triId,aObj.triId)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
+		if (!ClassUtil.equals(this.dataProResult,aObj.dataProResult)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.genId,aObj.genId)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.dataProDateStart,aObj.dataProDateStart)) {
@@ -89,10 +94,10 @@ public class BaseDataProcessingVo extends BaseDbVo {
 		if (!ClassUtil.equals(this.dataProDateEnd,aObj.dataProDateEnd)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.dataProFileLog,aObj.dataProFileLog)) {
+		if (!ClassUtil.equals(this.dataProFileName,aObj.dataProFileName)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.dataProFileName,aObj.dataProFileName)) {
+		if (!ClassUtil.equals(this.dataProFileLog,aObj.dataProFileLog)) {
 			return false;
 		}
 		return true;
@@ -111,18 +116,18 @@ public class BaseDataProcessingVo extends BaseDbVo {
 	}
 
 	//--- Getters and Setters -------------------
-	public Integer getDataProResult() {
-		return this.dataProResult;
-	}
-	public void setDataProResult(Integer dataProResult) {
-		this.dataProResult = dataProResult;
-	}
-
 	public Integer getDataProId() {
 		return this.dataProId;
 	}
 	public void setDataProId(Integer dataProId) {
 		this.dataProId = dataProId;
+	}
+
+	public Integer getDataDefId() {
+		return this.dataDefId;
+	}
+	public void setDataDefId(Integer dataDefId) {
+		this.dataDefId = dataDefId;
 	}
 
 	public Integer getCliId() {
@@ -146,11 +151,18 @@ public class BaseDataProcessingVo extends BaseDbVo {
 		this.triId = triId;
 	}
 
-	public Integer getDataDefId() {
-		return this.dataDefId;
+	public Integer getDataProResult() {
+		return this.dataProResult;
 	}
-	public void setDataDefId(Integer dataDefId) {
-		this.dataDefId = dataDefId;
+	public void setDataProResult(Integer dataProResult) {
+		this.dataProResult = dataProResult;
+	}
+
+	public Integer getGenId() {
+		return this.genId;
+	}
+	public void setGenId(Integer genId) {
+		this.genId = genId;
 	}
 
 	public java.util.Date getDataProDateStart() {
@@ -167,18 +179,18 @@ public class BaseDataProcessingVo extends BaseDbVo {
 		this.dataProDateEnd = dataProDateEnd;
 	}
 
-	public String getDataProFileLog() {
-		return this.dataProFileLog;
-	}
-	public void setDataProFileLog(String dataProFileLog) {
-		this.dataProFileLog = dataProFileLog;
-	}
-
 	public String getDataProFileName() {
 		return this.dataProFileName;
 	}
 	public void setDataProFileName(String dataProFileName) {
 		this.dataProFileName = dataProFileName;
+	}
+
+	public String getDataProFileLog() {
+		return this.dataProFileLog;
+	}
+	public void setDataProFileLog(String dataProFileLog) {
+		this.dataProFileLog = dataProFileLog;
 	}
 
 }

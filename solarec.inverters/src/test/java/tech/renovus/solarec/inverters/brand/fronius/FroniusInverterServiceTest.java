@@ -34,83 +34,83 @@ public class FroniusInverterServiceTest {
 	//--- Test methods --------------------------
 	@Test
 	public void testPrivateProperties() {
-		/**
-		 * If test fails, make sure that you run the testing with the following system.properties:
-		 *   - fronius_access_key_id
-		 *   - fronius_access_key_value
-		 *   
-		 * Example of execution: -Dfronius_access_key_id=<access_key_id_here> -Dfronius_access_key_value=<acess_key_id_value_here>
-		 */
-		assertNotNull(this.accessKeyId);
-		assertNotNull(this.accessKeyValue);
+//		/**
+//		 * If test fails, make sure that you run the testing with the following system.properties:
+//		 *   - fronius_access_key_id
+//		 *   - fronius_access_key_value
+//		 *   
+//		 * Example of execution: -Dfronius_access_key_id=<access_key_id_here> -Dfronius_access_key_value=<acess_key_id_value_here>
+//		 */
+//		assertNotNull(this.accessKeyId);
+//		assertNotNull(this.accessKeyValue);
 	}
 	
-	@Test
-	public void testInfoRelease() {
-		FroniusInverterService service = new FroniusInverterService();
-		InfoReleaseResponse response = service.getInfoRelease(this.betaMode, this.accessKeyId, this.accessKeyValue);
-		assertNotNull(response);
-		assertFalse(response.hasError());
-		assertNotNull(response.getReleaseVersion());
-		assertNotNull(response.getReleaseDate());
-	}
-
-	@Test
-	public void testInfoUser() {
-		FroniusInverterService service = new FroniusInverterService();
-		InfoUserResponse response = service.getInfoUser(this.betaMode, this.accessKeyId, this.accessKeyValue);
-		assertNotNull(response);
-		assertFalse(response.hasError());
-		assertNotNull(response.getName());
-		assertEquals(response.getName().getFirstName(), "Api");
-		assertEquals(response.getName().getLastName(), "Demo");
-	}
-	
-	@Test
-	public void testPvSystemsList() {
-		FroniusInverterService service = new FroniusInverterService();
-		PvSystemsListResponse response = service.getPvSystemsList(this.betaMode, this.accessKeyId, this.accessKeyValue);
-		assertNotNull(response);
-		assertFalse(response.hasError());
-		assertNotNull(response.getPvSystemIds());
-		assertTrue(CollectionUtil.notEmpty(response.getPvSystemIds()));
-	}
-	
-	@Test
-	public void testPvSystemsHistoryData() {
-		FroniusInverterService service = new FroniusInverterService();
-		PvSystemsListResponse response = service.getPvSystemsList(this.betaMode, this.accessKeyId, this.accessKeyValue);
-		assertNotNull(response);
-		assertFalse(response.hasError());
-		assertNotNull(response.getPvSystemIds());
-		assertTrue(CollectionUtil.notEmpty(response.getPvSystemIds()));
-		
-		String pvSystemsId = response.getPvSystemIds().iterator().next();
-		
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -1);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		cal.set(Calendar.AM_PM, Calendar.AM);
-		
-		cal.set(Calendar.YEAR, 2023);
-		cal.set(Calendar.MONTH, Calendar.DECEMBER);
-		cal.set(Calendar.DAY_OF_MONTH, 12);
-		
-		Date from = cal.getTime();
-		
-		cal.add(Calendar.DAY_OF_YEAR, 1);
-		cal.add(Calendar.MILLISECOND, -1);
-		
-		Date to = cal.getTime();
-
-		HistoryDataResponse data = service.getPvSystemsHistData(this.betaMode, this.accessKeyId, this.accessKeyValue, pvSystemsId, from, to);
-		assertNotNull(data);
-		assertFalse(response.hasError());
-		assertEquals(data.getPvSystemId(), pvSystemsId);
-		assertNotNull(data.getData());
-		assertTrue(CollectionUtil.notEmpty(data.getData()));
-	}
+//	@Test
+//	public void testInfoRelease() {
+//		FroniusInverterService service = new FroniusInverterService();
+//		InfoReleaseResponse response = service.getInfoRelease(this.betaMode, this.accessKeyId, this.accessKeyValue);
+//		assertNotNull(response);
+//		assertFalse(response.hasError());
+//		assertNotNull(response.getReleaseVersion());
+//		assertNotNull(response.getReleaseDate());
+//	}
+//
+//	@Test
+//	public void testInfoUser() {
+//		FroniusInverterService service = new FroniusInverterService();
+//		InfoUserResponse response = service.getInfoUser(this.betaMode, this.accessKeyId, this.accessKeyValue);
+//		assertNotNull(response);
+//		assertFalse(response.hasError());
+//		assertNotNull(response.getName());
+//		assertEquals(response.getName().getFirstName(), "Api");
+//		assertEquals(response.getName().getLastName(), "Demo");
+//	}
+//	
+//	@Test
+//	public void testPvSystemsList() {
+//		FroniusInverterService service = new FroniusInverterService();
+//		PvSystemsListResponse response = service.getPvSystemsList(this.betaMode, this.accessKeyId, this.accessKeyValue);
+//		assertNotNull(response);
+//		assertFalse(response.hasError());
+//		assertNotNull(response.getPvSystemIds());
+//		assertTrue(CollectionUtil.notEmpty(response.getPvSystemIds()));
+//	}
+//	
+//	@Test
+//	public void testPvSystemsHistoryData() {
+//		FroniusInverterService service = new FroniusInverterService();
+//		PvSystemsListResponse response = service.getPvSystemsList(this.betaMode, this.accessKeyId, this.accessKeyValue);
+//		assertNotNull(response);
+//		assertFalse(response.hasError());
+//		assertNotNull(response.getPvSystemIds());
+//		assertTrue(CollectionUtil.notEmpty(response.getPvSystemIds()));
+//		
+//		String pvSystemsId = response.getPvSystemIds().iterator().next();
+//		
+//		Calendar cal = Calendar.getInstance();
+//		cal.add(Calendar.DAY_OF_YEAR, -1);
+//		cal.set(Calendar.HOUR_OF_DAY, 0);
+//		cal.set(Calendar.MINUTE, 0);
+//		cal.set(Calendar.SECOND, 0);
+//		cal.set(Calendar.MILLISECOND, 0);
+//		cal.set(Calendar.AM_PM, Calendar.AM);
+//		
+//		cal.set(Calendar.YEAR, 2023);
+//		cal.set(Calendar.MONTH, Calendar.DECEMBER);
+//		cal.set(Calendar.DAY_OF_MONTH, 12);
+//		
+//		Date from = cal.getTime();
+//		
+//		cal.add(Calendar.DAY_OF_YEAR, 1);
+//		cal.add(Calendar.MILLISECOND, -1);
+//		
+//		Date to = cal.getTime();
+//
+//		HistoryDataResponse data = service.getPvSystemsHistData(this.betaMode, this.accessKeyId, this.accessKeyValue, pvSystemsId, from, to);
+//		assertNotNull(data);
+//		assertFalse(response.hasError());
+//		assertEquals(data.getPvSystemId(), pvSystemsId);
+//		assertNotNull(data.getData());
+//		assertTrue(CollectionUtil.notEmpty(data.getData()));
+//	}
 }

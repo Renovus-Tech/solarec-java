@@ -172,6 +172,11 @@ public class FimerInverterService implements InverterService {
 	public static final String PARAM_LOCATION_LAST_RETRIEVE		= "fimer.location.last_retrieve";
 	public static final String PARAM_GENERATOR_LAST_RETRIEVE	= "fimer.generator.last_retrieve";
 	
+	
+	//--- Private properties ---------------------
+	private ClientVo cliVo;
+	private AuthenticateResponse authentication;
+	
 	// --- Private methods -----------------------
 	private Map<String, String> generateHeaders(String auroraVisionApiKey) {
 		Map<String, String> headers = new HashMap<>(1);
@@ -218,75 +223,92 @@ public class FimerInverterService implements InverterService {
 		return cal.getTime();
 	}
 	
-	// --- Implemented methods -------------------
-	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
-		long t = System.currentTimeMillis();
-		LoggerService.inverterLogger().info("[{t}] Start retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
-		AuthenticateResponse authentication = this.authenticate(
-				InvertersUtil.getParameter(client, PARAM_USER),
-				InvertersUtil.getParameter(client, PARAM_PASSWORD),
-				InvertersUtil.getParameter(client, PARAM_KEY)
-			);
+	private boolean isAuthenticated() {
 		String authenticationKey = authentication == null ? null : authentication.getResult();
+		return StringUtil.notEmpty(authenticationKey);
+	}
+	
+	// --- Implemented methods -------------------
+	@Override public void prepareFor(ClientVo client) {
+		this.cliVo = client;
+	}
+	
+	@Override public boolean canRetrieve() { return true; }
+	
+	@Override 	public boolean continueWithStats() { return this.isAuthenticated(); }
+	
+	@Override public String getReasonWhyCantRetrieve() { return null; }
+	
+	@Override public Collection<GenDataVo> retrieveData() {
+		long t = System.currentTimeMillis();
+		LoggerService.inverterLogger().info("[{t}] Start retrieve for: {client} ({cliId})", t, this.cliVo.getCliName(), this.cliVo.getCliId());
+		Collection<GenDataVo> result = new ArrayList<>();
 
-		LoggerService.inverterLogger().info("[{t}] Authentication ok: ", t, StringUtil.notEmpty(authenticationKey));
-
-		String portafolioId = InvertersUtil.getParameter(client, PARAM_PORTAFOLIO_ID);
-		String timeZone = InvertersUtil.getParameter(client, PARAM_TIME_ZONE);
-		
 		Calendar cal = GregorianCalendar.getInstance();
 		SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
 		
-		Collection<GenDataVo> result = new ArrayList<>();
-		
-		if (CollectionUtil.notEmpty(client.getLocations())) {
-			for (LocationVo location : client.getLocations()) {
-				String plnatId = InvertersUtil.getParameter(location, PARAM_PLANT_ID);
+		if (CollectionUtil.notEmpty(this.cliVo.getLocations())) {
+			for (LocationVo location : this.cliVo.getLocations()) {
 				
 				if (CollectionUtil.notEmpty(location.getGenerators())) {
 					
 					for (GeneratorVo generator : location.getGenerators()) {
-						int deviceId			= Integer.parseInt(InvertersUtil.getParameter(generator, PARAM_DEVICE_ID));
-						String getLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE);
-						Date dateFrom 			= this.calculateFrom(getLastRetrieve);
-						
-						cal.setTime(dateFrom);
-						cal.add(Calendar.DAY_OF_YEAR, 1);
-						cal.add(Calendar.MILLISECOND, -1);
-						
-						Date dateTo = cal.getTime();
-
-						InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, client.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
-						
-						TelemetryDataEnergyTimeseriesResponse data = this.telemetryDataEnergyTimeseries(
-								authenticationKey, 
-								deviceId, 
-								DATA_TYPE_GENERATION_ENERGY, 
-								VALUE_TYPE_DELTA,
-								SAMPLE_SIZE_MIN_15, 
-								formater.format(dateFrom), 
-								formater.format(dateTo), 
-								timeZone
+						this.authentication = this.authenticate(
+								InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_USER),
+								InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_PASSWORD),
+								InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_KEY)
 							);
 						
-						List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
-						
-						if (CollectionUtil.notEmpty(generatorData)) {
-							CollectionUtil.addAll(result, generatorData);
+						boolean authenticated = this.isAuthenticated();
+
+						LoggerService.inverterLogger().info("[{t}] Authentication ok: {authenticated} ", t, authenticated);
+						if (authenticated) {
+							String timeZone = InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_TIME_ZONE);
+
+							int deviceId			= Integer.parseInt(InvertersUtil.getParameter(generator, PARAM_DEVICE_ID));
+							String getLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE);
+							Date dateFrom 			= this.calculateFrom(getLastRetrieve);
 							
-							Collections.reverse(generatorData);
-							GenDataVo lastData = generatorData.iterator().next();
+							cal.setTime(dateFrom);
+							cal.add(Calendar.DAY_OF_YEAR, 1);
+							cal.add(Calendar.MILLISECOND, -1);
 							
-							InvertersUtil.setParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
+							Date dateTo = cal.getTime();
+	
+							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
+							
+							TelemetryDataEnergyTimeseriesResponse data = this.telemetryDataEnergyTimeseries(
+									this.authentication.getResult(), 
+									deviceId, 
+									DATA_TYPE_GENERATION_ENERGY, 
+									VALUE_TYPE_DELTA,
+									SAMPLE_SIZE_MIN_15, 
+									formater.format(dateFrom), 
+									formater.format(dateTo), 
+									timeZone
+								);
+							
+							List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
+							
+							if (CollectionUtil.notEmpty(generatorData)) {
+								CollectionUtil.addAll(result, generatorData);
+								
+								Collections.reverse(generatorData);
+								GenDataVo lastData = generatorData.iterator().next();
+								
+								InvertersUtil.setParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
+							}
+							
+							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
+						} else {
+							LoggerService.inverterLogger().error("[{t}] Error: {s} | {s} | {s}", t, authentication.getError(), authentication.getMessage(), authentication.getException());
 						}
-						
-						InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, client.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
 					}
 				}
 			}
 		}
 
-		LoggerService.inverterLogger().info("[{t}] End retrieve for: {client} ({cliId})", t, client.getCliName(), client.getCliId());
+		LoggerService.inverterLogger().info("[{t}] End retrieve for: {client} ({cliId})", t, this.cliVo.getCliName(), this.cliVo.getCliId());
 
 		return result;
 	}

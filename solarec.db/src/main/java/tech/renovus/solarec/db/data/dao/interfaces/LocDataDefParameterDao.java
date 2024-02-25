@@ -14,6 +14,6 @@ public interface LocDataDefParameterDao {
 	void synchronize(LocDataDefParameterVo vo);
 	void synchronize(Collection<LocDataDefParameterVo> vos);
 	
-	Collection<LocDataDefParameterVo> getAlLFor(Integer cliId, Integer locId);
+	Collection<LocDataDefParameterVo> getAllFor(Integer cliId, Integer locId);
 
 }

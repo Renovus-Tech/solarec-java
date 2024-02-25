@@ -22,10 +22,8 @@ public class PowerCurve extends AbstractChart {
 			
 			return jsonNode.toPrettyString();
 		} catch (Exception e) {
-			//return ChartFactory.getInstance().getChartExceptionInformation(this.statDefVo.getStatDefName(), e);
 			return this.generateChartResultErrorAsString("power_curve", e);
 		}
 	}
 	
-//	@Override public Object getChartJs(Object executeResult) { return executeResult; }
 }

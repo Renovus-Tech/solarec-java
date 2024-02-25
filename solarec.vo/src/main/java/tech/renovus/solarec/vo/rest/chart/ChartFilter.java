@@ -55,6 +55,10 @@ public class ChartFilter implements IFilter {
 	//--- Constructors --------------------------
 	public ChartFilter() {}
 	
+	public ChartFilter(String period) {
+		this.period = period;
+	}
+	
 	//--- Public methods ------------------------
 	public ChartFilter createCopy() {
 		ChartFilter result = new ChartFilter();

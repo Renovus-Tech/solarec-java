@@ -7,5 +7,9 @@ import tech.renovus.solarec.vo.db.data.GenDataVo;
 
 public interface InverterService {
 
-	Collection<GenDataVo> retrieveData(ClientVo client);
+	void prepareFor(ClientVo client);
+	boolean canRetrieve();
+	boolean continueWithStats();
+	String getReasonWhyCantRetrieve();
+	Collection<GenDataVo> retrieveData();
 }

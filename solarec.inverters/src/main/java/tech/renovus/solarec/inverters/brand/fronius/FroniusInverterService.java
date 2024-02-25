@@ -57,6 +57,8 @@ public class FroniusInverterService implements InverterService {
 	protected static final String ENDPOINT_PV_SYSTEMS_HISTORY_DATA					= "/pvsystems/{pvSystemId}/histdata";
 	protected static final String ENDPOINT_PV_SYSTEM_AGGREGATED_DATA_SPECIFIC_DATE	= "/pvsystems/{pvSystemId}/aggdata/years/{year}/months/{month}/days/{day}";
 	
+	protected static final String PV_SYSTEMS_HIST_DATA_LIMIT						= "288";
+	
 	protected static final String PARAM_BETA_MODE									= "fronius.beta";
 	protected static final String PARAM_ACCESS_KEY_ID								= "fronius.client.key_id";
 	protected static final String PARAM_ACCESS_KEY_VALUE							= "fronius.client.key_value";
@@ -69,16 +71,11 @@ public class FroniusInverterService implements InverterService {
 	
 	private static final SimpleDateFormat DATE_FORMATTER							= new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
 	
+	//--- Private properties --------------------
+	private ClientVo cliVo;
+	
 	//--- Private methods -----------------------
 	private String getUrl(boolean betaMode) { return betaMode ? URL_BETA : URL_PRD; }
-	
-	private String getParameterValue(String param, ClientVo cliVo, LocationVo locVo, GeneratorVo genVo) {
-		String result = InvertersUtil.getParameter(genVo, param);
-		if (StringUtil.isEmpty(result)) result = InvertersUtil.getParameter(locVo, param);
-		if (StringUtil.isEmpty(result)) result = InvertersUtil.getParameter(cliVo, param);
-		
-		return result;
-	}
 	
 	private Map<String, String> getAuthenticationHeaders(String accessKeyId, String accessKeyValue) {
 		Map<String, String> result = new HashMap<>(2);
@@ -118,6 +115,28 @@ public class FroniusInverterService implements InverterService {
 		return result;
 	}
 	
+	private List<GenDataVo> aggregate(List<GenDataVo> dataValues) {
+		Map<Date, GenDataVo> result = new HashMap<>(CollectionUtil.size(dataValues) / 3);
+		dataValues.forEach(
+                data -> {
+                	Date simpleDate = this.roundTo15Minutes(data.getDataDate());
+                	result.computeIfAbsent(simpleDate, x -> new GenDataVo(data.getCliId(), data.getGenId(), x, data.getDataTypeId()));
+                	result.get(simpleDate).add(data.getDataValue());
+                }
+        );
+		
+		result.values().forEach(x -> x.aggregate());
+		
+		return new ArrayList<>(result.values());
+	}
+	
+	private Date roundTo15Minutes(Date dateTime) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dateTime);
+		cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) % 15);
+		return cal.getTime();
+    }
+	
 	private String generateUrl(boolean betaMode, String endPoint, String... variables) {
 		String url = this.getUrl(betaMode) + endPoint;
 		
@@ -146,22 +165,24 @@ public class FroniusInverterService implements InverterService {
 	}
 	
 	//--- Implemented methods -------------------
-	@Override public Collection<GenDataVo> retrieveData(ClientVo client) {
+	@Override public void prepareFor(ClientVo client) {
+		this.cliVo = client;
+	}
+	
+	@Override public boolean canRetrieve() { return true; }
+	@Override public boolean continueWithStats() { return true; }
+	@Override public String getReasonWhyCantRetrieve() { return null; }
+	
+	@Override public Collection<GenDataVo> retrieveData() {
 		Calendar cal = Calendar.getInstance();
-		boolean betaMode = BooleanUtils.isTrue(InvertersUtil.getParameter(client, PARAM_BETA_MODE));
 		
 		Collection<GenDataVo> result = new ArrayList<>();
 		
-		boolean isDemoData = BooleanUtils.isTrue(InvertersUtil.getParameter(client, PARAM_DATA_DEMO));
-		
-		if (CollectionUtil.notEmpty(client.getLocations())) {
-			for (LocationVo location : client.getLocations()) {
+		if (CollectionUtil.notEmpty(this.cliVo.getLocations())) {
+			for (LocationVo location : this.cliVo.getLocations()) {
 				if (CollectionUtil.notEmpty(location.getGenerators())) {
 					for (GeneratorVo generator : location.getGenerators()) {
-						String accessKeyId		= this.getParameterValue(PARAM_ACCESS_KEY_ID, client, location, generator);
-						String accessKeyValue	= this.getParameterValue(PARAM_ACCESS_KEY_VALUE, client, location, generator);
-						String pvSystemsId		= this.getParameterValue(PARAM_GEN_PV_SYSTEM_ID, client, location, generator);
-						
+						boolean isDemoData 		= BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_DATA_DEMO));
 						String genLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE);
 						Date dateFrom 			= this.calculateFrom(genLastRetrieve);
 
@@ -177,33 +198,46 @@ public class FroniusInverterService implements InverterService {
 						
 						Date to = cal.getTime();
 						
-						InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, client.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
+						InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
 						
-						HistoryDataResponse data = this.getPvSystemsHistData(betaMode, accessKeyId, accessKeyValue, pvSystemsId, dateFrom, to);
-						
-						try {
-							List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
-							
-							if (CollectionUtil.notEmpty(generatorData)) {
-								CollectionUtil.addAll(result, generatorData);
-								
-								Collections.reverse(generatorData);
-								GenDataVo lastData = generatorData.iterator().next();
-								
-								InvertersUtil.setParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
-							}
-							
-							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, client.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
-						} catch (ParseException e) {
-							LoggerService.inverterLogger().error("Error parsing data: " + e.getLocalizedMessage(), e);
-							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, client.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(-1));
-						}
+						this.retrieveData(result, location, generator, dateFrom, to);
 					}
 				}
 			}
 		}
 		
 		return result;
+	}
+
+	private void retrieveData(Collection<GenDataVo> result, LocationVo location, GeneratorVo generator, Date dateFrom, Date to) {
+		String accessKeyId		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_ACCESS_KEY_ID);
+		String accessKeyValue	= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_ACCESS_KEY_VALUE);
+		String pvSystemsId		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_GEN_PV_SYSTEM_ID);
+		boolean betaMode 		= BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_BETA_MODE));
+		
+		HistoryDataResponse data = this.getPvSystemsHistData(betaMode, accessKeyId, accessKeyValue, pvSystemsId, dateFrom, to);
+		
+		try {
+			List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
+			generatorData = this.aggregate(generatorData);
+			
+			if (CollectionUtil.notEmpty(generatorData)) {
+				CollectionUtil.addAll(result, generatorData);
+				
+				Collections.reverse(generatorData);
+				GenDataVo lastData = generatorData.iterator().next();
+				Date lastDate = lastData.getDataDate();
+				InvertersUtil.setParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE, Long.toString(lastDate.getTime()));
+				
+				if (lastDate.before(to)) this.retrieveData(result, location, generator, lastDate, to);
+				
+			}
+			
+			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
+		} catch (ParseException e) {
+			LoggerService.inverterLogger().error("Error parsing data: " + e.getLocalizedMessage(), e);
+			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(-1));
+		}
 	}
 	
 
@@ -250,6 +284,7 @@ public class FroniusInverterService implements InverterService {
 		Map<String, String> params = new HashMap<>(2);
 		params.put("from", DATE_FORMATTER.format(from));
 		params.put("to", DATE_FORMATTER.format(to));
+		params.put("limit", PV_SYSTEMS_HIST_DATA_LIMIT);
 		
 		return JsonCaller.get(
 				this.generateUrl(betaMode, ENDPOINT_PV_SYSTEMS_HISTORY_DATA, "\\{pvSystemId\\}", pvSystemsId ),

@@ -66,6 +66,9 @@ public abstract class BaseUsrSettingDao <T extends UsrSettingVo > {
 
 	public void synchronize(T vo) {
 		if (vo == null) return;
+	
+		if (T.SYNC_INSERT_UPDATE == vo.getSyncType()) vo.setSyncType(this.findVo(vo.getUsrId(), vo.getUsrSetName()) == null ? T.SYNC_INSERT : T.SYNC_UPDATE);
+	
 		switch (vo.getSyncType()) {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
