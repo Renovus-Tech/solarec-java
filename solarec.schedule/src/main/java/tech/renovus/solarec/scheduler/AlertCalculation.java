@@ -68,7 +68,7 @@ public class AlertCalculation {
 	}
 	
 	//--- Schedulers ----------------------------
-	@Scheduled(cron="0 0 03 * * *") // all days at 1am
+//	@Scheduled(cron="0 0 03 * * *") // all days at 1am
 	public void calculate() {
 		Collection<LocationVo> locations = this.locationDao.getAllForAlertCalculation();
 		

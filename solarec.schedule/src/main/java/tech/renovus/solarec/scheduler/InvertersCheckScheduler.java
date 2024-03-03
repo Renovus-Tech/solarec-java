@@ -10,10 +10,13 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import tech.renovus.solarec.business.AlertService;
 import tech.renovus.solarec.business.CalculationService;
@@ -31,12 +34,18 @@ import tech.renovus.solarec.db.data.dao.interfaces.GenDataDefParameterDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocDataDefParameterDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
+import tech.renovus.solarec.db.data.dao.interfaces.StaDataDao;
+import tech.renovus.solarec.db.data.dao.interfaces.StationDao;
 import tech.renovus.solarec.exceptions.CoreException;
 import tech.renovus.solarec.inverters.common.InverterService;
+import tech.renovus.solarec.inverters.common.InverterService.InverterData;
+import tech.renovus.solarec.inverters.common.InverterService.InveterServiceException;
 import tech.renovus.solarec.logger.LoggerService;
+import tech.renovus.solarec.scheduler.data.DataProcessing;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.FlagUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.AlertProcessingVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
@@ -50,12 +59,15 @@ import tech.renovus.solarec.vo.db.data.GenDataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.StaDataVo;
 import tech.renovus.solarec.vo.db.data.StatProcessingVo;
+import tech.renovus.solarec.vo.db.data.StationVo;
 
 @Component
 public class InvertersCheckScheduler {
 
 	//--- Resources -----------------------------
+	@Autowired AutowireCapableBeanFactory autowireCapableBeanFactory;
 	@Autowired RenovusSolarecConfiguration config;
 	
 	@Resource CalculationService calculationService;
@@ -63,8 +75,10 @@ public class InvertersCheckScheduler {
 	
 	@Resource ClientDao clientDao;
 	@Resource GenDataDao genDataDao;
+	@Resource StaDataDao staDataDao;
 	@Resource LocationDao locationDao;
 	@Resource GeneratorDao generatorDao;
+	@Resource StationDao stationDao;
 	@Resource DataProcessingDao dataProcessinDao;
 	@Resource DataDefinitionDao dataDefinitionDao;
 	@Resource DataDefStatDefinitionDao dataDefStatDefDao;
@@ -79,7 +93,9 @@ public class InvertersCheckScheduler {
 	private InverterService getService(DataDefinitionVo dataDefinitionVo) throws CoreException {
 		try {
 			Class<?> aClass = Class.forName(dataDefinitionVo.getDataDefExecutable());
-			return (InverterService) aClass.getConstructor().newInstance();
+			InverterService service = (InverterService) aClass.getConstructor().newInstance();
+			this.autowireCapableBeanFactory.autowireBean(service);
+			return service;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new CoreException(e);
 		}
@@ -95,10 +111,25 @@ public class InvertersCheckScheduler {
 		return text.toString();
 	}
 	
+	private void doCalculation(DataProcessingVo dataProVo) throws CoreException {
+		try {
+			String jsonRequest = JsonUtil.toString(dataProVo);
+			LoggerService.inverterLogger().info("Calculation for: " + jsonRequest);
+			
+			String jsonResponse			= JsonUtil.post(this.config.getAlertCalculations(), new DataProcessing(dataProVo));
+			LoggerService.inverterLogger().info("Response: " + jsonResponse);
+			
+		} catch (JsonProcessingException e) {
+			LoggerService.inverterLogger().error("Error: {}", e.getLocalizedMessage(), e);
+			throw new CoreException(e);
+		}
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	private void process(DataProcessingVo dataProVo, DataDefinitionVo dataDefVo, GeneratorVo genVo, Date currentDate) {
 		ClientVo cliVo				= this.clientDao.findVo(genVo.getCliId());
 		LocationVo locVo			= this.locationDao.findVo(genVo.getCliId(), genVo.getLocId());
+		StationVo staVo 			= this.stationDao.findDefault(locVo.getCliId(), locVo.getLocId());
 		
 		cliVo.setDataDefParameters(this.cliDataDefParameterDao.getAllFor(cliVo.getCliId()));
 		locVo.setDataDefParameters(this.locDataDefParameterDao.getAllFor(locVo.getCliId(), locVo.getLocId()));
@@ -106,6 +137,7 @@ public class InvertersCheckScheduler {
 		
 		cliVo.add(locVo);
 		locVo.add(genVo);
+		locVo.add(staVo);
 		
 		LoggerService.inverterLogger().info( "Start data retrieve for: " + this.generateLogText(cliVo, locVo, genVo));
 		
@@ -116,12 +148,12 @@ public class InvertersCheckScheduler {
 			boolean canRetrieve = service.canRetrieve();
 			
 			if (canRetrieve) {
-				Collection<GenDataVo> newData = service.retrieveData();
+				InverterData newData = service.retrieveData();
+				boolean continueWithStats = service.continueWithStats();
+				dataProVo.setDataProResult(continueWithStats ? DataProcessingVo.RESULT_PROCESSING_OK : DataProcessingVo.RESULT_PROCESSING_OK_PARTIAL);
 				
-				dataProVo.setDataProResult(service.continueWithStats() ? DataProcessingVo.RESULT_PROCESSING_OK : DataProcessingVo.RESULT_PROCESSING_OK_PARTIAL);
-				
-				if (CollectionUtil.notEmpty(newData)) {
-					for (GenDataVo dataVo : newData) {
+				if (CollectionUtil.notEmpty(newData.getGeneratorData())) {
+					for (GenDataVo dataVo : newData.getGeneratorData()) {
 						dataVo.setCliId(genVo.getCliId());
 						dataVo.setGenId(genVo.getGenId());
 						dataVo.setDataDateAdded(currentDate);
@@ -130,7 +162,18 @@ public class InvertersCheckScheduler {
 					}
 				}
 				
+				if (CollectionUtil.notEmpty(newData.getStationData())) {
+					for (StaDataVo dataVo : newData.getStationData()) {
+						dataVo.setCliId(staVo.getCliId());
+						dataVo.setStaId(staVo.getStaId());
+						dataVo.setDataDateAdded(currentDate);
+						dataVo.setDataProId(dataProVo.getDataProId());
+						dataVo.setSyncType(GeneratorVo.SYNC_INSERT);
+					}
+				}
+				
 				genVo.setChildrensId();
+				staVo.setChildrensId();
 				locVo.setChildrensId();
 				cliVo.setChildrensId();
 				
@@ -142,15 +185,19 @@ public class InvertersCheckScheduler {
 				if (CollectionUtil.notEmpty(locVo.getDataDefParameters())) locVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getLocDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
 				if (CollectionUtil.notEmpty(cliVo.getDataDefParameters())) cliVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getCliDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
 				
-				this.genDataDao.synchronize(newData);
+				this.genDataDao.synchronize(newData.getGeneratorData());
+				this.staDataDao.synchronize(newData.getStationData());
 				this.genDataDefParameterDao.synchronize(genVo.getDataDefParameters());
 				this.locDataDefParameterDao.synchronize(locVo.getDataDefParameters());
 				this.cliDataDefParameterDao.synchronize(cliVo.getDataDefParameters());
+				
+				if (continueWithStats) this.doCalculation(dataProVo);
+				
 			} else {
 				dataProVo.setDataProResult(DataProcessingVo.RESULT_PROCESSING_ERROR);
-				LoggerService.inverterLogger().info( "Dat not retrieve, reason: " + service.getReasonWhyCantRetrieve());
+				LoggerService.inverterLogger().info( "Data not retrieve, reason: " + service.getReasonWhyCantRetrieve());
 			}
-		} catch (CoreException e) {
+		} catch (CoreException | InveterServiceException e) {
 			dataProVo.setDataProResult(DataProcessingVo.RESULT_PROCESSING_ERROR);
 			LoggerService.inverterLogger().error(StringUtil.toString(e));
 		} finally {

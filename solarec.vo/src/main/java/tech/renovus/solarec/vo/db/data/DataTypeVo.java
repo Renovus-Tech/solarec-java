@@ -94,6 +94,8 @@ public class DataTypeVo extends DbDataTypeVo {
 	public static final int TYPE_SOLAR_STATION_AMBIENT_TEMPERATURE						= 503; //Temperature
 	public static final int TYPE_SOLAR_STATION_MODULE_TEMPERATURE						= 504; //Cell temperature
 	public static final int TYPE_SOLAR_STATION_IRRADIATION								= 505; //Irradiation
+	public static final int TYPE_SOLAR_STATION_TOTAL_CLOUD_COVER						= 506; //Irradiation
+	public static final int TYPE_SOLAR_STATION_PRECIPITATION							= 507; //Irradiation
 	
 	//--- Constructors --------------------------
 	public DataTypeVo() {

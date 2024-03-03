@@ -19,6 +19,7 @@ public interface StationDao {
 	void updateDataDateMaxMin();
 	
 	Date getMaxDataDate(Integer cliId, Date beforeDate);
+	StationVo findDefault(Integer cliId, Integer locId);
 
 }
 

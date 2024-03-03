@@ -7,6 +7,9 @@ import tech.renovus.solarec.vo.db.relation.DbStationVo;
 
 public class StationVo extends DbStationVo implements IDataContainer {
 
+	//--- Public constants ----------------------
+	public static int FLAG_DEFAULT	= 0;
+	
 	//--- Private properties --------------------
 //	private Map<Integer, Collection<Date>> typeDates;
 	private boolean required = true;
