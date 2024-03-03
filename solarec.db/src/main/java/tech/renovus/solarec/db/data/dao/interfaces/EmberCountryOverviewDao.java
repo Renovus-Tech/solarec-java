@@ -13,8 +13,10 @@ public interface EmberCountryOverviewDao {
 	void delete(EmberCountryOverviewVo vo);
 	void synchronize(EmberCountryOverviewVo vo);
 	void synchronize(Collection<EmberCountryOverviewVo> vos);
+	
 	EmberCountryOverviewVo findFirstFrom(String string, Integer valueOf);
 	EmberCountryOverviewVo findLastFrom(String string, Integer valueOf);
-
+	Collection<EmberCountryOverviewVo> findAllFirstFrom(String countryOrRegion, Integer year);
+	Collection<EmberCountryOverviewVo> findAllLatFrom(String countryOrRegion, Integer year);
 }
 

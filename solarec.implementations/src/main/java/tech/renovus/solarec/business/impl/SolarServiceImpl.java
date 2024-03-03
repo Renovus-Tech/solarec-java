@@ -128,6 +128,7 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 
 	@Override public Object retrieveOverviewAlerts(ChartFilter filter, UserData userData) throws CoreException		{
 		if (filter == null) filter = new ChartFilter(ChartFilter.PERIOD_YESTERDAY);
+		else filter.setPeriod(ChartFilter.PERIOD_YESTERDAY);
 		filter = this.validate(filter, userData);
 		
 		Collection<Alert> alerts = new ArrayList<>();
@@ -172,9 +173,13 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 			cal.setTime(filter.getFrom());
 			Integer year = Integer.valueOf(cal.get(Calendar.YEAR));
 			
-			EmberCountryOverviewVo vo = this.emberCountryDao.findFirstFrom("Uruguay", year);
-			if (vo == null) vo = this.emberCountryDao.findLastFrom("Uruguay", year);
-			double emissionsIntensityGco2PerMwh = (vo.getEmissionsIntensityGco2PerKwh() == null ? 0 : vo.getEmissionsIntensityGco2PerKwh().doubleValue()) * 1000;
+			Collection<EmberCountryOverviewVo> countryOverviewData = this.emberCountryDao.findAllFirstFrom("Uruguay", year);
+			if (CollectionUtil.isEmpty(countryOverviewData)) countryOverviewData = this.emberCountryDao.findAllLatFrom("Uruguay", year);
+			double emissionsIntensityGco2PerMwh = CollectionUtil.isEmpty(countryOverviewData) ? 0 : countryOverviewData.stream().filter(x -> x.getEmissionsIntensityGco2PerKwh() != null).mapToDouble(EmberCountryOverviewVo::getEmissionsIntensityGco2PerKwh).average().getAsDouble() * 1000;
+			
+//			EmberCountryOverviewVo vo = this.emberCountryDao.findFirstFrom("Uruguay", 2024);
+//			if (vo == null) vo = this.emberCountryDao.findLastFrom("Uruguay", 2024);
+//			double emissionsIntensityGco2PerMwh = (vo.getEmissionsIntensityGco2PerKwh() == null ? 0 : vo.getEmissionsIntensityGco2PerKwh().doubleValue()) * 1000;
 			double soldPorcentaje = cliSettingVo.doubleValue() / (double) 100;
 
 			SimpleDateFormat jsonDate = new SimpleDateFormat(DateUtil.FMT_JSON_CHART);
@@ -183,13 +188,13 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 			for (Datum data : chartPerformance.getData()) {
 				String dateFrom = data.getFrom();
 				try { dateFrom = chartDate.format(jsonDate.parse(dateFrom)); } catch (Exception e) { /* do nothing */ }
-				Double dRecGenerated = data.getTotalACProductionMwh();
-				Double dRecSold = Double.valueOf(dRecGenerated.doubleValue() * soldPorcentaje);
-				Double coAvoided = Double.valueOf(dRecGenerated.doubleValue() * emissionsIntensityGco2PerMwh);
+				Double mwhGenerated = data.getTotalACProductionMwh();
+				Double dRecSold = Double.valueOf(mwhGenerated.doubleValue() * soldPorcentaje);
+				Double coAvoided = Double.valueOf(mwhGenerated.doubleValue() * emissionsIntensityGco2PerMwh);
 				
 				result.add(new Month()
 					.withLabel(dateFrom)
-					.withdRecGenerated(dRecGenerated)
+					.withdRecGenerated(mwhGenerated)
 					.withdRecSold(dRecSold)
 					.withCoAvoided(coAvoided)
 				);
