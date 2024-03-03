@@ -70,6 +70,10 @@ import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.StationVo;
+import tech.renovus.solarec.weather.WeatherService;
+import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
+import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 
 /**
  * URL: https://solis-service.solisinverters.com/en/support/solutions/articles/44002212561-api-access-soliscloud
@@ -239,18 +243,23 @@ public class FimerInverterService implements InverterService {
 	
 	@Override public String getReasonWhyCantRetrieve() { return null; }
 	
-	@Override public Collection<GenDataVo> retrieveData() {
+	@Override public InverterData retrieveData() throws InveterServiceException {
 		long t = System.currentTimeMillis();
 		LoggerService.inverterLogger().info("[{t}] Start retrieve for: {client} ({cliId})", t, this.cliVo.getCliName(), this.cliVo.getCliId());
-		Collection<GenDataVo> result = new ArrayList<>();
+		InverterData result = new InverterData(new ArrayList<>(), new ArrayList<>());
 
 		Calendar cal = GregorianCalendar.getInstance();
 		SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
 		
 		if (CollectionUtil.notEmpty(this.cliVo.getLocations())) {
 			for (LocationVo location : this.cliVo.getLocations()) {
-				
 				if (CollectionUtil.notEmpty(location.getGenerators())) {
+					if (CollectionUtil.isEmpty(location.getStations())) {
+						LoggerService.inverterLogger().error("Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
+						continue;
+					}
+					
+					StationVo station = location.getStations().iterator().next();
 					
 					for (GeneratorVo generator : location.getGenerators()) {
 						this.authentication = this.authenticate(
@@ -291,10 +300,16 @@ public class FimerInverterService implements InverterService {
 							List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
 							
 							if (CollectionUtil.notEmpty(generatorData)) {
-								CollectionUtil.addAll(result, generatorData);
+								CollectionUtil.addAll(result.getGeneratorData(), generatorData);
 								
 								Collections.reverse(generatorData);
 								GenDataVo lastData = generatorData.iterator().next();
+								
+								try {
+									CollectionUtil.addAll(result.getStationData(), new MeteoblueWeatherServiceImpl().retrieveWeatherData(location, station, dateFrom, dateTo));
+								} catch (WeatherServiceException e) {
+									throw new InveterServiceException(e);
+								}
 								
 								InvertersUtil.setParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
 							}

@@ -20,6 +20,7 @@ import tech.renovus.solarec.inverters.brand.sma.api.monitoring.plant.PlantDevice
 import tech.renovus.solarec.inverters.brand.sma.api.monitoring.plant.PlantsResponse;
 import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.inverters.common.InvertersUtil;
+import tech.renovus.solarec.inverters.common.InverterService.InveterServiceException;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.ClassUtil;
@@ -30,6 +31,9 @@ import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.StationVo;
+import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
+import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 
 /**
  * URL: https://sandbox.smaapis.de/monitoring/index.html
@@ -155,8 +159,8 @@ public class SmaInverterService implements InverterService {
 	@Override public boolean continueWithStats() { return this.isAuthorized(); }
 	@Override public String getReasonWhyCantRetrieve() { return null; }
 	
-	@Override public Collection<GenDataVo> retrieveData() {
-		Collection<GenDataVo> result = new ArrayList<>();
+	@Override public InverterData retrieveData() throws InveterServiceException {
+		InverterData result = new InverterData(new ArrayList<>(), new ArrayList<>());
 
 		if (CollectionUtil.notEmpty(this.cliVo.getLocations())) {
 			Calendar cal = Calendar.getInstance();
@@ -164,6 +168,13 @@ public class SmaInverterService implements InverterService {
 			
 			for (LocationVo location : this.cliVo.getLocations()) {
 				if (CollectionUtil.notEmpty(location.getGenerators())) {
+					if (CollectionUtil.isEmpty(location.getStations())) {
+						LoggerService.inverterLogger().error("Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
+						continue;
+					}
+					
+					StationVo station = location.getStations().iterator().next();
+					
 					for (GeneratorVo generator : location.getGenerators()) {
 						String clientId			= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_CLIENT_CLIENT_ID);
 						String clientSecret		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_CLIENT_CLIENT_SECRET);
@@ -192,10 +203,16 @@ public class SmaInverterService implements InverterService {
 							List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
 							
 							if (CollectionUtil.notEmpty(generatorData)) {
-								CollectionUtil.addAll(result, generatorData);
+								CollectionUtil.addAll(result.getGeneratorData(), generatorData);
 								
 								Collections.reverse(generatorData);
 								GenDataVo lastData = generatorData.iterator().next();
+								
+								try {
+									CollectionUtil.addAll(result.getStationData(), new MeteoblueWeatherServiceImpl().retrieveWeatherData(location, station, dateFrom, lastData.getDataDate()));
+								} catch (WeatherServiceException e) {
+									throw new InveterServiceException(e);
+								}
 								
 								InvertersUtil.setParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
 							}
