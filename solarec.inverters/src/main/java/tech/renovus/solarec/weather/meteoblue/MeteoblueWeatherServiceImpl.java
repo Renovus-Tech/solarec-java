@@ -502,8 +502,9 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 	}
 	
 	private void createData(StationVo station, int typeId, Double value, Date dateDate, Collection<StaDataVo> result) {
-		//Data is every hour, we need to split it to 15 minutes period
+		if (value == null) return; //in same cases, meteoblue returns null values
 		
+		//Data is every hour, we need to split it to 15 minutes period
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.setTime(dateDate);
 		
@@ -544,7 +545,7 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 				Date dataDate = WeatherService.DATE_HOUR_FORMATTER.parse(data.getData1h().getTime().get(i));
 				
 				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_AMBIENT_TEMPERATURE,	data.getData1h().getTemperature().get(i), dataDate, result);
-				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_MODULE_TEMPERATURE,	(Double) null, dataDate, result);
+//				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_MODULE_TEMPERATURE,	(Double) null, dataDate, result);
 				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_IRRADIATION,			data.getData1h().getGhiInstant().get(i), dataDate, result);
 				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_TOTAL_CLOUD_COVER,	data.getData1h().getTotalcloudcover().get(i), dataDate, result);
 				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_PRECIPITATION,		data.getData1h().getPrecipitation().get(i), dataDate, result);
