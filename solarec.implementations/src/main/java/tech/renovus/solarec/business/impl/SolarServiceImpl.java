@@ -167,7 +167,7 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 			PerformanceIndex chartPerformance	= JsonUtil.toObject(callPerformance, PerformanceIndex.class);
 			Revenue result = new Revenue();
 			
-			CliSettingVo cliSettingVo = this.cliSettingDao.findVoWithSetting(userData.getCliId(), SettingsVo.D_RECS_SOLD_PORCENTAGE);
+			CliSettingVo cliSettingVo = this.cliSettingDao.findVoWithSetting(userData.getCliId(), SettingsVo.CETIFICATE_SOLD_PORCENTAGE);
 			
 			Calendar cal = GregorianCalendar.getInstance();
 			cal.setTime(filter.getFrom());
@@ -189,13 +189,13 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 				String dateFrom = data.getFrom();
 				try { dateFrom = chartDate.format(jsonDate.parse(dateFrom)); } catch (Exception e) { /* do nothing */ }
 				Double mwhGenerated = data.getTotalACProductionMwh();
-				Double dRecSold = Double.valueOf(mwhGenerated.doubleValue() * soldPorcentaje);
+				Double certSold = Double.valueOf(mwhGenerated.doubleValue() * soldPorcentaje);
 				Double coAvoided = Double.valueOf(mwhGenerated.doubleValue() * emissionsIntensityGco2PerMwh);
 				
 				result.add(new Month()
 					.withLabel(dateFrom)
 					.withCertGenerated(mwhGenerated)
-					.withCertSold(dRecSold)
+					.withCertSold(certSold)
 					.withCoAvoided(coAvoided)
 				);
 			}
@@ -213,7 +213,7 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 	@Override public Revenue revenueSales(ChartFilter filter, UserData userData) {
 		Revenue result = this.revenue(filter, userData);
 
-		CliSettingVo cliSettingVo = this.cliSettingDao.findVoWithSetting(userData.getCliId(), SettingsVo.D_RECS_PRICE);
+		CliSettingVo cliSettingVo = this.cliSettingDao.findVoWithSetting(userData.getCliId(), SettingsVo.CERTIFICATE_PRICE);
 		double price = cliSettingVo.doubleValue();
 		
 		if (CollectionUtil.notEmpty(result.getMonths())) {
