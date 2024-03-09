@@ -11,8 +11,8 @@ public class SettingsVo extends DbSettingsVo {
 	
 	//--- Public constants ----------------------
 	public static final String FISCAL_YEAR_END_MONTH 					= "fiscalYearEndMonth";
-	public static final String D_RECS_SOLD_PORCENTAGE					= "dRecsSoldPorcentage";
-	public static final String D_RECS_PRICE								= "dRecsPrice";
+	public static final String CETIFICATE_SOLD_PORCENTAGE				= "certSoldPorcentage";
+	public static final String CERTIFICATE_PRICE						= "certPrice";
 	public static final String PREFER_LANGUAGE							= "language";
 	public static final String ALERT_DATA_AVAILABILITY_LOWER_THAN		= "alertDataAvailabilityLowerThan";
 	public static final String ALERT_NEGATIVE_CHANGE_EXCEEDING			= "alertNegativeChangeExceeding";
