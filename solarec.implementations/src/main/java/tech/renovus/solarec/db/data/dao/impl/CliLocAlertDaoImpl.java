@@ -1,7 +1,9 @@
 package tech.renovus.solarec.db.data.dao.impl;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -26,6 +28,11 @@ public class CliLocAlertDaoImpl extends BaseCliLocAlertDao implements CliLocAler
 
 	//--- Overridden methods --------------------
 	@Override public Collection<CliLocAlertVo> retrieveFor(Integer cliId, Integer locId, Date from, Date to) {
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.setTime(to);
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+		to = cal.getTime();
+		
 		return this.jdbc.query(
 				SQL_FIND_ALL_FOR_DATA_DEFINITION, 
 				new MapSqlParameterSource()
