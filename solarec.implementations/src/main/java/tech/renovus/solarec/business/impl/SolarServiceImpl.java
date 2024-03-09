@@ -194,8 +194,8 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 				
 				result.add(new Month()
 					.withLabel(dateFrom)
-					.withdRecGenerated(mwhGenerated)
-					.withdRecSold(dRecSold)
+					.withCertGenerated(mwhGenerated)
+					.withCertSold(dRecSold)
 					.withCoAvoided(coAvoided)
 				);
 			}
@@ -218,9 +218,9 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 		
 		if (CollectionUtil.notEmpty(result.getMonths())) {
 			for (Month month : result.getMonths()) {
-				if (month.getdRecGenerated() == null) continue;
-				month.setdRecPrice(Double.valueOf(month.getdRecGenerated().doubleValue() * price));
-				month.setdRecIncome(Double.valueOf(month.getdRecSold().doubleValue() * price));
+				if (month.getCertGenerated() == null) continue;
+				month.setCertPrice(Double.valueOf(month.getCertGenerated().doubleValue() * price));
+				month.setCertIncome(Double.valueOf(month.getCertSold().doubleValue() * price));
 			}
 		}
 		

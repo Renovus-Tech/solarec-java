@@ -14,10 +14,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "label",
     "coAvoided",
-    "dRecGenerated",
-    "dRecPrice",
-    "dRecSold",
-    "dRecIncome"
+    "certGenerated",
+    "certPrice",
+    "certSold",
+    "certIncome"
 })
 @Generated("jsonschema2pojo")
 public class Month {
@@ -26,14 +26,14 @@ public class Month {
     private String label;
     @JsonProperty("coAvoided")
     private Double coAvoided;
-    @JsonProperty("dRecGenerated")
-    private Double dRecGenerated;
-    @JsonProperty("dRecPrice")
-    private Double dRecPrice;
-    @JsonProperty("dRecSold")
-    private Double dRecSold;
-    @JsonProperty("dRecIncome")
-    private Double dRecIncome;
+    @JsonProperty("certGenerated")
+    private Double certGenerated;
+    @JsonProperty("certPrice")
+    private Double certPrice;
+    @JsonProperty("certSold")
+    private Double certSold;
+    @JsonProperty("certIncome")
+    private Double certIncome;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -67,48 +67,48 @@ public class Month {
         return this;
     }
 
-    @JsonProperty("dRecGenerated")
-    public Double getdRecGenerated() {
-        return dRecGenerated;
+    @JsonProperty("certGenerated")
+    public Double getCertGenerated() {
+        return certGenerated;
     }
 
-    @JsonProperty("dRecPrice")
-    public Double getdRecPrice() {
-    	return dRecPrice;
+    @JsonProperty("certPrice")
+    public Double getCertPrice() {
+    	return certPrice;
     }
     
-    @JsonProperty("dRecGenerated")
-    public void setdRecGenerated(Double dRecGenerated) {
-        this.dRecGenerated = dRecGenerated;
+    @JsonProperty("certGenerated")
+    public void setCertGenerated(Double certGenerated) {
+        this.certGenerated = certGenerated;
     }
 
-    @JsonProperty("dRecPrice")
-    public void setdRecPrice(Double dRecPrice) {
-    	this.dRecPrice = dRecPrice;
+    @JsonProperty("certPrice")
+    public void setCertPrice(Double certPrice) {
+    	this.certPrice = certPrice;
     }
     
-    public Month withdRecGenerated(Double dRecGenerated) {
-        this.dRecGenerated = dRecGenerated;
+    public Month withCertGenerated(Double certGenerated) {
+        this.certGenerated = certGenerated;
         return this;
     }
 
-    public Month withdRecPrice(Double dRecPrice) {
-    	this.dRecPrice = dRecPrice;
+    public Month withCertPrice(Double certPrice) {
+    	this.certPrice = certPrice;
     	return this;
     }
     
-    @JsonProperty("dRecSold")
-    public Double getdRecSold() {
-        return dRecSold;
+    @JsonProperty("certSold")
+    public Double getCertSold() {
+        return certSold;
     }
 
-    @JsonProperty("dRecSold")
-    public void setdRecSold(Double dRecSold) {
-        this.dRecSold = dRecSold;
+    @JsonProperty("certSold")
+    public void setCertSold(Double certSold) {
+        this.certSold = certSold;
     }
 
-    public Month withdRecSold(Double dRecSold) {
-        this.dRecSold = dRecSold;
+    public Month withCertSold(Double certSold) {
+        this.certSold = certSold;
         return this;
     }
 
@@ -127,18 +127,18 @@ public class Month {
         return this;
     }
 
-    @JsonProperty("dRecIncome")
-    public Double getdRecIncome() {
-        return dRecIncome;
+    @JsonProperty("certIncome")
+    public Double getCertIncome() {
+        return certIncome;
     }
 
-    @JsonProperty("dRecIncome")
-    public void setdRecIncome(Double dRecIncome) {
-        this.dRecIncome = dRecIncome;
+    @JsonProperty("certIncome")
+    public void setCertIncome(Double certIncome) {
+        this.certIncome = certIncome;
     }
 
-    public Month withdRecIncome(Double dRecIncome) {
-        this.dRecIncome = dRecIncome;
+    public Month withCertIncome(Double certIncome) {
+        this.certIncome = certIncome;
         return this;
     }
 
