@@ -372,7 +372,7 @@ public class FimerInverterService implements InverterService {
 		return response == null ? null : response;
 	}
 
-	public OrganizationResponse organization(String auroraVisionApiKey) {
+	public OrganizationResponse getPortafolioGroup(String auroraVisionApiKey) {
 		// Package api.organization
 		// Payload -
 		// Response OrganizationResponse
@@ -1225,7 +1225,7 @@ public class FimerInverterService implements InverterService {
 		return response == null ? null : response;
 	}
 	
-	public IpRangeDataloggerResponse ipRangeDatalogger(String auroraVisionApiKey) {
+	public IpRangeDataloggerResponse getIpRangeDatalogger(String auroraVisionApiKey) {
 		// Package api.ipRanges.datalogger
 		// Payload -
 		// Response IpRangeDataloggerResponse
@@ -1240,7 +1240,7 @@ public class FimerInverterService implements InverterService {
 		return response == null ? null : response;
 	}
 	
-	public IpRangeWebResponse ipRangeWeb(String auroraVisionApiKey) {
+	public IpRangeWebResponse getIpRangeWeb(String auroraVisionApiKey) {
 		// Package api.ipRanges.datalogger
 		// Payload -
 		// Response IpRangeWebResponse
