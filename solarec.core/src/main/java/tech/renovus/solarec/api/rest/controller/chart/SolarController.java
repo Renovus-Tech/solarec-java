@@ -28,6 +28,9 @@ public class SolarController extends BasicController {
 	@GetMapping(path = { EndPointFactory.REST_API_SOLAR_OVERVIEW_ALERTS }, produces = { MediaType.APPLICATION_JSON_VALUE } )
 	public Object getOverviewAlerts(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException { return this.overviewAlerts(filter, session); }
 	
+	@GetMapping(path = { EndPointFactory.REST_API_SOLAR_OVERVIEW_CO2 }, produces = { MediaType.APPLICATION_JSON_VALUE } )
+	public Object getOverviewCo2(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException { return this.overviewCo2(filter, session); }
+	
 	@GetMapping(path = { EndPointFactory.REST_API_SOLAR_PERFORMANCE_INDEX }, produces = { MediaType.APPLICATION_JSON_VALUE } )
 	public Object getPerformanceIndex(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException { return this.performanceIndex(filter, session); }
 
@@ -48,6 +51,12 @@ public class SolarController extends BasicController {
 	public Object overviewAlerts(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException {
 		filter = this.service.validate(filter, this.getLoggedUserData(session));
 		return this.service.retrieveOverviewAlerts(filter, this.getLoggedUserData(session));
+	}
+	
+	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_OVERVIEW_CO2 }, produces = { MediaType.APPLICATION_JSON_VALUE } )
+	public Object overviewCo2(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException {
+		filter = this.service.validate(filter, this.getLoggedUserData(session));
+		return this.service.retrieveOverviewCo2(filter, this.getLoggedUserData(session));
 	}
 	
 	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_PERFORMANCE_INDEX }, produces = { MediaType.APPLICATION_JSON_VALUE } )

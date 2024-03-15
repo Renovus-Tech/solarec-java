@@ -21,6 +21,7 @@ public interface SolarService {
 	
 	//--- Chart methods -------------------------
 	Object retrieveOverviewAlerts(ChartFilter filter, UserData userData) throws CoreException;
+	Object retrieveOverviewCo2(ChartFilter filter, UserData userData) throws CoreException;
 	
 	Object runOverview(ChartFilter filter, UserData userData) throws CoreException;
 	Object runClimate(ChartFilter filter, UserData userData) throws CoreException;
@@ -28,5 +29,6 @@ public interface SolarService {
 
 	Revenue revenue(ChartFilter filter, UserData loggedUserData);
 	Revenue revenueSales(ChartFilter filter, UserData loggedUserData);
+
 	
 }

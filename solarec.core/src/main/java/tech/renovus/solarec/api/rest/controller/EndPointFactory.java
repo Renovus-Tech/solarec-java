@@ -54,4 +54,5 @@ public class EndPointFactory {
 	public static final String REST_API_SOLAR_PERFORMANCE_INDEX						= REST_API_SOLAR + "/performanceIndex";
 	
 	public static final String REST_API_SOLAR_OVERVIEW_ALERTS						= REST_API_SOLAR_OVERVIEW + "/alerts";
+	public static final String REST_API_SOLAR_OVERVIEW_CO2							= REST_API_SOLAR_OVERVIEW + "/co2";
 }

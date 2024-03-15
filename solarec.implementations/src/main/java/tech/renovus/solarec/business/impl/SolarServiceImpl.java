@@ -30,6 +30,7 @@ import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.comparator.GeneratorGenCodeAsNumberComparator;
+import tech.renovus.solarec.vo.custom.chart.Co2Overview;
 import tech.renovus.solarec.vo.custom.chart.performanceIndex.Datum;
 import tech.renovus.solarec.vo.custom.chart.performanceIndex.PerformanceIndex;
 import tech.renovus.solarec.vo.custom.chart.revenue.Month;
@@ -138,6 +139,51 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 		return alerts;
 	}
 	
+	@Override public Object retrieveOverviewCo2(ChartFilter filter, UserData userData) throws CoreException {
+		if (filter == null) filter = new ChartFilter();
+		
+		Collection<GeneratorVo> generators = new TreeSet<>(GeneratorGenCodeAsNumberComparator.getInstance());
+		CollectionUtil.addAll(generators, this.generatorDao.findAll(userData.getCliId(), filter.getLocation()));
+		filter.setGenerators(generators.stream().map(GeneratorVo::getGenId).collect(Collectors.toList()));
+		
+		filter.setStations(null);
+		filter.setGroupBy(ChartFilter.GROUP_BY_MONTH);
+		filter.setForReport(true);
+		
+		if (StringUtil.isEmpty(filter.getPeriod())) filter.setPeriod(ChartFilter.PERIOD_CURRENT_YEAR);
+
+		filter = this.validate(filter, userData);
+		
+		try {
+			String callPerformance				= (String) this.runPerformanceIndex(filter, userData);
+			PerformanceIndex chartPerformance	= JsonUtil.toObject(callPerformance, PerformanceIndex.class);
+			
+			Calendar cal = GregorianCalendar.getInstance();
+			cal.setTime(filter.getFrom());
+			Integer year = Integer.valueOf(cal.get(Calendar.YEAR));
+			
+			Collection<EmberCountryOverviewVo> countryOverviewData = this.emberCountryDao.findAllFirstFrom("Uruguay", year);
+			if (CollectionUtil.isEmpty(countryOverviewData)) countryOverviewData = this.emberCountryDao.findAllLatFrom("Uruguay", year);
+			double emissionsIntensityGco2PerMwh = CollectionUtil.isEmpty(countryOverviewData) ? 0 : countryOverviewData.stream().filter(x -> x.getEmissionsIntensityGco2PerKwh() != null).mapToDouble(EmberCountryOverviewVo::getEmissionsIntensityGco2PerKwh).average().getAsDouble() / 1000;
+			
+			double co2Avoided = 0;
+			
+			for (Datum data : chartPerformance.getData()) {
+				co2Avoided += data.getTotalACProductionMwh().doubleValue() * emissionsIntensityGco2PerMwh;
+			}
+			
+			return new Co2Overview()
+				.withCo2Emissons(Double.valueOf(emissionsIntensityGco2PerMwh))
+				.withCo2Avoided(Double.valueOf(co2Avoided));
+			
+		} catch (CoreException | JsonProcessingException e) {
+			e.printStackTrace();
+			
+			return null;
+		}
+		
+	}
+	
 	@Override public Revenue revenue(ChartFilter filter, UserData userData) {
 		if (filter == null) filter = new ChartFilter();
 		
@@ -175,7 +221,7 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 			
 			Collection<EmberCountryOverviewVo> countryOverviewData = this.emberCountryDao.findAllFirstFrom("Uruguay", year);
 			if (CollectionUtil.isEmpty(countryOverviewData)) countryOverviewData = this.emberCountryDao.findAllLatFrom("Uruguay", year);
-			double emissionsIntensityGco2PerMwh = CollectionUtil.isEmpty(countryOverviewData) ? 0 : countryOverviewData.stream().filter(x -> x.getEmissionsIntensityGco2PerKwh() != null).mapToDouble(EmberCountryOverviewVo::getEmissionsIntensityGco2PerKwh).average().getAsDouble() * 1000;
+			double emissionsIntensityGco2PerMwh = CollectionUtil.isEmpty(countryOverviewData) ? 0 : countryOverviewData.stream().filter(x -> x.getEmissionsIntensityGco2PerKwh() != null).mapToDouble(EmberCountryOverviewVo::getEmissionsIntensityGco2PerKwh).average().getAsDouble() / 1000;
 			
 //			EmberCountryOverviewVo vo = this.emberCountryDao.findFirstFrom("Uruguay", 2024);
 //			if (vo == null) vo = this.emberCountryDao.findLastFrom("Uruguay", 2024);
