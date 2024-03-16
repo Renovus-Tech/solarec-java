@@ -2,6 +2,7 @@ package tech.renovus.solarec.business.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -13,8 +14,10 @@ import tech.renovus.solarec.db.data.dao.interfaces.CliSettingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.SettingsDao;
 import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.vo.db.data.CliSettingVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.vo.db.data.SettingsVo;
 import tech.renovus.solarec.vo.rest.entity.Client;
 import tech.renovus.solarec.vo.rest.entity.Setting;
 
@@ -33,8 +36,8 @@ public class ClientServiceImpl implements ClientService {
 		
 		if (vo != null) {
 			Collection<CliSettingVo> dbSettings = this.cliSettingDao.findAllFor(vo.getCliId());
+			dbSettings = dbSettings.stream().filter(x -> FlagUtil.getFlagValue(x.getSettingVo(), SettingsVo.FLAG_VISIBLE)).collect(Collectors.toList());
 			vo.setSettings(dbSettings);
-			
 		}
 		return vo;
 	}

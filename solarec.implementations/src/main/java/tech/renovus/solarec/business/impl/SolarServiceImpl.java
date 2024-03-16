@@ -122,6 +122,18 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 		return result;
 	}
 	
+	private double calculateEmissionsIntensityGco2PerMwh(ChartFilter filter) {
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.setTime(filter.getFrom());
+		Integer year = Integer.valueOf(cal.get(Calendar.YEAR));
+		Integer minYear = Integer.valueOf(year-3);
+		
+		Collection<EmberCountryOverviewVo> countryOverviewData = this.emberCountryDao.findAllFirstFrom("Uruguay", year);
+		if (CollectionUtil.isEmpty(countryOverviewData)) countryOverviewData = this.emberCountryDao.findAllLatFrom("Uruguay", year);
+		double emissionsIntensityGco2PerMwh = CollectionUtil.isEmpty(countryOverviewData) ? 0 : countryOverviewData.stream().filter(x -> x.getEmissionsIntensityGco2PerKwh() != null && x.getYear().intValue() >= minYear).mapToDouble(EmberCountryOverviewVo::getEmissionsIntensityGco2PerKwh).average().getAsDouble() / 1000;
+		return emissionsIntensityGco2PerMwh;
+	}
+	
 	//--- Implemented methods -------------------
 	@Override public Object runOverview(ChartFilter filter, UserData userData) throws CoreException				{ return this.execute(StatDefinitionVo.ID_SOLAR_OVERVIEW, filter, userData); }
 	@Override public Object runClimate(ChartFilter filter, UserData userData) throws CoreException				{ return this.execute(StatDefinitionVo.ID_SOLAR_CLIMATE, filter, userData); }
@@ -157,16 +169,8 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 		try {
 			String callPerformance				= (String) this.runPerformanceIndex(filter, userData);
 			PerformanceIndex chartPerformance	= JsonUtil.toObject(callPerformance, PerformanceIndex.class);
-			
-			Calendar cal = GregorianCalendar.getInstance();
-			cal.setTime(filter.getFrom());
-			Integer year = Integer.valueOf(cal.get(Calendar.YEAR));
-			
-			Collection<EmberCountryOverviewVo> countryOverviewData = this.emberCountryDao.findAllFirstFrom("Uruguay", year);
-			if (CollectionUtil.isEmpty(countryOverviewData)) countryOverviewData = this.emberCountryDao.findAllLatFrom("Uruguay", year);
-			double emissionsIntensityGco2PerMwh = CollectionUtil.isEmpty(countryOverviewData) ? 0 : countryOverviewData.stream().filter(x -> x.getEmissionsIntensityGco2PerKwh() != null).mapToDouble(EmberCountryOverviewVo::getEmissionsIntensityGco2PerKwh).average().getAsDouble() / 1000;
-			
-			double co2Avoided = 0;
+			double emissionsIntensityGco2PerMwh = this.calculateEmissionsIntensityGco2PerMwh(filter);
+			double co2Avoided					= 0;
 			
 			for (Datum data : chartPerformance.getData()) {
 				co2Avoided += data.getTotalACProductionMwh().doubleValue() * emissionsIntensityGco2PerMwh;
@@ -191,15 +195,6 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 		CollectionUtil.addAll(generators, this.generatorDao.findAll(userData.getCliId(), filter.getLocation()));
 		filter.setGenerators(generators.stream().map(GeneratorVo::getGenId).collect(Collectors.toList()));
 		
-//		Calendar cal = GregorianCalendar.getInstance();
-//		cal.set(Calendar.DAY_OF_MONTH, 1);
-//		cal.add(Calendar.DAY_OF_MONTH, -1);
-//		filter.setTo(cal.getTime());
-//		
-//		cal.add(Calendar.YEAR, -1);
-//		cal.add(Calendar.DAY_OF_MONTH, 1);
-//		filter.setFrom(cal.getTime());
-		
 		filter.setStations(null);
 		filter.setGroupBy(ChartFilter.GROUP_BY_MONTH);
 		filter.setForReport(true);
@@ -211,21 +206,10 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 		try {
 			String callPerformance				= (String) this.runPerformanceIndex(filter, userData);
 			PerformanceIndex chartPerformance	= JsonUtil.toObject(callPerformance, PerformanceIndex.class);
-			Revenue result = new Revenue();
+			Revenue result						= new Revenue();
+			CliSettingVo cliSettingVo			= this.cliSettingDao.findVoWithSetting(userData.getCliId(), SettingsVo.CETIFICATE_SOLD_PORCENTAGE);
+			double emissionsIntensityGco2PerMwh = this.calculateEmissionsIntensityGco2PerMwh(filter);
 			
-			CliSettingVo cliSettingVo = this.cliSettingDao.findVoWithSetting(userData.getCliId(), SettingsVo.CETIFICATE_SOLD_PORCENTAGE);
-			
-			Calendar cal = GregorianCalendar.getInstance();
-			cal.setTime(filter.getFrom());
-			Integer year = Integer.valueOf(cal.get(Calendar.YEAR));
-			
-			Collection<EmberCountryOverviewVo> countryOverviewData = this.emberCountryDao.findAllFirstFrom("Uruguay", year);
-			if (CollectionUtil.isEmpty(countryOverviewData)) countryOverviewData = this.emberCountryDao.findAllLatFrom("Uruguay", year);
-			double emissionsIntensityGco2PerMwh = CollectionUtil.isEmpty(countryOverviewData) ? 0 : countryOverviewData.stream().filter(x -> x.getEmissionsIntensityGco2PerKwh() != null).mapToDouble(EmberCountryOverviewVo::getEmissionsIntensityGco2PerKwh).average().getAsDouble() / 1000;
-			
-//			EmberCountryOverviewVo vo = this.emberCountryDao.findFirstFrom("Uruguay", 2024);
-//			if (vo == null) vo = this.emberCountryDao.findLastFrom("Uruguay", 2024);
-//			double emissionsIntensityGco2PerMwh = (vo.getEmissionsIntensityGco2PerKwh() == null ? 0 : vo.getEmissionsIntensityGco2PerKwh().doubleValue()) * 1000;
 			double soldPorcentaje = cliSettingVo.doubleValue() / (double) 100;
 
 			SimpleDateFormat jsonDate = new SimpleDateFormat(DateUtil.FMT_JSON_CHART);
@@ -255,7 +239,7 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 		}
 		
 	}
-	
+
 	@Override public Revenue revenueSales(ChartFilter filter, UserData userData) {
 		Revenue result = this.revenue(filter, userData);
 

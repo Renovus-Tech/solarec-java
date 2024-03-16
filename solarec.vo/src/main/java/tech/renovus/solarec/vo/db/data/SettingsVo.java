@@ -8,6 +8,7 @@ public class SettingsVo extends DbSettingsVo {
 	//--- Flags ---------------------------------
 	public static final int FLAG_FOR_USER	= 0;
 	public static final int FLAG_FOR_CLIENT	= 1;
+	public static final int FLAG_VISIBLE	= 2;
 	
 	//--- Public constants ----------------------
 	public static final String FISCAL_YEAR_END_MONTH 					= "fiscalYearEndMonth";
