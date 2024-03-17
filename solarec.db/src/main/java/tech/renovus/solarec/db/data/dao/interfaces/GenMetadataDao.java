@@ -14,5 +14,6 @@ public interface GenMetadataDao {
 	void synchronize(GenMetadataVo vo);
 	void synchronize(Collection<GenMetadataVo> vos);
 
+	Collection<GenMetadataVo> getAllFor(Integer cliId, Integer genId);
 }
 

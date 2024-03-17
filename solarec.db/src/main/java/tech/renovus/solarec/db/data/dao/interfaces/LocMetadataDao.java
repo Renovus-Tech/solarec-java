@@ -14,5 +14,6 @@ public interface LocMetadataDao {
 	void synchronize(LocMetadataVo vo);
 	void synchronize(Collection<LocMetadataVo> vos);
 
+	Collection<LocMetadataVo> getAllFor(Integer cliId, Integer locId);
 }
 

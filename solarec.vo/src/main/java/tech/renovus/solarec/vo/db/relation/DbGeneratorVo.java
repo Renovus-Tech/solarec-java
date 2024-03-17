@@ -12,9 +12,9 @@ import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.GenAlertVo;
 import tech.renovus.solarec.vo.db.data.GenDataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
+import tech.renovus.solarec.vo.db.data.GenMetadataVo;
 import tech.renovus.solarec.vo.db.data.GenNeighbourVo;
 import tech.renovus.solarec.vo.db.data.GenPowerVo;
-import tech.renovus.solarec.vo.db.data.LocDataDefParameterVo;
 
 public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<DbGeneratorVo> {
 
@@ -26,6 +26,7 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 	protected Collection<GenAlertVo> alerts;
 	protected Collection<GenNeighbourVo> neighbours;
 	protected Collection<GenDataDefParameterVo> dataDefParameters; 
+	protected Collection<GenMetadataVo> metadata; 
 
 	//--- Constructors --------------------------
 	public DbGeneratorVo() {
@@ -60,6 +61,10 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 				((GenDataDefParameterVo) obj).setCliId(this.getCliId());
 				((GenDataDefParameterVo) obj).setGenId(this.getGenId());
 				((GenDataDefParameterVo) obj).setDataDefId(this.getDataDefId());
+				
+			} else if (obj instanceof GenMetadataVo) {
+				((GenMetadataVo) obj).setCliId(this.getCliId());
+				((GenMetadataVo) obj).setGenId(this.getGenId());
 			}
 			
 			if (obj instanceof ISynchronizable) ((ISynchronizable) obj).setChildrensId();
@@ -73,6 +78,7 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 		this.setChildrensId(this.powerCurve);
 		this.setChildrensId(this.neighbours);
 		this.setChildrensId(this.dataDefParameters);
+		this.setChildrensId(this.metadata);
 	}
 
 	@Override public void synchronize(DbGeneratorVo dbVo) {
@@ -81,12 +87,14 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 		this.powerCurve			= BaseDbUtil.compareCollections(this.powerCurve,		(dbVo != null)?dbVo.powerCurve:null,			BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
 		this.neighbours			= BaseDbUtil.compareCollections(this.neighbours,		(dbVo != null)?dbVo.neighbours:null,			BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
 		this.dataDefParameters	= BaseDbUtil.compareCollections(this.dataDefParameters,	(dbVo != null)?dbVo.dataDefParameters:null,		BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
+		this.metadata			= BaseDbUtil.compareCollections(this.metadata,			(dbVo != null)?dbVo.metadata:null,				BaseDbVo.SYNC_INSERT, BaseDbVo.SYNC_DELETE);
 	}
 
 	@Override public void synchronizeForce(int syncType) {
 		BaseDbUtil.setAll(this.powerCurve, syncType);
 		BaseDbUtil.setAll(this.neighbours, syncType);
 		BaseDbUtil.setAll(this.dataDefParameters, syncType);
+		BaseDbUtil.setAll(this.metadata, syncType);
 	}
 
 	//--- Public methods ------------------------
@@ -112,6 +120,12 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 		if (vo == null) return;
 		if (this.dataDefParameters == null) this.dataDefParameters = new ArrayList<>(1);
 		this.dataDefParameters.add(vo);
+	}
+
+	public void add(GenMetadataVo vo) {
+		if (vo == null) return;
+		if (this.metadata == null) this.metadata = new ArrayList<>(1);
+		this.metadata.add(vo);
 	}
 	
 	//--- Getters and Setters -------------------
@@ -139,21 +153,23 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 	public void setAlerts(Collection<GenAlertVo> alerts) {
 		this.alerts = alerts;
 	}
-
 	public Collection<GenNeighbourVo> getNeighbours() {
 		return neighbours;
 	}
-
 	public void setNeighbours(Collection<GenNeighbourVo> neighbours) {
 		this.neighbours = neighbours;
 	}
-
 	public Collection<GenDataDefParameterVo> getDataDefParameters() {
 		return dataDefParameters;
 	}
-
 	public void setDataDefParameters(Collection<GenDataDefParameterVo> dataDefParameters) {
 		this.dataDefParameters = dataDefParameters;
+	}
+	public Collection<GenMetadataVo> getMetadata() {
+		return metadata;
+	}
+	public void setMetadata(Collection<GenMetadataVo> metadata) {
+		this.metadata = metadata;
 	}
 
 }

@@ -1,7 +1,9 @@
 package tech.renovus.solarec.certificate.drecs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import tech.renovus.solarec.certificate.common.CertificateService;
 import tech.renovus.solarec.certificate.drecs.api.auth.Auth;
 import tech.renovus.solarec.certificate.drecs.api.auth.AuthResponse;
 import tech.renovus.solarec.certificate.drecs.api.device.Device;
@@ -17,7 +19,8 @@ import tech.renovus.solarec.vo.db.data.GeneratorVo;
 /**
  * API information: https://api.drecs.org/swagger
  */
-public class DRecsService {
+@Service
+public class DRecsService implements CertificateService {
 	
 	//--- Private constants ---------------------
 	private static final String DREC_API_URL			= "https://api.drecs.org/api";
@@ -72,11 +75,10 @@ public class DRecsService {
 		return device;
 	}
 	
-	//--- Public methods ------------------------
 	/**
 	 * Doc: https://api.drecs.org/swagger/#/auth/AuthController_login
 	 */
-	public AuthResponse authenticate() {
+	private AuthResponse authenticate() {
 		Auth jsonRequest = new Auth()
 				.withUsername(this.config.getDrecsServiceUsername())
 				.withPassword(this.config.getDrecsServicePassword());
@@ -88,7 +90,7 @@ public class DRecsService {
 	 * Doc:
 	 * https://api.drecs.org/swagger/#/organization/OrganizationController_register
 	 */
-	public void registerOrganization(ClientVo clientVo) {
+	private void registerOrganization(ClientVo clientVo) {
 		AuthResponse authentication = this.authenticate();
 		
 		Organization organization = this.createOrganizationFrom(clientVo);
@@ -100,7 +102,7 @@ public class DRecsService {
 	/**
 	 * Doc: https://api.drecs.org/swagger/#/device/DeviceController_create
 	 */
-	public void registerDevice(GeneratorVo generatorVo) {
+	private void registerDevice(GeneratorVo generatorVo) {
 		AuthResponse authentication = this.authenticate();
 
 		Device device = this.createDeviceFrom(generatorVo);
@@ -112,25 +114,31 @@ public class DRecsService {
 	/**
 	 * Doc: https://api.drecs.org/swagger/#/meter-reads/ReadsController_newstoreRead
 	 */
-	public void uploadHistoryData() {
+	private void uploadHistoryData() {
 	}
 
 	/**
 	 * Doc: https://api.drecs.org/swagger/#/meter-reads/ReadsController_storeReads
 	 */
-	public void uploadMeterData() {
+	private void uploadMeterData() {
 	}
 
 	
-	public void checkCertificateStatus() {
+	private void checkCertificateStatus() {
 		
 	}
 	
-	public void generateCertificate() {
+	private void generateCertificate() {
 		
 	}
 	
-	public void sellCertificate() {
+	private void sellCertificate() {
 		
 	}
+	
+	//--- Implemented methods -------------------
+	@Override public void register(ClientVo client) {}
+	@Override public void updateRegistration(ClientVo client) {}
+	@Override public void registerGeneration(ClientVo client) {}
+	@Override public void generateCertificate(ClientVo client) {}
 }

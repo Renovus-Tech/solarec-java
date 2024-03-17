@@ -45,6 +45,12 @@ public class LocationVo extends DbLocationVo implements IDataContainer, Comparab
 		
 		return null;
 	}
+	
+	public LocMetadataVo getMetadataVo(String name) {
+		if (CollectionUtil.isEmpty(this.metadata)) return null;
+		Optional<LocMetadataVo> option = this.metadata.stream().filter(x -> ClassUtil.equals(name, x.getMetadataName())).findFirst();
+		return option.isPresent() ? option.get() :  null;
+	}
 
 	//--- Getters and setters -------------------
 	public void setRequired(boolean required) {

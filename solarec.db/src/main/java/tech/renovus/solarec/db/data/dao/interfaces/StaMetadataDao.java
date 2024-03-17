@@ -13,6 +13,7 @@ public interface StaMetadataDao {
 	void delete(StaMetadataVo vo);
 	void synchronize(StaMetadataVo vo);
 	void synchronize(Collection<StaMetadataVo> vos);
-
+	
+	Collection<StaMetadataVo> findAllFor(Integer cliId, Integer staId);
 }
 

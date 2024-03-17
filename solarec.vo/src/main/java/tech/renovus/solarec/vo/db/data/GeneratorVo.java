@@ -48,4 +48,10 @@ public class GeneratorVo extends DbGeneratorVo implements IDataContainer {
 		return option.isPresent() ? option.get() : null;
 
 	}
+	
+	public GenMetadataVo getMetadataVo(String name) {
+		if (CollectionUtil.isEmpty(this.metadata)) return null;
+		Optional<GenMetadataVo> option = this.metadata.stream().filter(x -> ClassUtil.equals(name, x.getMetadataCode())).findFirst();
+		return option.isPresent() ? option.get() :  null;
+	}
 }

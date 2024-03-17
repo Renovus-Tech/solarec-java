@@ -1,7 +1,10 @@
 package tech.renovus.solarec.vo.db.data;
 
 import java.util.Date;
+import java.util.Optional;
 
+import tech.renovus.solarec.util.ClassUtil;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.interfaces.IDataContainer;
 import tech.renovus.solarec.vo.db.relation.DbStationVo;
 
@@ -28,6 +31,13 @@ public class StationVo extends DbStationVo implements IDataContainer {
 	@Override public Integer getId() { return this.getStaId(); }
 	@Override public boolean isRequired() { return required; }
 	@Override public void addData(Date date, int typeId, double value) { this.add(new StaDataVo(date, Integer.valueOf(typeId), Double.valueOf(value))); }
+	
+	//--- Public methods ------------------------
+	public StaMetadataVo getMetadataVo(String name) {
+		if (CollectionUtil.isEmpty(this.metadata)) return null;
+		Optional<StaMetadataVo> option = this.metadata.stream().filter(x -> ClassUtil.equals(name, x.getMetadataName())).findFirst();
+		return option.isPresent() ? option.get() :  null;
+	}
 	
 	//--- Getters and setters -------------------
 	public void setRequired(boolean required) {

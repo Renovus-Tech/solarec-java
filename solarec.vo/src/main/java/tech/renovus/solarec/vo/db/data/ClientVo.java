@@ -42,4 +42,10 @@ public class ClientVo extends DbClientVo {
 		return option.isPresent() ? option.get() : null;
 	}
 	
+	public CliMetadataVo getMetadataVo(String name) {
+		if (CollectionUtil.isEmpty(this.metadata)) return null;
+		Optional<CliMetadataVo> option = this.metadata.stream().filter(x -> ClassUtil.equals(name, x.getMetadataName())).findFirst();
+		return option.isPresent() ? option.get() :  null;
+	}
+	
 }
