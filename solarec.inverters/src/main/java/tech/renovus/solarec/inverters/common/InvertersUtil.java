@@ -5,11 +5,14 @@ import java.text.MessageFormat;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.CliDataDefParameterVo;
+import tech.renovus.solarec.vo.db.data.CliMetadataVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.GenDataDefParameterVo;
+import tech.renovus.solarec.vo.db.data.GenMetadataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocDataDefParameterVo;
+import tech.renovus.solarec.vo.db.data.LocMetadataVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 
 public class InvertersUtil {
@@ -126,4 +129,79 @@ public class InvertersUtil {
 		
 		return result;
 	}
+	
+	public static String getMetadata(GeneratorVo genVo, LocationVo locVo, ClientVo cliVo, String name) {
+		String result = InvertersUtil.getMetadata(genVo, name);
+		if (StringUtil.isEmpty(result)) result = InvertersUtil.getMetadata(locVo, name);
+		if (StringUtil.isEmpty(result)) result = InvertersUtil.getMetadata(cliVo, name);
+		
+		return result;
+	}
+	
+	public static String getMetadata(ClientVo vo, String name) {
+		if (vo == null) return null;
+		CliMetadataVo metadata = vo.getMetadataVo(name);
+		return metadata == null ? null : metadata.getMetadataValue();
+	}
+	
+	public static String getMetadata(LocationVo vo, String name) {
+		if (vo == null) return null;
+		LocMetadataVo metadata = vo.getMetadataVo(name);
+		return metadata == null ? null : metadata.getMetadataValue();
+	}
+	
+	public static String getMetadata(GeneratorVo vo, String name) {
+		if (vo == null) return null;
+		GenMetadataVo metadata = vo.getMetadataVo(name);
+		return metadata == null ? null : metadata.getMetadataValue();
+	}
+	
+	public static void setMetadata(ClientVo vo, String name, String value) {
+		if (vo == null) return;
+		CliMetadataVo metadataVo = vo.getMetadataVo(name);
+		if (metadataVo == null) metadataVo = createMetadata(vo, name, value);
+		else metadataVo.setMetadataValue(value);
+	}
+	
+	public static void setMetadata(LocationVo vo, String name, String value) {
+		if (vo == null) return;
+		LocMetadataVo metadataVo = vo.getMetadataVo(name);
+		if (metadataVo == null) metadataVo = createMetadata(vo, name, value);
+		else metadataVo.setMetadataValue(value);
+	}
+	
+	public static void setMetadata(GeneratorVo vo, String name, String value) {
+		if (vo == null) return;
+		GenMetadataVo metadataVo = vo.getMetadataVo(name);
+		if (metadataVo == null) metadataVo = createMetadata(vo, name, value);
+		else metadataVo.setMetadataValue(value);
+	}
+	
+	public static CliMetadataVo createMetadata(ClientVo vo, String name, String value) {
+		CliMetadataVo result = new CliMetadataVo(vo.getCliId(), name);
+		result.setMetadataValue(value);
+		
+		vo.add(result);
+		
+		return result;
+	}
+	
+	public static LocMetadataVo createMetadata(LocationVo vo, String name, String value) {
+		LocMetadataVo result = new LocMetadataVo(vo.getCliId(), vo.getLocId(), name);
+		result.setMetadataValue(value);
+		
+		vo.add(result);
+		
+		return result;
+	}
+	
+	public static GenMetadataVo createMetadata(GeneratorVo vo, String name, String value) {
+		GenMetadataVo result = new GenMetadataVo(vo.getCliId(), vo.getGenId(), name);
+		result.setMetadataValue(value);
+		
+		vo.add(result);
+		
+		return result;
+	}
+
 }

@@ -9,7 +9,8 @@ import org.slf4j.LoggerFactory;
 	private LoggerService() {}
 	
 	//--- Util methods --------------------------
-	public static Logger schedulesLogger() { return LoggerFactory.getLogger("schedule"); }
+	public static Logger schedulerLogger() { return LoggerFactory.getLogger("schedule"); }
 	public static Logger inverterLogger() { return LoggerFactory.getLogger("inverter"); }
-	public static Logger drecLogger() { return LoggerFactory.getLogger("drec"); }
+	public static Logger certificateLogger() { return LoggerFactory.getLogger("certificate"); }
+	public static Logger rootLogger() { return LoggerFactory.getLogger("roor"); }
 }
