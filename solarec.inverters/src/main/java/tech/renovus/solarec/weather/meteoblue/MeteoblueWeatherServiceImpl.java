@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.db.data.dao.interfaces.LocDataWeatherDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.StringUtil;
@@ -524,13 +525,19 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 
 	//--- Overridden methods --------------------
 	@Override public Collection<StaDataVo> retrieveWeatherData(LocationVo locVo, StationVo station, Date dateFrom, Date dateTo) throws WeatherServiceException{
+		LoggerService.weatherLogger().info("[Meteoblue] Start data retrieve from " + DATE_FORMATTER.format(dateFrom) + " from " + DATE_FORMATTER.format(dateTo) + " for coords: " + locVo.getLocCoordLat().toString() + " - " + locVo.getLocCoordLng().toString());
+		
 		Map<String, String> params		= this.getParams(locVo, dateFrom, dateTo, false);
 		WeatherData data				= JsonCaller.get(URL_SOLAR, params, WeatherData.class);
 		int startIndex					= 0;
 		int endIndex					= -1;
 		Collection<StaDataVo> result	= new ArrayList<>();
 		
-		if (data == null || data.getData1h() == null || CollectionUtil.isEmpty(data.getData1h().getTime())) return result;
+		if (data == null || data.getData1h() == null || CollectionUtil.isEmpty(data.getData1h().getTime())) {
+			LoggerService.weatherLogger().info("[Meteoblue] No data");
+			return result;
+		}
+		LoggerService.weatherLogger().info("[Meteoblue] Amount of data: " + CollectionUtil.size(data.getData1h().getTime()));
 		
 		try {
 			int index = 0;
