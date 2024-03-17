@@ -22,6 +22,7 @@ import tech.renovus.solarec.business.AlertService;
 import tech.renovus.solarec.business.CalculationService;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliDataDefParameterDao;
+import tech.renovus.solarec.db.data.dao.interfaces.CliMetadataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefAlertDefinitionDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefStatDefinitionDao;
@@ -31,8 +32,10 @@ import tech.renovus.solarec.db.data.dao.interfaces.DataProStatProcessingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataProcessingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GenDataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GenDataDefParameterDao;
+import tech.renovus.solarec.db.data.dao.interfaces.GenMetadataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocDataDefParameterDao;
+import tech.renovus.solarec.db.data.dao.interfaces.LocMetadataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StaDataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StationDao;
@@ -88,6 +91,9 @@ public class InvertersCheckScheduler {
 	@Resource LocDataDefParameterDao locDataDefParameterDao;
 	@Resource GenDataDefParameterDao genDataDefParameterDao;
 	@Resource DataProStatProcessingDao dataProStatProcessingDao;
+	@Resource CliMetadataDao cliMetadataDao;
+	@Resource LocMetadataDao locMetadataDao;
+	@Resource GenMetadataDao genMetadataDao;
 	
     //--- Private methods -----------------------
 	private InverterService getService(DataDefinitionVo dataDefinitionVo) throws CoreException {
@@ -132,8 +138,13 @@ public class InvertersCheckScheduler {
 		StationVo staVo 			= this.stationDao.findDefault(locVo.getCliId(), locVo.getLocId());
 		
 		cliVo.setDataDefParameters(this.cliDataDefParameterDao.getAllFor(cliVo.getCliId()));
+		cliVo.setMetadata(this.cliMetadataDao.getAllFor(cliVo.getCliId()));
+
 		locVo.setDataDefParameters(this.locDataDefParameterDao.getAllFor(locVo.getCliId(), locVo.getLocId()));
+		locVo.setMetadata(this.locMetadataDao.getAllFor(locVo.getCliId(), locVo.getLocId()));
+
 		genVo.setDataDefParameters(this.genDataDefParameterDao.getAllFor(genVo.getCliId(), genVo.getGenId()));
+		genVo.setMetadata(this.genMetadataDao.getAllFor(genVo.getCliId(), genVo.getGenId()));
 		
 		cliVo.add(locVo);
 		locVo.add(genVo);
@@ -190,6 +201,9 @@ public class InvertersCheckScheduler {
 				this.genDataDefParameterDao.synchronize(genVo.getDataDefParameters());
 				this.locDataDefParameterDao.synchronize(locVo.getDataDefParameters());
 				this.cliDataDefParameterDao.synchronize(cliVo.getDataDefParameters());
+				this.genMetadataDao.synchronize(genVo.getMetadata());
+				this.locMetadataDao.synchronize(locVo.getMetadata());
+				this.cliMetadataDao.synchronize(cliVo.getMetadata());
 				
 				if (continueWithStats) this.doCalculation(dataProVo);
 				
