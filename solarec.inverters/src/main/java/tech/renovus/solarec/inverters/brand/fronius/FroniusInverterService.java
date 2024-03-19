@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -37,7 +36,6 @@ import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
 import tech.renovus.solarec.weather.WeatherService;
 import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
-import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 
 /**
  * URL: https://www.fronius.com/en/solarweb-query-api
@@ -54,6 +52,9 @@ import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
  */
 public class FroniusInverterService implements InverterService {
 
+	//-- Private constants ----------------------
+	private static final String LOG_PREFIX	= "[Fronius] ";
+	
 	//--- Protected constants -------------------
 	protected static final String URL_PRD											= "https://api.solarweb.com/swqapi";
 	protected static final String URL_BETA											= "https://swqapi-beta.solarweb.com";
@@ -99,6 +100,7 @@ public class FroniusInverterService implements InverterService {
 		List<GenDataVo> result = new ArrayList<>();
 		
 		if (data != null && CollectionUtil.notEmpty(data.getData())) {
+			InvertersUtil.logInfo("Amount of data: {0}", Integer.toString(CollectionUtil.size(data.getData())));
 			for (Datum aData : data.getData()) {
 				if (CollectionUtil.notEmpty(aData.getChannels())) {
 					for (Channel aChannel : aData.getChannels()) {
@@ -119,6 +121,8 @@ public class FroniusInverterService implements InverterService {
 					}
 				}
 			}
+		} else {
+			InvertersUtil.logInfo("No data to process");
 		}
 		
 		return result;
@@ -179,6 +183,8 @@ public class FroniusInverterService implements InverterService {
 		String pvSystemsId		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_GEN_PV_SYSTEM_ID);
 		boolean betaMode 		= BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_BETA_MODE));
 		
+		InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_PARAMETER_DATE_TIME), DateUtil.formatDateTime(to, DateUtil.FMT_PARAMETER_DATE_TIME));
+		
 		HistoryDataResponse data = this.getPvSystemsHistData(betaMode, accessKeyId, accessKeyValue, pvSystemsId, dateFrom, to);
 		
 		try {
@@ -198,7 +204,7 @@ public class FroniusInverterService implements InverterService {
 				cal.setTime(lastDate);
 				cal.add(Calendar.MINUTE, 15); //we need next 15 min due to aggregation
 				
-				if (cal.getTime().before(to)) this.retrieveData(inverterData, location, station, generator, lastDate, to);
+				if (! cal.getTime().equals(dateFrom) && cal.getTime().before(to)) this.retrieveData(inverterData, location, station, generator, cal.getTime(), to);
 				
 			}
 			
@@ -249,8 +255,6 @@ public class FroniusInverterService implements InverterService {
 						cal.add(Calendar.MILLISECOND, -1);
 						
 						Date to = cal.getTime();
-						
-						InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
 						
 						try {
 							this.retrieveData(inverterData, location, station, generator, dateFrom, to);

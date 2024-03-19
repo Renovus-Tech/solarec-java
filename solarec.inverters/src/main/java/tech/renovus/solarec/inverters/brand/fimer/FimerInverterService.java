@@ -284,7 +284,7 @@ public class FimerInverterService implements InverterService {
 							
 							Date dateTo = cal.getTime();
 	
-							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
+							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE), DateUtil.formatDateTime(dateTo, DateUtil.FMT_DATE));
 							
 							TelemetryDataEnergyTimeseriesResponse data = this.telemetryDataEnergyTimeseries(
 									this.authentication.getResult(), 

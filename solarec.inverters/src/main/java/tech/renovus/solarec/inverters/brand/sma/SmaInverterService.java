@@ -189,7 +189,7 @@ public class SmaInverterService implements InverterService {
 							String genLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE);
 							Date dateFrom			= this.calculateFrom(genLastRetrieve);
 	
-							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE));
+							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE), "");
 							
 							MeasurementsResponse data = this.retrieveDeviceData(
 									sandboxMode, 

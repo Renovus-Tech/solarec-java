@@ -18,7 +18,7 @@ import tech.renovus.solarec.vo.db.data.LocationVo;
 public class InvertersUtil {
 	
 	//--- Public constants ----------------------
-	public static final String INFO_DATA_RETRIEVE_START	= "Start data retrieve for: {0} | {1} | {2} for date {3}";
+	public static final String INFO_DATA_RETRIEVE_START	= "Start data retrieve for: {0} | {1} | {2} for period {3} - {4}";
 	public static final String INFO_DATA_RETRIEVE_END	= "Ended data retrieve for: {0} | {1} | {2} - with {3} records of data";
 	
 	//--- Constructors --------------------------
