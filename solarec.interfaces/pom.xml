@@ -19,6 +19,14 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- TESTING DEPENDENCIES -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
 	</dependencies>
 
 	<build>
