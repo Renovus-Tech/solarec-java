@@ -19,6 +19,11 @@ public class GenDataVo extends DbGenDataVo implements IData {
 		this.setPk(cliId, genId, dataDate, dataTypeId);
 	}
 
+	public GenDataVo(Integer cliId, Integer genId, java.util.Date dataDate, Integer dataTypeId, Double dataValue) {
+		this.setPk(cliId, genId, dataDate, dataTypeId);
+		this.setDataValue(dataValue);
+	}
+	
 	public GenDataVo(Date dataDate, Integer dataTypeId, Double dataValue) {
 		super();
 		

@@ -29,22 +29,6 @@ public class JsonCaller {
 		return webClient;
 	}
 	
-	private static String generateCompleteURL(String baseEndpoint, Map<String, String> queryParams) {
-        try {
-            // Create a URI with the base endpoint
-            URI uri = new URI(baseEndpoint);
-
-            // Add query parameters to the URI
-            String queryString = buildQueryString(queryParams);
-            URI completeURI = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), queryString, null);
-
-            // Convert URI to String
-            return completeURI.toString();
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Error building URI", e);
-        }
-    }
-	
 	private static String buildQueryString(Map<String, String> queryParams) {
         if (queryParams == null || queryParams.isEmpty()) {
             return null;
@@ -60,6 +44,23 @@ public class JsonCaller {
                     .append(entry.getValue());
         }
         return queryStringBuilder.toString();
+    }
+	
+	//--- Generators methods --------------------
+	public static String generateCompleteURL(String baseEndpoint, Map<String, String> queryParams) {
+        try {
+            // Create a URI with the base endpoint
+            URI uri = new URI(baseEndpoint);
+
+            // Add query parameters to the URI
+            String queryString = buildQueryString(queryParams);
+            URI completeURI = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), queryString, null);
+
+            // Convert URI to String
+            return completeURI.toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Error building URI", e);
+        }
     }
 	
 	//--- Post methods --------------------------
@@ -89,6 +90,11 @@ public class JsonCaller {
 					.post()
 		            .uri(url)
 		            .contentType(MediaType.APPLICATION_JSON)
+		            .headers(consumer -> {
+		            	if (headers != null && ! headers.isEmpty()) {
+		            		headers.entrySet().forEach(entry -> consumer.add(entry.getKey(), entry.getValue()));
+		            	}
+		            })
 		            .body(BodyInserters.fromValue(payload))
 		            .retrieve()
 		            .bodyToMono(responseClass)
@@ -171,7 +177,6 @@ public class JsonCaller {
 	}
 	
 	public static <T extends Object> T bearerGet(String url, Map<String,String> queryParams, String authCode, Class<T> responseClass) {
-		
 		try {
 			return buildWebClient()
 					.get()

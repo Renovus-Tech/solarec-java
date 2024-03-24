@@ -129,10 +129,15 @@ public class FroniusInverterService implements InverterService {
 	}
 	
 	private List<GenDataVo> aggregate(List<GenDataVo> dataValues) {
+		Calendar cal = Calendar.getInstance();
+		
 		Map<Date, GenDataVo> result = new HashMap<>(CollectionUtil.size(dataValues) / 3);
 		dataValues.forEach(
                 data -> {
-                	Date simpleDate = this.roundTo15Minutes(data.getDataDate());
+                	cal.setTime(data.getDataDate());
+            		cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) % 15);
+            		Date simpleDate = cal.getTime();
+                	
                 	result.computeIfAbsent(simpleDate, x -> new GenDataVo(data.getCliId(), data.getGenId(), x, data.getDataTypeId()));
                 	result.get(simpleDate).add(data.getDataValue());
                 }
@@ -142,13 +147,6 @@ public class FroniusInverterService implements InverterService {
 		
 		return new ArrayList<>(result.values());
 	}
-	
-	private Date roundTo15Minutes(Date dateTime) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(dateTime);
-		cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) % 15);
-		return cal.getTime();
-    }
 	
 	private String generateUrl(boolean betaMode, String endPoint, String... variables) {
 		String url = this.getUrl(betaMode) + endPoint;

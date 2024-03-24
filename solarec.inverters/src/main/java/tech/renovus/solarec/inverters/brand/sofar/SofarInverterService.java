@@ -59,7 +59,7 @@ public class SofarInverterService implements InverterService {
 	private static final String ENDPOINT_STATION_HISTORY_DATA	= "/station/v1.0/history?language=en";
 	
 	private static final SimpleDateFormat DATE_FORMAT			= new SimpleDateFormat("yyyy-MM-dd");
-	private static final SimpleDateFormat DATE_TTIME_FORMAT		= new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	private static final SimpleDateFormat DATE_TIME_FORMAT		= new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	
 	protected static final String PARAM_BETA_MODE				= "sofar.beta";
 	protected static final String PARAM_ACCESS_APP_ID			= "sofar.client.app_id";
@@ -113,7 +113,7 @@ public class SofarInverterService implements InverterService {
 						.append(" ")
 						.append(aData.getDateTime())
 						.toString();
-				Date dataDate = DATE_TTIME_FORMAT.parse(aDate);
+				Date dataDate = DATE_TIME_FORMAT.parse(aDate);
 				
 				if (dataDate.before(fromDate)) continue;
 				
@@ -132,7 +132,6 @@ public class SofarInverterService implements InverterService {
 		
 		return result;
 	}
-	
 	
 	private void retrieveData(InverterData inverterData, LocationVo location, StationVo station, GeneratorVo generator, Date dateFrom, Date to) throws WeatherServiceException {
 		String appId		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_ACCESS_APP_ID);
