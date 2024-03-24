@@ -71,7 +71,6 @@ public class SofarInverterService implements InverterService {
 	protected static final String PARAM_CLI_LAST_DATE_RETRIEVE	= "sofar.client.last_retrieve";
 	protected static final String PARAM_LOC_LAST_DATE_RETRIEVE	= "sofar.location.last_retrieve";
 	protected static final String PARAM_GEN_LAST_DATE_RETRIEVE	= "sofar.generator.last_retrieve";
-
 	
 	//--- Private properties --------------------
 	@Autowired WeatherService weatherService;
