@@ -524,7 +524,7 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 	}
 
 	//--- Overridden methods --------------------
-	@Override public Collection<StaDataVo> retrieveWeatherData(LocationVo locVo, StationVo station, Date dateFrom, Date dateTo) throws WeatherServiceException{
+	@Override public Collection<StaDataVo> retrieveWeatherData(LocationVo locVo, StationVo station, Date dateFrom, Date dateTo) throws WeatherServiceException {
 		LoggerService.weatherLogger().info("[Meteoblue] Start data retrieve from " + DATE_FORMATTER.format(dateFrom) + " from " + DATE_FORMATTER.format(dateTo) + " for coords: " + locVo.getLocCoordLat().toString() + " - " + locVo.getLocCoordLng().toString());
 		
 		Map<String, String> params		= this.getParams(locVo, dateFrom, dateTo, false);

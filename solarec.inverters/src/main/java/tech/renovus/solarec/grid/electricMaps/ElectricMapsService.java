@@ -3,7 +3,9 @@ package tech.renovus.solarec.grid.electricMaps;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,12 +47,10 @@ public class ElectricMapsService implements DataGridService {
 		return headers;
 	}
 	
-	private Double toDouble(Integer carbonIntensity) {
-		return carbonIntensity == null ? null : Double.valueOf(carbonIntensity.intValue());
+	private Double adjustValue(Integer carbonIntensity) {
+		return carbonIntensity == null ? null : Double.valueOf(carbonIntensity.intValue() / (double) 1000);
 	}
 
-
-	
 	//--- Implemented methods -------------------
 	@Override
 	public Collection<CtrDataVo> retrieveGridData(CountryVo ctrVo) throws DataGridServiceException {
@@ -70,11 +70,18 @@ public class ElectricMapsService implements DataGridService {
 		Collection<CtrDataVo> result = new ArrayList<>();
 		if (CollectionUtil.notEmpty(response.getHistory())) {
 			try {
+				Calendar cal = GregorianCalendar.getInstance();
+				
 				for (CarbonIntensity intensity : response.getHistory()) {
+					cal.setTime(DATE_TIME_FORMAT.parse(intensity.getDatetime()));
+					cal.set(Calendar.MINUTE, 0);
+					cal.set(Calendar.SECOND, 0);
+					cal.set(Calendar.MILLISECOND, 0);
+					
 					CtrDataVo data = new CtrDataVo();
 					data.setDataTypeId(DataTypeVo.TYPE_COUNTRY_EMISSIONS_INTENSITY_GCO2_PER_KWH);
-					data.setDataValue(toDouble(intensity.getCarbonIntensity()));
-					data.setDataDate(DATE_TIME_FORMAT.parse(intensity.getDatetime()));
+					data.setDataValue(adjustValue(intensity.getCarbonIntensity()));
+					data.setDataDate(cal.getTime());
 					
 					result.add(data);
 				}
