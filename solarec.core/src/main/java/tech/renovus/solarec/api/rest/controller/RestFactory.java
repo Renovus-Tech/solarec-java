@@ -20,6 +20,7 @@ import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.vo.comparator.GeneratorGenCodeAsNumberComparator;
 import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.vo.db.data.CountryVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
 import tech.renovus.solarec.vo.db.data.DocTypeVo;
@@ -35,6 +36,7 @@ import tech.renovus.solarec.vo.db.data.StationVo;
 import tech.renovus.solarec.vo.db.data.WeaDefinitionVo;
 import tech.renovus.solarec.vo.rest.background.Processing;
 import tech.renovus.solarec.vo.rest.entity.Client;
+import tech.renovus.solarec.vo.rest.entity.Country;
 import tech.renovus.solarec.vo.rest.entity.DataDefinition;
 import tech.renovus.solarec.vo.rest.entity.DataDefinitionTrigger;
 import tech.renovus.solarec.vo.rest.entity.DocType;
@@ -162,6 +164,17 @@ public class RestFactory {
 	}
 	
 	//--- VO to JSON methods --------------------
+	public Country convert(CountryVo vo) {
+		if (vo == null) return null;
+		
+		Country result = new Country();
+		result.setName(vo.getCtrName());
+		result.setIso2(vo.getCtrCode2());
+		result.setIso3(vo.getCtrCode3());
+		
+		return result;
+	}
+	
 	public Location convert(LocationVo vo) {
 		if (vo == null) return null;
 		
@@ -172,8 +185,7 @@ public class RestFactory {
 		result.setName(vo.getLocName());
 		result.setAddress(vo.getLocAddress());
 		result.setState(vo.getLocState());
-		result.setCountry(vo.getLocCountry());
-		result.setCountryAlpha2(vo.getLocCountryAlpha2());
+		result.setCountry(this.convert(vo.getCountryVo()));
 		result.setLatitude(vo.getLocCoordLat());
 		result.setLongitude(vo.getLocCoordLng());
 		result.setOutputCapacity(vo.getLocOutputCapacity());

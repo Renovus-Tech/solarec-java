@@ -97,6 +97,8 @@ public class DataTypeVo extends DbDataTypeVo {
 	public static final int TYPE_SOLAR_STATION_TOTAL_CLOUD_COVER						= 506; //Irradiation
 	public static final int TYPE_SOLAR_STATION_PRECIPITATION							= 507; //Irradiation
 	
+	public static final int TYPE_COUNTRY_EMISSIONS_INTENSITY_GCO2_PER_KWH				= 901; //emissions_intensity_gco2_per_kwh
+	
 	//--- Constructors --------------------------
 	public DataTypeVo() {
 	}
