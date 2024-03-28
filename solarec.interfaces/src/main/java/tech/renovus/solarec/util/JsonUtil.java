@@ -9,6 +9,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,21 +51,25 @@ public class JsonUtil {
 			for (Map.Entry<String, Object> entry : values.entrySet())
 				builder.queryParam(entry.getKey(), entry.getValue());
 		
-		return WebClient
-				.builder()
-				.exchangeStrategies(
-					ExchangeStrategies
-						.builder()
-						.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(30 * 1024 * 1024))
-	                    .build()
-	                )
-				.build()
-				.get()
-				.uri(builder.build().toUri())
-				.accept(MediaType.APPLICATION_JSON)
-				.retrieve()
-				.bodyToMono(String.class)
-				.block();
+		try {
+			return WebClient
+					.builder()
+					.exchangeStrategies(
+						ExchangeStrategies
+							.builder()
+							.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(30 * 1024 * 1024))
+		                    .build()
+		                )
+					.build()
+					.get()
+					.uri(builder.build().toUri())
+					.accept(MediaType.APPLICATION_JSON)
+					.retrieve()
+					.bodyToMono(String.class)
+					.block();
+		} catch (WebClientResponseException webClientError) {
+			return webClientError.getResponseBodyAsString();
+		}
 	}
 	
 	public static final String get(String url, Map<String, Object> values, String authorization) throws SSLException {
@@ -81,23 +86,27 @@ public class JsonUtil {
 
 		HttpClient httpClient = HttpClient.create().secure(t -> t.sslContext(sslContext));
 		
-		return WebClient
-				.builder()
-				.exchangeStrategies(
-					ExchangeStrategies
-						.builder()
-						.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(30 * 1024 * 1024))
-	                    .build()
-	                )
-				.clientConnector(new ReactorClientHttpConnector(httpClient))
-				.build()
-				.get()
-				.uri(builder.build().toUri())
-				.header("Authorization", authorization)
-				.accept(MediaType.APPLICATION_JSON)
-				.retrieve()
-				.bodyToMono(String.class)
-				.block();
+		try {
+			return WebClient
+					.builder()
+					.exchangeStrategies(
+						ExchangeStrategies
+							.builder()
+							.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(30 * 1024 * 1024))
+		                    .build()
+		                )
+					.clientConnector(new ReactorClientHttpConnector(httpClient))
+					.build()
+					.get()
+					.uri(builder.build().toUri())
+					.header("Authorization", authorization)
+					.accept(MediaType.APPLICATION_JSON)
+					.retrieve()
+					.bodyToMono(String.class)
+					.block();
+		} catch (WebClientResponseException webClientError) {
+			return webClientError.getResponseBodyAsString();
+		}
 	}
 	
 	public static final String multipart(String url, BodyInserters.MultipartInserter multipart) {
