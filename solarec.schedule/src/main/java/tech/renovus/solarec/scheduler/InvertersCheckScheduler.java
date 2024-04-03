@@ -3,6 +3,7 @@ package tech.renovus.solarec.scheduler;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -110,19 +111,23 @@ public class InvertersCheckScheduler {
 	private String generateLogText(ClientVo clientVo, LocationVo locationVo, GeneratorVo generatorVo) {
 		StringBuilder text = new StringBuilder();
 		
-		if (clientVo != null) text.append("(").append(clientVo.getCliId()).append(") ");
-		if (locationVo != null) text.append("(").append(locationVo.getCliId()).append(") ");
-		if (generatorVo != null) text.append("(").append(generatorVo.getCliId()).append(") ");
+		if (clientVo != null) text.append(clientVo.getCliName()).append(" (").append(clientVo.getCliId()).append(") ");
+		if (locationVo != null) text.append(locationVo.getLocName()).append(" (").append(locationVo.getLocId()).append(") ");
+		if (generatorVo != null) text.append(generatorVo.getGenName()).append(" (").append(generatorVo.getGenId()).append(") ");
 		
 		return text.toString();
 	}
 	
 	private void doCalculation(DataProcessingVo dataProVo) throws CoreException {
 		try {
-			String jsonRequest = JsonUtil.toString(dataProVo);
-			LoggerService.inverterLogger().info("Calculation for: " + jsonRequest);
+			DataProcessing request = new DataProcessing(dataProVo);
+			LoggerService.inverterLogger().info("Calculation for: " + JsonUtil.toString(dataProVo));
+			LoggerService.inverterLogger().info("Request (" + this.config.getAlertCalculations() + "): " + JsonUtil.toString(request));
 			
-			String jsonResponse			= JsonUtil.post(this.config.getAlertCalculations(), new DataProcessing(dataProVo));
+			Map<String, Object> params = new HashMap<>();
+			params.put("param_json", JsonUtil.toString(request));
+			
+			String jsonResponse			= JsonUtil.get(this.config.getAlertCalculations(), params);
 			LoggerService.inverterLogger().info("Response: " + jsonResponse);
 			
 		} catch (JsonProcessingException e) {
@@ -154,6 +159,8 @@ public class InvertersCheckScheduler {
 		
 		try {
 			InverterService service = this.getService(dataDefVo);
+			
+			LoggerService.inverterLogger().info( "Service to use: " + service.getClass().getName());
 			
 			service.prepareFor(cliVo);
 			boolean canRetrieve = service.canRetrieve();
@@ -321,7 +328,7 @@ public class InvertersCheckScheduler {
 				this.processStatsAndAlerts(dataDefVo, dataProVo);
 			}
 		} catch (Exception e) {
-			LoggerService.inverterLogger().error("Error during data retrieval (all stpted): " + e.getLocalizedMessage(), e);
+			LoggerService.inverterLogger().error("Error during data retrieval (all stoped): " + e.getLocalizedMessage(), e);
 		} finally {
 			LoggerService.inverterLogger().info("End check of inverters data");
 		}

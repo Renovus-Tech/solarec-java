@@ -34,6 +34,9 @@ public class ElectricMapsService implements DataGridService {
 	
 	private static final String ENDPOINT_CARBON_INTENSITY_HISTORY = "/v3/carbon-intensity/history";
 	
+	private static final String EMISSION_FACTOR_TYPE_DIRECT		= "direct";
+	private static final String EMISSION_FACTOR_TYPE_LIFECYCLE	= "lifecycle";
+	
 	private static SimpleDateFormat DATE_TIME_FORMAT	= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	
 	//--- Resources -----------------------------
@@ -57,6 +60,7 @@ public class ElectricMapsService implements DataGridService {
 		Map<String, String> params = new HashMap<>();
 		params.put("disableEstimations", Boolean.TRUE.toString());
 		params.put("zone", ctrVo.getCtrCode2());
+		params.put("emissionFactorType", EMISSION_FACTOR_TYPE_DIRECT);
 //		params.put("lon", "");
 //		params.put("lat", "");
 		

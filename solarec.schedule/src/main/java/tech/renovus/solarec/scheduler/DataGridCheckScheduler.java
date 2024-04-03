@@ -59,6 +59,10 @@ public class DataGridCheckScheduler {
 			
 			this.ctrDataDao.synchronize(datas);
 			this.countryDao.synchronize(ctrVo);
+			
+			LoggerService.dataGridLogger().info("Amount of data: " + CollectionUtil.size(datas));
+			LoggerService.dataGridLogger().info("Min date: " + ctrVo.getCtrDataDateMin());
+			LoggerService.dataGridLogger().info("Max date: " + ctrVo.getCtrDataDateMax());
 		} else {
 			LoggerService.dataGridLogger().info( "No data not retrieve");
 		}
@@ -66,7 +70,7 @@ public class DataGridCheckScheduler {
 	
 
 	//--- Public methods ------------------------
-	@Scheduled(cron="0 0 06 * * *") // daily at 2am
+	@Scheduled(cron="0 0 */6 * * *") // every 6 hours
 	public void checkDataGrid() {
 		Collection<CountryVo> countriesInUse = this.countryDao.getCountriesInUse();
 		
