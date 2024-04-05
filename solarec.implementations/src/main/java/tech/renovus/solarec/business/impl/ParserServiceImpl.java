@@ -3,6 +3,7 @@ package tech.renovus.solarec.business.impl;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.ParserService;
 import tech.renovus.solarec.business.TranslationService;
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.custom.chart.alerts.AlertTrigger;
 import tech.renovus.solarec.vo.db.data.CliGenAlertVo;
@@ -26,8 +28,9 @@ public class ParserServiceImpl implements ParserService {
 	//--- Overridden methods --------------------
 	@Override public String parseAlert(CliGenAlertVo aVo, UserData userData) {
 		Locale locale = this.translation.getLocale(userData);
+		AlertTrigger vo = null;
 		try {
-			AlertTrigger vo = JsonUtil.toObject(aVo.getCliGenAlertData(), AlertTrigger.class);
+			vo = JsonUtil.toObject(aVo.getCliGenAlertData(), AlertTrigger.class);
 			
 			return this.translation.forAlert(
 					locale, 
@@ -45,6 +48,9 @@ public class ParserServiceImpl implements ParserService {
 				); 
 		} catch (JsonProcessingException e) {
 			return this.translation.forLabel(locale, TranslationService.ERROR_PARSING, new Object[] {e.getLocalizedMessage()});
+		} catch (NoSuchMessageException e) {
+			LoggerService.rootLogger().error("Error found during translation cli_gen_alert: " + aVo.getCliGenAlertId(), e);
+			return vo.getDescription();
 		}
 	}
 	

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "type", "gen_code", "description:", "value", "previous_value", "threshold", "date",
+@JsonPropertyOrder({ "type", "gen_code", "description", "value", "previous_value", "threshold", "date",
 		"diff_percentage" })
 @Generated("jsonschema2pojo")
 public class AlertTrigger {
@@ -20,7 +20,7 @@ public class AlertTrigger {
 	private String type;
 	@JsonProperty("gen_code")
 	private String genCode;
-	@JsonProperty("description:")
+	@JsonProperty("description")
 	private String description;
 	@JsonProperty("value")
 	private Double value;
@@ -65,12 +65,12 @@ public class AlertTrigger {
 		return this;
 	}
 
-	@JsonProperty("description:")
+	@JsonProperty("description")
 	public String getDescription() {
 		return description;
 	}
 
-	@JsonProperty("description:")
+	@JsonProperty("description")
 	public void setDescription(String description) {
 		this.description = description;
 	}
