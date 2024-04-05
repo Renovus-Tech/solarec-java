@@ -31,7 +31,7 @@ public class AlertCalculation {
 	@Resource LocationDao locationDao;
 	
 	//--- Private properties --------------------
-	private Logger logger = LoggerService.schedulesLogger();
+	private Logger logger = LoggerService.schedulerLogger();
 	
 	//--- Private methods -----------------------
 	private void calculateFor(LocationVo locVo) throws CoreException {

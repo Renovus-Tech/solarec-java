@@ -163,9 +163,9 @@ public final class FileUtil {
 		File path = destFile.getParentFile();
 		if (! path.exists()) path.mkdirs();
 		
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(destFile);
+		try (
+			FileOutputStream fos = new FileOutputStream(destFile);
+		) {
 			byte[] buffer = new byte[1024 * 1024];
 			int len = input.read(buffer);
 			while (len != -1) {
@@ -173,9 +173,6 @@ public final class FileUtil {
 				len = input.read(buffer);
 			}
 			fos.flush();
-		} finally {
-			if (fos != null)
-				fos.close();
 		}
 
 		return destFile.getAbsolutePath();
@@ -257,13 +254,16 @@ public final class FileUtil {
 		if (! aFile.exists()) return null;
 		if (! aFile.isFile()) return null;
 
-		FileInputStream fis = new FileInputStream(aFile);
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        byte[] buf = new byte[1024];
-        for (int readNum; (readNum = fis.read(buf)) != -1;) {
-            bos.write(buf, 0, readNum);
-        }
-        return bos.toByteArray();
+		try (
+			FileInputStream fis = new FileInputStream(aFile);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		) {
+	        byte[] buf = new byte[1024];
+	        for (int readNum; (readNum = fis.read(buf)) != -1;) {
+	            bos.write(buf, 0, readNum);
+	        }
+	        return bos.toByteArray();
+		}
 	}
 	
 	/**
@@ -390,29 +390,31 @@ public final class FileUtil {
 			}
 		}
 		
-		FileInputStream in = new FileInputStream(sourceFile);
 		FileUtil.createPath(destFile.getParentFile());
-		FileOutputStream out = new FileOutputStream(destFile);
+		try (
+			FileInputStream in = new FileInputStream(sourceFile);
+			FileOutputStream out = new FileOutputStream(destFile);
+		) {
+			try {
+				in.getFD().sync();
+			} catch (SyncFailedException sfe) {
+				/* do nothing */
+			}
 
-		try {
-			in.getFD().sync();
-		} catch (SyncFailedException sfe) {
+			byte[] buffer = new byte[8 * 1024];
+			int count = 0;
+			do {
+				out.write(buffer, 0, count);
+				count = in.read(buffer, 0, buffer.length);
+			} while (count != -1);
+	
+			try {
+				out.getFD().sync();
+			} catch (SyncFailedException sfe) {
+				/* do nothing */
+			}
 		}
 
-		byte[] buffer = new byte[8 * 1024];
-		int count = 0;
-		do {
-			out.write(buffer, 0, count);
-			count = in.read(buffer, 0, buffer.length);
-		} while (count != -1);
-
-		try {
-			out.getFD().sync();
-		} catch (SyncFailedException sfe) {
-		}
-
-		in.close();
-		out.close();
 	}
 	
 	/**

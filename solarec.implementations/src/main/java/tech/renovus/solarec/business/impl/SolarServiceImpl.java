@@ -2,9 +2,7 @@ package tech.renovus.solarec.business.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -21,7 +19,6 @@ import tech.renovus.solarec.business.impl.base.BaseServiceImpl;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliGenAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliLocAlertDao;
-import tech.renovus.solarec.db.data.dao.interfaces.EmberCountryOverviewDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
 import tech.renovus.solarec.exceptions.CoreException;
 import tech.renovus.solarec.util.CollectionUtil;
@@ -38,7 +35,6 @@ import tech.renovus.solarec.vo.custom.chart.revenue.Revenue;
 import tech.renovus.solarec.vo.db.data.CliGenAlertVo;
 import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
 import tech.renovus.solarec.vo.db.data.CliSettingVo;
-import tech.renovus.solarec.vo.db.data.EmberCountryOverviewVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.SettingsVo;
 import tech.renovus.solarec.vo.db.data.StatDefinitionVo;
@@ -53,7 +49,6 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 	
 	@Autowired ParserService parserService;
 	
-	@Autowired EmberCountryOverviewDao emberCountryDao;
 	@Autowired GeneratorDao generatorDao;
 	@Autowired CliLocAlertDao cliLocAlertDao;
 	@Autowired CliGenAlertDao cliGenAlertDao;
@@ -123,15 +118,17 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 	}
 	
 	private double calculateEmissionsIntensityGco2PerMwh(ChartFilter filter) {
-		Calendar cal = GregorianCalendar.getInstance();
-		cal.setTime(filter.getFrom());
-		Integer year = Integer.valueOf(cal.get(Calendar.YEAR));
-		Integer minYear = Integer.valueOf(year-3);
+//		Calendar cal = GregorianCalendar.getInstance();
+//		cal.setTime(filter.getFrom());
+//		Integer year = Integer.valueOf(cal.get(Calendar.YEAR));
+//		Integer minYear = Integer.valueOf(year-3);
+//		
+//		Collection<EmberCountryOverviewVo> countryOverviewData = this.emberCountryDao.findAllFirstFrom("Uruguay", year);
+//		if (CollectionUtil.isEmpty(countryOverviewData)) countryOverviewData = this.emberCountryDao.findAllLatFrom("Uruguay", year);
+//		double emissionsIntensityGco2PerMwh = CollectionUtil.isEmpty(countryOverviewData) ? 0 : countryOverviewData.stream().filter(x -> x.getEmissionsIntensityGco2PerKwh() != null && x.getYear().intValue() >= minYear).mapToDouble(EmberCountryOverviewVo::getEmissionsIntensityGco2PerKwh).average().getAsDouble() / 1000;
+//		return emissionsIntensityGco2PerMwh;
 		
-		Collection<EmberCountryOverviewVo> countryOverviewData = this.emberCountryDao.findAllFirstFrom("Uruguay", year);
-		if (CollectionUtil.isEmpty(countryOverviewData)) countryOverviewData = this.emberCountryDao.findAllLatFrom("Uruguay", year);
-		double emissionsIntensityGco2PerMwh = CollectionUtil.isEmpty(countryOverviewData) ? 0 : countryOverviewData.stream().filter(x -> x.getEmissionsIntensityGco2PerKwh() != null && x.getYear().intValue() >= minYear).mapToDouble(EmberCountryOverviewVo::getEmissionsIntensityGco2PerKwh).average().getAsDouble() / 1000;
-		return emissionsIntensityGco2PerMwh;
+		return -1;
 	}
 	
 	//--- Implemented methods -------------------

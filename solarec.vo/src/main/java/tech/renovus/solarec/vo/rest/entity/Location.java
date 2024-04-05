@@ -14,8 +14,7 @@ public class Location {
 	private String name;
 	private String address;
 	private String state;
-	private String country;
-	private String countryAlpha2;
+	private Country country;
 	private Double latitude;
 	private Double longitude;
 	private Double outputCapacity;
@@ -138,16 +137,10 @@ public class Location {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		this.country = country;
-	}
-	public String getCountryAlpha2() {
-		return countryAlpha2;
-	}
-	public void setCountryAlpha2(String countryAlpha2) {
-		this.countryAlpha2 = countryAlpha2;
 	}
 }

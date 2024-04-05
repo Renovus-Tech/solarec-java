@@ -31,11 +31,9 @@ public class RestFactoryTest {
 		result.setLocDataDateMax(new Date());
 		result.setLocDataDateMin(new Date());
 		result.setLocDemoDate(new Date());
-		result.setLocCountryAlpha2("UY");
 		result.setLocName("Test");
 		result.setLocAddress("Address");
 		result.setLocState("State");
-		result.setLocCountry("Uruguay");
 		result.setLocFlags("10101");
 		result.setLocCode("T1");
 		result.setLocType(LocationVo.TYPE_SOLAR);
@@ -122,8 +120,7 @@ public class RestFactoryTest {
 		assertEquals(result.getName(), vo.getLocName());
 		assertEquals(result.getAddress(), vo.getLocAddress());
 		assertEquals(result.getState(), vo.getLocState());
-		assertEquals(result.getCountry(), vo.getLocCountry());
-		assertEquals(result.getCountryAlpha2(), vo.getLocCountryAlpha2());
+		assertEquals(result.getCountry(), vo.getCountryVo());
 		assertEquals(result.getLatitude(), vo.getLocCoordLat());
 		assertEquals(result.getLongitude(), vo.getLocCoordLng());
 		assertEquals(result.getOutputCapacity(), vo.getLocOutputCapacity());

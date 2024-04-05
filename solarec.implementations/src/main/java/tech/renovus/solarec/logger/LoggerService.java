@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 	//--- Util methods --------------------------
 	public static Logger schedulerLogger() { return LoggerFactory.getLogger("schedule"); }
 	public static Logger inverterLogger() { return LoggerFactory.getLogger("inverter"); }
+	public static Logger dataGridLogger() { return LoggerFactory.getLogger("datagrid"); }
 	public static Logger certificateLogger() { return LoggerFactory.getLogger("certificate"); }
 	public static Logger weatherLogger() { return LoggerFactory.getLogger("weather"); }
 	public static Logger rootLogger() { return LoggerFactory.getLogger("roor"); }
