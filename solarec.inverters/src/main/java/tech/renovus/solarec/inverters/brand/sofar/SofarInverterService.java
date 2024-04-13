@@ -186,8 +186,7 @@ public class SofarInverterService implements InverterService {
 	@Override public boolean continueWithStats() { return true; }
 	@Override public String getReasonWhyCantRetrieve() {return null; }
 
-	@Override
-	public InverterData retrieveData() throws InveterServiceException {
+	@Override public InverterData retrieveData() throws InveterServiceException {
 		Calendar cal = Calendar.getInstance();
 		
 		InverterData inverterData = new InverterData(new ArrayList<>(), new ArrayList<>());

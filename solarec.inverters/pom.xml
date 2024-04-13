@@ -33,8 +33,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-
-
 	</dependencies>
 
 	<build>
@@ -46,9 +44,19 @@
 				<configuration>
 					<excludes>
 						<!-- Exclude classes with @Generated annotation -->
-						<exclude>tech/renovus/solarec/inverters/brand/fimer/api/**/*.class</exclude>
-						<exclude>tech/renovus/solarec/inverters/brand/fronius/api/**/*.class</exclude>
-						<exclude>tech/renovus/solarec/inverters/brand/sma/api/**/*.class</exclude>
+						<exclude>tech/renovus/solarec/inverters/brand/aiswei/api/**/*</exclude>
+						<exclude>tech/renovus/solarec/inverters/brand/fimer/api/**/*</exclude>
+						<exclude>tech/renovus/solarec/inverters/brand/fronius/api/**/*</exclude>
+						<exclude>tech/renovus/solarec/inverters/brand/sma/api/**/*</exclude>
+						<exclude>tech/renovus/solarec/inverters/brand/sofar/api/**/*</exclude>
+						<exclude>tech/renovus/solarec/inverters/brand/solarEdge/api/**/*</exclude>
+						<exclude>tech/renovus/solarec/inverters/brand/solis/api/**/*</exclude>
+						
+						<exclude>tech/renovus/solarec/certificate/drecs/api/**/*</exclude>
+						
+						<exclude>tech/renovus/solarec/weather/meteoblue/api/**/*</exclude>
+						
+						<exclude>tech/renovus/solarec/grid/electricMap/api/**/*</exclude>
 					</excludes>
 					<includes>
 						<!-- Include only renovus solarec code -->
@@ -73,5 +81,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

@@ -1,59 +1,52 @@
 package tech.renovus.solarec.inverters.brand.fimer;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import tech.renovus.solarec.inverters.brand.TestingUtil;
 import tech.renovus.solarec.inverters.brand.fimer.api.authenticate.AuthenticateResponse;
-import tech.renovus.solarec.vo.db.data.CliDataDefParameterVo;
+import tech.renovus.solarec.inverters.brand.fimer.api.ipRanges.datalogger.IpRangeDataloggerResponse;
+import tech.renovus.solarec.inverters.brand.fimer.api.ipRanges.web.IpRangeWebResponse;
+import tech.renovus.solarec.inverters.brand.fimer.api.organization.OrganizationResponse;
+import tech.renovus.solarec.inverters.brand.fimer.api.status.StatusResponse;
+import tech.renovus.solarec.inverters.common.InverterService.InverterData;
+import tech.renovus.solarec.inverters.common.InverterService.InveterServiceException;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
-import tech.renovus.solarec.vo.db.data.DataDefParameterVo;
 
 public class FimerInverterServiceTest {
 
 	//--- Private properties --------------------
-	private static String fimerUser;
-	private static String fimerPassword;
-	private static String fimerKey;
+	private static String user;
+	private static String password;
+	private static String key;
 	
 	private static FimerInverterService service;
-	
 	private static ClientVo client;
-	
-	//--- Private methods -----------------------
-	private static CliDataDefParameterVo createParameter(String paramName, String paramValue) {
-		DataDefParameterVo paramVo = new DataDefParameterVo();
-		paramVo.setDataDefParName(paramName);
-		
-		CliDataDefParameterVo result = new CliDataDefParameterVo();
-		result.setCliDataDefParValue(paramValue);
-		result.setDataDefParameter(paramVo);
-		
-		return result;
-	}
 	
 	//--- Init methods --------------------------
 	@BeforeClass
 	public static void init() {
-		FimerInverterServiceTest.fimerUser		= System.getProperty("fimer_user");
-		FimerInverterServiceTest.fimerPassword	= System.getProperty("fimer_passsword");
-		FimerInverterServiceTest.fimerKey		= System.getProperty("fimer_key");
+		FimerInverterServiceTest.user		= System.getProperty("fimer_user");
+		FimerInverterServiceTest.password	= System.getProperty("fimer_passsword");
+		FimerInverterServiceTest.key		= System.getProperty("fimer_key");
 		
-		ClientVo client = new ClientVo();
-		client.add(FimerInverterServiceTest.createParameter(FimerInverterService.PARAM_USER, FimerInverterServiceTest.fimerUser));
-		client.add(FimerInverterServiceTest.createParameter(FimerInverterService.PARAM_PASSWORD, FimerInverterServiceTest.fimerPassword));
-		client.add(FimerInverterServiceTest.createParameter(FimerInverterService.PARAM_KEY, FimerInverterServiceTest.fimerKey));
-		
-		FimerInverterServiceTest.service = new FimerInverterService();
-		
-		boolean allDataRequired = FimerInverterServiceTest.fimerUser != null && FimerInverterServiceTest.fimerPassword != null && FimerInverterServiceTest.fimerKey != null;
+		boolean allDataRequired = FimerInverterServiceTest.user != null && FimerInverterServiceTest.password != null && FimerInverterServiceTest.key != null;
 		
 		Assume.assumeTrue("Skipping tests because test data is missing. Added the following system.properties to execute tests: fimer_user, fimer_passsword, fimer_key", allDataRequired);
+		
+		FimerInverterServiceTest.client = new ClientVo();
+		FimerInverterServiceTest.client.add(TestingUtil.createParameter(FimerInverterService.PARAM_USER, FimerInverterServiceTest.user));
+		FimerInverterServiceTest.client.add(TestingUtil.createParameter(FimerInverterService.PARAM_PASSWORD, FimerInverterServiceTest.password));
+		FimerInverterServiceTest.client.add(TestingUtil.createParameter(FimerInverterService.PARAM_KEY, FimerInverterServiceTest.key));
+		
+		FimerInverterServiceTest.service = new FimerInverterService();
 	}
-	
 	
 	//--- Testing methods -----------------------
 	@Test
@@ -64,24 +57,54 @@ public class FimerInverterServiceTest {
 		 *   - fimer_passsword
 		 *   - fimer_key
 		 *   
-		 * Example of execution: -Dfimer_user=<user_here> -Dfimer_passsword=<password_here> -Dfimer_key=<key_here>
+		 * Example of execution: -D<param_1>=<value_1> -D<param_2=<value_2> -D<param_n>=<value_n>
 		 */
-		assertNotNull(FimerInverterServiceTest.fimerUser);
-		assertNotNull(FimerInverterServiceTest.fimerPassword);
-		assertNotNull(FimerInverterServiceTest.fimerKey);
-	}
-	
-	@Test
-	public void testValidateConfiguration() {
-		assertFalse(service.validateConfiguration(FimerInverterServiceTest.client));
+		assertNotNull(FimerInverterServiceTest.user);
+		assertNotNull(FimerInverterServiceTest.password);
+		assertNotNull(FimerInverterServiceTest.key);
 	}
 	
 	@Test 
-	public void testAuthenticate() {
-		AuthenticateResponse response = FimerInverterServiceTest.service.authenticate(FimerInverterServiceTest.fimerUser, FimerInverterServiceTest.fimerPassword, FimerInverterServiceTest.fimerKey);
+	public void testCallApi() {
+		Exception error = null;
 		
-		assertNotNull(response);
-		assertNotNull(response.getResult());
+		StatusResponse status = service.status();
+		assertNotNull(status);
+		
+		AuthenticateResponse authentication = service.authenticate(user, password, key);
+		assertNotNull(authentication);
+		assertNotNull(authentication.getResult());
+		
+		String authKey = authentication.getResult();
+		
+		IpRangeDataloggerResponse ipRangeDataLogger = service.getIpRangeDatalogger(authKey);
+		assertNotNull(ipRangeDataLogger);
+		assertNotNull(ipRangeDataLogger.getResult());
+		assertNotNull(ipRangeDataLogger.getResult().getPrefixes());
+		
+		IpRangeWebResponse ipRangeDataWeb = service.getIpRangeWeb(authKey);
+		assertNotNull(ipRangeDataWeb);
+		assertNotNull(ipRangeDataWeb.getResult());
+		assertNotNull(ipRangeDataWeb.getResult().getPrefixes());
+		
+		OrganizationResponse organization = service.getPortafolioGroup(authKey);
+		assertNotNull(organization);
+		assertNotNull(organization.getResult());
+		
+		try {
+			service.prepareFor(client);
+			InverterData apiData = service.retrieveData();
+			
+			assertNotNull(apiData);
+			assertNotNull(apiData.getGeneratorData());
+			assertNotNull(apiData.getStationData());
+			assertTrue(CollectionUtil.notEmpty(apiData.getGeneratorData()));
+			assertTrue(CollectionUtil.notEmpty(apiData.getStationData()));
+		} catch (InveterServiceException e) {
+			error = e;
+		}
+		
+		assertNull(error);
 	}
 	
 	

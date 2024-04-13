@@ -67,9 +67,9 @@ public class FroniusInverterService implements InverterService {
 	
 	protected static final String PV_SYSTEMS_HIST_DATA_LIMIT						= "288";
 	
-	protected static final String PARAM_BETA_MODE									= "fronius.beta";
-	protected static final String PARAM_ACCESS_KEY_ID								= "fronius.client.key_id";
-	protected static final String PARAM_ACCESS_KEY_VALUE							= "fronius.client.key_value";
+	public static final String PARAM_BETA_MODE										= "fronius.beta";
+	public static final String PARAM_ACCESS_KEY_ID									= "fronius.client.key_id";
+	public static final String PARAM_ACCESS_KEY_VALUE								= "fronius.client.key_value";
 	protected static final String PARAM_CLI_LAST_DATE_RETRIEVE						= "fronius.client.last_retrieve";
 	protected static final String PARAM_LOC_LAST_DATE_RETRIEVE						= "fronius.location.last_retrieve";
 	protected static final String PARAM_GEN_PV_SYSTEM_ID							= "fronius.generator.pv_systems_id";

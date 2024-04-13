@@ -46,6 +46,15 @@ public class JsonCaller {
         return queryStringBuilder.toString();
     }
 	
+	private static <T extends Object> T processError(String url, WebClientResponseException webClientError, Class<T> responseClass) {
+		try {
+			return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
+		} catch (JsonProcessingException e) {
+			LoggerService.inverterLogger().error("Error calling URL: " + url, e);
+			return null;
+		}
+	}
+	
 	//--- Generators methods --------------------
 	public static String generateCompleteURL(String baseEndpoint, Map<String, String> queryParams) {
         try {
@@ -75,12 +84,7 @@ public class JsonCaller {
 		            .bodyToMono(responseClass)
 		            .block();
 		} catch (WebClientResponseException webClientError) {
-			try {
-				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
-			} catch (JsonProcessingException e) {
-				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
-				return null;
-			}
+			return processError(url, webClientError, responseClass);
 		}
 	}
 	
@@ -100,12 +104,7 @@ public class JsonCaller {
 		            .bodyToMono(responseClass)
 		            .block();
 		} catch (WebClientResponseException webClientError) {
-			try {
-				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
-			} catch (JsonProcessingException e) {
-				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
-				return null;
-			}
+			return processError(url, webClientError, responseClass);
 		}
 	}
 
@@ -121,12 +120,7 @@ public class JsonCaller {
 		            .bodyToMono(responseClass)
 		            .block();
 		} catch (WebClientResponseException webClientError) {
-			try {
-				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
-			} catch (JsonProcessingException e) {
-				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
-				return null;
-			}
+			return processError(url, webClientError, responseClass);
 		}
 	}
 	
@@ -144,12 +138,7 @@ public class JsonCaller {
 		            .bodyToMono(responseClass)
 		            .block();
 		} catch (WebClientResponseException webClientError) {
-			try {
-				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
-			} catch (JsonProcessingException e) {
-				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
-				return null;
-			}
+			return processError(url, webClientError, responseClass);
 		}
 	}
 	
@@ -167,12 +156,7 @@ public class JsonCaller {
 		            .bodyToMono(responseClass)
 		            .block();
 		} catch (WebClientResponseException webClientError) {
-			try {
-				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
-			} catch (JsonProcessingException e) {
-				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
-				return null;
-			}
+			return processError(url, webClientError, responseClass);
 		}
 	}
 	
@@ -186,12 +170,7 @@ public class JsonCaller {
 					.bodyToMono(responseClass)
 				.block();
 		} catch (WebClientResponseException webClientError) {
-			try {
-				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
-			} catch (JsonProcessingException e) {
-				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
-				return null;
-			}
+			return processError(url, webClientError, responseClass);
 		}
 	}
 	
@@ -210,12 +189,7 @@ public class JsonCaller {
 		            .bodyToMono(responseClass)
 		            .block();
 		} catch (WebClientResponseException webClientError) {
-			try {
-				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
-			} catch (JsonProcessingException e) {
-				LoggerService.inverterLogger().error("Error calling URL: " + url, e);
-				return null;
-			}
+			return processError(url, webClientError, responseClass);
 		}
 	}
 }

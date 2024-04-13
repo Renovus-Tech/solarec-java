@@ -61,10 +61,10 @@ public class SmaInverterService implements InverterService {
 
 	private static final String ENDPOINT_MEASUREMENTS_DEVICE		= "/monitoring/v1/devices/{deviceId}/measurements/sets/{setType}/{period}";
 
-	private static final String PARAM_SANBOX						= "sma.sandbox";
-	private static final String PARAM_CLIENT_CLIENT_ID				= "sma.client.client_id";
-	private static final String PARAM_CLIENT_CLIENT_SECRET			= "sma.client.client_secret";
-	private static final String PARAM_CLIENT_RESOURCE_OWNER			= "sma.client.resource_owner";
+	public static final String PARAM_SANBOX							= "sma.sandbox";
+	public static final String PARAM_CLIENT_CLIENT_ID				= "sma.client.client_id";
+	public static final String PARAM_CLIENT_CLIENT_SECRET			= "sma.client.client_secret";
+	public static final String PARAM_CLIENT_RESOURCE_OWNER			= "sma.client.resource_owner";
 	private static final String PARAM_LOCATION_PLANT_ID				= "sma.location.plant_id";
 	private static final String PARAM_GENERATOR_DEVICE_ID			= "sma.generator.device_id";
 	private static final String PARAM_GEN_LAST_DATE_RETRIEVE		= "sma.generator.last_retrieve";

@@ -60,7 +60,8 @@ public class AisweiInverterService implements InverterService {
 	//--- Protected constants -------------------
 	protected static final String PARAM_BETA_MODE				= "aiswei.beta";
 	protected static final String PARAM_ACCESS_APP_KEY			= "aiswei.client.app_key";
-	protected static final String PARAM_GEN_PLANT_KEY			= "aiswei.generator.plant_KEY";
+	protected static final String PARAM_USER_TOKEN				= "aiswei.client.user_token";
+	protected static final String PARAM_GEN_PLANT_KEY			= "aiswei.generator.plant_key";
 	protected static final String PARAM_CLI_LAST_DATE_RETRIEVE	= "aiswei.client.last_retrieve";
 	protected static final String PARAM_LOC_LAST_DATE_RETRIEVE	= "aiswei.location.last_retrieve";
 	protected static final String PARAM_GEN_LAST_DATE_RETRIEVE	= "aiswei.generator.last_retrieve";
@@ -299,8 +300,7 @@ public class AisweiInverterService implements InverterService {
 	@Override public boolean continueWithStats() { return true; }
 	@Override public String getReasonWhyCantRetrieve() {return null; }
 
-	@Override
-	public InverterData retrieveData() throws InveterServiceException {
+	@Override public InverterData retrieveData() throws InveterServiceException {
 		Calendar cal = Calendar.getInstance();
 		
 		InverterData inverterData = new InverterData(new ArrayList<>(), new ArrayList<>());

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 public class ElectricMapsConfiguration {
 	
 	//--- API configuration ---------------------
-	@Value("${salrec.electricmaps.key}")					private String key;
+	@Value("${solarec.electricmaps.key}")					private String key;
 
 	//--- Getters methods -----------------------
 	public String getKey() {

@@ -48,7 +48,7 @@ public class SolarEdgeInverterService implements InverterService {
 	private static final String ENDPOINT_SITE_ENERGY			= "/site/1/energy";
 	
 	//--- Protected constants -------------------
-	protected static final String PARAM_ACCESS_APP_KEY			= "solarEdge.client.app_key";
+	protected static final String PARAM_ACCESS_APP_KEY			= "solarEdge.client.api_key";
 	protected static final String PARAM_GEN_SITE_ID				= "solarEdge.generator.site_id";
 	protected static final String PARAM_CLI_LAST_DATE_RETRIEVE	= "solarEdge.client.last_retrieve";
 	protected static final String PARAM_LOC_LAST_DATE_RETRIEVE	= "solarEdge.location.last_retrieve";
