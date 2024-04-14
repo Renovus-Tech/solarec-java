@@ -126,7 +126,7 @@ public class JsonCaller {
 	
 	public static <T extends Object> T post(String url, Map<String,String> queryParams, Class<T> responseClass) {
 		MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-		queryParams.forEach(formData::add);
+		if (queryParams != null) queryParams.forEach(formData::add);
 
 		try {
 			return buildWebClient()

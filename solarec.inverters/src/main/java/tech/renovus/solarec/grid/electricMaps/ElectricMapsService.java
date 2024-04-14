@@ -42,19 +42,17 @@ public class ElectricMapsService implements DataGridService {
 	//--- Resources -----------------------------
 	@Autowired ElectricMapsConfiguration config;
 	
-	private String key;
-
 	//--- Constructors --------------------------
 	public ElectricMapsService() {}
 	
-	public ElectricMapsService(String key) {
-		this.key = key;
+	public ElectricMapsService(ElectricMapsConfiguration config) {
+		this.config = config;
 	}
 	
 	//--- Private methods -----------------------
 	private Map<String, String> getAuthenticationHeader() {
 		Map<String, String> headers = new HashMap<>();
-		headers.put("auth-token", this.config == null ? this.key : this.config.getKey());
+		headers.put("auth-token", this.config.getKey());
 		
 		return headers;
 	}

@@ -465,12 +465,18 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 	@Resource LocationDao locDao;
 	@Resource LocDataWeatherDao locDataWeatherDao;
 	
+	public MeteoblueWeatherServiceImpl() {}
+	
+	public MeteoblueWeatherServiceImpl(MeteoblueConfiguration config) {
+		this.config = config;
+	}
+	
 	//--- Private methods -----------------------
 	private Map<String, String> getParams(LocationVo vo, Date dateFrom, Date dateEnd, boolean includeTime) {
 		Map<String, String> result = new HashMap<>();
-		result.put("lat", vo.getLocCoordLat().toString());
-		result.put("lon", vo.getLocCoordLng().toString());
-		result.put("apikey", this.config.getMeteoblueKey());
+		result.put("lat", StringUtil.toString(vo.getLocCoordLat(), StringUtil.EMPTY_STRING));
+		result.put("lon", StringUtil.toString(vo.getLocCoordLng(), StringUtil.EMPTY_STRING));
+		result.put("apikey", this.config.getKey());
 		
 		result.put("asl", "34");
 		result.put("format", "json");
@@ -525,7 +531,7 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 
 	//--- Overridden methods --------------------
 	@Override public Collection<StaDataVo> retrieveWeatherData(LocationVo locVo, StationVo station, Date dateFrom, Date dateTo) throws WeatherServiceException {
-		LoggerService.weatherLogger().info("[Meteoblue] Start data retrieve from " + DATE_FORMATTER.format(dateFrom) + " from " + DATE_FORMATTER.format(dateTo) + " for coords: " + locVo.getLocCoordLat().toString() + " - " + locVo.getLocCoordLng().toString());
+		LoggerService.weatherLogger().info("[Meteoblue] Start data retrieve from " + DATE_FORMATTER.format(dateFrom) + " from " + DATE_FORMATTER.format(dateTo) + " for coords: " + locVo.getLocCoordLat() + " - " + locVo.getLocCoordLng());
 		
 		Map<String, String> params		= this.getParams(locVo, dateFrom, dateTo, false);
 		WeatherData data				= JsonCaller.get(URL_SOLAR, params, WeatherData.class);

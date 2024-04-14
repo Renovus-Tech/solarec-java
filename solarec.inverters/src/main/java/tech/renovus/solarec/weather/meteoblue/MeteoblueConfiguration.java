@@ -7,11 +7,15 @@ import org.springframework.context.annotation.Configuration;
 public class MeteoblueConfiguration {
 	
 	//--- API configuration ---------------------
-	@Value("${salrec.meteoblue.key}")					private String meteoblueKey;
+	@Value("${salrec.meteoblue.key}")					private String key;
 
 	//--- Getters methods -----------------------
-	public String getMeteoblueKey() {
-		return meteoblueKey;
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String meteoblueKey) {
+		this.key = meteoblueKey;
 	}
 	
 }

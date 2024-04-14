@@ -1,5 +1,6 @@
 package tech.renovus.solarec.grid.electricMaps;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -37,7 +38,12 @@ public class ElectricMapsServiceTest {
 		CountryVo ctrVo = new CountryVo();
 		ctrVo.setCtrCode2("UY");
 		
-		DataGridService service = new ElectricMapsService(ElectricMapsServiceTest.key);
+		ElectricMapsConfiguration config = new ElectricMapsConfiguration();
+		config.setKey(ElectricMapsServiceTest.key);
+		
+		assertEquals(ElectricMapsServiceTest.key, config.getKey());
+		
+		DataGridService service = new ElectricMapsService(config);
 		
 		DataGridServiceException exception = null;
 		try {

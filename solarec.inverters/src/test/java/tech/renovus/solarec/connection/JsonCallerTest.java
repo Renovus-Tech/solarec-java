@@ -1,6 +1,8 @@
 package tech.renovus.solarec.connection;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
@@ -19,6 +21,7 @@ import tech.renovus.solarec.connection.api.TestRequest;
 public class JsonCallerTest {
 	
 	//--- Private constants ---------------------
+	private static final String ENDPOIT_STATUS	= "https://postman-echo.com/status/";
 	private static final String ENDPOIT_POST	= "https://postman-echo.com/post";
 	private static final String ENDPOIT_GET		= "https://postman-echo.com/get";
 	
@@ -51,6 +54,17 @@ public class JsonCallerTest {
 	}
 
 	///--- Test post methods --------------------
+	@Test public void statusCode() {
+		Integer code = Integer.valueOf("501");
+		PostResponse responseGet = JsonCaller.get(ENDPOIT_STATUS + code.toString(), null, PostResponse.class);
+		assertNotNull(responseGet.getAdditionalProperties());
+		assertNotNull(responseGet.getAdditionalProperties().get("status"));
+		assertEquals(code, responseGet.getAdditionalProperties().get("status"));
+
+		PostResponse responsePost = JsonCaller.post(ENDPOIT_STATUS + code, null, PostResponse.class);
+		assertNull(responsePost);
+	}
+	
 	@Test public void postTest1() {
 		TestRequest request = TestRequest.random();
 		

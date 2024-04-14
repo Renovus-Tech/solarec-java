@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import tech.renovus.solarec.connection.JsonCallerTest;
+import tech.renovus.solarec.grid.DataGridServiceTest;
 import tech.renovus.solarec.grid.electricMaps.ElectricMapsServiceTest;
 import tech.renovus.solarec.grid.ember.EmberDataGridServiceTest;
 import tech.renovus.solarec.inverters.brand.aiswei.AisweiInverterServiceTest;
@@ -13,6 +14,9 @@ import tech.renovus.solarec.inverters.brand.fronius.FroniusInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.sma.SmaInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.sofar.SofarInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.solarEdge.SolarEdgeInverterServiceTest;
+import tech.renovus.solarec.inverters.common.InverterServiceTest;
+import tech.renovus.solarec.weather.WeatherServiceTest;
+import tech.renovus.solarec.weather.tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
@@ -21,12 +25,17 @@ import tech.renovus.solarec.inverters.brand.solarEdge.SolarEdgeInverterServiceTe
 	FroniusInverterServiceTest.class,
 	SmaInverterServiceTest.class,
 	SofarInverterServiceTest.class,
-	SolarEdgeInverterServiceTest.class, 
+	SolarEdgeInverterServiceTest.class,
+	InverterServiceTest.class,
 	
 	JsonCallerTest.class,
 	
 	ElectricMapsServiceTest.class,
 	EmberDataGridServiceTest.class,
+	DataGridServiceTest.class,
+	
+	MeteoblueWeatherServiceTest.class,
+	WeatherServiceTest.class,
 })
 
 public class SolarecInveretersTest {
