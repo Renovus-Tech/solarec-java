@@ -27,8 +27,8 @@ public interface SolarService {
 	Object runClimate(ChartFilter filter, UserData userData) throws CoreException;
 	Object runPerformanceIndex(ChartFilter filter, UserData loggedUserData) throws CoreException;
 
-	Revenue revenue(ChartFilter filter, UserData loggedUserData);
-	Revenue revenueSales(ChartFilter filter, UserData loggedUserData);
+	Object revenue(ChartFilter filter, UserData loggedUserData) throws CoreException;
+	Object revenueSales(ChartFilter filter, UserData loggedUserData) throws CoreException;
 
 	
 }
