@@ -44,6 +44,9 @@ tech.renovus.solarec.python.performanceIndex.url =
 tech.renovus.solarec.python.climate.url = 
 tech.renovus.solarec.python.powerCurve.url = 
 tech.renovus.solarec.python.alertCalculations.url = 
+tech.renovus.solarec.python.solarSales.url = 
+tech.renovus.solarec.python.solarCertificate.url = 
+tech.renovus.solarec.python.emissons.url = 
 
 #Meteoblue
 salrec.meteoblue.key = 
