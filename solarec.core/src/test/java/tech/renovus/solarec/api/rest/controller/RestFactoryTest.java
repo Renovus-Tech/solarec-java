@@ -1,18 +1,34 @@
 package tech.renovus.solarec.api.rest.controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Test;
 
+import tech.renovus.solarec.interfaces.ISetting;
 import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.vo.db.data.CliSettingVo;
+import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.vo.db.data.CountryVo;
+import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
+import tech.renovus.solarec.vo.db.data.FunctionalityVo;
+import tech.renovus.solarec.vo.db.data.GenPowerVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
+import tech.renovus.solarec.vo.rest.entity.Client;
+import tech.renovus.solarec.vo.rest.entity.Country;
+import tech.renovus.solarec.vo.rest.entity.DataDefinition;
+import tech.renovus.solarec.vo.rest.entity.Functionality;
+import tech.renovus.solarec.vo.rest.entity.Generator;
 import tech.renovus.solarec.vo.rest.entity.Location;
+import tech.renovus.solarec.vo.rest.entity.Setting;
 
 public class RestFactoryTest {
 
@@ -87,6 +103,70 @@ public class RestFactoryTest {
 		return result;
 	}
 
+	private CountryVo creteCountry() {
+		CountryVo result = new CountryVo();
+		result.setCtrName("name");
+		result.setCtrCode2("2");
+		result.setCtrCode3("3");
+		
+		return result;
+	}
+	
+	private FunctionalityVo createFunctionality() {
+		FunctionalityVo result = new FunctionalityVo();
+		
+		result.setFncId(1);
+		result.setFncTitle("title");
+		result.setFncDescription("description");
+		result.setFncUrl("url");
+		
+		return result;
+	}
+	
+	private GenPowerVo createGenPowerVo() {
+		GenPowerVo result = new GenPowerVo();
+		
+		result.setPwrWindSpeed(Double.valueOf(10));
+		result.setPwrAirDensity(Double.valueOf(22));
+		result.setGenPower(Double.valueOf(44));
+		
+		return result;
+	}
+	
+	private DataDefinitionVo createDataDefinitionVo() {
+		DataDefinitionVo result = new DataDefinitionVo();
+		
+		result.setDataDefId(Integer.valueOf(123));
+		result.setDataDefName("name");
+		result.setDataDefDescription("description");
+		
+		return result;
+	}
+	
+	private CliSettingVo createISetting() {
+		CliSettingVo result = new CliSettingVo();
+		
+		result.setCliSetName("name");
+		result.setCliSetValue("value");
+		
+		return result;
+	}
+	
+	private ClientVo createClientVo() {
+		ClientVo result = new ClientVo();
+		
+		result.setCliId(Integer.valueOf(123));
+		result.setCliName("Name");
+		result.setCliNameLegal("legal name");
+		result.setCliNameAddress("address");
+		result.setDataDefId(Integer.valueOf(1244));
+		result.setDataDefinitionVo(this.createDataDefinitionVo());
+		result.setSettings(Arrays.asList(this.createISetting()));
+		result.setCliDemoDate(new Date());
+		
+		return result;
+	}
+	
 	//--- Test methods --------------------------
 	@Test
 	public void testCollections() {
@@ -133,5 +213,92 @@ public class RestFactoryTest {
 		assertEquals(CollectionUtil.size(result.getGenerators()), CollectionUtil.size(vo.getGenerators()));
 		assertEquals(CollectionUtil.size(result.getStations()), CollectionUtil.size(vo.getStations()));
 		
+	}
+
+	@Test
+	public void testCountry() {
+		RestFactory factory =  new RestFactory();
+		CountryVo vo = this.creteCountry();
+		Country result = factory.convert(vo);
+		
+		assertNull(factory.convert((CountryVo) null));
+		assertEquals(vo.getCtrName(), result.getName());
+		assertEquals(vo.getCtrCode2(), result.getIso2());
+		assertEquals(vo.getCtrCode3(), result.getIso3());
+	}
+
+	@Test
+	public void testFunctionlaity() {
+		RestFactory factory =  new RestFactory();
+		FunctionalityVo vo = this.createFunctionality();
+		Functionality result = factory.convert(vo);
+		
+		assertNull(factory.convert((FunctionalityVo) null));
+		assertEquals(vo.getFncId(), result.getId());
+		assertEquals(vo.getFncTitle(), result.getTitle());
+		assertEquals(vo.getFncDescription(), result.getDescription());
+		assertEquals(vo.getFncUrl(), result.getUrl());
+	}
+	
+	@Test
+	public void testGenPower() {
+		RestFactory factory =  new RestFactory();
+		GenPowerVo vo = this.createGenPowerVo();
+		Collection<Generator.Power> result = factory.convertPower(Arrays.asList(vo));
+		
+		assertNotNull(factory.convertPower((Collection<GenPowerVo>) null));
+		assertTrue(CollectionUtil.size(result) == 1);
+		
+		Generator.Power power = result.iterator().next();
+		
+		assertEquals(vo.getGenPower(), power.getPower());
+		assertEquals(vo.getPwrAirDensity(), power.getAirDensity());
+		assertEquals(vo.getPwrWindSpeed(), power.getWindSpeed());
+	}
+	
+	@Test
+	public void testDataDefinition() {
+		RestFactory factory =  new RestFactory();
+		DataDefinitionVo vo = this.createDataDefinitionVo();
+		DataDefinition result = factory.convert(vo);
+		
+		assertNotNull(factory.convertPower((Collection<GenPowerVo>) null));
+		
+		assertEquals(vo.getDataDefId(), result.getId());
+		assertEquals(vo.getDataDefName(), result.getName());
+		assertEquals(vo.getDataDefDescription(), result.getDescription());
+	}
+	
+	@Test
+	public void testSettings() {
+		RestFactory factory =  new RestFactory();
+		ISetting vo = this.createISetting();
+		Setting result = factory.convert(vo, null);
+		
+		assertNotNull(factory.convertPower((Collection<GenPowerVo>) null));
+		
+		assertEquals(vo.getName(), result.getName());
+		assertEquals(vo.getValue(), result.getValue());
+	}
+	
+	@Test
+	public void testClient() {
+		RestFactory factory =  new RestFactory();
+		ClientVo vo = this.createClientVo();
+		Client result = factory.convert(vo, null);
+		
+		assertNotNull(factory.convertPower((Collection<GenPowerVo>) null));
+		
+		assertEquals(vo.getCliId(), result.getId());
+		assertEquals(vo.getCliName(), result.getName());
+		assertEquals(vo.getCliNameLegal(), result.getLegalName());
+		assertEquals(vo.getCliNameAddress(), result.getAddress());
+		assertEquals(vo.getDataDefId(), result.getDataDefinitionId());
+		
+		assertNotNull(result.getDataDefinition());
+		
+		assertEquals(vo.getDataDefinitionVo().getDataDefId(), result.getDataDefinition().getId());
+		assertEquals(vo.getDataDefinitionVo().getDataDefName(), result.getDataDefinition().getName());
+		assertEquals(vo.getDataDefinitionVo().getDataDefDescription(), result.getDataDefinition().getDescription());
 	}
 }

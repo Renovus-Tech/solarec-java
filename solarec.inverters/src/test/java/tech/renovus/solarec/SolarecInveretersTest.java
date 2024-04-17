@@ -15,6 +15,7 @@ import tech.renovus.solarec.inverters.brand.sma.SmaInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.sofar.SofarInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.solarEdge.SolarEdgeInverterServiceTest;
 import tech.renovus.solarec.inverters.common.InverterServiceTest;
+import tech.renovus.solarec.inverters.common.InvertersUtilTest;
 import tech.renovus.solarec.weather.WeatherServiceTest;
 import tech.renovus.solarec.weather.tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceTest;
 
@@ -26,7 +27,9 @@ import tech.renovus.solarec.weather.tech.renovus.solarec.weather.meteoblue.Meteo
 	SmaInverterServiceTest.class,
 	SofarInverterServiceTest.class,
 	SolarEdgeInverterServiceTest.class,
+	
 	InverterServiceTest.class,
+	InvertersUtilTest.class,
 	
 	JsonCallerTest.class,
 	

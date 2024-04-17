@@ -4,12 +4,28 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.junit.Test;
+
+import tech.renovus.solarec.vo.db.data.GenDataVo;
+import tech.renovus.solarec.vo.db.data.StaDataVo;
 
 public class InverterServiceTest {
 	private static final String ERROR_MESSAGE		= "Test error message";
 	private static final String PARENT_MESSAGE		= "Parent message";
 
+	@Test public void testData() {
+		Collection<GenDataVo> generatorData = new ArrayList<>();
+		Collection<StaDataVo> stationData = new ArrayList<>();
+		
+		InverterService.InverterData data = new InverterService.InverterData(generatorData, stationData);
+		
+		assertEquals(generatorData, data.getGeneratorData());
+		assertEquals(stationData, data.getStationData());
+	}
+	
 	@Test public void testException() {
         Exception parentException	= new Exception(PARENT_MESSAGE);
         

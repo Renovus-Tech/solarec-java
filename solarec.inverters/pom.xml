@@ -43,7 +43,6 @@
 				<version>0.8.11</version>
 				<configuration>
 					<excludes>
-						<!-- Exclude classes with @Generated annotation -->
 						<exclude>tech/renovus/solarec/inverters/brand/aiswei/api/**/*</exclude>
 						<exclude>tech/renovus/solarec/inverters/brand/fimer/api/**/*</exclude>
 						<exclude>tech/renovus/solarec/inverters/brand/fronius/api/**/*</exclude>
@@ -56,10 +55,9 @@
 						
 						<exclude>tech/renovus/solarec/weather/meteoblue/api/**/*</exclude>
 						
-						<exclude>tech/renovus/solarec/grid/electricMap/api/**/*</exclude>
+						<exclude>tech/renovus/solarec/grid/electricMaps/api/**/*</exclude>
 					</excludes>
 					<includes>
-						<!-- Include only renovus solarec code -->
 						<include>tech/renovus/solarec/**/*</include>
 					</includes>
 				</configuration>

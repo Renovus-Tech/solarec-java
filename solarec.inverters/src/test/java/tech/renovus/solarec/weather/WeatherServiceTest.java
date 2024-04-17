@@ -3,6 +3,11 @@ package tech.renovus.solarec.weather;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
@@ -10,6 +15,24 @@ public class WeatherServiceTest {
 	private static final String ERROR_MESSAGE		= "Test error message";
 	private static final String PARENT_MESSAGE		= "Parent message";
 
+	@Test public void testFormatters() {
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.set(Calendar.YEAR, 1979);
+		cal.set(Calendar.MONTH, Calendar.NOVEMBER);
+		cal.set(Calendar.AM_PM, Calendar.AM);
+		cal.set(Calendar.DAY_OF_MONTH, 3);
+		cal.set(Calendar.HOUR_OF_DAY, 8);
+		cal.set(Calendar.MINUTE, 18);
+		cal.set(Calendar.SECOND, 20);
+		cal.set(Calendar.MILLISECOND, 100);
+		
+		Date aDate = cal.getTime();
+		
+		assertTrue(WeatherService.ISO_FORMATTER.format(aDate).startsWith("1979-11-03T08:18:20 GMT"));
+		assertEquals("1979-11-03 08:18", WeatherService.DATE_HOUR_FORMATTER.format(aDate));
+		assertEquals("1979-11-03", WeatherService.DATE_FORMATTER.format(aDate));
+	}
+	
 	@Test public void testException() {
         Exception parentException	= new Exception(PARENT_MESSAGE);
         
