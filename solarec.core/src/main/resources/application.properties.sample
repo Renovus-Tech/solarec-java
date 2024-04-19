@@ -49,4 +49,7 @@ tech.renovus.solarec.python.solarCertificate.url =
 tech.renovus.solarec.python.emissons.url = 
 
 #Meteoblue
-salrec.meteoblue.key = 
+solarec.meteoblue.key = 
+
+#ElectirMaps
+solarec.electricmaps.key = vZlGDaShfLe3V
