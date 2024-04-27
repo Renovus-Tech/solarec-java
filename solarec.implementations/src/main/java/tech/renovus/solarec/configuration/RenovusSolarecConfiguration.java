@@ -23,9 +23,9 @@ public class RenovusSolarecConfiguration {
 	@Value("${tech.renovus.solarec.python.performanceIndex.url}")		private String chartPerformanceIndexUrl;
 	@Value("${tech.renovus.solarec.python.climate.url}")				private String chartClimateUrl;
 	@Value("${tech.renovus.solarec.python.powerCurve.url}")				private String chartPowerCurveUrl;
-	@Value("${tech.renovus.solarec.python.solarSales.url = }")			private String chartSolarSalesUrl;
-	@Value("${tech.renovus.solarec.python.solarCertificate.url = }")	private String chartSolarCertificateUrl;
-	@Value("${tech.renovus.solarec.python.emissons.url = }")			private String chartEmissionsUrl;
+	@Value("${tech.renovus.solarec.python.solarSales.url}")			private String chartSolarSalesUrl;
+	@Value("${tech.renovus.solarec.python.solarCertificate.url}")	private String chartSolarCertificateUrl;
+	@Value("${tech.renovus.solarec.python.emissons.url}")			private String chartEmissionsUrl;
 	
 	@Value("${tech.renovus.solarec.python.alertCalculations.url}")	private String alertCalculations;
 	

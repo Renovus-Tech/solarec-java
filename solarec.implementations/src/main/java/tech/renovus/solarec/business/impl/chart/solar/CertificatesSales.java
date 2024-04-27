@@ -13,9 +13,6 @@ public class CertificatesSales extends AbstractChart {
 	@Override public Object execute() {
 		
 		if (CollectionUtil.isEmpty(this.chartFilter.getGenerators())) this.setAllGeneratorsToChartFilter();
-		this.setAllStationsToFilter();
-		
-		this.chartFilter.setGroupBy(null);
 		
 		try {
 			JsonNode jsonNode = this.retrieveChartInformation(this.config.getChartSolarSalesUrl());

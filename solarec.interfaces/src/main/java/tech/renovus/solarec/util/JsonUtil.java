@@ -68,7 +68,11 @@ public class JsonUtil {
 					.bodyToMono(String.class)
 					.block();
 		} catch (WebClientResponseException webClientError) {
-			return webClientError.getResponseBodyAsString();
+			try {
+				return JsonUtil.toObject(webClientError.getResponseBodyAsString(), String.class);
+			} catch (JsonProcessingException e) {
+				return webClientError.getResponseBodyAsString();
+			}
 		}
 	}
 	
