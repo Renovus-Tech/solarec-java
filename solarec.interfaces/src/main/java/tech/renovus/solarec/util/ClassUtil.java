@@ -500,6 +500,8 @@ public final class ClassUtil {
 							classes.add(Class.forName(className));
 						}
 					}
+					
+					jar.close();
 				} else {
 					directories.add(new File(URLDecoder.decode(res.getPath(), "UTF-8")));
 				}

@@ -43,19 +43,31 @@
 				<version>0.8.11</version>
 				<configuration>
 					<excludes>
-						<exclude>tech/renovus/solarec/inverters/brand/aiswei/api/**/*</exclude>
-						<exclude>tech/renovus/solarec/inverters/brand/fimer/api/**/*</exclude>
-						<exclude>tech/renovus/solarec/inverters/brand/fronius/api/**/*</exclude>
-						<exclude>tech/renovus/solarec/inverters/brand/sma/api/**/*</exclude>
-						<exclude>tech/renovus/solarec/inverters/brand/sofar/api/**/*</exclude>
-						<exclude>tech/renovus/solarec/inverters/brand/solarEdge/api/**/*</exclude>
-						<exclude>tech/renovus/solarec/inverters/brand/solis/api/**/*</exclude>
+						<exclude>tech/renovus/solarec/inverters/brand/aiswei/api/**/*</exclude> <!-- autogenedated -->
+						<exclude>tech/renovus/solarec/inverters/brand/fimer/api/**/*</exclude> <!-- autogenedated -->
+						<exclude>tech/renovus/solarec/inverters/brand/fronius/api/**/*</exclude> <!-- autogenedated -->
+						<exclude>tech/renovus/solarec/inverters/brand/sma/api/**/*</exclude> <!-- autogenedated -->
+						<exclude>tech/renovus/solarec/inverters/brand/sofar/api/**/*</exclude> <!-- autogenedated -->
+						<exclude>tech/renovus/solarec/inverters/brand/solarEdge/api/**/*</exclude> <!-- autogenedated -->
+						<exclude>tech/renovus/solarec/inverters/brand/solis/api/**/*</exclude> <!-- autogenedated -->
+
+						<exclude>tech/renovus/solarec/certificate/drecs/api/**/*</exclude> <!-- autogenedated -->
 						
-						<exclude>tech/renovus/solarec/certificate/drecs/api/**/*</exclude>
+						<exclude>tech/renovus/solarec/weather/meteoblue/api/**/*</exclude> <!-- autogenedated -->
 						
-						<exclude>tech/renovus/solarec/weather/meteoblue/api/**/*</exclude>
+						<exclude>tech/renovus/solarec/grid/electricMaps/api/**/*</exclude> <!-- autogenedated -->
 						
-						<exclude>tech/renovus/solarec/grid/electricMaps/api/**/*</exclude>
+						
+						<exclude>tech/renovus/solarec/inverters/brand/aiswei/**/*</exclude> <!-- user / password / key required -->
+						<exclude>tech/renovus/solarec/inverters/brand/fimer/**/*</exclude> <!-- user / password / key required -->
+						<exclude>tech/renovus/solarec/inverters/brand/fronius/**/*</exclude> <!-- user / password / key required -->
+						<exclude>tech/renovus/solarec/inverters/brand/sma/**/*</exclude> <!-- user / password / key required -->
+						<exclude>tech/renovus/solarec/inverters/brand/sofar/**/*</exclude> <!-- user / password / key required -->
+						<exclude>tech/renovus/solarec/inverters/brand/solarEdge/**/*</exclude> <!-- user / password / key required -->
+						<exclude>tech/renovus/solarec/inverters/brand/solis/**/*</exclude> <!-- user / password / key required -->
+						<exclude>tech/renovus/solarec/certificate/drecs/**/*</exclude> <!-- user / password / key required -->
+						<exclude>tech/renovus/solarec/weather/meteoblue/**/*</exclude> <!-- user / password / key required -->
+						<exclude>tech/renovus/solarec/grid/electricMaps/**/*</exclude> <!-- user / password / key required -->
 					</excludes>
 					<includes>
 						<include>tech/renovus/solarec/**/*</include>

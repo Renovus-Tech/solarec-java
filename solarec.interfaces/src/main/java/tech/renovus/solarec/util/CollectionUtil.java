@@ -93,6 +93,7 @@ public final class CollectionUtil {
 	 */
 	public static <T extends Object> Collection<Collection<T>> subCollections(Collection<T> col, int size) {int colSize = CollectionUtil.size(col);
 		if (size <= 0) size = colSize;
+		if (size <= 0) size = 1;
 		
 		Collection<Collection<T>> result = new ArrayList<Collection<T>>(colSize / size);
 		Collection<T> subResult = null;
