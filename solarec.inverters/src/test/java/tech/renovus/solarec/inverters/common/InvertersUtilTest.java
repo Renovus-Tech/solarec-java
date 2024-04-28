@@ -1,8 +1,10 @@
 package tech.renovus.solarec.inverters.common;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -35,7 +37,6 @@ public class InvertersUtilTest {
 		assertEquals(cliParValue, InvertersUtil.getParameter(cliVo, cliParName));
 		assertEquals(locParValue, InvertersUtil.getParameter(locVo, locParName));
 		assertEquals(genParValue, InvertersUtil.getParameter(genVo, genParName));
-		
 		
 		assertEquals(cliParValue, InvertersUtil.getParameter(null, null, cliVo, cliParName));
 		assertEquals(locParValue, InvertersUtil.getParameter(null, locVo, cliVo, locParName));
@@ -71,5 +72,11 @@ public class InvertersUtilTest {
 		assertEquals(cliMetaValue, InvertersUtil.getMetadata(null, null, cliVo, cliMetaName));
 		assertEquals(locMetaValue, InvertersUtil.getMetadata(null, locVo, cliVo, locMetaName));
 		assertEquals(genMetaValue, InvertersUtil.getMetadata(genVo, locVo, cliVo, genMetaName));
+	}
+	
+	@Test public void testUtil() {
+		Date now = new Date();
+		assertNotNull(InvertersUtil.calculateDateFrom(null));
+		assertEquals(now, InvertersUtil.calculateDateFrom(Long.toString(now.getTime())));
 	}
 }

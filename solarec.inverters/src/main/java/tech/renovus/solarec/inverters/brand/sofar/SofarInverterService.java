@@ -58,9 +58,6 @@ public class SofarInverterService implements InverterService {
 	private static final String ENDPOINT_STATION_DEVICE_LIST	= "/station/v1.0/device?language=en";
 	private static final String ENDPOINT_STATION_HISTORY_DATA	= "/station/v1.0/history?language=en";
 	
-	private static final SimpleDateFormat DATE_FORMAT			= new SimpleDateFormat("yyyy-MM-dd");
-	private static final SimpleDateFormat DATE_TIME_FORMAT		= new SimpleDateFormat("yyyy-MM-dd HH:mm");
-	
 	protected static final String PARAM_BETA_MODE				= "sofar.beta";
 	protected static final String PARAM_ACCESS_APP_ID			= "sofar.client.app_id";
 	protected static final String PARAM_ACCESS_APP_SECRET		= "sofar.client.app_secret";
@@ -74,27 +71,11 @@ public class SofarInverterService implements InverterService {
 	
 	//--- Private properties --------------------
 	@Autowired WeatherService weatherService;
-	
+	private final SimpleDateFormat formatDate			= new SimpleDateFormat("yyyy-MM-dd");
+	private final SimpleDateFormat formatDateTime		= new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	private ClientVo cliVo;
 	
 	//--- Private methods -----------------------
-	private Date calculateFrom(String genLastRetrieve) {
-		Calendar cal = Calendar.getInstance();
-		
-		if (StringUtil.isEmpty(genLastRetrieve)) {
-			cal.add(Calendar.DAY_OF_YEAR, -1);
-			cal.set(Calendar.HOUR_OF_DAY, 0);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			cal.set(Calendar.MILLISECOND, 0);
-			cal.set(Calendar.AM_PM, Calendar.AM);
-		} else {
-			cal.setTimeInMillis(Long.parseLong(genLastRetrieve));
-		}
-		
-		return cal.getTime();
-	}
-	
 	private List<GenDataVo> process(GeneratorVo generator, StationHistoryDataResponse data, Date fromDate) throws ParseException {
 		//	501 no disponible
 		//	502 generationValue
@@ -112,7 +93,7 @@ public class SofarInverterService implements InverterService {
 						.append(" ")
 						.append(aData.getDateTime())
 						.toString();
-				Date dataDate = DATE_TIME_FORMAT.parse(aDate);
+				Date dataDate = this.formatDateTime.parse(aDate);
 				
 				if (dataDate.before(fromDate)) continue;
 				
@@ -204,7 +185,7 @@ public class SofarInverterService implements InverterService {
 					for (GeneratorVo generator : location.getGenerators()) {
 						boolean isDemoData 		= BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_BETA_MODE));
 						String genLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE);
-						Date dateFrom 			= this.calculateFrom(genLastRetrieve);
+						Date dateFrom 			= InvertersUtil.calculateDateFrom(genLastRetrieve);
 
 						cal.setTime(dateFrom);
 						
@@ -299,8 +280,8 @@ public class SofarInverterService implements InverterService {
 		StationHistoryDataRequest request = new StationHistoryDataRequest()
 				.withStationId(stationId)
 				.withTimeType(StationHistoryDataRequest.TIME_TYPE_DAY)
-				.withStartTime(DATE_FORMAT.format(dateFrom))
-				.withEndTime(DATE_FORMAT.format(dateTo));
+				.withStartTime(this.formatDate.format(dateFrom))
+				.withEndTime(this.formatDate.format(dateTo));
 		
 		return JsonCaller.bearerPost(
 				url + ENDPOINT_STATION_HISTORY_DATA, 

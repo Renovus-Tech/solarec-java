@@ -1,6 +1,8 @@
 package tech.renovus.solarec.inverters.common;
 
 import java.text.MessageFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.StringUtil;
@@ -202,6 +204,23 @@ public class InvertersUtil {
 		vo.add(result);
 		
 		return result;
+	}
+	
+	public static Date calculateDateFrom(String genLastRetrieve) {
+		Calendar cal = Calendar.getInstance();
+		
+		if (StringUtil.isEmpty(genLastRetrieve)) {
+			cal.add(Calendar.DAY_OF_YEAR, -1);
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			cal.set(Calendar.MILLISECOND, 0);
+			cal.set(Calendar.AM_PM, Calendar.AM);
+		} else {
+			cal.setTimeInMillis(Long.parseLong(genLastRetrieve));
+		}
+		
+		return cal.getTime();
 	}
 
 }

@@ -100,23 +100,6 @@ public class SmaInverterService implements InverterService {
 	private String getUrlAuth(boolean sandboxMode) { return sandboxMode ? SANDBOX_URL_AUTH : PROD_URL_AUTH; }
 	private String getUrlData(boolean sandboxMode) { return sandboxMode ? SANDBOX_URL_DATA : PROD_URL_DATA; }
 
-	private Date calculateFrom(String genLastRetrieve) {
-		Calendar cal = Calendar.getInstance();
-		
-		if (StringUtil.isEmpty(genLastRetrieve)) {
-			cal.add(Calendar.DAY_OF_YEAR, -1);
-			cal.set(Calendar.HOUR_OF_DAY, 0);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			cal.set(Calendar.MILLISECOND, 0);
-			cal.set(Calendar.AM_PM, Calendar.AM);
-		} else {
-			cal.setTimeInMillis(Long.parseLong(genLastRetrieve));
-		}
-		
-		return cal.getTime();
-	}
-	
 	private List<GenDataVo> process(GeneratorVo generator, MeasurementsResponse data, Date fromDate) {
 		List<GenDataVo> result = new ArrayList<>();
 		
@@ -187,7 +170,7 @@ public class SmaInverterService implements InverterService {
 						if (this.isAuthorized()) {
 							String deviceId			= InvertersUtil.getParameter(generator, PARAM_GENERATOR_DEVICE_ID);
 							String genLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE);
-							Date dateFrom			= this.calculateFrom(genLastRetrieve);
+							Date dateFrom			= InvertersUtil.calculateDateFrom(genLastRetrieve);
 	
 							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE), "");
 							

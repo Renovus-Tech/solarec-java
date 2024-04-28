@@ -52,11 +52,6 @@ public class AisweiInverterService implements InverterService {
 	private static final String URL_PROD	= "https://api.general.aisweicloud.com";
 	private static final String URL_DEMO	= "http://e710888d3ccb4638a723ff8d03837095-cn-qingdao.aliapi.com/demo/post";
 	
-	private static final SimpleDateFormat PERIOD_TIME_FORMAT	= new SimpleDateFormat("HH:MM");
-	private static final SimpleDateFormat PERIOD_DATE_FORMAT	= new SimpleDateFormat("yyyy-MM-dd");
-	private static final SimpleDateFormat PERIOD_MONTH_FORMAT	= new SimpleDateFormat("yyyy-MM");
-	private static final SimpleDateFormat PERIOD_YEAR_FORMAT	= new SimpleDateFormat("yyyy");
-	
 	//--- Protected constants -------------------
 	protected static final String PARAM_BETA_MODE				= "aiswei.beta";
 	protected static final String PARAM_ACCESS_APP_KEY			= "aiswei.client.app_key";
@@ -82,14 +77,19 @@ public class AisweiInverterService implements InverterService {
 	//--- Private properties --------------------
 	@Autowired WeatherService weatherService;
 	
+	private final SimpleDateFormat formatPeriodTime		= new SimpleDateFormat("HH:MM");
+	private final SimpleDateFormat formatPeriodDate		= new SimpleDateFormat("yyyy-MM-dd");
+	private final SimpleDateFormat formatPeriodMonth	= new SimpleDateFormat("yyyy-MM");
+	private final SimpleDateFormat formatPreiodYear		= new SimpleDateFormat("yyyy");
+
 	private ClientVo cliVo;
 	
 	//--- Private methods -----------------------
 	private String formatDate(String period, Date aDate) {
 		switch (period) {
-			case PERIOD_BY_DAYS:	return PERIOD_DATE_FORMAT.format(aDate);
-			case PERIOD_BY_MONTH:	return PERIOD_MONTH_FORMAT.format(aDate);
-			case PERIOD_BY_YEAR:	return PERIOD_YEAR_FORMAT.format(aDate);
+			case PERIOD_BY_DAYS:	return this.formatPeriodDate.format(aDate);
+			case PERIOD_BY_MONTH:	return this.formatPeriodMonth.format(aDate);
+			case PERIOD_BY_YEAR:	return this.formatPreiodYear.format(aDate);
 			default: 				return "";
 		}
 	}
@@ -152,23 +152,6 @@ public class AisweiInverterService implements InverterService {
 		return headers;
 	}
 	
-	private Date calculateFrom(String genLastRetrieve) {
-		Calendar cal = Calendar.getInstance();
-		
-		if (StringUtil.isEmpty(genLastRetrieve)) {
-			cal.add(Calendar.DAY_OF_YEAR, -1);
-			cal.set(Calendar.HOUR_OF_DAY, 0);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			cal.set(Calendar.MILLISECOND, 0);
-			cal.set(Calendar.AM_PM, Calendar.AM);
-		} else {
-			cal.setTimeInMillis(Long.parseLong(genLastRetrieve));
-		}
-		
-		return cal.getTime();
-	}
-	
 	private List<GenDataVo> process(GeneratorVo generator, PlantOutputResponse data, Date fromDate) throws ParseException {
 		//	501 no disponible
 		//	502 generationValue
@@ -179,7 +162,7 @@ public class AisweiInverterService implements InverterService {
 			Calendar calendar = GregorianCalendar.getInstance();
 			
 			for (PlantOutputData aData : data.getData()) {
-				Date dataTime = PERIOD_TIME_FORMAT.parse(aData.getTime());
+				Date dataTime = this.formatPeriodTime.parse(aData.getTime());
 				
 				if (dataTime.before(fromDate)) continue;
 				
@@ -318,7 +301,7 @@ public class AisweiInverterService implements InverterService {
 					for (GeneratorVo generator : location.getGenerators()) {
 						boolean isDemoData 		= BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_BETA_MODE));
 						String genLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE);
-						Date dateFrom 			= this.calculateFrom(genLastRetrieve);
+						Date dateFrom 			= InvertersUtil.calculateDateFrom(genLastRetrieve);
 
 						cal.setTime(dateFrom);
 						

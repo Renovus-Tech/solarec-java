@@ -39,9 +39,6 @@ import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
 public class SolarEdgeInverterService implements InverterService {
 
 	//--- Private constants ---------------------
-	private static final SimpleDateFormat FORMAT_DATE_AND_TIME	= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private static final SimpleDateFormat FORMAT_DATE			= new SimpleDateFormat("yyyy-MM-dd");
-
 	private static final String URL_PROD						= "https://monitoringapi.solaredge.com";
 	
 	private static final String ENDPOINT_SITE_LIST				= "/sites/list";
@@ -65,27 +62,11 @@ public class SolarEdgeInverterService implements InverterService {
 
 	//--- Private properties --------------------
 	@Autowired WeatherService weatherService;
-	
+	private final SimpleDateFormat formatDateTime	= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private final SimpleDateFormat formatDate			= new SimpleDateFormat("yyyy-MM-dd");
 	private ClientVo cliVo;
 	
 	//--- Private methods -----------------------
-	private Date calculateFrom(String genLastRetrieve) {
-		Calendar cal = Calendar.getInstance();
-		
-		if (StringUtil.isEmpty(genLastRetrieve)) {
-			cal.add(Calendar.DAY_OF_YEAR, -1);
-			cal.set(Calendar.HOUR_OF_DAY, 0);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			cal.set(Calendar.MILLISECOND, 0);
-			cal.set(Calendar.AM_PM, Calendar.AM);
-		} else {
-			cal.setTimeInMillis(Long.parseLong(genLastRetrieve));
-		}
-		
-		return cal.getTime();
-	}
-	
 	private List<GenDataVo> process(GeneratorVo generator, SiteEnergyResponse data, Date fromDate) throws ParseException {
 		//	501 no disponible
 		//	502 generationValue
@@ -94,7 +75,7 @@ public class SolarEdgeInverterService implements InverterService {
 		if (data != null && data.getEnergy() != null && CollectionUtil.notEmpty(data.getEnergy().getValues())) {
 			InvertersUtil.logInfo("Amount of data: {0}", Integer.toString(CollectionUtil.size(data.getEnergy().getValues())));
 			for (Value aData : data.getEnergy().getValues()) {
-				Date dataDate = FORMAT_DATE_AND_TIME.parse(aData.getDate());
+				Date dataDate = this.formatDateTime.parse(aData.getDate());
 				
 				if (dataDate.before(fromDate)) continue;
 				
@@ -178,7 +159,7 @@ public class SolarEdgeInverterService implements InverterService {
 				if (CollectionUtil.notEmpty(location.getGenerators())) {
 					for (GeneratorVo generator : location.getGenerators()) {
 						String genLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE);
-						Date dateFrom 			= this.calculateFrom(genLastRetrieve);
+						Date dateFrom 			= InvertersUtil.calculateDateFrom(genLastRetrieve);
 
 						cal.setTime(dateFrom);
 						cal.add(Calendar.DAY_OF_YEAR, 1);
@@ -217,8 +198,8 @@ public class SolarEdgeInverterService implements InverterService {
 		Map<String, String> params = new HashMap<>();
 		params.put("api_key", apiKey);
 		params.put("siteId", siteId.toString());
-		params.put("startDate", FORMAT_DATE.format(startDate));
-		params.put("endDate", FORMAT_DATE.format(endDate));
+		params.put("startDate", this.formatDate.format(startDate));
+		params.put("endDate", this.formatDate.format(endDate));
 		params.put("timeUnit", timeUnit);
 		
 		return JsonCaller.get(

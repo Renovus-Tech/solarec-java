@@ -77,11 +77,9 @@ public class FroniusInverterService implements InverterService {
 	
 	protected static final String PARAM_DATA_DEMO									= "fronius.data_demo";
 	
-	private static final SimpleDateFormat DATE_FORMATTER							= new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
-	
 	//--- Private properties --------------------
 	@Autowired WeatherService weatherService;
-	
+	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");	
 	private ClientVo cliVo;
 	
 	//--- Private methods -----------------------
@@ -106,7 +104,7 @@ public class FroniusInverterService implements InverterService {
 					for (Channel aChannel : aData.getChannels()) {
 						if (! "EnergyProductionTotal".equals(aChannel.getChannelName())) continue;
 						
-						Date dataDate = DATE_FORMATTER.parse(aData.getLogDateTime());
+						Date dataDate = this.formatDate.parse(aData.getLogDateTime());
 						
 						if (dataDate.before(fromDate)) continue;
 						
@@ -156,23 +154,6 @@ public class FroniusInverterService implements InverterService {
 		}
 		
 		return url;
-	}
-	
-	private Date calculateFrom(String genLastRetrieve) {
-		Calendar cal = Calendar.getInstance();
-		
-		if (StringUtil.isEmpty(genLastRetrieve)) {
-			cal.add(Calendar.DAY_OF_YEAR, -1);
-			cal.set(Calendar.HOUR_OF_DAY, 0);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			cal.set(Calendar.MILLISECOND, 0);
-			cal.set(Calendar.AM_PM, Calendar.AM);
-		} else {
-			cal.setTimeInMillis(Long.parseLong(genLastRetrieve));
-		}
-		
-		return cal.getTime();
 	}
 	
 	private void retrieveData(InverterData inverterData, LocationVo location, StationVo station, GeneratorVo generator, Date dateFrom, Date to) throws WeatherServiceException {
@@ -240,7 +221,7 @@ public class FroniusInverterService implements InverterService {
 					for (GeneratorVo generator : location.getGenerators()) {
 						boolean isDemoData 		= BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_DATA_DEMO));
 						String genLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE);
-						Date dateFrom 			= this.calculateFrom(genLastRetrieve);
+						Date dateFrom 			= InvertersUtil.calculateDateFrom(genLastRetrieve);
 
 						cal.setTime(dateFrom);
 						
@@ -308,8 +289,8 @@ public class FroniusInverterService implements InverterService {
 	
 	public HistoryDataResponse getPvSystemsHistData(boolean betaMode, String accessKeyId, String accessKeyValue, String pvSystemsId, Date from, Date to) {
 		Map<String, String> params = new HashMap<>(2);
-		params.put("from", DATE_FORMATTER.format(from));
-		params.put("to", DATE_FORMATTER.format(to));
+		params.put("from", this.formatDate.format(from));
+		params.put("to", this.formatDate.format(to));
 		params.put("limit", PV_SYSTEMS_HIST_DATA_LIMIT);
 		
 		return JsonCaller.get(

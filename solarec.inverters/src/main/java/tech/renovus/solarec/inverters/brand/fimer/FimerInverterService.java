@@ -46,8 +46,6 @@ import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 public class FimerInverterService implements InverterService {
 
 	// --- Private constants ---------------------
-	private static final SimpleDateFormat DATE_FORMAT							= new SimpleDateFormat("yyyyMMdd");
-	
 	private static final String URL												= "https://api.auroravision.net/api/rest";
 	private static final String ENDPOINT_STATUS									= "/status";
 	private static final String ENDPOINT_AUTHENTICATE							= "/authenticate";
@@ -80,8 +78,8 @@ public class FimerInverterService implements InverterService {
 	public static final String PARAM_LOCATION_LAST_RETRIEVE		= "fimer.location.last_retrieve";
 	public static final String PARAM_GENERATOR_LAST_RETRIEVE	= "fimer.generator.last_retrieve";
 	
-	
 	//--- Private properties ---------------------
+	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyyMMdd");
 	private ClientVo cliVo;
 	private AuthenticateResponse authentication;
 	
@@ -117,8 +115,8 @@ public class FimerInverterService implements InverterService {
 	private Map<String, String> generateParams(String sampleSize, Date startDate, Date endDate, String timeZone) {
 		Map<String, String> params = new HashMap<>(4);
 		params.put("sampleSize", sampleSize); 
-		params.put("startDate", DATE_FORMAT.format(startDate));
-		params.put("endDate", DATE_FORMAT.format(endDate)); 
+		params.put("startDate", this.formatDate.format(startDate));
+		params.put("endDate", this.formatDate.format(endDate)); 
 		params.put("timeZone", timeZone);
 		return params;
 	}
@@ -128,23 +126,6 @@ public class FimerInverterService implements InverterService {
 		url = url.replaceFirst("\\{dataType\\}", dataType); 
 		url = url.replaceFirst("\\{valueType\\}", valueType);
 		return url;
-	}
-	
-	private Date calculateFrom(String genLastRetrieve) {
-		Calendar cal = Calendar.getInstance();
-		
-		if (StringUtil.isEmpty(genLastRetrieve)) {
-			cal.add(Calendar.DAY_OF_YEAR, -1);
-			cal.set(Calendar.HOUR_OF_DAY, 0);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			cal.set(Calendar.MILLISECOND, 0);
-			cal.set(Calendar.AM_PM, Calendar.AM);
-		} else {
-			cal.setTimeInMillis(Long.parseLong(genLastRetrieve));
-		}
-		
-		return cal.getTime();
 	}
 	
 	private boolean isAuthenticated() {
@@ -196,7 +177,7 @@ public class FimerInverterService implements InverterService {
 
 							int deviceId			= Integer.parseInt(InvertersUtil.getParameter(generator, PARAM_DEVICE_ID));
 							String getLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE);
-							Date dateFrom 			= this.calculateFrom(getLastRetrieve);
+							Date dateFrom 			= InvertersUtil.calculateDateFrom(getLastRetrieve);
 							
 							cal.setTime(dateFrom);
 							cal.add(Calendar.DAY_OF_YEAR, 1);
