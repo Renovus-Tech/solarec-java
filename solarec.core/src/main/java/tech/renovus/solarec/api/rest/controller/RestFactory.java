@@ -302,9 +302,9 @@ public class RestFactory {
 		result.setValue(vo.getValue());
 		
 		if (vo.getSettingVo() != null) {
-			Locale locale = this.translation.getLocale(userData);
-			result.setLabel(this.translation.forSetting(locale, vo.getSettingVo().getSetName()));
-			result.setCategoryLabel(this.translation.forSettingCategory(locale, vo.getSettingVo().getSetCatName()));
+			Locale locale = this.translation == null ? Locale.getDefault() : this.translation.getLocale(userData);
+			result.setLabel(this.translation == null ? vo.getSettingVo().getSetName() : this.translation.forSetting(locale, vo.getSettingVo().getSetName()));
+			result.setCategoryLabel(this.translation == null ? vo.getSettingVo().getSetCatName() : this.translation.forSettingCategory(locale, vo.getSettingVo().getSetCatName()));
 			
 			result.setName(vo.getSettingVo().getSetName());
 			result.setCategory(vo.getSettingVo().getSetCatName());

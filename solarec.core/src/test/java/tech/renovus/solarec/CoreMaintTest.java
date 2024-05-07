@@ -1,4 +1,4 @@
-package tech.renovus.solarec.api.rest;
+package tech.renovus.solarec;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -11,6 +11,6 @@ import tech.renovus.solarec.api.rest.controller.RestFactoryTest;
 	RestFactoryTest.class, 
 })
 
-public class MainTest {
+public class CoreMaintTest {
 
 }

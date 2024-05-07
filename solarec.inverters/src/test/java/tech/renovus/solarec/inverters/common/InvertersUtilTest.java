@@ -68,10 +68,22 @@ public class InvertersUtilTest {
 		assertEquals(locMetaValue, InvertersUtil.getMetadata(locVo, locMetaName));
 		assertEquals(genMetaValue, InvertersUtil.getMetadata(genVo, genMetaName));
 		
-		
 		assertEquals(cliMetaValue, InvertersUtil.getMetadata(null, null, cliVo, cliMetaName));
 		assertEquals(locMetaValue, InvertersUtil.getMetadata(null, locVo, cliVo, locMetaName));
 		assertEquals(genMetaValue, InvertersUtil.getMetadata(genVo, locVo, cliVo, genMetaName));
+		
+		cliMetaValue += " edited";
+		locMetaValue += " edited";
+		genMetaValue += " edited";
+		
+		InvertersUtil.setMetadata(cliVo, cliMetaName, cliMetaValue);;
+		InvertersUtil.setMetadata(locVo, locMetaName, locMetaValue);;
+		InvertersUtil.setMetadata(genVo, genMetaName, genMetaValue);;
+
+		assertEquals(cliMetaValue, InvertersUtil.getMetadata(null, null, cliVo, cliMetaName));
+		assertEquals(locMetaValue, InvertersUtil.getMetadata(null, locVo, cliVo, locMetaName));
+		assertEquals(genMetaValue, InvertersUtil.getMetadata(genVo, locVo, cliVo, genMetaName));
+
 	}
 	
 	@Test public void testUtil() {

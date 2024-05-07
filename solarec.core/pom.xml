@@ -62,40 +62,11 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
         </dependency>
 	</dependencies>
 	
 	<build>
-		<finalName>${project.artifactId}-${project.version}-${timestamp}</finalName>
-		
-		<testSourceDirectory>src/test/java</testSourceDirectory>
-		
 		<plugins>
-			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-resources-plugin</artifactId>
-			</plugin> 
-			
-			<plugin>
-			    <groupId>org.springframework.boot</groupId>
-			    <artifactId>spring-boot-maven-plugin</artifactId>
-			    <configuration>
-			        <executable>true</executable>
-			    </configuration>
-			</plugin>
-
-			<!-- Testing plugins -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<includes>
-						<include>**/*Test.java</include>
-					</includes>
-				</configuration>
-			</plugin>
-			
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -105,29 +76,24 @@
 						<exclude>tech/renovus/solarec/api/rest/controller/**/*Controller.class</exclude> <!-- basic proxy from web to service -->
 					</excludes>
 					<includes>
-						<!-- Include only renovus solarec code -->
-						<include>tech/renovus/solarec/**/*</include>
+						<include>tech/renovus/solarec/core/**/*</include>
 					</includes>
 				</configuration>
 				<executions>
-	                <execution>
-	                    <id>prepare-agent</id>
-	                    <goals>
-	                        <goal>prepare-agent</goal>
-	                    </goals>
-	                </execution>
-	                <execution>
-	                    <id>report</id>
-	                    <phase>test</phase>
-	                    <goals>
-	                        <goal>report</goal>
-	                    </goals>
-	                </execution>
-	            </executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-code-coverage-report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
-			
 		</plugins>
 	</build>
-	
-	
 </project>

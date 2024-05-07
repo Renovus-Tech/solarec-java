@@ -21,6 +21,7 @@ import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 import tech.renovus.solarec.vo.db.data.GenPowerVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.SettingsVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
 import tech.renovus.solarec.vo.rest.entity.Client;
 import tech.renovus.solarec.vo.rest.entity.Country;
@@ -143,11 +144,27 @@ public class RestFactoryTest {
 		return result;
 	}
 	
+	private SettingsVo craeteSettingVo() {
+		SettingsVo result = new SettingsVo();
+		
+		result.setSetCatName("category");
+		result.setSetName("name");
+		result.setSetType("type");
+		result.setSetUnit("unit");
+		result.setSetValueDefault("default value");
+		result.setSetValueMax("max");
+		result.setSetValueMin("min");
+		
+		return result;
+	}
+	
 	private CliSettingVo createISetting() {
 		CliSettingVo result = new CliSettingVo();
 		
 		result.setCliSetName("name");
 		result.setCliSetValue("value");
+		
+		result.setSettingVo(this.craeteSettingVo());
 		
 		return result;
 	}
@@ -247,7 +264,7 @@ public class RestFactoryTest {
 		Collection<Generator.Power> result = factory.convertPower(Arrays.asList(vo));
 		
 		assertNotNull(factory.convertPower((Collection<GenPowerVo>) null));
-		assertTrue(CollectionUtil.size(result) == 1);
+		assertEquals(1, CollectionUtil.size(result));
 		
 		Generator.Power power = result.iterator().next();
 		
