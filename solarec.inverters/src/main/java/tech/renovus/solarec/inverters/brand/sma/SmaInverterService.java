@@ -51,10 +51,10 @@ public class SmaInverterService implements InverterService {
 	private static final String PROD_URL_DATA			= "https://smaapis.de";
 	private static final String SANDBOX_URL_DATA		= "https://sandbox.smaapis.de";
 
-	private static final String ENDPOINT_TOKEN					= "/oauth2/token";
-	private static final String ENDPOINT_BC_AUTHORIZE			= "/oauth2/v2/bc-authorize";
-	private static final String ENDPOINT_BC_AUTHROIZE_STATUS	= "/oauth2/v2/bc-authorize/{emailAddressResourceOwner}/status";
-	private static final String ENDPOINT_BC_AUTHROIZE_TOKEN		= "/oauth2/v2/bc-authorize/{emailAddressResourceOwner}";
+	private static final String ENDPOINT_TOKEN						= "/oauth2/token";
+	private static final String ENDPOINT_BC_AUTHORIZE				= "/oauth2/v2/bc-authorize";
+	private static final String ENDPOINT_BC_AUTHROIZE_STATUS		= "/oauth2/v2/bc-authorize/{emailAddressResourceOwner}/status";
+	private static final String ENDPOINT_BC_AUTHROIZE_TOKEN			= "/oauth2/v2/bc-authorize/{emailAddressResourceOwner}";
 
 	private static final String ENDPOINT_MONITORING_PLANTS			= "/monitoring/v1/plants";
 	private static final String ENDPOINT_MONITORING_PLAT_DEVICES	= "/monitoring/v1/plants/{plantId}/devices";

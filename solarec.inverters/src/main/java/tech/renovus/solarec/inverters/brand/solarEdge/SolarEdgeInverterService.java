@@ -63,7 +63,7 @@ public class SolarEdgeInverterService implements InverterService {
 	//--- Private properties --------------------
 	@Autowired WeatherService weatherService;
 	private final SimpleDateFormat formatDateTime	= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private final SimpleDateFormat formatDate			= new SimpleDateFormat("yyyy-MM-dd");
+	private final SimpleDateFormat formatDate		= new SimpleDateFormat("yyyy-MM-dd");
 	private ClientVo cliVo;
 	
 	//--- Private methods -----------------------

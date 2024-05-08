@@ -31,7 +31,6 @@ import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
-import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
@@ -42,7 +41,7 @@ import tech.renovus.solarec.weather.WeatherService;
 import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
 
 /**
- * API Documentation: https://www.google.com/url?q=https://forum.gce-electronics.com/uploads/short-url/3v9kqnZYHoiX53IZEl0XX1mKs1.pdf&sa=D&source=editors&ust=1710076257978345&usg=AOvVaw2Dni7dXOrj5G9flvpWvJEg
+ * API Documentation: https://forum.gce-electronics.com/uploads/short-url/3v9kqnZYHoiX53IZEl0XX1mKs1.pdf
  */
 public class SofarInverterService implements InverterService {
 

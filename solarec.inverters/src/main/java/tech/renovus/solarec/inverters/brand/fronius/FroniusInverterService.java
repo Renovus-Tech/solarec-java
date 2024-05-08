@@ -38,8 +38,10 @@ import tech.renovus.solarec.weather.WeatherService;
 import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
 
 /**
+ * Documentation: https://api.solarweb.com/swqapi/index.html?utm_source=solar-web-system-mail&utm_medium=email&utm_campaign=SE__Solar-web-query-api-mails&utm_content=
+ * 
  * URL: https://www.fronius.com/en/solarweb-query-api
- * URL API BEta: https://swqapi-beta.solarweb.com/index.html
+ * URL API Beta: https://swqapi-beta.solarweb.com/index.html
  * 
  * Authentication format (2 header parameters):
  * 
