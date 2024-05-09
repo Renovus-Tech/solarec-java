@@ -23,6 +23,7 @@ public interface WeatherService {
 	//--- Public constants ---------------------
 	public static final String ISO_FORMATTER_PATTERN = "yyyy-MM-dd'T'HH:mm:ss 'GMT'Z";
 	public static final String UTC_FORMATTER_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+	public static final String UTC_FORMATTER_PATTERN_HH_MM = "yyyy-MM-dd'T'HH:mm";
 	public static final String DATE_HOUR_FORMATTER_PATTERN = "yyyy-MM-dd HH:mm";
 	public static final String DATE_FORMATTER_PATTERN = "yyyy-MM-dd";
 	public static final SimpleDateFormat ISO_FORMATTER = new SimpleDateFormat(ISO_FORMATTER_PATTERN);
