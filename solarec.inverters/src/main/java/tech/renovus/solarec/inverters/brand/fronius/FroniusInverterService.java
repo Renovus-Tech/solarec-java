@@ -27,7 +27,7 @@ import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
-import tech.renovus.solarec.util.StringUtil;
+import tech.renovus.solarec.vo.custom.chart.alerts.AlertTrigger;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
@@ -83,6 +83,7 @@ public class FroniusInverterService implements InverterService {
 	@Autowired WeatherService weatherService;
 	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");	
 	private ClientVo cliVo;
+	private boolean continueWithStats = true;
 	
 	//--- Private methods -----------------------
 	private String getUrl(boolean betaMode) { return betaMode ? URL_BETA : URL_PRD; }
@@ -168,6 +169,34 @@ public class FroniusInverterService implements InverterService {
 		
 		HistoryDataResponse data = this.getPvSystemsHistData(betaMode, accessKeyId, accessKeyValue, pvSystemsId, dateFrom, to);
 		
+		if (data == null || data.hasError()) {
+			this.continueWithStats = false;
+			String errorMessage = data == null ? "No data response from server." : "Error parsing data: " + data.getResponseError() + " - " + data.getResponseMessage();
+			LoggerService.inverterLogger().error(LOG_PREFIX + errorMessage);
+			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(-1));
+			
+			Date dateError = new Date();
+			dateError = DateUtil.clearTime(dateError);
+			dateError = DateUtil.addUnit(dateError, Calendar.MINUTE, -1);
+			
+			AlertTrigger trigger = new AlertTrigger();
+			trigger.setDate(formatDate.format(dateError));
+			trigger.setType(AlertTrigger.TYPE_CUSTOM);
+			trigger.setDescription(
+					"Error during data retrieve: " + errorMessage + 
+					" - Date to retrieve: " + this.formatDate.format(dateFrom) + 
+					" - Date of error: " + this.formatDate.format(new Date()) + 
+					" - Location: " + location.getLocName());
+			
+			try {
+				inverterData.add(InvertersUtil.generateAlert(generator, dateError, trigger));
+			} catch (InveterServiceException e) {
+				LoggerService.inverterLogger().error(LOG_PREFIX + "Error generating alert: " + e.getLocalizedMessage(), e);
+			}
+			
+			return;
+		}
+		
 		try {
 			List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
 			generatorData = this.aggregate(generatorData);
@@ -191,7 +220,7 @@ public class FroniusInverterService implements InverterService {
 			
 			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
 		} catch (ParseException e) {
-			LoggerService.inverterLogger().error("Error parsing data: " + e.getLocalizedMessage(), e);
+			LoggerService.inverterLogger().error(LOG_PREFIX + "Error parsing data: " + e.getLocalizedMessage(), e);
 			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(-1));
 		}
 	}
@@ -202,7 +231,7 @@ public class FroniusInverterService implements InverterService {
 	}
 	
 	@Override public boolean canRetrieve() { return true; }
-	@Override public boolean continueWithStats() { return true; }
+	@Override public boolean continueWithStats() { return this.continueWithStats; }
 	@Override public String getReasonWhyCantRetrieve() { return null; }
 	
 	@Override public InverterData retrieveData() throws InveterServiceException {
@@ -213,7 +242,7 @@ public class FroniusInverterService implements InverterService {
 		if (CollectionUtil.notEmpty(this.cliVo.getLocations())) {
 			for (LocationVo location : this.cliVo.getLocations()) {
 				if (CollectionUtil.isEmpty(location.getStations())) {
-					LoggerService.inverterLogger().error("Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
+					LoggerService.inverterLogger().error(LOG_PREFIX + "Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
 					continue;
 				}
 				

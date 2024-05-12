@@ -37,8 +37,8 @@ public class StatDefinitionVo extends DbStatDefinitionVo {
 	public static final Integer ID_SOLAR_POWER_CURVE		= Integer.valueOf(25);
 
 	public static final Integer ID_SOLAR_OVERVIEW_CO2		= Integer.valueOf(26);
-	public static final Integer ID_SOLAR_REVENUE			= Integer.valueOf(27);
-	public static final Integer ID_SOLAR_SALES				= Integer.valueOf(28);
+	public static final Integer ID_SOLAR_SALES				= Integer.valueOf(27);
+	public static final Integer ID_SOLAR_REVENUE			= Integer.valueOf(28);
 	
 	//--- Constructors --------------------------
 	public StatDefinitionVo() {

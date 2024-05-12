@@ -23,6 +23,8 @@ import tech.renovus.solarec.business.AlertService;
 import tech.renovus.solarec.business.CalculationService;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliDataDefParameterDao;
+import tech.renovus.solarec.db.data.dao.interfaces.CliGenAlertDao;
+import tech.renovus.solarec.db.data.dao.interfaces.CliLocAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliMetadataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefAlertDefinitionDao;
@@ -52,6 +54,8 @@ import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.AlertProcessingVo;
+import tech.renovus.solarec.vo.db.data.CliGenAlertVo;
+import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataDefAlertDefinitionVo;
 import tech.renovus.solarec.vo.db.data.DataDefStatDefinitionVo;
@@ -95,6 +99,8 @@ public class InvertersCheckScheduler {
 	@Resource CliMetadataDao cliMetadataDao;
 	@Resource LocMetadataDao locMetadataDao;
 	@Resource GenMetadataDao genMetadataDao;
+	@Resource CliLocAlertDao cliLocAlertDao;
+	@Resource CliGenAlertDao cliGenAlertDao;
 	
     //--- Private methods -----------------------
 	private InverterService getService(DataDefinitionVo dataDefinitionVo) throws CoreException {
@@ -190,6 +196,22 @@ public class InvertersCheckScheduler {
 					}
 				}
 				
+				if (CollectionUtil.notEmpty(newData.getGeneratorAlerts())) {
+					for (CliGenAlertVo alertVo : newData.getGeneratorAlerts()) {
+						alertVo.setCliId(genVo.getCliId());
+						alertVo.setGenId(genVo.getGenId());
+						alertVo.setSyncType(GeneratorVo.SYNC_INSERT);
+					}
+				}
+				
+				if (CollectionUtil.notEmpty(newData.getLocationAlerts())) {
+					for (CliLocAlertVo alertVo : newData.getLocationAlerts()) {
+						alertVo.setCliId(genVo.getCliId());
+						alertVo.setLocId(genVo.getGenId());
+						alertVo.setSyncType(GeneratorVo.SYNC_INSERT);
+					}
+				}
+				
 				genVo.setChildrensId();
 				staVo.setChildrensId();
 				locVo.setChildrensId();
@@ -211,6 +233,8 @@ public class InvertersCheckScheduler {
 				this.genMetadataDao.synchronize(genVo.getMetadata());
 				this.locMetadataDao.synchronize(locVo.getMetadata());
 				this.cliMetadataDao.synchronize(cliVo.getMetadata());
+				this.cliLocAlertDao.synchronize(newData.getLocationAlerts());
+				this.cliGenAlertDao.synchronize(newData.getGeneratorAlerts());
 				
 				if (continueWithStats) this.doCalculation(dataProVo);
 				

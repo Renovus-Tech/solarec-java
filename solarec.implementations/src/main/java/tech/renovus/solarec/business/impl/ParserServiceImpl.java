@@ -49,7 +49,7 @@ public class ParserServiceImpl implements ParserService {
 		} catch (JsonProcessingException e) {
 			return this.translation.forLabel(locale, TranslationService.ERROR_PARSING, new Object[] {e.getLocalizedMessage()});
 		} catch (NoSuchMessageException e) {
-			LoggerService.rootLogger().error("Error found during translation cli_gen_alert: " + aVo.getCliGenAlertId(), e);
+			if (! AlertTrigger.TYPE_CUSTOM.equals(vo.getType())) LoggerService.rootLogger().error("Error found during translation cli_gen_alert: " + aVo.getCliGenAlertId(), e);
 			return vo.getDescription();
 		}
 	}

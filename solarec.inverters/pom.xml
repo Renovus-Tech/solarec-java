@@ -57,6 +57,7 @@
 						<exclude>tech/renovus/solarec/certificate/drecs/api/**/*</exclude> <!-- autogenedated -->
 						
 						<exclude>tech/renovus/solarec/weather/meteoblue/api/**/*</exclude> <!-- autogenedated -->
+						<exclude>tech/renovus/solarec/weather/openmeteo/api/**/*</exclude> <!-- autogenedated -->
 						
 						<exclude>tech/renovus/solarec/grid/electricMaps/api/**/*</exclude> <!-- autogenedated -->
 						

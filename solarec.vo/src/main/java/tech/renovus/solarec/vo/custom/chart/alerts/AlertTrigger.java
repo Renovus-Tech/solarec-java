@@ -170,4 +170,7 @@ public class AlertTrigger {
 		return this;
 	}
 
+	
+	//--- Code added from here ------------------
+	public static final String TYPE_CUSTOM = "custom";
 }

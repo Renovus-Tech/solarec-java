@@ -4,9 +4,16 @@ import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import tech.renovus.solarec.inverters.common.InverterService.InveterServiceException;
 import tech.renovus.solarec.logger.LoggerService;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
+import tech.renovus.solarec.vo.custom.chart.alerts.AlertTrigger;
 import tech.renovus.solarec.vo.db.data.CliDataDefParameterVo;
+import tech.renovus.solarec.vo.db.data.CliGenAlertVo;
+import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
 import tech.renovus.solarec.vo.db.data.CliMetadataVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataDefParameterVo;
@@ -223,4 +230,39 @@ public class InvertersUtil {
 		return cal.getTime();
 	}
 
+	public static CliGenAlertVo generateAlert(GeneratorVo vo, Date forDate, AlertTrigger alert) throws InveterServiceException {
+		try {
+			CliGenAlertVo result = new CliGenAlertVo();
+			
+			result.setCliId(vo.getCliId());
+			result.setGenId(vo.getGenId());
+			result.setCliGenAlertTrigger(forDate);
+			result.setCliGenAlertAdded(forDate);
+			result.setCliGenAlertType(Integer.valueOf(1));
+			result.setCliGenAlertFlags("0");
+			result.setCliGenAlertData(JsonUtil.toString(alert));
+	
+			return result;
+		} catch (JsonProcessingException e) {
+			throw new InveterServiceException(e);
+		}
+	}
+	
+	public static CliLocAlertVo generateAlert(LocationVo vo, Date forDate, AlertTrigger alert) throws InveterServiceException {
+		try {
+			CliLocAlertVo result = new CliLocAlertVo();
+			
+			result.setCliId(vo.getCliId());
+			result.setLocId(vo.getLocId());
+			result.setCliLocAlertTrigger(forDate);
+			result.setCliLocAlertAdded(forDate);
+			result.setCliLocAlertType(Integer.valueOf(1));
+			result.setCliLocAlertFlags("0");
+			result.setCliLocAlertData(JsonUtil.toString(alert));
+	
+			return result;
+		} catch (JsonProcessingException e) {
+			throw new InveterServiceException(e);
+		}
+	}
 }
