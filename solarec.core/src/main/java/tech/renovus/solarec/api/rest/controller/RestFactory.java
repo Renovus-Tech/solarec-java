@@ -29,6 +29,7 @@ import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 import tech.renovus.solarec.vo.db.data.GenNeighbourVo;
 import tech.renovus.solarec.vo.db.data.GenPowerVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
+import tech.renovus.solarec.vo.db.data.LocSdgVo;
 import tech.renovus.solarec.vo.db.data.LocWeatherDataVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.RepTypeVo;
@@ -45,6 +46,7 @@ import tech.renovus.solarec.vo.rest.entity.Functionality;
 import tech.renovus.solarec.vo.rest.entity.Generator;
 import tech.renovus.solarec.vo.rest.entity.Location;
 import tech.renovus.solarec.vo.rest.entity.Report;
+import tech.renovus.solarec.vo.rest.entity.Sdg;
 import tech.renovus.solarec.vo.rest.entity.Setting;
 import tech.renovus.solarec.vo.rest.entity.Station;
 import tech.renovus.solarec.vo.rest.entity.User;
@@ -201,11 +203,21 @@ public class RestFactory {
 			Collection<GeneratorVo> sorted = new TreeSet<>(GeneratorGenCodeAsNumberComparator.getInstance());
 			CollectionUtil.addAll(sorted, vo.getGenerators());
 			for (GeneratorVo genVo : sorted) {
-				result.add(convert(genVo));
+				result.add(this.convert(genVo));
 			}
 		}
 		
-		if (CollectionUtil.notEmpty(vo.getStations()))		for (StationVo staVo : vo.getStations())			result.add(convert(staVo));
+		if (CollectionUtil.notEmpty(vo.getStations())) {
+			for (StationVo staVo : vo.getStations()) {
+				result.add(this.convert(staVo));
+			}
+		}
+		
+		if (CollectionUtil.notEmpty(vo.getSdgs())) {
+			for (LocSdgVo locSdgVo : vo.getSdgs()) {
+				result.add(this.convert(locSdgVo));
+			}
+		}
 		
 		return result;
 	}
@@ -247,6 +259,18 @@ public class RestFactory {
 		result.setWindSpeed(vo.getPwrWindSpeed());
 		result.setAirDensity(vo.getPwrAirDensity());
 		result.setPower(vo.getGenPower());
+		
+		return result;
+	}
+	
+	public Sdg convert(LocSdgVo vo) {
+		if (vo == null) return null;
+		
+		Sdg result = new Sdg();
+		
+		result.setCode(vo.getSdgVo().getSdgCode());
+		result.setName(vo.getSdgVo().getSdgName());
+		result.setDescription(vo.getLocSdgDescription());
 		
 		return result;
 	}
@@ -485,8 +509,8 @@ public class RestFactory {
 			result.setName(userData.getUserVo().getUsrName());
 			result.setEmail(userData.getUserVo().getUsrEmail());
 			
-			result.setClient(convert(userData.getClientVo(), userData));
-			result.setLocation(convert(userData.getLocationVo()));
+			result.setClient(this.convert(userData.getClientVo(), userData));
+			result.setLocation(this.convert(userData.getLocationVo()));
 			
 			result.setFunctionalities(convertFunctionalities(userData.getLocationFunctionalities()));
 			result.setSettings(convertSettings(userData.getUserVo().getSettings(), userData));

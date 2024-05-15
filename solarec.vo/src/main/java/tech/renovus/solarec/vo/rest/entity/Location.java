@@ -28,6 +28,7 @@ public class Location {
 	private DataDefinition dataDefinition;
 	private List<Station> stations;
 	private List<Generator> generators;
+	private List<Sdg> sdgs;
 	
 	//--- Public methods ------------------------
 	public void add(Station vo) {
@@ -38,6 +39,11 @@ public class Location {
 	public void add(Generator vo) {
 		if (this.generators == null) this.generators = new ArrayList<>();
 		this.generators.add(vo);
+	}
+	
+	public void add(Sdg vo) {
+		if (this.sdgs == null) this.sdgs = new ArrayList<>();
+		this.sdgs.add(vo);
 	}
 	
 	//--- Getters and Setters -------------------
@@ -142,5 +148,11 @@ public class Location {
 	}
 	public void setCountry(Country country) {
 		this.country = country;
+	}
+	public List<Sdg> getSdgs() {
+		return sdgs;
+	}
+	public void setSdgs(List<Sdg> sdgs) {
+		this.sdgs = sdgs;
 	}
 }

@@ -25,6 +25,7 @@ import tech.renovus.solarec.db.data.dao.interfaces.CliUserDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
 import tech.renovus.solarec.db.data.dao.interfaces.FunctionalityDao;
+import tech.renovus.solarec.db.data.dao.interfaces.LocSdgDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.SettingsDao;
 import tech.renovus.solarec.db.data.dao.interfaces.UsersDao;
@@ -69,6 +70,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Resource LocationDao locationDao;
 	@Resource CliSettingDao cliSettingDao;
 	@Resource SettingsDao settingsDao;
+	@Resource LocSdgDao locSdgDao;
 	
 	//--- Private methods -----------------------
 	private void logout(UserData userData) {
@@ -110,6 +112,10 @@ public class SecurityServiceImpl implements SecurityService {
 		userData.setLocationVo(null);
 		Collection<LocationVo> locations = this.locationDao.findAllForUser(userData.getCliId(), userData.getUsrId(), true);
 		if (CollectionUtil.size(locations) >= 1) userData.setLocationVo(locations.iterator().next());
+		
+		if (userData.getLocationVo() != null) {
+			userData.getLocationVo().setSdgs(this.locSdgDao.getAllForLocation(userData.getLocationVo().getCliId(), userData.getLocationVo().getLocId()));
+		}
 	}
 
 	//--- Overridden methods --------------------
@@ -161,7 +167,10 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override public void setLocation(Integer locId, UserData userData) {
 		LocationVo locVo	= this.locationDao.findForUser(userData.getUsrId(), userData.getCliId(), locId);
 		
-		if (locVo != null) userData.setLocationVo(locVo);
+		if (locVo != null) {
+			locVo.setSdgs(this.locSdgDao.getAllForLocation(locVo.getCliId(), locVo.getLocId()));
+			userData.setLocationVo(locVo);
+		}
 	}
 
 	@Override public void doLogout(UserData userData) { this.logout(userData); }

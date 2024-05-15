@@ -11,6 +11,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import tech.renovus.solarec.UserData;
+import tech.renovus.solarec.business.SecurityService;
 import tech.renovus.solarec.interfaces.ISetting;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.CliSettingVo;
@@ -20,9 +22,12 @@ import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 import tech.renovus.solarec.vo.db.data.GenPowerVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
+import tech.renovus.solarec.vo.db.data.LocSdgVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.SdgVo;
 import tech.renovus.solarec.vo.db.data.SettingsVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
+import tech.renovus.solarec.vo.db.data.UsersVo;
 import tech.renovus.solarec.vo.rest.entity.Client;
 import tech.renovus.solarec.vo.rest.entity.Country;
 import tech.renovus.solarec.vo.rest.entity.DataDefinition;
@@ -30,6 +35,7 @@ import tech.renovus.solarec.vo.rest.entity.Functionality;
 import tech.renovus.solarec.vo.rest.entity.Generator;
 import tech.renovus.solarec.vo.rest.entity.Location;
 import tech.renovus.solarec.vo.rest.entity.Setting;
+import tech.renovus.solarec.vo.rest.entity.User;
 
 public class RestFactoryTest {
 
@@ -58,6 +64,30 @@ public class RestFactoryTest {
 
 		result.add(this.creteGenerator());
 		result.add(this.createStation());
+		result.add(this.createLocSdg());
+		
+		return result;
+	}
+	
+	private LocSdgVo createLocSdg() {
+		LocSdgVo result = new LocSdgVo();
+		
+		result.setCliId(Integer.valueOf(-123));
+		result.setLocId(Integer.valueOf(-1233));
+		result.setSdgId(Integer.valueOf(-34));
+		result.setLocSdgDescription("Location SDG description");
+		
+		result.setSdgVo(this.createSdg());
+		
+		return result;
+	}
+	
+	private SdgVo createSdg() {
+		SdgVo result = new SdgVo();
+		
+		result.setSdgId(Integer.valueOf(-123));
+		result.setSdgCode("SDG-Code");
+		result.setSdgName("SDG-Name");
 		
 		return result;
 	}
@@ -184,6 +214,37 @@ public class RestFactoryTest {
 		return result;
 	}
 	
+	private UsersVo createUser() {
+		UsersVo result = new UsersVo();
+		
+		result.setUsrId(Integer.valueOf(-123));
+		result.setUsrDateLogin(new Date());
+		result.setUsrDateAdded(new Date());
+		result.setUsrDateLocked(null);
+		result.setUsrPwdResetRequested(null);;
+		result.setUsrPwdResetUuid(null);
+		result.setUsrComments("User comments");
+		result.setUsrEmail("test@test.com");
+		result.setUsrName("The name");
+		result.setUsrFlags("01010");
+		result.setUsrPassword("not real");
+		
+		return result;
+	}
+	
+	private UserData createUserData() {
+		UserData result = new UserData();
+		
+		result.setLogged(true);
+		result.setUserVo(this.createUser());
+		result.setClientVo(this.createClientVo());
+		result.setLocationVo(this.createLocationSampleVo());
+		
+		result.setFunctionalities(null);
+		
+		return result;
+	}
+	
 	//--- Test methods --------------------------
 	@Test
 	public void testCollections() {
@@ -229,7 +290,7 @@ public class RestFactoryTest {
 		
 		assertEquals(CollectionUtil.size(result.getGenerators()), CollectionUtil.size(vo.getGenerators()));
 		assertEquals(CollectionUtil.size(result.getStations()), CollectionUtil.size(vo.getStations()));
-		
+		assertEquals(CollectionUtil.size(result.getSdgs()), CollectionUtil.size(vo.getSdgs()));
 	}
 
 	@Test
@@ -317,5 +378,33 @@ public class RestFactoryTest {
 		assertEquals(vo.getDataDefinitionVo().getDataDefId(), result.getDataDefinition().getId());
 		assertEquals(vo.getDataDefinitionVo().getDataDefName(), result.getDataDefinition().getName());
 		assertEquals(vo.getDataDefinitionVo().getDataDefDescription(), result.getDataDefinition().getDescription());
+	}
+	
+	@Test
+	public void testUserData() {
+		UserData userData = this.createUserData();
+		RestFactory factory =  new RestFactory();
+		User user = factory.convert(userData);
+		
+		assertNotNull(user);
+		assertEquals(userData.isLogged(), user.isAuthenticated());
+		assertEquals(userData.getUsrId(), user.getId());
+		assertEquals(userData.getUserVo().getUsrName(), user.getName());
+		assertEquals(userData.getUserVo().getUsrEmail(), user.getEmail());
+		assertNotNull(user.getClient());
+		assertNotNull(user.getLocation());
+		assertTrue(CollectionUtil.isEmpty(user.getFunctionalities()));
+		assertTrue(CollectionUtil.isEmpty(user.getSettings()));
+		
+		userData.setLogged(false);
+		userData.setAuthenticationError(SecurityService.AUTHENTICATION_ERROR_BAD_EMAIL_PASSWORD_CLIENT);
+		user = factory.convert(userData);
+		
+		assertNotNull(user);
+		assertEquals(userData.isLogged(), user.isAuthenticated());
+		assertNull(user.getId());
+		assertNotNull(user.getErrorCode());
+		assertEquals(userData.getAuthenticationError(), user.getErrorCode().intValue());
+		assertEquals("Not authenticated, bad combination of email, password and client.", user.getError());
 	}
 }
