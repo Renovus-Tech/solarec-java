@@ -13,6 +13,7 @@ public class EmissionsCo2 extends AbstractChart {
 	@Override public Object execute() {
 		
 		if (CollectionUtil.isEmpty(this.chartFilter.getGenerators())) this.setAllGeneratorsToChartFilter();
+		this.chartFilter.setGroupBy(null); //force to have all that in one group
 		
 		try {
 			JsonNode jsonNode = this.retrieveChartInformation(this.config.getChartEmissionsUrl());

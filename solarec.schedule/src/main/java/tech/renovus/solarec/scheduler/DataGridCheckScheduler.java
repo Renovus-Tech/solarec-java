@@ -5,14 +5,11 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CountryDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CtrDataDao;
 import tech.renovus.solarec.grid.DataGridService;
@@ -26,17 +23,11 @@ import tech.renovus.solarec.vo.db.data.CtrDataVo;
 public class DataGridCheckScheduler {
 
 	//--- Resources -----------------------------
-	@Autowired AutowireCapableBeanFactory autowireCapableBeanFactory;
-	@Autowired RenovusSolarecConfiguration config;
-	
-	
 	@Resource DataGridService dataGridService;
 	@Resource CountryDao countryDao;
 	@Resource CtrDataDao ctrDataDao;
 	
     //--- Private methods -----------------------
-	
-	
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	private void process(CountryVo ctrVo) throws DataGridServiceException {
 		Collection<CtrDataVo> datas = this.dataGridService.retrieveGridData(ctrVo);
