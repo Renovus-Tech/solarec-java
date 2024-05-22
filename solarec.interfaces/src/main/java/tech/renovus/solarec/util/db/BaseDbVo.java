@@ -40,6 +40,7 @@ public abstract class BaseDbVo {
 
 	//--- Abstract methods ----------------------
 	public abstract boolean isSame(Object obj);
+	public abstract boolean validData();
 
 	//--- Getters and Setters -------------------
 	public String getLblDeps() { return StringUtil.EMPTY_STRING; }
