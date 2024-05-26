@@ -13,6 +13,7 @@ public class Climate extends AbstractChart {
 	@Override public Object execute() {
 //		this.filter.setGenerators(null);
 		
+		if (CollectionUtil.isEmpty(this.chartFilter.getGenerators())) this.setAllGeneratorsToChartFilter();
 		if (CollectionUtil.isEmpty(this.chartFilter.getStations())) this.setAllStationsToFilter();
 		
 		try {

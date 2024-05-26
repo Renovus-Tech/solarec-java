@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.TranslationService;
+import tech.renovus.solarec.util.StringUtil;
 
 @Service
 public class TranslationServiceImpl implements TranslationService {
@@ -23,7 +24,7 @@ public class TranslationServiceImpl implements TranslationService {
 	
 	//--- Implemented methods -------------------
 	@Override public Locale getLocale(String language) {
-		return new Locale(language);
+		return StringUtil.isEmpty(language) ? Locale.ENGLISH : new Locale(language);
 	}
 	
 	@Override public Locale getLocale(UserData userData) {

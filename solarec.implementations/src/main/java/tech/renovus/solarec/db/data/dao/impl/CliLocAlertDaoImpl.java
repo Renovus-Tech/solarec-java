@@ -19,7 +19,9 @@ import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
 public class CliLocAlertDaoImpl extends BaseCliLocAlertDao implements CliLocAlertDao {
 
 	//--- Private properties --------------------
-	private final static String SQL_FIND_ALL_FOR_DATA_DEFINITION = "select * from vw_cli_loc_alert_full where cli_id = :cliId and loc_id = :locId and cli_loc_alert_added >= :from and cli_loc_alert_added < :to";
+	private final static String SQL_FIND_ALL_FOR_DATA_DEFINITION 	= "select * from vw_cli_loc_alert_full where cli_id = :cliId and loc_id = :locId and cli_loc_alert_added >= :from and cli_loc_alert_added < :to";
+	private final static String SQL_UPDATE_FLAGS					= "UPDATE cli_loc_alert SET cli_loc_alert_flags = :cli_loc_alert_flags WHERE loc_id = :loc_id AND cli_loc_alert_id_auto = :cli_loc_alert_id_auto AND cli_id = :cli_id";
+	private static final String SQL_FIND_ALL_FOR_EMAIL_ALERT		= "SELECT * FROM vw_cli_loc_alert_to_send_by_email";
 
 	//--- Constructors --------------------------
 	@Autowired public CliLocAlertDaoImpl(NamedParameterJdbcTemplate jdbc) {
@@ -44,4 +46,22 @@ public class CliLocAlertDaoImpl extends BaseCliLocAlertDao implements CliLocAler
 			);
 	}
 
+	@Override
+	public void updateFlags(CliLocAlertVo vo) {
+		this.jdbc.update(
+				SQL_UPDATE_FLAGS,
+				new MapSqlParameterSource()
+					.addValue("cli_loc_alert_flags", vo.getCliLocAlertFlags())
+					.addValue("loc_id", vo.getLocId())
+					.addValue("cli_loc_alert_id_auto", vo.getCliLocAlertId())
+					.addValue("cli_id", vo.getCliId())
+			);
+	}
+	
+	@Override public Collection<CliLocAlertVo> retrieveForEmailAlert() {
+		return this.jdbc.query(
+				SQL_FIND_ALL_FOR_EMAIL_ALERT, 
+				CliLocAlertWithOtherRowWrapper.getInstance()
+			);
+	}
 }
