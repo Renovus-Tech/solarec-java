@@ -5,10 +5,12 @@ import tech.renovus.solarec.vo.db.relation.DbCliGenAlertVo;
 public class CliGenAlertVo extends DbCliGenAlertVo {
 
 	//--- Public constants ----------------------
-	public static final int FLAG_SEEN	= 0;
+	public static final int FLAG_SEEN			= 0;
+	public static final int FLAG_SEND_BY_EMAIL	= 1;
 	
 	//--- Private properties --------------------
 	private String cliName;
+	private Integer locId;
 	private String locName;
 	private String locCode;
 	private String genName;
@@ -61,5 +63,13 @@ public class CliGenAlertVo extends DbCliGenAlertVo {
 
 	public void setGenCode(String genCode) {
 		this.genCode = genCode;
+	}
+
+	public Integer getLocId() {
+		return locId;
+	}
+
+	public void setLocId(Integer locId) {
+		this.locId = locId;
 	}
 }

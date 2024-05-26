@@ -16,5 +16,7 @@ public interface CliGenAlertDao {
 	void synchronize(Collection<CliGenAlertVo> vos);
 	
 	Collection<CliGenAlertVo> retrieveFor(Integer cliId, Integer locId, Date from, Date to);
+	void updateFlags(CliGenAlertVo alertVo);
+	Collection<CliGenAlertVo> retrieveForEmailAlert();
 
 }

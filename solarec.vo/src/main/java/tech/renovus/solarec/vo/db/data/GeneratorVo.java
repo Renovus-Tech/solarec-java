@@ -12,6 +12,7 @@ public class GeneratorVo extends DbGeneratorVo implements IDataContainer {
 
 	//--- Flags ---------------------------------
 	public static final int FLAG_ENABLED	= 0;
+	public static final int FLAG_ENABLED_FOR_EMAIL_ALERT	= 1;
 	
 	//--- Private properties --------------------
 	private boolean required = true;
@@ -43,14 +44,18 @@ public class GeneratorVo extends DbGeneratorVo implements IDataContainer {
 	}
 
 	public GenDataDefParameterVo getDataDefParameterVo(String name) {
-		if (CollectionUtil.isEmpty(this.dataDefParameters)) return null;
+		if (CollectionUtil.isEmpty(this.dataDefParameters)) {
+			return null;
+		}
 		Optional<GenDataDefParameterVo> option =  this.dataDefParameters.stream().filter(x -> ClassUtil.equals(name, x.getDataDefParameter().getDataDefParName())).findFirst();
 		return option.isPresent() ? option.get() : null;
 
 	}
 	
 	public GenMetadataVo getMetadataVo(String name) {
-		if (CollectionUtil.isEmpty(this.metadata)) return null;
+		if (CollectionUtil.isEmpty(this.metadata)) {
+			return null;
+		}
 		Optional<GenMetadataVo> option = this.metadata.stream().filter(x -> ClassUtil.equals(name, x.getMetadataCode())).findFirst();
 		return option.isPresent() ? option.get() :  null;
 	}

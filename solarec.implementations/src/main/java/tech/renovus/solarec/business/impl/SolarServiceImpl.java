@@ -42,13 +42,13 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 		Collection<Alert> result = new ArrayList<>(CollectionUtil.size(alerts));
 		
 		if (CollectionUtil.notEmpty(alerts)) {
-			alerts.forEach(x -> {
+			alerts.forEach(cliLocAlertVo -> {
 				
 				Alert alert = new Alert()
-						.withDate(x.getCliLocAlertTrigger())
-						.withFirstView(! FlagUtil.getFlagValue(x, CliLocAlertVo.FLAG_SEEN))
-						.withMessage(this.parserService.parseAlert(x, userData))
-						.withType(x.getCliLocAlertType())
+						.withDate(cliLocAlertVo.getCliLocAlertTrigger())
+						.withFirstView(! FlagUtil.getFlagValue(cliLocAlertVo, CliLocAlertVo.FLAG_SEEN))
+						.withMessage(this.parserService.parseAlert(cliLocAlertVo, userData))
+						.withType(cliLocAlertVo.getCliLocAlertType())
 					;
 				
 				result.add(alert);
@@ -109,8 +109,11 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 	@Override public Object revenueSales(ChartFilter filter, UserData userData) throws CoreException			{ return this.execute(StatDefinitionVo.ID_SOLAR_SALES, filter, userData); }
 
 	@Override public Object retrieveOverviewAlerts(ChartFilter filter, UserData userData) throws CoreException		{
-		if (filter == null) filter = new ChartFilter(ChartFilter.PERIOD_YESTERDAY);
-		else filter.setPeriod(ChartFilter.PERIOD_YESTERDAY);
+		if (filter == null) {
+			filter = new ChartFilter(ChartFilter.PERIOD_YESTERDAY);
+		} else {
+			filter.setPeriod(ChartFilter.PERIOD_YESTERDAY);
+		}
 		filter = this.validate(filter, userData);
 		
 		Collection<Alert> alerts = new ArrayList<>();

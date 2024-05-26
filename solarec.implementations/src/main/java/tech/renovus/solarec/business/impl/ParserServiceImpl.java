@@ -28,6 +28,10 @@ public class ParserServiceImpl implements ParserService {
 	//--- Overridden methods --------------------
 	@Override public String parseAlert(CliGenAlertVo aVo, UserData userData) {
 		Locale locale = this.translation.getLocale(userData);
+		return this.parseAlert(aVo, locale);
+	}
+
+	@Override public String parseAlert(CliGenAlertVo aVo, Locale locale) {
 		AlertTrigger vo = null;
 		try {
 			vo = JsonUtil.toObject(aVo.getCliGenAlertData(), AlertTrigger.class);
@@ -49,13 +53,19 @@ public class ParserServiceImpl implements ParserService {
 		} catch (JsonProcessingException e) {
 			return this.translation.forLabel(locale, TranslationService.ERROR_PARSING, new Object[] {e.getLocalizedMessage()});
 		} catch (NoSuchMessageException e) {
-			if (! AlertTrigger.TYPE_CUSTOM.equals(vo.getType())) LoggerService.rootLogger().error("Error found during translation cli_gen_alert: " + aVo.getCliGenAlertId(), e);
+			if (! AlertTrigger.TYPE_CUSTOM.equals(vo.getType())) {
+				LoggerService.rootLogger().error("Error found during translation cli_gen_alert: " + aVo.getCliGenAlertId(), e);
+			}
 			return vo.getDescription();
 		}
 	}
 	
 	@Override public String parseAlert(CliLocAlertVo aVo, UserData userData) {
 		Locale locale = this.translation.getLocale(userData);
+		return this.parseAlert(aVo, locale);
+	}
+
+	@Override public String parseAlert(CliLocAlertVo aVo, Locale locale) {
 		try {
 			AlertTrigger vo = JsonUtil.toObject(aVo.getCliLocAlertData(), AlertTrigger.class);
 			

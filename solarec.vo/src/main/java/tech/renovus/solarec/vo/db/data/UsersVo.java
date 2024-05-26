@@ -8,8 +8,10 @@ import tech.renovus.solarec.vo.db.relation.DbUsersVo;
 public class UsersVo extends DbUsersVo {
 	
 	//--- Flags ---------------------------------
-	public static final int FLAG_RECEIVE_REPORT_BY_EMAIL		= 0;
-	public static final int FLAG_RECEIVE_REPORT_BY_EMAIL_BCC	= 1;
+	public static final int FLAG_RECEIVE_REPORT_BY_EMAIL			= 0;
+	public static final int FLAG_RECEIVE_REPORT_BY_EMAIL_BCC		= 1;
+	public static final int FLAG_RECEIVE_ALERT_LOCATION_BY_EMAIL	= 2;
+	public static final int FLAG_RECEIVE_ALERT_GENERATOR_NBY_EMAIL	= 3;
 
 	//--- Constructors --------------------------
 	public UsersVo() {
@@ -21,10 +23,14 @@ public class UsersVo extends DbUsersVo {
 
 	//--- Public methods ------------------------
 	public UsrSettingVo getSetting(String setName) {
-		if (StringUtil.isEmpty(setName) || CollectionUtil.isEmpty(this.getSettings())) return null;
+		if (StringUtil.isEmpty(setName) || CollectionUtil.isEmpty(this.getSettings())) {
+			return null;
+		}
 		
 		for (UsrSettingVo setVo : this.getSettings()) {
-			if (ClassUtil.equals(setVo.getName(), setName)) return setVo;
+			if (ClassUtil.equals(setVo.getName(), setName)) {
+				return setVo;
+			}
 		}
 		
 		return null;

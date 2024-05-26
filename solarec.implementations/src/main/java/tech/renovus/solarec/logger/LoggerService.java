@@ -14,5 +14,6 @@ import org.slf4j.LoggerFactory;
 	public static Logger dataGridLogger() { return LoggerFactory.getLogger("datagrid"); }
 	public static Logger certificateLogger() { return LoggerFactory.getLogger("certificate"); }
 	public static Logger weatherLogger() { return LoggerFactory.getLogger("weather"); }
+	public static Logger emailLogger() { return LoggerFactory.getLogger("email"); }
 	public static Logger rootLogger() { return LoggerFactory.getLogger("roor"); }
 }

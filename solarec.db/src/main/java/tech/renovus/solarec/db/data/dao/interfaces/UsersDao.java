@@ -18,6 +18,7 @@ public interface UsersDao {
 	void setLoginDate(Integer usrId, Date date);
 	Collection<UsersVo> getAllForLocationReport(Integer cliId, Integer locId, Integer repTypeId);
 	UsersVo findByResetUuid(String uuid);
+	Collection<UsersVo> findAllForAlertEmailNotification(Integer cliId, Integer locId, int flagRequired);
 
 }
 

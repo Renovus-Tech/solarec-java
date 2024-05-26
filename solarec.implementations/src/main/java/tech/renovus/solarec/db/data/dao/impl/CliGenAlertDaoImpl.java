@@ -19,7 +19,9 @@ import tech.renovus.solarec.vo.db.data.CliGenAlertVo;
 public class CliGenAlertDaoImpl extends BaseCliGenAlertDao implements CliGenAlertDao {
 
 	//--- Private properties --------------------
-	private final static String SQL_FIND_ALL_FOR_DATA_DEFINITION = "select * from vw_cli_gen_alert_by_location where cli_id = :cliId and loc_id = :locId and cli_gen_alert_added >= :from and cli_gen_alert_added < :to";
+	private final static String SQL_FIND_ALL_FOR_DATA_DEFINITION	= "select * from vw_cli_gen_alert_by_location where cli_id = :cliId and loc_id = :locId and cli_gen_alert_added >= :from and cli_gen_alert_added < :to";
+	private final static String SQL_UPDATE_FLAGS					= "UPDATE cli_gen_alert SET cli_gen_alert_flags = :cli_gen_alert_flags WHERE gen_id = :gen_id AND cli_gen_alert_id_auto = :cli_gen_alert_id_auto AND cli_id = :cli_id";
+	private static final String SQL_FIND_ALL_FOR_EMAIL_ALERT		= "SELECT * FROM vw_cli_gen_alert_to_send_by_email";
 
 	//--- Constructors --------------------------
 	@Autowired public CliGenAlertDaoImpl(NamedParameterJdbcTemplate jdbc) {
@@ -41,6 +43,25 @@ public class CliGenAlertDaoImpl extends BaseCliGenAlertDao implements CliGenAler
 					.addValue("from", from)
 					.addValue("to", to),
 					CliGeAlertWithOtherRowWrapper.getInstance()
+			);
+	}
+
+	@Override
+	public void updateFlags(CliGenAlertVo vo) {
+		this.jdbc.update(
+				SQL_UPDATE_FLAGS,
+				new MapSqlParameterSource()
+					.addValue("cli_gen_alert_flags", vo.getCliGenAlertFlags())
+					.addValue("gen_id", vo.getGenId())
+					.addValue("cli_gen_alert_id_auto", vo.getCliGenAlertId())
+					.addValue("cli_id", vo.getCliId())
+			);
+	}
+	
+	@Override public Collection<CliGenAlertVo> retrieveForEmailAlert() {
+		return this.jdbc.query(
+				SQL_FIND_ALL_FOR_EMAIL_ALERT, 
+				CliGeAlertWithOtherRowWrapper.getInstance()
 			);
 	}
 
