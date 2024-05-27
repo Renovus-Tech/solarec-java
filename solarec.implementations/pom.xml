@@ -1,18 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>tech.renovus.solarec</groupId>
-    <artifactId>solarec.java</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>solarec.implementations</artifactId>
-  
-  	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<timestamp>${maven.build.timestamp}</timestamp>
-		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
-	</properties>
-	
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>tech.renovus.solarec</groupId>
+		<artifactId>solarec.java</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>solarec.implementations</artifactId>
+
 	<dependencies>
 		<dependency>
 			<groupId>tech.renovus.solarec</groupId>
@@ -30,19 +27,19 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
-		 
- 		<dependency> <!-- Send mail -->
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-mail</artifactId>
+
+		<dependency> <!-- Send mail -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
 		<dependency><!-- Json -->
-    		<groupId>org.json</groupId>
-    		<artifactId>json</artifactId>
-    		<version>20231013</version>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20231013</version>
 		</dependency>
-		
-		 <!-- SLF4J API -->
+
+		<!-- SLF4J API -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -52,6 +49,34 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+		</dependency>
+
+		<!-- Spring Boot Starter for Internationalization (i18n) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+
+		<!-- TESTING DEPENDENCIES -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+		<dependency>
+			<groupId>io.github.classgraph</groupId>
+			<artifactId>classgraph</artifactId>
+			<version>4.8.137</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Mockito -->
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-core</artifactId>
+		    <scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -67,7 +92,7 @@
 					</excludes>
 					<includes>
 						<!-- Include only renovus solarec code -->
-						<include>tech/renovus/solarec/**/*</include>
+						<include>tech/renovus/solarec/business/**/*</include>
 					</includes>
 				</configuration>
 				<executions>

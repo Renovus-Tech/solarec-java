@@ -1,9 +1,5 @@
 package tech.renovus.solarec.vo.db.relation;
 
-import java.util.Collection;
-
-import tech.renovus.solarec.util.CollectionUtil;
-import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseCliDataDefTriggerVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
@@ -30,12 +26,12 @@ public class DbCliDataDefTriggerVo extends BaseCliDataDefTriggerVo implements IS
 	}
 
 	//--- Private methods -----------------------
-	private void setChildrensId(Collection<? extends BaseDbVo> col) {
-		if (CollectionUtil.isEmpty(col)) return;
-		
-		for (BaseDbVo obj : col) {
-		}
-	}
+//	private void setChildrensId(Collection<? extends BaseDbVo> col) {
+//		if (CollectionUtil.isEmpty(col)) return;
+//		
+//		for (BaseDbVo obj : col) {
+//		}
+//	}
 
 	//--- Implemented methods ISynchronizable ---
 	@Override public void setChildrensId() {

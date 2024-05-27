@@ -15,12 +15,15 @@ public class CliGeAlertWithOtherRowWrapper extends CliGenAlertRowWrapper {
 	//--- Overridden methods --------------------
 	@Override public CliGenAlertVo mapRow(ResultSet resultSet, int arg1) throws SQLException {
 		CliGenAlertVo vo = super.mapRow(resultSet, arg1);
-
-		vo.setCliName(resultSet.getString("cli_name"));
-		vo.setLocName(resultSet.getString("loc_name"));
-		vo.setLocCode(resultSet.getString("loc_code"));
-		vo.setGenName(resultSet.getString("gen_name"));
-		vo.setGenCode(resultSet.getString("gen_code"));
+		
+		if (vo != null) {
+			vo.setCliName(resultSet.getString("cli_name"));
+			vo.setLocId(Integer.valueOf(resultSet.getInt("loc_id")));
+			vo.setLocName(resultSet.getString("loc_name"));
+			vo.setLocCode(resultSet.getString("loc_code"));
+			vo.setGenName(resultSet.getString("gen_name"));
+			vo.setGenCode(resultSet.getString("gen_code"));
+		}
 		
 		return vo;
 	}

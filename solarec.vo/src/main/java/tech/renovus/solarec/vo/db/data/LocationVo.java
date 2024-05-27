@@ -14,6 +14,7 @@ public class LocationVo extends DbLocationVo implements IDataContainer, Comparab
 	public static final int FLAG_REPORT_ENABLED				= 0;
 	public static final int FLAG_HIDE_FROM_DASHBOARD		= 1;
 	public static final int FLAG_ALERT_CALCULATION_ENABLED	= 2;
+	public static final int FLAG_ENABLED_FOR_EMAIL_ALERT	= 3;
 
 	public static final String TYPE_SOLAR				= "solar";
 	
@@ -38,16 +39,32 @@ public class LocationVo extends DbLocationVo implements IDataContainer, Comparab
 	
 	//--- Public methods ------------------------
 	public IDataContainer getDataContainer(String name) {
-		if (name == null || ClassUtil.equals(this.getLocName(), name)) return this;
+		if (name == null || ClassUtil.equals(this.getLocName(), name)) {
+			return this;
+		}
 		
-		if (CollectionUtil.notEmpty(this.generators))	for (GeneratorVo gen : this.generators)	if (name.equalsIgnoreCase(gen.getName())) return gen;
-		if (CollectionUtil.notEmpty(this.stations))		for (StationVo sta : this.stations)		if (name.equalsIgnoreCase(sta.getName())) return sta;
+		if (CollectionUtil.notEmpty(this.generators)) {
+			for (GeneratorVo gen : this.generators) {
+				if (name.equalsIgnoreCase(gen.getName())) {
+					return gen;
+				}
+			}
+		}
+		if (CollectionUtil.notEmpty(this.stations)) {
+			for (StationVo sta : this.stations) {
+				if (name.equalsIgnoreCase(sta.getName())) {
+					return sta;
+				}
+			}
+		}
 		
 		return null;
 	}
 	
 	public LocMetadataVo getMetadataVo(String name) {
-		if (CollectionUtil.isEmpty(this.metadata)) return null;
+		if (CollectionUtil.isEmpty(this.metadata)) {
+			return null;
+		}
 		Optional<LocMetadataVo> option = this.metadata.stream().filter(x -> ClassUtil.equals(name, x.getMetadataName())).findFirst();
 		return option.isPresent() ? option.get() :  null;
 	}
@@ -58,7 +75,9 @@ public class LocationVo extends DbLocationVo implements IDataContainer, Comparab
 	}
 
 	public LocDataDefParameterVo getDataDefParameterVo(String name) {
-		if (CollectionUtil.isEmpty(this.dataDefParameters)) return null;
+		if (CollectionUtil.isEmpty(this.dataDefParameters)) {
+			return null;
+		}
 		Optional<LocDataDefParameterVo> option =  this.dataDefParameters.stream().filter(x -> ClassUtil.equals(name, x.getDataDefParameter().getDataDefParName())).findFirst();
 		return option.isPresent() ? option.get() : null;
 

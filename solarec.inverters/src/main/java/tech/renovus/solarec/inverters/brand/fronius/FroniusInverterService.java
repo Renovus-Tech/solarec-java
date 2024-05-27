@@ -186,7 +186,9 @@ public class FroniusInverterService implements InverterService {
 					"Error during data retrieve: " + errorMessage + 
 					" - Date to retrieve: " + this.formatDate.format(dateFrom) + 
 					" - Date of error: " + this.formatDate.format(new Date()) + 
-					" - Location: " + location.getLocName());
+					" - Location: " + location.getLocName() + 
+					" - Inverter: " + generator.getGenName()
+				);
 			
 			try {
 				inverterData.add(InvertersUtil.generateAlert(generator, dateError, trigger));

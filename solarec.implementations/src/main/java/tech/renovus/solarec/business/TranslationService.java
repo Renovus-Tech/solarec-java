@@ -1,6 +1,7 @@
 package tech.renovus.solarec.business;
 
 import java.util.Locale;
+import java.util.Map;
 
 import tech.renovus.solarec.UserData;
 
@@ -17,4 +18,5 @@ public interface TranslationService {
 	String forSetting(Locale locale, String setting);
 	String forSettingCategory(Locale locale, String settingCateotgyr);
 	String forAlert(Locale locale, String alert, Object... params);
+	String forTemplate(Locale locale, String templateName, Map<String, Object> variables);
 }

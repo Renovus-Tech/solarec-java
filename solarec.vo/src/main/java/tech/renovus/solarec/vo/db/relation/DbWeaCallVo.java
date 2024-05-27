@@ -18,12 +18,12 @@ public class DbWeaCallVo extends BaseWeaCallVo implements ISynchronizable<DbWeaC
 	}
 
 	//--- Private methods -----------------------
-	private void setChildrensId(Collection<? extends BaseDbVo> col) {
-		if (CollectionUtil.isEmpty(col)) return;
-		
-		for (BaseDbVo obj : col) {
-		}
-	}
+//	private void setChildrensId(Collection<? extends BaseDbVo> col) {
+//		if (CollectionUtil.isEmpty(col)) return;
+//		
+//		for (BaseDbVo obj : col) {
+//		}
+//	}
 
 	//--- Implemented methods ISynchronizable ---
 	@Override public void setChildrensId() {

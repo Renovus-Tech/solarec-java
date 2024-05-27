@@ -5,7 +5,8 @@ import tech.renovus.solarec.vo.db.relation.DbCliLocAlertVo;
 public class CliLocAlertVo extends DbCliLocAlertVo {
 
 	//--- Public constants ----------------------
-	public static final int FLAG_SEEN	= 0;
+	public static final int FLAG_SEEN			= 0;
+	public static final int FLAG_SEND_BY_EMAIL	= 1;
 	
 	//--- Private properties --------------------
 	private String parsedMessage;

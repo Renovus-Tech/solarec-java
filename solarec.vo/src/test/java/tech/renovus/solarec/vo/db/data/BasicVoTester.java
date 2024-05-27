@@ -14,6 +14,7 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import tech.renovus.solarec.util.db.BaseDbVo;
+import tech.renovus.solarec.util.interfaces.ISynchronizable;
 
 public class BasicVoTester {
 
@@ -35,6 +36,7 @@ public class BasicVoTester {
 
 	private void testGettersSetters(Class<?> clazz) throws Exception {
 		Object obj = clazz.getConstructor().newInstance();
+		Object objEmpty = clazz.getConstructor().newInstance();
 		String testingClass = clazz.getCanonicalName();
 		Map<String, Method> setters = new HashMap<>();
 		Map<String, Method> getters = new HashMap<>();
@@ -76,8 +78,15 @@ public class BasicVoTester {
 		assertEquals(obj, obj);
 		assertEquals(obj.hashCode(), obj.hashCode());
 		if (obj instanceof BaseDbVo) {
-			assertTrue("Fail isSame for: " + testingClass,((BaseDbVo) obj).isSame(obj));
-			assertTrue("Fail validData for: " + testingClass, ((BaseDbVo) obj).validData());
+			BaseDbVo dbVo = (BaseDbVo) obj;
+			assertTrue("Fail isSame for: " + testingClass, dbVo.isSame(obj));
+			assertTrue("Fail validData for: " + testingClass, dbVo.validData());
+		}
+		if (obj instanceof ISynchronizable) {
+			ISynchronizable sync = (ISynchronizable) obj;
+			if (obj instanceof BaseDbVo) sync.synchronize((BaseDbVo) objEmpty);
+			sync.setChildrensId();
+			sync.synchronizeForce(BaseDbVo.SYNC_INIT);
 		}
 		
 	}
