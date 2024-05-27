@@ -11,8 +11,6 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.ParserService;
@@ -41,7 +39,6 @@ public class AlertNotificationSend {
 	@Autowired EmailService emailService;
 	@Autowired ParserService parserService;
 	@Autowired TranslationService tranaslationService;
-	@Autowired TemplateEngine templateEngine;
 	
 	@Resource CliLocAlertDao cliLocAlertDao;
 	@Resource CliGenAlertDao cliGenAlertDao;
@@ -67,11 +64,11 @@ public class AlertNotificationSend {
 					Locale locale			= this.tranaslationService.getLocale(settingVo == null ? null : settingVo.getValue());
 			        String emailSubject		= this.tranaslationService.forLabel(locale, "email.location.alert.subject");
 			        
-			        Context context			= new Context(locale);
-			        context.setVariable("alertContent", this.parserService.parseAlert(alertVo, locale));
+			        Map<String, Object> variables = new HashMap<>();
+			        variables.put("alertContent", this.parserService.parseAlert(alertVo, locale));
 			        
-			        String emailContent			= this.templateEngine.process("email_alert.html", context);
-					
+			        String emailContent			= this.tranaslationService.forTemplate(locale, "email_alert.html", variables);
+				
 			        CliLocUsrAlertVo sendResult = new CliLocUsrAlertVo(alertVo.getCliId(), alertVo.getLocId(), usrVo.getUsrId(), alertVo.getCliLocAlertId());
 					sendResult.setSyncType(BaseDbVo.SYNC_INSERT);
 					sendResult.setCliLocUsrAlertSendDate(new Date());
@@ -112,10 +109,10 @@ public class AlertNotificationSend {
 					Locale locale			= this.tranaslationService.getLocale(settingVo == null ? null : settingVo.getValue());
 			        String emailSubject		= this.tranaslationService.forLabel(locale, "email.generator.alert.subject");
 			        
-			        Context context			= new Context(locale);
-			        context.setVariable("alertContent", this.parserService.parseAlert(alertVo, locale));
+			        Map<String, Object> variables = new HashMap<>();
+			        variables.put("alertContent", this.parserService.parseAlert(alertVo, locale));
 			        
-			        String emailContent			= this.templateEngine.process("email_alert.html", context);
+			        String emailContent			= this.tranaslationService.forTemplate(locale, "email_alert.html", variables);
 					
 			        CliGenUsrAlertVo sendResult = new CliGenUsrAlertVo(alertVo.getCliId(), alertVo.getGenId(), usrVo.getUsrId(), alertVo.getCliGenAlertId());
 					sendResult.setSyncType(BaseDbVo.SYNC_INSERT);

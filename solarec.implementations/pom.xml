@@ -51,6 +51,13 @@
 			<artifactId>logback-classic</artifactId>
 		</dependency>
 
+		<!-- Spring Boot Starter for Internationalization (i18n) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+
 		<!-- TESTING DEPENDENCIES -->
         <dependency>
             <groupId>junit</groupId>

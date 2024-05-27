@@ -1,14 +1,19 @@
 package tech.renovus.solarec.business.impl;
 
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.TranslationService;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.StringUtil;
 
 @Service
@@ -20,6 +25,7 @@ public class TranslationServiceImpl implements TranslationService {
 	private static final String PREFIX_SETTING_CATEGORY	= "setting.category.";
 	
 	//--- Private properties --------------------
+	@Autowired private TemplateEngine templateEngine;
 	@Resource private MessageSource messageSource;
 	
 	//--- Implemented methods -------------------
@@ -36,5 +42,11 @@ public class TranslationServiceImpl implements TranslationService {
 	@Override public String forSettingCategory(Locale locale, String settingCategory)	{ return this.forLabel(locale, PREFIX_SETTING_CATEGORY + settingCategory); }
 	@Override public String forAlert(Locale locale, String alertType, Object... params)	{ return this.forLabel(locale, PREFIX_ALERT + alertType, params); }
 
-	
+	@Override public String forTemplate(Locale locale, String templateName, Map<String, Object> variables) {
+		Context context = new Context(locale);
+		if (CollectionUtil.notEmpty(variables)) {
+			variables.entrySet().forEach(entry -> context.setVariable(entry.getKey(), entry.getValue()));
+		}
+		return this.templateEngine.process(templateName, context);
+	}
 }
