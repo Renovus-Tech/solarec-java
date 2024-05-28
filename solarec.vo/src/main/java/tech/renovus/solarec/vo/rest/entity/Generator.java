@@ -2,7 +2,9 @@ package tech.renovus.solarec.vo.rest.entity;
 
 import java.util.Collection;
 
-public class Generator {
+import tech.renovus.solarec.vo.rest.entity.base.BaseEntity;
+
+public class Generator extends BaseEntity {
 	
 	//--- Inner classes -------------------------
 	public static class Power {
@@ -36,9 +38,6 @@ public class Generator {
 	//--- Private properties --------------------
 	private Integer id;
 	private Integer locationId;
-	private String code;
-	private String name;
-	private String description;
 	private Double latitude;
 	private Double longitude;
 	private String brand;
@@ -58,24 +57,6 @@ public class Generator {
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	public Double getLatitude() {
 		return latitude;

@@ -74,11 +74,13 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 	}
 
 	private void createData(StationVo station, int typeId, Integer value, Date dateDate, Collection<StaDataVo> result) {
-		this.createData(station, typeId, value == null ? null : Double.valueOf(value.intValue()), dateDate, result);
+		this.createData(station, typeId, value == null ? null : Double.valueOf(value), dateDate, result);
 	}
 	
 	private void createData(StationVo station, int typeId, Double value, Date dateDate, Collection<StaDataVo> result) {
-		if (value == null) return;
+		if (value == null) {
+			return;
+		}
 		
 		//Data is every hour, we need to split it to 15 minutes period
 		Calendar cal = GregorianCalendar.getInstance();
@@ -119,8 +121,12 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 			int index = 0;
 			for (String time : data.getHourly().getTime()) {
 				Date date = dateTime.parse(time);
-				if (startIndex == -1 && dateFrom.after(date)) startIndex = index;
-				if (date.before(dateTo)) endIndex = index;
+				if (startIndex == -1 && dateFrom.after(date)) {
+					startIndex = index;
+				}
+				if (date.before(dateTo)) {
+					endIndex = index;
+				}
 				index ++;
 			}
 			

@@ -17,7 +17,11 @@ public class LocSdgWithSdgRowWrapper extends LocSdgRowWrapper {
 	//--- Overridden methods --------------------
 	@Override public LocSdgVo mapRow(ResultSet resultSet, int arg1) throws SQLException {
 		LocSdgVo vo = super.mapRow(resultSet, arg1);
-		vo.setSdgVo(SdgRowWrapper.getInstance().mapRow(resultSet, arg1));
+		
+		if (vo != null) {
+			vo.setSdgVo(SdgRowWrapper.getInstance().mapRow(resultSet, arg1));
+		}
+		
 		return vo;
 	}
 }

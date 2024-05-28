@@ -1,6 +1,7 @@
 package tech.renovus.solarec.vo.db.data;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
@@ -19,11 +20,27 @@ import tech.renovus.solarec.util.interfaces.ISynchronizable;
 public class BasicVoTester {
 
 	@Test
-	public void fastTest() throws Exception {
+	public void fastTestVo() throws Exception {
 		try (
 			ScanResult scanResult = 
 				new ClassGraph()
 					.acceptPackages("tech.renovus.solarec.vo.db.data")
+					.scan();
+		) {
+			for (ClassInfo classInfo : scanResult.getAllClasses()) {
+				Class<?> clazz = Class.forName(classInfo.getName());
+				System.out.println("Testing: " + clazz.getCanonicalName());
+				testGettersSetters(clazz);
+			}
+		}
+	}
+	
+	@Test
+	public void fastTestEntity() throws Exception {
+		try (
+			ScanResult scanResult = 
+				new ClassGraph()
+					.acceptPackages("tech.renovus.solarec.vo.rest.entity")
 					.scan();
 		) {
 			for (ClassInfo classInfo : scanResult.getAllClasses()) {
@@ -75,8 +92,8 @@ public class BasicVoTester {
 			}
 		}
 		
-		assertEquals(obj, obj);
-		assertEquals(obj.hashCode(), obj.hashCode());
+		assertNotEquals(obj, objEmpty);
+		assertNotEquals(obj.hashCode(), objEmpty.hashCode());
 		if (obj instanceof BaseDbVo) {
 			BaseDbVo dbVo = (BaseDbVo) obj;
 			assertTrue("Fail isSame for: " + testingClass, dbVo.isSame(obj));
@@ -84,7 +101,9 @@ public class BasicVoTester {
 		}
 		if (obj instanceof ISynchronizable) {
 			ISynchronizable sync = (ISynchronizable) obj;
-			if (obj instanceof BaseDbVo) sync.synchronize((BaseDbVo) objEmpty);
+			if (obj instanceof BaseDbVo) {
+				sync.synchronize((BaseDbVo) objEmpty);
+			}
 			sync.setChildrensId();
 			sync.synchronizeForce(BaseDbVo.SYNC_INIT);
 		}

@@ -23,7 +23,7 @@ public class AlertDefinitionVoTest {
 		vo2.setPk(vo);
 
 		assertEquals(pk1, voPk.getAlertDefId());
-		assertEquals(voPk, voPk);
+		assertEquals(voPk, vo);
 		assertTrue(voPk.isSame(voPk));
 		assertTrue(voPk.validData());
 		
