@@ -76,7 +76,7 @@ public abstract class BaseDataProcessingDao <T extends DataProcessingVo > {
 		KeyHolder holder = new GeneratedKeyHolder();
 		this.jdbc.update( SQL_INSERT, this.createInsertMapSqlParameterSource(vo), holder, AUTO_INCREMENT_COLUMNS);
 		Number key = holder.getKey();
-		if (key != null) vo.setDataProId(Integer.valueOf(holder.getKey().intValue()));
+		if (key != null) vo.setDataProId(Integer.valueOf(key.intValue()));
 	}
 
 	public void update(T vo) { this.jdbc.update(SQL_UPDATE, this.craeteUpdateMapSqlParameterSource(vo)); }

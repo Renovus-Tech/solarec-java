@@ -79,7 +79,7 @@ public abstract class BaseStationDao <T extends StationVo > {
 		KeyHolder holder = new GeneratedKeyHolder();
 		this.jdbc.update( SQL_INSERT, this.createInsertMapSqlParameterSource(vo), holder, AUTO_INCREMENT_COLUMNS);
 		Number key = holder.getKey();
-		if (key != null) vo.setStaId(Integer.valueOf(holder.getKey().intValue()));
+		if (key != null) vo.setStaId(Integer.valueOf(key.intValue()));
 	}
 
 	public void update(T vo) { this.jdbc.update(SQL_UPDATE, this.craeteUpdateMapSqlParameterSource(vo)); }

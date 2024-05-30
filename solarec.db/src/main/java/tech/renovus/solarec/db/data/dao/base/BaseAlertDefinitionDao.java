@@ -64,7 +64,7 @@ public abstract class BaseAlertDefinitionDao <T extends AlertDefinitionVo > {
 		KeyHolder holder = new GeneratedKeyHolder();
 		this.jdbc.update( SQL_INSERT, this.createInsertMapSqlParameterSource(vo), holder, AUTO_INCREMENT_COLUMNS);
 		Number key = holder.getKey();
-		if (key != null) vo.setAlertDefId(Integer.valueOf(holder.getKey().intValue()));
+		if (key != null) vo.setAlertDefId(Integer.valueOf(key.intValue()));
 	}
 
 	public void update(T vo) { this.jdbc.update(SQL_UPDATE, this.craeteUpdateMapSqlParameterSource(vo)); }
