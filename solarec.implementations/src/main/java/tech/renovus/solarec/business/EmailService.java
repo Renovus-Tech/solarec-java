@@ -14,6 +14,4 @@ public interface EmailService {
 	void sendMessageWithAttachment(String to, String subject, String text, String fileName, String pathToAttachment, boolean asHtml) throws CoreException;
 	void sendMessageWithAttachment(List<String> emails, List<String> emailsCC, List<String> emailsBCC, String subject, String content, Collection<EmailFile> files, boolean asHtml) throws CoreException;
 
-	void checkMail() throws CoreException;
-
 }

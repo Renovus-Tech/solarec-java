@@ -45,22 +45,7 @@ public class EmailServiceImpl implements EmailService {
 	@Autowired private JavaMailSender emailSender;
 	@Autowired private RenovusSolarecConfiguration config;
 
-	private static final String PROTOCOL = "imap";
-    private static final String HOST = "imap.gmail.com";
-    protected static final String USERNAME = "pferrari@gmail.com";
-    protected static final String PASSWORD = "rjmawmbjnlsqrgzj";
 	
-	private static Properties getProperties() {
-        Properties props = new Properties();
-        props.put("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.imap.socketFactory.fallback", "false");
-        props.put("mail.imap.socketFactory.port", "993");
-        props.put("mail.imap.port", "993");
-        props.put("mail.imap.host", HOST);
-        props.put("mail.imap.user", USERNAME);
-        props.put("mail.imap.protocol", PROTOCOL);
-        return props;
-    }
 	
 	// --- Overridden methods --------------------
 	@Override
@@ -127,68 +112,6 @@ public class EmailServiceImpl implements EmailService {
 	
 			emailSender.send(message);
 		} catch (MessagingException e) {
-			throw new CoreException(e);
-		}
-	}
-	
-	@Override
-	public void checkMail() throws CoreException {
-
-		try {
-			// Creates a javax.mail.Authenticator object.
-			Authenticator auth = new Authenticator() {
-				@Override protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(USERNAME, PASSWORD);
-				}
-			};
-	
-	        // Creating mail session.
-	        Session session = Session.getDefaultInstance(getProperties(), auth);
-	
-	        // Get the store provider and connect to the store.
-	        Store store = session.getStore(PROTOCOL);
-	        store.connect(HOST, USERNAME, PASSWORD);
-	
-	        // Get folder and open the INBOX folder in the store.
-	        Calendar cal = GregorianCalendar.getInstance();
-	        cal.setTime(new Date());
-	        cal.set(Calendar.HOUR_OF_DAY, 0);
-	        cal.set(Calendar.MINUTE, 0);
-	        cal.set(Calendar.SECOND, 0);
-	        cal.set(Calendar.MILLISECOND, 0);
-	        cal.set(Calendar.AM_PM, Calendar.AM);
-	        cal.add(Calendar.DAY_OF_MONTH, -1);
-	        
-	        ReceivedDateTerm       minDateTerm = new ReceivedDateTerm(ComparisonTerm.GT, cal.getTime());
-
-	        Folder inbox = store.getFolder("INBOX");
-	        inbox.open(Folder.READ_ONLY);
-	
-	        // Retrieve the messages from the folder.
-	        Message[] messages = inbox.search(minDateTerm);
-	        for (Message message : messages) {
-	            //message.setFlag(Flags.Flag.SEEN, true);  // todo: put back
-	            if (message != null) {
-	                Date sentDate = message.getSentDate();
-	                Address[] from = message.getFrom();
-	                Address[] recipients = message.getAllRecipients();
-	                String subject = message.getSubject();
-	                System.out.println("#: " + message.getMessageNumber());
-	                System.out.println("Sent: " + DateUtil.formatDateTime(sentDate, DateUtil.FMT_MILITAR));
-	                System.out.println("Subject: " + subject);
-	                System.out.print("From: ");
-	                if (from != null) for (Address add : from) System.out.print(add.toString() + " ");
-	                System.out.println();
-	                System.out.println("Recipients: ");
-	                if (recipients != null) for (Address add : recipients) System.out.print(add.toString() + " ");
-	                System.out.println();
-	                System.out.println();
-	            }
-	        }
-	
-	        inbox.close(true);
-	        store.close();
-		} catch (Exception e) {
 			throw new CoreException(e);
 		}
 	}
