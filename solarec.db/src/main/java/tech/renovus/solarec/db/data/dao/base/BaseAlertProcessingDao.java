@@ -71,7 +71,8 @@ public abstract class BaseAlertProcessingDao <T extends AlertProcessingVo > {
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();
 		this.jdbc.update( SQL_INSERT, this.createInsertMapSqlParameterSource(vo), holder, AUTO_INCREMENT_COLUMNS);
-		vo.setAlertProId(Integer.valueOf(holder.getKey().intValue()));
+		Number key = holder.getKey();
+		if (key != null) vo.setAlertProId(Integer.valueOf(holder.getKey().intValue()));
 	}
 
 	public void update(T vo) { this.jdbc.update(SQL_UPDATE, this.craeteUpdateMapSqlParameterSource(vo)); }

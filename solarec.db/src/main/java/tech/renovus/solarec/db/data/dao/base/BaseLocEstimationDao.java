@@ -89,7 +89,8 @@ public abstract class BaseLocEstimationDao <T extends LocEstimationVo > {
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();
 		this.jdbc.update( SQL_INSERT, this.createInsertMapSqlParameterSource(vo), holder, AUTO_INCREMENT_COLUMNS);
-		vo.setLocEstId(Integer.valueOf(holder.getKey().intValue()));
+		Number key = holder.getKey();
+		if (key != null) vo.setLocEstId(Integer.valueOf(holder.getKey().intValue()));
 	}
 
 	public void update(T vo) { this.jdbc.update(SQL_UPDATE, this.craeteUpdateMapSqlParameterSource(vo)); }

@@ -73,7 +73,8 @@ public abstract class BaseCliDataDefTriggerDao <T extends CliDataDefTriggerVo > 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();
 		this.jdbc.update( SQL_INSERT, this.createInsertMapSqlParameterSource(vo), holder, AUTO_INCREMENT_COLUMNS);
-		vo.setTriId(Integer.valueOf(holder.getKey().intValue()));
+		Number key = holder.getKey();
+		if (key != null) vo.setTriId(Integer.valueOf(holder.getKey().intValue()));
 	}
 
 	public void update(T vo) { this.jdbc.update(SQL_UPDATE, this.craeteUpdateMapSqlParameterSource(vo)); }
