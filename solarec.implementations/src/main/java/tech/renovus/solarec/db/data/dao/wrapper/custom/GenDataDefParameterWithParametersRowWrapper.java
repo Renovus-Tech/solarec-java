@@ -18,9 +18,12 @@ public class GenDataDefParameterWithParametersRowWrapper extends GenDataDefParam
 	//--- Overridden methods --------------------
 	@Override public GenDataDefParameterVo mapRow(ResultSet resultSet, int arg1) throws SQLException {
 		GenDataDefParameterVo vo = super.mapRow(resultSet, arg1);
-		vo.setDataDefParameter(DataDefParameterRowWrapper.getInstance().mapRow(resultSet, arg1));
-
-		if (vo.getDataDefParId() == null) vo.setDataDefParId(vo.getDataDefParameter().getDataDefParId());
+		
+		if (vo != null) {
+			vo.setDataDefParameter(DataDefParameterRowWrapper.getInstance().mapRow(resultSet, arg1));
+	
+			if (vo.getDataDefParId() == null) vo.setDataDefParId(vo.getDataDefParameter().getDataDefParId());
+		}
 		
 		return vo;
 	}

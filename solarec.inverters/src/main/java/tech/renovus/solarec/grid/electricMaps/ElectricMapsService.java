@@ -37,10 +37,10 @@ public class ElectricMapsService implements DataGridService {
 	private static final String EMISSION_FACTOR_TYPE_DIRECT		= "direct";
 	private static final String EMISSION_FACTOR_TYPE_LIFECYCLE	= "lifecycle";
 	
-	private static SimpleDateFormat DATE_TIME_FORMAT	= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-	
 	//--- Resources -----------------------------
 	@Autowired ElectricMapsConfiguration config;
+	
+	private SimpleDateFormat dateTimeFormat	= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	
 	//--- Constructors --------------------------
 	public ElectricMapsService() {}
@@ -84,7 +84,7 @@ public class ElectricMapsService implements DataGridService {
 				Calendar cal = GregorianCalendar.getInstance();
 				
 				for (CarbonIntensity intensity : response.getHistory()) {
-					cal.setTime(DATE_TIME_FORMAT.parse(intensity.getDatetime()));
+					cal.setTime(this.dateTimeFormat.parse(intensity.getDatetime()));
 					cal.set(Calendar.MINUTE, 0);
 					cal.set(Calendar.SECOND, 0);
 					cal.set(Calendar.MILLISECOND, 0);

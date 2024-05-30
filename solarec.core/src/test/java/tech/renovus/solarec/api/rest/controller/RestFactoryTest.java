@@ -278,7 +278,7 @@ public class RestFactoryTest {
 		assertEquals(result.getName(), vo.getLocName());
 		assertEquals(result.getAddress(), vo.getLocAddress());
 		assertEquals(result.getState(), vo.getLocState());
-		assertEquals(result.getCountry(), vo.getCountryVo());
+		assertEquals(result.getCountry(), factory.convert(vo.getCountryVo()));
 		assertEquals(result.getLatitude(), vo.getLocCoordLat());
 		assertEquals(result.getLongitude(), vo.getLocCoordLng());
 		assertEquals(result.getOutputCapacity(), vo.getLocOutputCapacity());

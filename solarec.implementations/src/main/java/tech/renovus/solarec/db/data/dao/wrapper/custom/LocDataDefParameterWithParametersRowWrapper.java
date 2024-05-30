@@ -18,9 +18,12 @@ public class LocDataDefParameterWithParametersRowWrapper extends LocDataDefParam
 	//--- Overridden methods --------------------
 	@Override public LocDataDefParameterVo mapRow(ResultSet resultSet, int arg1) throws SQLException {
 		LocDataDefParameterVo vo = super.mapRow(resultSet, arg1);
-		vo.setDataDefParameter(DataDefParameterRowWrapper.getInstance().mapRow(resultSet, arg1));
-
-		if (vo.getDataDefParId() == null) vo.setDataDefParId(vo.getDataDefParameter().getDataDefParId());
+		
+		if (vo != null) {
+			vo.setDataDefParameter(DataDefParameterRowWrapper.getInstance().mapRow(resultSet, arg1));
+	
+			if (vo.getDataDefParId() == null) vo.setDataDefParId(vo.getDataDefParameter().getDataDefParId());
+		}
 		
 		return vo;
 	}

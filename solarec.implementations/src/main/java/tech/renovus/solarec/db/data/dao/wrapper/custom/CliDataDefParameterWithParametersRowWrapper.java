@@ -18,9 +18,12 @@ public class CliDataDefParameterWithParametersRowWrapper extends CliDataDefParam
 	//--- Overridden methods --------------------
 	@Override public CliDataDefParameterVo mapRow(ResultSet resultSet, int arg1) throws SQLException {
 		CliDataDefParameterVo vo = super.mapRow(resultSet, arg1);
-		vo.setDataDefParameter(DataDefParameterRowWrapper.getInstance().mapRow(resultSet, arg1));
-
-		if (vo.getDataDefParId() == null) vo.setDataDefParId(vo.getDataDefParameter().getDataDefParId());
+		
+		if (vo != null) {
+			vo.setDataDefParameter(DataDefParameterRowWrapper.getInstance().mapRow(resultSet, arg1));
+	
+			if (vo.getDataDefParId() == null) vo.setDataDefParId(vo.getDataDefParameter().getDataDefParId());
+		}		
 		
 		return vo;
 	}

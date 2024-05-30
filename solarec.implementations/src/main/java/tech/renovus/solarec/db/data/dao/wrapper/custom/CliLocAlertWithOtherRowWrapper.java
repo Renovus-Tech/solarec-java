@@ -16,9 +16,11 @@ public class CliLocAlertWithOtherRowWrapper extends CliLocAlertRowWrapper {
 	@Override public CliLocAlertVo mapRow(ResultSet resultSet, int arg1) throws SQLException {
 		CliLocAlertVo vo = super.mapRow(resultSet, arg1);
 
-		vo.setCliName(resultSet.getString("cli_name"));
-		vo.setLocName(resultSet.getString("loc_name"));
-		vo.setLocCode(resultSet.getString("loc_code"));
+		if (vo != null) {
+			vo.setCliName(resultSet.getString("cli_name"));
+			vo.setLocName(resultSet.getString("loc_name"));
+			vo.setLocCode(resultSet.getString("loc_code"));
+		}
 		
 		return vo;
 	}
