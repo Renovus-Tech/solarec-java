@@ -2,6 +2,8 @@
 ![JaCoCo Coverage](https://raw.githubusercontent.com/Renovus-Tech/solarec-java/main/.github/badges/jacoco.svg)
 ![License](https://img.shields.io/github/license/ad-aures/castopod?color=blue)
 ![Java Version](https://img.shields.io/badge/Java-11%2B-orange)
+[![CLA assistant](https://cla-assistant.io/readme/badge/Renovus-Tech/solarec-java)](https://cla-assistant.io/Renovus-Tech/solarec-java)
+
 # Solarec Java
 
 The Solarec Java repository is parte of the Solarec solution of Renovus. Incombination with the other repositories Ract, Python and Database generates the Solarec solution.
