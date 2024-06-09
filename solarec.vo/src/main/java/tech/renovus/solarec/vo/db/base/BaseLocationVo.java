@@ -7,18 +7,19 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 public class BaseLocationVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
-	public static final String COLUMN_CTR_ID = "ctr_id";
+	public static final String COLUMN_LOC_TYPE_ID = "loc_type_id";
 	public static final String COLUMN_LOC_ID = "loc_id_auto";
 	public static final String COLUMN_DATA_DEF_ID = "data_def_id";
-	public static final String COLUMN_LOC_OUTPUT_CAPACITY = "loc_output_capacity";
 	public static final String COLUMN_LOC_OUTPUT_TOTAL_CAPACITY = "loc_output_total_capacity";
 	public static final String COLUMN_LOC_REFERENCE_DENSITY = "loc_reference_density";
 	public static final String COLUMN_LOC_DATA_DATE_MAX = "loc_data_date_max";
 	public static final String COLUMN_LOC_DATA_DATE_MIN = "loc_data_date_min";
 	public static final String COLUMN_LOC_DEMO_DATE = "loc_demo_date";
+	public static final String COLUMN_CTR_ID = "ctr_id";
 	public static final String COLUMN_CLI_ID = "cli_id";
 	public static final String COLUMN_LOC_COORD_LAT = "loc_coord_lat";
 	public static final String COLUMN_LOC_COORD_LNG = "loc_coord_lng";
+	public static final String COLUMN_LOC_OUTPUT_CAPACITY = "loc_output_capacity";
 	public static final String COLUMN_LOC_NAME = "loc_name";
 	public static final String COLUMN_LOC_ADDRESS = "loc_address";
 	public static final String COLUMN_LOC_STATE = "loc_state";
@@ -40,18 +41,19 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 	@Override public void setFlags(String locFlags) { this.locFlags = locFlags; }
 
 	//--- Private properties --------------------
-	private Integer ctrId;
+	private Integer locTypeId;
 	private Integer locId;
 	private Integer dataDefId;
-	private Double locOutputCapacity;
 	private Double locOutputTotalCapacity;
 	private Double locReferenceDensity;
 	private java.util.Date locDataDateMax;
 	private java.util.Date locDataDateMin;
 	private java.util.Date locDemoDate;
+	private Integer ctrId;
 	private Integer cliId;
 	private Double locCoordLat;
 	private Double locCoordLng;
+	private Double locOutputCapacity;
 	private String locName;
 	private String locAddress;
 	private String locState;
@@ -97,13 +99,10 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		if (! this.equals(obj)) return false;
 		
 		BaseLocationVo aObj = (BaseLocationVo) obj;
-		if (!ClassUtil.equals(this.ctrId,aObj.ctrId)) {
+		if (!ClassUtil.equals(this.locTypeId,aObj.locTypeId)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.locOutputCapacity,aObj.locOutputCapacity)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.locOutputTotalCapacity,aObj.locOutputTotalCapacity)) {
@@ -121,10 +120,16 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		if (!ClassUtil.equals(this.locDemoDate,aObj.locDemoDate)) {
 			return false;
 		}
+		if (!ClassUtil.equals(this.ctrId,aObj.ctrId)) {
+			return false;
+		}
 		if (!ClassUtil.equals(this.locCoordLat,aObj.locCoordLat)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.locCoordLng,aObj.locCoordLng)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.locOutputCapacity,aObj.locOutputCapacity)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.locName,aObj.locName)) {
@@ -165,11 +170,11 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 	}
 
 	//--- Getters and Setters -------------------
-	public Integer getCtrId() {
-		return this.ctrId;
+	public Integer getLocTypeId() {
+		return this.locTypeId;
 	}
-	public void setCtrId(Integer ctrId) {
-		this.ctrId = ctrId;
+	public void setLocTypeId(Integer locTypeId) {
+		this.locTypeId = locTypeId;
 	}
 
 	public Integer getLocId() {
@@ -184,13 +189,6 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 	}
 	public void setDataDefId(Integer dataDefId) {
 		this.dataDefId = dataDefId;
-	}
-
-	public Double getLocOutputCapacity() {
-		return this.locOutputCapacity;
-	}
-	public void setLocOutputCapacity(Double locOutputCapacity) {
-		this.locOutputCapacity = locOutputCapacity;
 	}
 
 	public Double getLocOutputTotalCapacity() {
@@ -228,6 +226,13 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		this.locDemoDate = locDemoDate;
 	}
 
+	public Integer getCtrId() {
+		return this.ctrId;
+	}
+	public void setCtrId(Integer ctrId) {
+		this.ctrId = ctrId;
+	}
+
 	public Integer getCliId() {
 		return this.cliId;
 	}
@@ -247,6 +252,13 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 	}
 	public void setLocCoordLng(Double locCoordLng) {
 		this.locCoordLng = locCoordLng;
+	}
+
+	public Double getLocOutputCapacity() {
+		return this.locOutputCapacity;
+	}
+	public void setLocOutputCapacity(Double locOutputCapacity) {
+		this.locOutputCapacity = locOutputCapacity;
 	}
 
 	public String getLocName() {

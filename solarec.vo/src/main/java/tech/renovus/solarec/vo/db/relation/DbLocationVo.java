@@ -17,6 +17,7 @@ import tech.renovus.solarec.vo.db.data.LocDataVo;
 import tech.renovus.solarec.vo.db.data.LocEstimationVo;
 import tech.renovus.solarec.vo.db.data.LocMetadataVo;
 import tech.renovus.solarec.vo.db.data.LocSdgVo;
+import tech.renovus.solarec.vo.db.data.LocTypeVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
 
 public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLocationVo> {
@@ -27,6 +28,7 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 	protected DataDefinitionVo dataDefinitionVo;
 	
 	protected CountryVo countryVo;
+	protected LocTypeVo locTypeVo;
 	
 	protected Collection<StationVo> stations;
 	protected Collection<GeneratorVo> generators;
@@ -226,12 +228,16 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 	public void setCountryVo(CountryVo countryVo) {
 		this.countryVo = countryVo;
 	}
-
 	public Collection<LocSdgVo> getSdgs() {
 		return sdgs;
 	}
-
 	public void setSdgs(Collection<LocSdgVo> sdgs) {
 		this.sdgs = sdgs;
+	}
+	public LocTypeVo getLocTypeVo() {
+		return locTypeVo;
+	}
+	public void setLocTypeVo(LocTypeVo locTypeVo) {
+		this.locTypeVo = locTypeVo;
 	}
 }

@@ -26,6 +26,7 @@ import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
 import tech.renovus.solarec.db.data.dao.interfaces.FunctionalityDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocSdgDao;
+import tech.renovus.solarec.db.data.dao.interfaces.LocTypeDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.SettingsDao;
 import tech.renovus.solarec.db.data.dao.interfaces.UsersDao;
@@ -71,6 +72,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Resource CliSettingDao cliSettingDao;
 	@Resource SettingsDao settingsDao;
 	@Resource LocSdgDao locSdgDao;
+	@Resource LocTypeDao locTypeDao;
 	
 	//--- Private methods -----------------------
 	private void logout(UserData userData) {
@@ -115,6 +117,7 @@ public class SecurityServiceImpl implements SecurityService {
 		
 		if (userData.getLocationVo() != null) {
 			userData.getLocationVo().setSdgs(this.locSdgDao.getAllForLocation(userData.getLocationVo().getCliId(), userData.getLocationVo().getLocId()));
+			userData.getLocationVo().setLocTypeVo(this.locTypeDao.findVo(userData.getLocationVo().getLocTypeId()));
 		}
 	}
 

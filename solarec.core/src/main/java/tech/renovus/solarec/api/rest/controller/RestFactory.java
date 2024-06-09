@@ -30,6 +30,7 @@ import tech.renovus.solarec.vo.db.data.GenNeighbourVo;
 import tech.renovus.solarec.vo.db.data.GenPowerVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocSdgVo;
+import tech.renovus.solarec.vo.db.data.LocTypeVo;
 import tech.renovus.solarec.vo.db.data.LocWeatherDataVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.RepTypeVo;
@@ -177,6 +178,16 @@ public class RestFactory {
 		return result;
 	}
 	
+	public Location.Type convert(LocTypeVo vo) {
+		if (vo == null) return null;
+		
+		Location.Type result = new Location.Type();
+		result.setCode(vo.getLocTypeCode());
+		result.setText(vo.getLocTypeText());
+		
+		return result;
+	}
+	
 	public Location convert(LocationVo vo) {
 		if (vo == null) return null;
 		
@@ -188,6 +199,7 @@ public class RestFactory {
 		result.setAddress(vo.getLocAddress());
 		result.setState(vo.getLocState());
 		result.setCountry(this.convert(vo.getCountryVo()));
+		result.setTypeOf(this.convert(vo.getLocTypeVo()));
 		result.setLatitude(vo.getLocCoordLat());
 		result.setLongitude(vo.getLocCoordLng());
 		result.setOutputCapacity(vo.getLocOutputCapacity());
@@ -196,6 +208,7 @@ public class RestFactory {
 		result.setDataDefinitionId(vo.getDataDefId());
 		result.setType(vo.getLocType());
 		result.setDemoDate(vo.getLocDemoDate());
+		result.setGridConnected(FlagUtil.getFlagValue(vo, LocationVo.FLAG_CONNECTED_TO_GRID));
 		
 		result.setDataDefinition(convert(vo.getDataDefinitionVo()));
 		

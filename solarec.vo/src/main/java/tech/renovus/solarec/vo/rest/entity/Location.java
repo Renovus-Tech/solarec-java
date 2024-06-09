@@ -7,6 +7,26 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Location {
+	
+	//--- Innner classes ------------------------
+	public static class Type {
+		private String code;
+		private String text;
+		
+		
+		public String getCode() {
+			return code;
+		}
+		public void setCode(String code) {
+			this.code = code;
+		}
+		public String getText() {
+			return text;
+		}
+		public void setText(String text) {
+			this.text = text;
+		}
+	}
 
 	//--- Private properties --------------------
 	private Integer id;
@@ -15,12 +35,14 @@ public class Location {
 	private String address;
 	private String state;
 	private Country country;
+	private Type typeOf;
 	private Double latitude;
 	private Double longitude;
 	private Double outputCapacity;
 	private Double outputTotalCapacity;
 	private Double referenceDensity;
 	private String type;
+	private boolean gridConnected;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss") private Date demoDate;
 	
 	private Integer dataDefinitionId;
@@ -154,5 +176,19 @@ public class Location {
 	}
 	public void setSdgs(List<Sdg> sdgs) {
 		this.sdgs = sdgs;
+	}
+
+	public Type getTypeOf() {
+		return typeOf;
+	}
+
+	public void setTypeOf(Type typeOf) {
+		this.typeOf = typeOf;
+	}
+	public boolean getGridConnected() {
+		return gridConnected;
+	}
+	public void setGridConnected(boolean gridConnected) {
+		this.gridConnected = gridConnected;
 	}
 }

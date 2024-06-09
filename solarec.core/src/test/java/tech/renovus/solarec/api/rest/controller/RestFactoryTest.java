@@ -1,6 +1,7 @@
 package tech.renovus.solarec.api.rest.controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -15,6 +16,7 @@ import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.SecurityService;
 import tech.renovus.solarec.interfaces.ISetting;
 import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.vo.db.data.CliSettingVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.CountryVo;
@@ -23,6 +25,7 @@ import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 import tech.renovus.solarec.vo.db.data.GenPowerVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocSdgVo;
+import tech.renovus.solarec.vo.db.data.LocTypeVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.SdgVo;
 import tech.renovus.solarec.vo.db.data.SettingsVo;
@@ -57,14 +60,21 @@ public class RestFactoryTest {
 		result.setLocName("Test");
 		result.setLocAddress("Address");
 		result.setLocState("State");
-		result.setLocFlags("10101");
 		result.setLocCode("T1");
 		result.setLocType(LocationVo.TYPE_SOLAR);
 		result.setLocGmt("-3:00");
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_REPORT_ENABLED		    , false);
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_HIDE_FROM_DASHBOARD		, false);
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_ALERT_CALCULATION_ENABLED	, false);
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_ENABLED_FOR_EMAIL_ALERT	, false);
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_CONNECTED_TO_GRID			, false);
 
 		result.add(this.creteGenerator());
 		result.add(this.createStation());
 		result.add(this.createLocSdg());
+		
+		result.setCountryVo(this.creteCountry());
+		result.setLocTypeVo(this.createLocType());
 		
 		return result;
 	}
@@ -139,6 +149,15 @@ public class RestFactoryTest {
 		result.setCtrName("name");
 		result.setCtrCode2("2");
 		result.setCtrCode3("3");
+		
+		return result;
+	}
+	
+	private LocTypeVo createLocType() {
+		LocTypeVo result = new LocTypeVo();
+		result.setLocTypeId(Integer.valueOf(1));
+		result.setLocTypeCode("loc_type_code");
+		result.setLocTypeText("loc type text");
 		
 		return result;
 	}
@@ -278,7 +297,7 @@ public class RestFactoryTest {
 		assertEquals(result.getName(), vo.getLocName());
 		assertEquals(result.getAddress(), vo.getLocAddress());
 		assertEquals(result.getState(), vo.getLocState());
-		assertEquals(result.getCountry(), factory.convert(vo.getCountryVo()));
+		
 		assertEquals(result.getLatitude(), vo.getLocCoordLat());
 		assertEquals(result.getLongitude(), vo.getLocCoordLng());
 		assertEquals(result.getOutputCapacity(), vo.getLocOutputCapacity());
@@ -287,10 +306,14 @@ public class RestFactoryTest {
 		assertEquals(result.getDataDefinitionId(), vo.getDataDefId());
 		assertEquals(result.getType(), vo.getLocType());
 		assertEquals(result.getDemoDate(), vo.getLocDemoDate());
+		assertFalse(result.getGridConnected());
 		
 		assertEquals(CollectionUtil.size(result.getGenerators()), CollectionUtil.size(vo.getGenerators()));
 		assertEquals(CollectionUtil.size(result.getStations()), CollectionUtil.size(vo.getStations()));
 		assertEquals(CollectionUtil.size(result.getSdgs()), CollectionUtil.size(vo.getSdgs()));
+		
+		assertNotNull(result.getCountry());
+		assertNotNull(result.getTypeOf());
 	}
 
 	@Test
@@ -303,6 +326,17 @@ public class RestFactoryTest {
 		assertEquals(vo.getCtrName(), result.getName());
 		assertEquals(vo.getCtrCode2(), result.getIso2());
 		assertEquals(vo.getCtrCode3(), result.getIso3());
+	}
+	
+	@Test
+	public void testLocType() {
+		RestFactory factory =  new RestFactory();
+		LocTypeVo vo = this.createLocType();
+		Location.Type result = factory.convert(vo);
+		
+		assertNull(factory.convert((CountryVo) null));
+		assertEquals(vo.getLocTypeCode(), result.getCode());
+		assertEquals(vo.getLocTypeText(), result.getText());
 	}
 
 	@Test

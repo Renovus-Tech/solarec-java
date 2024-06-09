@@ -15,6 +15,7 @@ public class LocationVo extends DbLocationVo implements IDataContainer, Comparab
 	public static final int FLAG_HIDE_FROM_DASHBOARD		= 1;
 	public static final int FLAG_ALERT_CALCULATION_ENABLED	= 2;
 	public static final int FLAG_ENABLED_FOR_EMAIL_ALERT	= 3;
+	public static final int FLAG_CONNECTED_TO_GRID			= 4;
 
 	public static final String TYPE_SOLAR				= "solar";
 	
