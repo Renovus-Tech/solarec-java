@@ -31,18 +31,18 @@ public abstract class BaseStatTypeDao <T extends StatTypeVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("stat_type_id", vo.getStatTypeId())
-			.addValue("stat_type_name", vo.getStatTypeName())
-			.addValue("stat_type_unit", vo.getStatTypeUnit())
-			.addValue("stat_type_description", vo.getStatTypeDescription());
+			.addValue(StatTypeVo.COLUMN_STAT_TYPE_ID, vo.getStatTypeId())
+			.addValue(StatTypeVo.COLUMN_STAT_TYPE_NAME, vo.getStatTypeName())
+			.addValue(StatTypeVo.COLUMN_STAT_TYPE_UNIT, vo.getStatTypeUnit())
+			.addValue(StatTypeVo.COLUMN_STAT_TYPE_DESCRIPTION, vo.getStatTypeDescription());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("stat_type_name", vo.getStatTypeName())
-			.addValue("stat_type_unit", vo.getStatTypeUnit())
-			.addValue("stat_type_description", vo.getStatTypeDescription())
-			.addValue("stat_type_id", vo.getStatTypeId());
+			.addValue(StatTypeVo.COLUMN_STAT_TYPE_NAME, vo.getStatTypeName())
+			.addValue(StatTypeVo.COLUMN_STAT_TYPE_UNIT, vo.getStatTypeUnit())
+			.addValue(StatTypeVo.COLUMN_STAT_TYPE_DESCRIPTION, vo.getStatTypeDescription())
+			.addValue(StatTypeVo.COLUMN_STAT_TYPE_ID, vo.getStatTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -51,7 +51,7 @@ public abstract class BaseStatTypeDao <T extends StatTypeVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer statTypeId) {
 		return new MapSqlParameterSource()
-			.addValue("stat_type_id", statTypeId);
+			.addValue(StatTypeVo.COLUMN_STAT_TYPE_ID, statTypeId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StatTypeRowWrapper.getInstance()); }

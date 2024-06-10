@@ -32,22 +32,22 @@ public abstract class BaseStatDefinitionDao <T extends StatDefinitionVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("stat_def_id_auto", vo.getStatDefId())
-			.addValue("stat_def_type", vo.getStatDefType())
-			.addValue("stat_def_name", vo.getStatDefName())
-			.addValue("stat_def_description", vo.getStatDefDescription())
-			.addValue("stat_def_executable", vo.getStatDefExecutable())
-			.addValue("stat_def_flags", vo.getStatDefFlags());
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_ID, vo.getStatDefId())
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_TYPE, vo.getStatDefType())
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_NAME, vo.getStatDefName())
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_DESCRIPTION, vo.getStatDefDescription())
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_EXECUTABLE, vo.getStatDefExecutable())
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_FLAGS, vo.getStatDefFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("stat_def_type", vo.getStatDefType())
-			.addValue("stat_def_name", vo.getStatDefName())
-			.addValue("stat_def_description", vo.getStatDefDescription())
-			.addValue("stat_def_executable", vo.getStatDefExecutable())
-			.addValue("stat_def_flags", vo.getStatDefFlags())
-			.addValue("stat_def_id_auto", vo.getStatDefId());
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_TYPE, vo.getStatDefType())
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_NAME, vo.getStatDefName())
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_DESCRIPTION, vo.getStatDefDescription())
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_EXECUTABLE, vo.getStatDefExecutable())
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_FLAGS, vo.getStatDefFlags())
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_ID, vo.getStatDefId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -56,7 +56,7 @@ public abstract class BaseStatDefinitionDao <T extends StatDefinitionVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer statDefId) {
 		return new MapSqlParameterSource()
-			.addValue("stat_def_id_auto", statDefId);
+			.addValue(StatDefinitionVo.COLUMN_STAT_DEF_ID, statDefId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StatDefinitionRowWrapper.getInstance()); }

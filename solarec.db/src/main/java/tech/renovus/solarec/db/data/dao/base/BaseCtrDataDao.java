@@ -31,22 +31,22 @@ public abstract class BaseCtrDataDao <T extends CtrDataVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("ctr_id", vo.getCtrId())
-			.addValue("data_date", vo.getDataDate())
-			.addValue("data_type_id", vo.getDataTypeId())
-			.addValue("data_pro_id", vo.getDataProId())
-			.addValue("data_value", vo.getDataValue())
-			.addValue("data_date_added", vo.getDataDateAdded());
+			.addValue(CtrDataVo.COLUMN_CTR_ID, vo.getCtrId())
+			.addValue(CtrDataVo.COLUMN_DATA_DATE, vo.getDataDate())
+			.addValue(CtrDataVo.COLUMN_DATA_TYPE_ID, vo.getDataTypeId())
+			.addValue(CtrDataVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
+			.addValue(CtrDataVo.COLUMN_DATA_VALUE, vo.getDataValue())
+			.addValue(CtrDataVo.COLUMN_DATA_DATE_ADDED, vo.getDataDateAdded());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_pro_id", vo.getDataProId())
-			.addValue("data_value", vo.getDataValue())
-			.addValue("data_date_added", vo.getDataDateAdded())
-			.addValue("ctr_id", vo.getCtrId())
-			.addValue("data_date", vo.getDataDate())
-			.addValue("data_type_id", vo.getDataTypeId());
+			.addValue(CtrDataVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
+			.addValue(CtrDataVo.COLUMN_DATA_VALUE, vo.getDataValue())
+			.addValue(CtrDataVo.COLUMN_DATA_DATE_ADDED, vo.getDataDateAdded())
+			.addValue(CtrDataVo.COLUMN_CTR_ID, vo.getCtrId())
+			.addValue(CtrDataVo.COLUMN_DATA_DATE, vo.getDataDate())
+			.addValue(CtrDataVo.COLUMN_DATA_TYPE_ID, vo.getDataTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -55,9 +55,9 @@ public abstract class BaseCtrDataDao <T extends CtrDataVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer ctrId, java.util.Date dataDate, Integer dataTypeId) {
 		return new MapSqlParameterSource()
-			.addValue("ctr_id", ctrId)
-			.addValue("data_date", dataDate)
-			.addValue("data_type_id", dataTypeId);
+			.addValue(CtrDataVo.COLUMN_CTR_ID, ctrId)
+			.addValue(CtrDataVo.COLUMN_DATA_DATE, dataDate)
+			.addValue(CtrDataVo.COLUMN_DATA_TYPE_ID, dataTypeId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CtrDataRowWrapper.getInstance()); }

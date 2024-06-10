@@ -32,16 +32,16 @@ public abstract class BaseLocTypeDao <T extends LocTypeVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_type_id_auto", vo.getLocTypeId())
-			.addValue("loc_type_code", vo.getLocTypeCode())
-			.addValue("loc_type_text", vo.getLocTypeText());
+			.addValue(LocTypeVo.COLUMN_LOC_TYPE_ID, vo.getLocTypeId())
+			.addValue(LocTypeVo.COLUMN_LOC_TYPE_CODE, vo.getLocTypeCode())
+			.addValue(LocTypeVo.COLUMN_LOC_TYPE_TEXT, vo.getLocTypeText());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_type_code", vo.getLocTypeCode())
-			.addValue("loc_type_text", vo.getLocTypeText())
-			.addValue("loc_type_id_auto", vo.getLocTypeId());
+			.addValue(LocTypeVo.COLUMN_LOC_TYPE_CODE, vo.getLocTypeCode())
+			.addValue(LocTypeVo.COLUMN_LOC_TYPE_TEXT, vo.getLocTypeText())
+			.addValue(LocTypeVo.COLUMN_LOC_TYPE_ID, vo.getLocTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -50,7 +50,7 @@ public abstract class BaseLocTypeDao <T extends LocTypeVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer locTypeId) {
 		return new MapSqlParameterSource()
-			.addValue("loc_type_id_auto", locTypeId);
+			.addValue(LocTypeVo.COLUMN_LOC_TYPE_ID, locTypeId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocTypeRowWrapper.getInstance()); }

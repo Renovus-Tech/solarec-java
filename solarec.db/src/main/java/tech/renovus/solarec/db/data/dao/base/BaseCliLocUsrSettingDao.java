@@ -31,18 +31,18 @@ public abstract class BaseCliLocUsrSettingDao <T extends CliLocUsrSettingVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("usr_id", vo.getUsrId())
-			.addValue("cli_loc_alert_flags", vo.getCliLocAlertFlags());
+			.addValue(CliLocUsrSettingVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliLocUsrSettingVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(CliLocUsrSettingVo.COLUMN_USR_ID, vo.getUsrId())
+			.addValue(CliLocUsrSettingVo.COLUMN_CLI_LOC_ALERT_FLAGS, vo.getCliLocAlertFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_loc_alert_flags", vo.getCliLocAlertFlags())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("usr_id", vo.getUsrId());
+			.addValue(CliLocUsrSettingVo.COLUMN_CLI_LOC_ALERT_FLAGS, vo.getCliLocAlertFlags())
+			.addValue(CliLocUsrSettingVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliLocUsrSettingVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(CliLocUsrSettingVo.COLUMN_USR_ID, vo.getUsrId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -51,9 +51,9 @@ public abstract class BaseCliLocUsrSettingDao <T extends CliLocUsrSettingVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, Integer usrId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("loc_id", locId)
-			.addValue("usr_id", usrId);
+			.addValue(CliLocUsrSettingVo.COLUMN_CLI_ID, cliId)
+			.addValue(CliLocUsrSettingVo.COLUMN_LOC_ID, locId)
+			.addValue(CliLocUsrSettingVo.COLUMN_USR_ID, usrId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliLocUsrSettingRowWrapper.getInstance()); }

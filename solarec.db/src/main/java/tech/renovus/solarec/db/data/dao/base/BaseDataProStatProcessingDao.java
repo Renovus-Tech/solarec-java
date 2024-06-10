@@ -31,14 +31,14 @@ public abstract class BaseDataProStatProcessingDao <T extends DataProStatProcess
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_pro_id", vo.getDataProId())
-			.addValue("stat_pro_id", vo.getStatProId());
+			.addValue(DataProStatProcessingVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
+			.addValue(DataProStatProcessingVo.COLUMN_STAT_PRO_ID, vo.getStatProId());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_pro_id", vo.getDataProId())
-			.addValue("stat_pro_id", vo.getStatProId());
+			.addValue(DataProStatProcessingVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
+			.addValue(DataProStatProcessingVo.COLUMN_STAT_PRO_ID, vo.getStatProId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -47,8 +47,8 @@ public abstract class BaseDataProStatProcessingDao <T extends DataProStatProcess
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer dataProId, Integer statProId) {
 		return new MapSqlParameterSource()
-			.addValue("data_pro_id", dataProId)
-			.addValue("stat_pro_id", statProId);
+			.addValue(DataProStatProcessingVo.COLUMN_DATA_PRO_ID, dataProId)
+			.addValue(DataProStatProcessingVo.COLUMN_STAT_PRO_ID, statProId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataProStatProcessingRowWrapper.getInstance()); }

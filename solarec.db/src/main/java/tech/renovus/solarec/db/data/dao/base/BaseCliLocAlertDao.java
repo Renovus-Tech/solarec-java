@@ -32,26 +32,26 @@ public abstract class BaseCliLocAlertDao <T extends CliLocAlertVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_loc_alert_trigger", vo.getCliLocAlertTrigger())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("cli_loc_alert_id_auto", vo.getCliLocAlertId())
-			.addValue("cli_loc_alert_added", vo.getCliLocAlertAdded())
-			.addValue("cli_loc_alert_type", vo.getCliLocAlertType())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("cli_loc_alert_flags", vo.getCliLocAlertFlags())
-			.addValue("cli_loc_alert_data", vo.getCliLocAlertData());
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_TRIGGER, vo.getCliLocAlertTrigger())
+			.addValue(CliLocAlertVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_ID, vo.getCliLocAlertId())
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_ADDED, vo.getCliLocAlertAdded())
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_TYPE, vo.getCliLocAlertType())
+			.addValue(CliLocAlertVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_FLAGS, vo.getCliLocAlertFlags())
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_DATA, vo.getCliLocAlertData());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_loc_alert_trigger", vo.getCliLocAlertTrigger())
-			.addValue("cli_loc_alert_added", vo.getCliLocAlertAdded())
-			.addValue("cli_loc_alert_type", vo.getCliLocAlertType())
-			.addValue("cli_loc_alert_flags", vo.getCliLocAlertFlags())
-			.addValue("cli_loc_alert_data", vo.getCliLocAlertData())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("cli_loc_alert_id_auto", vo.getCliLocAlertId())
-			.addValue("cli_id", vo.getCliId());
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_TRIGGER, vo.getCliLocAlertTrigger())
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_ADDED, vo.getCliLocAlertAdded())
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_TYPE, vo.getCliLocAlertType())
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_FLAGS, vo.getCliLocAlertFlags())
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_DATA, vo.getCliLocAlertData())
+			.addValue(CliLocAlertVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_ID, vo.getCliLocAlertId())
+			.addValue(CliLocAlertVo.COLUMN_CLI_ID, vo.getCliId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -60,9 +60,9 @@ public abstract class BaseCliLocAlertDao <T extends CliLocAlertVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer locId, Integer cliLocAlertId, Integer cliId) {
 		return new MapSqlParameterSource()
-			.addValue("loc_id", locId)
-			.addValue("cli_loc_alert_id_auto", cliLocAlertId)
-			.addValue("cli_id", cliId);
+			.addValue(CliLocAlertVo.COLUMN_LOC_ID, locId)
+			.addValue(CliLocAlertVo.COLUMN_CLI_LOC_ALERT_ID, cliLocAlertId)
+			.addValue(CliLocAlertVo.COLUMN_CLI_ID, cliId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliLocAlertRowWrapper.getInstance()); }

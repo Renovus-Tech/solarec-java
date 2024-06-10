@@ -32,32 +32,32 @@ public abstract class BaseUsersDao <T extends UsersVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("usr_id_auto", vo.getUsrId())
-			.addValue("usr_date_login", vo.getUsrDateLogin())
-			.addValue("usr_date_added", vo.getUsrDateAdded())
-			.addValue("usr_date_locked", vo.getUsrDateLocked())
-			.addValue("usr_pwd_reset_requested", vo.getUsrPwdResetRequested())
-			.addValue("usr_pwd_reset_uuid", vo.getUsrPwdResetUuid())
-			.addValue("usr_comments", vo.getUsrComments())
-			.addValue("usr_email", vo.getUsrEmail())
-			.addValue("usr_name", vo.getUsrName())
-			.addValue("usr_flags", vo.getUsrFlags())
-			.addValue("usr_password", vo.getUsrPassword());
+			.addValue(UsersVo.COLUMN_USR_ID, vo.getUsrId())
+			.addValue(UsersVo.COLUMN_USR_DATE_LOGIN, vo.getUsrDateLogin())
+			.addValue(UsersVo.COLUMN_USR_DATE_ADDED, vo.getUsrDateAdded())
+			.addValue(UsersVo.COLUMN_USR_DATE_LOCKED, vo.getUsrDateLocked())
+			.addValue(UsersVo.COLUMN_USR_PWD_RESET_REQUESTED, vo.getUsrPwdResetRequested())
+			.addValue(UsersVo.COLUMN_USR_PWD_RESET_UUID, vo.getUsrPwdResetUuid())
+			.addValue(UsersVo.COLUMN_USR_COMMENTS, vo.getUsrComments())
+			.addValue(UsersVo.COLUMN_USR_EMAIL, vo.getUsrEmail())
+			.addValue(UsersVo.COLUMN_USR_NAME, vo.getUsrName())
+			.addValue(UsersVo.COLUMN_USR_FLAGS, vo.getUsrFlags())
+			.addValue(UsersVo.COLUMN_USR_PASSWORD, vo.getUsrPassword());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("usr_date_login", vo.getUsrDateLogin())
-			.addValue("usr_date_added", vo.getUsrDateAdded())
-			.addValue("usr_date_locked", vo.getUsrDateLocked())
-			.addValue("usr_pwd_reset_requested", vo.getUsrPwdResetRequested())
-			.addValue("usr_pwd_reset_uuid", vo.getUsrPwdResetUuid())
-			.addValue("usr_comments", vo.getUsrComments())
-			.addValue("usr_email", vo.getUsrEmail())
-			.addValue("usr_name", vo.getUsrName())
-			.addValue("usr_flags", vo.getUsrFlags())
-			.addValue("usr_password", vo.getUsrPassword())
-			.addValue("usr_id_auto", vo.getUsrId());
+			.addValue(UsersVo.COLUMN_USR_DATE_LOGIN, vo.getUsrDateLogin())
+			.addValue(UsersVo.COLUMN_USR_DATE_ADDED, vo.getUsrDateAdded())
+			.addValue(UsersVo.COLUMN_USR_DATE_LOCKED, vo.getUsrDateLocked())
+			.addValue(UsersVo.COLUMN_USR_PWD_RESET_REQUESTED, vo.getUsrPwdResetRequested())
+			.addValue(UsersVo.COLUMN_USR_PWD_RESET_UUID, vo.getUsrPwdResetUuid())
+			.addValue(UsersVo.COLUMN_USR_COMMENTS, vo.getUsrComments())
+			.addValue(UsersVo.COLUMN_USR_EMAIL, vo.getUsrEmail())
+			.addValue(UsersVo.COLUMN_USR_NAME, vo.getUsrName())
+			.addValue(UsersVo.COLUMN_USR_FLAGS, vo.getUsrFlags())
+			.addValue(UsersVo.COLUMN_USR_PASSWORD, vo.getUsrPassword())
+			.addValue(UsersVo.COLUMN_USR_ID, vo.getUsrId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -66,7 +66,7 @@ public abstract class BaseUsersDao <T extends UsersVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer usrId) {
 		return new MapSqlParameterSource()
-			.addValue("usr_id_auto", usrId);
+			.addValue(UsersVo.COLUMN_USR_ID, usrId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, UsersRowWrapper.getInstance()); }

@@ -32,30 +32,30 @@ public abstract class BaseCliDataDefTriggerDao <T extends CliDataDefTriggerVo > 
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("tri_id_auto", vo.getTriId())
-			.addValue("sta_id", vo.getStaId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("tri_source", vo.getTriSource())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("tri_name", vo.getTriName())
-			.addValue("tri_value", vo.getTriValue())
-			.addValue("tri_flags", vo.getTriFlags());
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_ID, vo.getTriId())
+			.addValue(CliDataDefTriggerVo.COLUMN_STA_ID, vo.getStaId())
+			.addValue(CliDataDefTriggerVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_SOURCE, vo.getTriSource())
+			.addValue(CliDataDefTriggerVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliDataDefTriggerVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(CliDataDefTriggerVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_NAME, vo.getTriName())
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_VALUE, vo.getTriValue())
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_FLAGS, vo.getTriFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("sta_id", vo.getStaId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("tri_source", vo.getTriSource())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("tri_name", vo.getTriName())
-			.addValue("tri_value", vo.getTriValue())
-			.addValue("tri_flags", vo.getTriFlags())
-			.addValue("tri_id_auto", vo.getTriId());
+			.addValue(CliDataDefTriggerVo.COLUMN_STA_ID, vo.getStaId())
+			.addValue(CliDataDefTriggerVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_SOURCE, vo.getTriSource())
+			.addValue(CliDataDefTriggerVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliDataDefTriggerVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(CliDataDefTriggerVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_NAME, vo.getTriName())
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_VALUE, vo.getTriValue())
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_FLAGS, vo.getTriFlags())
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_ID, vo.getTriId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -64,7 +64,7 @@ public abstract class BaseCliDataDefTriggerDao <T extends CliDataDefTriggerVo > 
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer triId) {
 		return new MapSqlParameterSource()
-			.addValue("tri_id_auto", triId);
+			.addValue(CliDataDefTriggerVo.COLUMN_TRI_ID, triId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliDataDefTriggerRowWrapper.getInstance()); }

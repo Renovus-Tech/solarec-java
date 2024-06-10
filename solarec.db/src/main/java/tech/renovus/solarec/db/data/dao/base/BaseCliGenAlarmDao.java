@@ -31,18 +31,18 @@ public abstract class BaseCliGenAlarmDao <T extends CliGenAlarmVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("alarm_code", vo.getAlarmCode())
-			.addValue("data_cat_id", vo.getDataCatId())
-			.addValue("alarm_description", vo.getAlarmDescription());
+			.addValue(CliGenAlarmVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliGenAlarmVo.COLUMN_ALARM_CODE, vo.getAlarmCode())
+			.addValue(CliGenAlarmVo.COLUMN_DATA_CAT_ID, vo.getDataCatId())
+			.addValue(CliGenAlarmVo.COLUMN_ALARM_DESCRIPTION, vo.getAlarmDescription());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_cat_id", vo.getDataCatId())
-			.addValue("alarm_description", vo.getAlarmDescription())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("alarm_code", vo.getAlarmCode());
+			.addValue(CliGenAlarmVo.COLUMN_DATA_CAT_ID, vo.getDataCatId())
+			.addValue(CliGenAlarmVo.COLUMN_ALARM_DESCRIPTION, vo.getAlarmDescription())
+			.addValue(CliGenAlarmVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliGenAlarmVo.COLUMN_ALARM_CODE, vo.getAlarmCode());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -51,8 +51,8 @@ public abstract class BaseCliGenAlarmDao <T extends CliGenAlarmVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Double alarmCode) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("alarm_code", alarmCode);
+			.addValue(CliGenAlarmVo.COLUMN_CLI_ID, cliId)
+			.addValue(CliGenAlarmVo.COLUMN_ALARM_CODE, alarmCode);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliGenAlarmRowWrapper.getInstance()); }

@@ -31,16 +31,16 @@ public abstract class BaseDataDefAlertDefinitionDao <T extends DataDefAlertDefin
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("alert_def_id", vo.getAlertDefId())
-			.addValue("alert_def_call_order", vo.getAlertDefCallOrder());
+			.addValue(DataDefAlertDefinitionVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(DataDefAlertDefinitionVo.COLUMN_ALERT_DEF_ID, vo.getAlertDefId())
+			.addValue(DataDefAlertDefinitionVo.COLUMN_ALERT_DEF_CALL_ORDER, vo.getAlertDefCallOrder());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("alert_def_call_order", vo.getAlertDefCallOrder())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("alert_def_id", vo.getAlertDefId());
+			.addValue(DataDefAlertDefinitionVo.COLUMN_ALERT_DEF_CALL_ORDER, vo.getAlertDefCallOrder())
+			.addValue(DataDefAlertDefinitionVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(DataDefAlertDefinitionVo.COLUMN_ALERT_DEF_ID, vo.getAlertDefId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -49,8 +49,8 @@ public abstract class BaseDataDefAlertDefinitionDao <T extends DataDefAlertDefin
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer dataDefId, Integer alertDefId) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_id", dataDefId)
-			.addValue("alert_def_id", alertDefId);
+			.addValue(DataDefAlertDefinitionVo.COLUMN_DATA_DEF_ID, dataDefId)
+			.addValue(DataDefAlertDefinitionVo.COLUMN_ALERT_DEF_ID, alertDefId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataDefAlertDefinitionRowWrapper.getInstance()); }

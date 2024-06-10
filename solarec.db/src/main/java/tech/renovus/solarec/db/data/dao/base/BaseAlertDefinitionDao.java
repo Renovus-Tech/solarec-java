@@ -32,20 +32,20 @@ public abstract class BaseAlertDefinitionDao <T extends AlertDefinitionVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("alert_def_id_auto", vo.getAlertDefId())
-			.addValue("alert_def_name", vo.getAlertDefName())
-			.addValue("alert_def_description", vo.getAlertDefDescription())
-			.addValue("alert_def_executable", vo.getAlertDefExecutable())
-			.addValue("alert_def_flags", vo.getAlertDefFlags());
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_ID, vo.getAlertDefId())
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_NAME, vo.getAlertDefName())
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_DESCRIPTION, vo.getAlertDefDescription())
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_EXECUTABLE, vo.getAlertDefExecutable())
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_FLAGS, vo.getAlertDefFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("alert_def_name", vo.getAlertDefName())
-			.addValue("alert_def_description", vo.getAlertDefDescription())
-			.addValue("alert_def_executable", vo.getAlertDefExecutable())
-			.addValue("alert_def_flags", vo.getAlertDefFlags())
-			.addValue("alert_def_id_auto", vo.getAlertDefId());
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_NAME, vo.getAlertDefName())
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_DESCRIPTION, vo.getAlertDefDescription())
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_EXECUTABLE, vo.getAlertDefExecutable())
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_FLAGS, vo.getAlertDefFlags())
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_ID, vo.getAlertDefId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -54,7 +54,7 @@ public abstract class BaseAlertDefinitionDao <T extends AlertDefinitionVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer alertDefId) {
 		return new MapSqlParameterSource()
-			.addValue("alert_def_id_auto", alertDefId);
+			.addValue(AlertDefinitionVo.COLUMN_ALERT_DEF_ID, alertDefId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, AlertDefinitionRowWrapper.getInstance()); }

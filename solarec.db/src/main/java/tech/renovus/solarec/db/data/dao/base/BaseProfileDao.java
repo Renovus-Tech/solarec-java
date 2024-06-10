@@ -32,18 +32,18 @@ public abstract class BaseProfileDao <T extends ProfileVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("prf_id_auto", vo.getPrfId())
-			.addValue("prf_name", vo.getPrfName())
-			.addValue("prf_description", vo.getPrfDescription())
-			.addValue("prf_flags", vo.getPrfFlags());
+			.addValue(ProfileVo.COLUMN_PRF_ID, vo.getPrfId())
+			.addValue(ProfileVo.COLUMN_PRF_NAME, vo.getPrfName())
+			.addValue(ProfileVo.COLUMN_PRF_DESCRIPTION, vo.getPrfDescription())
+			.addValue(ProfileVo.COLUMN_PRF_FLAGS, vo.getPrfFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("prf_name", vo.getPrfName())
-			.addValue("prf_description", vo.getPrfDescription())
-			.addValue("prf_flags", vo.getPrfFlags())
-			.addValue("prf_id_auto", vo.getPrfId());
+			.addValue(ProfileVo.COLUMN_PRF_NAME, vo.getPrfName())
+			.addValue(ProfileVo.COLUMN_PRF_DESCRIPTION, vo.getPrfDescription())
+			.addValue(ProfileVo.COLUMN_PRF_FLAGS, vo.getPrfFlags())
+			.addValue(ProfileVo.COLUMN_PRF_ID, vo.getPrfId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -52,7 +52,7 @@ public abstract class BaseProfileDao <T extends ProfileVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer prfId) {
 		return new MapSqlParameterSource()
-			.addValue("prf_id_auto", prfId);
+			.addValue(ProfileVo.COLUMN_PRF_ID, prfId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, ProfileRowWrapper.getInstance()); }

@@ -31,14 +31,14 @@ public abstract class BaseStatDefResultDao <T extends StatDefResultVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("stat_def_id", vo.getStatDefId())
-			.addValue("stat_type_id", vo.getStatTypeId());
+			.addValue(StatDefResultVo.COLUMN_STAT_DEF_ID, vo.getStatDefId())
+			.addValue(StatDefResultVo.COLUMN_STAT_TYPE_ID, vo.getStatTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("stat_def_id", vo.getStatDefId())
-			.addValue("stat_type_id", vo.getStatTypeId());
+			.addValue(StatDefResultVo.COLUMN_STAT_DEF_ID, vo.getStatDefId())
+			.addValue(StatDefResultVo.COLUMN_STAT_TYPE_ID, vo.getStatTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -47,8 +47,8 @@ public abstract class BaseStatDefResultDao <T extends StatDefResultVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer statDefId, Integer statTypeId) {
 		return new MapSqlParameterSource()
-			.addValue("stat_def_id", statDefId)
-			.addValue("stat_type_id", statTypeId);
+			.addValue(StatDefResultVo.COLUMN_STAT_DEF_ID, statDefId)
+			.addValue(StatDefResultVo.COLUMN_STAT_TYPE_ID, statTypeId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StatDefResultRowWrapper.getInstance()); }

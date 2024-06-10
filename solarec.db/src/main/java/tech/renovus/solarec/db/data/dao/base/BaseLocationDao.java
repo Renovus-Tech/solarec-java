@@ -32,50 +32,50 @@ public abstract class BaseLocationDao <T extends LocationVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_type_id", vo.getLocTypeId())
-			.addValue("loc_id_auto", vo.getLocId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("loc_output_total_capacity", vo.getLocOutputTotalCapacity())
-			.addValue("loc_reference_density", vo.getLocReferenceDensity())
-			.addValue("loc_data_date_max", vo.getLocDataDateMax())
-			.addValue("loc_data_date_min", vo.getLocDataDateMin())
-			.addValue("loc_demo_date", vo.getLocDemoDate())
-			.addValue("ctr_id", vo.getCtrId())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_coord_lat", vo.getLocCoordLat())
-			.addValue("loc_coord_lng", vo.getLocCoordLng())
-			.addValue("loc_output_capacity", vo.getLocOutputCapacity())
-			.addValue("loc_name", vo.getLocName())
-			.addValue("loc_address", vo.getLocAddress())
-			.addValue("loc_state", vo.getLocState())
-			.addValue("loc_type", vo.getLocType())
-			.addValue("loc_flags", vo.getLocFlags())
-			.addValue("loc_code", vo.getLocCode())
-			.addValue("loc_gmt", vo.getLocGmt());
+			.addValue(LocationVo.COLUMN_LOC_TYPE_ID, vo.getLocTypeId())
+			.addValue(LocationVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocationVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(LocationVo.COLUMN_LOC_OUTPUT_TOTAL_CAPACITY, vo.getLocOutputTotalCapacity())
+			.addValue(LocationVo.COLUMN_LOC_REFERENCE_DENSITY, vo.getLocReferenceDensity())
+			.addValue(LocationVo.COLUMN_LOC_DATA_DATE_MAX, vo.getLocDataDateMax())
+			.addValue(LocationVo.COLUMN_LOC_DATA_DATE_MIN, vo.getLocDataDateMin())
+			.addValue(LocationVo.COLUMN_LOC_DEMO_DATE, vo.getLocDemoDate())
+			.addValue(LocationVo.COLUMN_CTR_ID, vo.getCtrId())
+			.addValue(LocationVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocationVo.COLUMN_LOC_COORD_LAT, vo.getLocCoordLat())
+			.addValue(LocationVo.COLUMN_LOC_COORD_LNG, vo.getLocCoordLng())
+			.addValue(LocationVo.COLUMN_LOC_OUTPUT_CAPACITY, vo.getLocOutputCapacity())
+			.addValue(LocationVo.COLUMN_LOC_NAME, vo.getLocName())
+			.addValue(LocationVo.COLUMN_LOC_ADDRESS, vo.getLocAddress())
+			.addValue(LocationVo.COLUMN_LOC_STATE, vo.getLocState())
+			.addValue(LocationVo.COLUMN_LOC_TYPE, vo.getLocType())
+			.addValue(LocationVo.COLUMN_LOC_FLAGS, vo.getLocFlags())
+			.addValue(LocationVo.COLUMN_LOC_CODE, vo.getLocCode())
+			.addValue(LocationVo.COLUMN_LOC_GMT, vo.getLocGmt());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_type_id", vo.getLocTypeId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("loc_output_total_capacity", vo.getLocOutputTotalCapacity())
-			.addValue("loc_reference_density", vo.getLocReferenceDensity())
-			.addValue("loc_data_date_max", vo.getLocDataDateMax())
-			.addValue("loc_data_date_min", vo.getLocDataDateMin())
-			.addValue("loc_demo_date", vo.getLocDemoDate())
-			.addValue("ctr_id", vo.getCtrId())
-			.addValue("loc_coord_lat", vo.getLocCoordLat())
-			.addValue("loc_coord_lng", vo.getLocCoordLng())
-			.addValue("loc_output_capacity", vo.getLocOutputCapacity())
-			.addValue("loc_name", vo.getLocName())
-			.addValue("loc_address", vo.getLocAddress())
-			.addValue("loc_state", vo.getLocState())
-			.addValue("loc_type", vo.getLocType())
-			.addValue("loc_flags", vo.getLocFlags())
-			.addValue("loc_code", vo.getLocCode())
-			.addValue("loc_gmt", vo.getLocGmt())
-			.addValue("loc_id_auto", vo.getLocId())
-			.addValue("cli_id", vo.getCliId());
+			.addValue(LocationVo.COLUMN_LOC_TYPE_ID, vo.getLocTypeId())
+			.addValue(LocationVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(LocationVo.COLUMN_LOC_OUTPUT_TOTAL_CAPACITY, vo.getLocOutputTotalCapacity())
+			.addValue(LocationVo.COLUMN_LOC_REFERENCE_DENSITY, vo.getLocReferenceDensity())
+			.addValue(LocationVo.COLUMN_LOC_DATA_DATE_MAX, vo.getLocDataDateMax())
+			.addValue(LocationVo.COLUMN_LOC_DATA_DATE_MIN, vo.getLocDataDateMin())
+			.addValue(LocationVo.COLUMN_LOC_DEMO_DATE, vo.getLocDemoDate())
+			.addValue(LocationVo.COLUMN_CTR_ID, vo.getCtrId())
+			.addValue(LocationVo.COLUMN_LOC_COORD_LAT, vo.getLocCoordLat())
+			.addValue(LocationVo.COLUMN_LOC_COORD_LNG, vo.getLocCoordLng())
+			.addValue(LocationVo.COLUMN_LOC_OUTPUT_CAPACITY, vo.getLocOutputCapacity())
+			.addValue(LocationVo.COLUMN_LOC_NAME, vo.getLocName())
+			.addValue(LocationVo.COLUMN_LOC_ADDRESS, vo.getLocAddress())
+			.addValue(LocationVo.COLUMN_LOC_STATE, vo.getLocState())
+			.addValue(LocationVo.COLUMN_LOC_TYPE, vo.getLocType())
+			.addValue(LocationVo.COLUMN_LOC_FLAGS, vo.getLocFlags())
+			.addValue(LocationVo.COLUMN_LOC_CODE, vo.getLocCode())
+			.addValue(LocationVo.COLUMN_LOC_GMT, vo.getLocGmt())
+			.addValue(LocationVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocationVo.COLUMN_CLI_ID, vo.getCliId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -84,8 +84,8 @@ public abstract class BaseLocationDao <T extends LocationVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer locId, Integer cliId) {
 		return new MapSqlParameterSource()
-			.addValue("loc_id_auto", locId)
-			.addValue("cli_id", cliId);
+			.addValue(LocationVo.COLUMN_LOC_ID, locId)
+			.addValue(LocationVo.COLUMN_CLI_ID, cliId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocationRowWrapper.getInstance()); }

@@ -31,22 +31,22 @@ public abstract class BaseLocWeaDataHourDao <T extends LocWeaDataHourVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("loc_wea_data_id", vo.getLocWeaDataId())
-			.addValue("loc_wea_data_hour", vo.getLocWeaDataHour())
-			.addValue("loc_wea_data_retrieve", vo.getLocWeaDataRetrieve())
-			.addValue("loc_wea_data_response", vo.getLocWeaDataResponse());
+			.addValue(LocWeaDataHourVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_WEA_DATA_ID, vo.getLocWeaDataId())
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_WEA_DATA_HOUR, vo.getLocWeaDataHour())
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_WEA_DATA_RETRIEVE, vo.getLocWeaDataRetrieve())
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_WEA_DATA_RESPONSE, vo.getLocWeaDataResponse());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_wea_data_retrieve", vo.getLocWeaDataRetrieve())
-			.addValue("loc_wea_data_response", vo.getLocWeaDataResponse())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("loc_wea_data_id", vo.getLocWeaDataId())
-			.addValue("loc_wea_data_hour", vo.getLocWeaDataHour());
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_WEA_DATA_RETRIEVE, vo.getLocWeaDataRetrieve())
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_WEA_DATA_RESPONSE, vo.getLocWeaDataResponse())
+			.addValue(LocWeaDataHourVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_WEA_DATA_ID, vo.getLocWeaDataId())
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_WEA_DATA_HOUR, vo.getLocWeaDataHour());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -55,10 +55,10 @@ public abstract class BaseLocWeaDataHourDao <T extends LocWeaDataHourVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, Integer locWeaDataId, java.util.Date locWeaDataHour) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("loc_id", locId)
-			.addValue("loc_wea_data_id", locWeaDataId)
-			.addValue("loc_wea_data_hour", locWeaDataHour);
+			.addValue(LocWeaDataHourVo.COLUMN_CLI_ID, cliId)
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_ID, locId)
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_WEA_DATA_ID, locWeaDataId)
+			.addValue(LocWeaDataHourVo.COLUMN_LOC_WEA_DATA_HOUR, locWeaDataHour);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocWeaDataHourRowWrapper.getInstance()); }

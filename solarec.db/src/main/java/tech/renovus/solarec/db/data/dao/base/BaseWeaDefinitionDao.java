@@ -32,28 +32,28 @@ public abstract class BaseWeaDefinitionDao <T extends WeaDefinitionVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("wea_id_auto", vo.getWeaId())
-			.addValue("wea_coord_lng", vo.getWeaCoordLng())
-			.addValue("wea_check_type", vo.getWeaCheckType())
-			.addValue("wea_check_frequency", vo.getWeaCheckFrequency())
-			.addValue("wea_coord_lat", vo.getWeaCoordLat())
-			.addValue("wea_name", vo.getWeaName())
-			.addValue("wea_description", vo.getWeaDescription())
-			.addValue("wea_flags", vo.getWeaFlags());
+			.addValue(WeaDefinitionVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_ID, vo.getWeaId())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_COORD_LNG, vo.getWeaCoordLng())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_CHECK_TYPE, vo.getWeaCheckType())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_CHECK_FREQUENCY, vo.getWeaCheckFrequency())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_COORD_LAT, vo.getWeaCoordLat())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_NAME, vo.getWeaName())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_DESCRIPTION, vo.getWeaDescription())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_FLAGS, vo.getWeaFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("wea_coord_lng", vo.getWeaCoordLng())
-			.addValue("wea_check_type", vo.getWeaCheckType())
-			.addValue("wea_check_frequency", vo.getWeaCheckFrequency())
-			.addValue("wea_coord_lat", vo.getWeaCoordLat())
-			.addValue("wea_name", vo.getWeaName())
-			.addValue("wea_description", vo.getWeaDescription())
-			.addValue("wea_flags", vo.getWeaFlags())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("wea_id_auto", vo.getWeaId());
+			.addValue(WeaDefinitionVo.COLUMN_WEA_COORD_LNG, vo.getWeaCoordLng())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_CHECK_TYPE, vo.getWeaCheckType())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_CHECK_FREQUENCY, vo.getWeaCheckFrequency())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_COORD_LAT, vo.getWeaCoordLat())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_NAME, vo.getWeaName())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_DESCRIPTION, vo.getWeaDescription())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_FLAGS, vo.getWeaFlags())
+			.addValue(WeaDefinitionVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(WeaDefinitionVo.COLUMN_WEA_ID, vo.getWeaId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -62,8 +62,8 @@ public abstract class BaseWeaDefinitionDao <T extends WeaDefinitionVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer weaId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("wea_id_auto", weaId);
+			.addValue(WeaDefinitionVo.COLUMN_CLI_ID, cliId)
+			.addValue(WeaDefinitionVo.COLUMN_WEA_ID, weaId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, WeaDefinitionRowWrapper.getInstance()); }

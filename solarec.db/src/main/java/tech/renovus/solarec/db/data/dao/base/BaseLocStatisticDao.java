@@ -31,24 +31,24 @@ public abstract class BaseLocStatisticDao <T extends LocStatisticVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("stat_date", vo.getStatDate())
-			.addValue("stat_type_id", vo.getStatTypeId())
-			.addValue("stat_pro_id", vo.getStatProId())
-			.addValue("stat_value", vo.getStatValue())
-			.addValue("stat_date_added", vo.getStatDateAdded());
+			.addValue(LocStatisticVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocStatisticVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocStatisticVo.COLUMN_STAT_DATE, vo.getStatDate())
+			.addValue(LocStatisticVo.COLUMN_STAT_TYPE_ID, vo.getStatTypeId())
+			.addValue(LocStatisticVo.COLUMN_STAT_PRO_ID, vo.getStatProId())
+			.addValue(LocStatisticVo.COLUMN_STAT_VALUE, vo.getStatValue())
+			.addValue(LocStatisticVo.COLUMN_STAT_DATE_ADDED, vo.getStatDateAdded());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("stat_pro_id", vo.getStatProId())
-			.addValue("stat_value", vo.getStatValue())
-			.addValue("stat_date_added", vo.getStatDateAdded())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("stat_date", vo.getStatDate())
-			.addValue("stat_type_id", vo.getStatTypeId());
+			.addValue(LocStatisticVo.COLUMN_STAT_PRO_ID, vo.getStatProId())
+			.addValue(LocStatisticVo.COLUMN_STAT_VALUE, vo.getStatValue())
+			.addValue(LocStatisticVo.COLUMN_STAT_DATE_ADDED, vo.getStatDateAdded())
+			.addValue(LocStatisticVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocStatisticVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocStatisticVo.COLUMN_STAT_DATE, vo.getStatDate())
+			.addValue(LocStatisticVo.COLUMN_STAT_TYPE_ID, vo.getStatTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -57,10 +57,10 @@ public abstract class BaseLocStatisticDao <T extends LocStatisticVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, java.util.Date statDate, Integer statTypeId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("loc_id", locId)
-			.addValue("stat_date", statDate)
-			.addValue("stat_type_id", statTypeId);
+			.addValue(LocStatisticVo.COLUMN_CLI_ID, cliId)
+			.addValue(LocStatisticVo.COLUMN_LOC_ID, locId)
+			.addValue(LocStatisticVo.COLUMN_STAT_DATE, statDate)
+			.addValue(LocStatisticVo.COLUMN_STAT_TYPE_ID, statTypeId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocStatisticRowWrapper.getInstance()); }

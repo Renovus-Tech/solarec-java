@@ -31,16 +31,16 @@ public abstract class BaseUsrSettingDao <T extends UsrSettingVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("usr_id", vo.getUsrId())
-			.addValue("usr_set_name", vo.getUsrSetName())
-			.addValue("usr_set_value", vo.getUsrSetValue());
+			.addValue(UsrSettingVo.COLUMN_USR_ID, vo.getUsrId())
+			.addValue(UsrSettingVo.COLUMN_USR_SET_NAME, vo.getUsrSetName())
+			.addValue(UsrSettingVo.COLUMN_USR_SET_VALUE, vo.getUsrSetValue());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("usr_set_value", vo.getUsrSetValue())
-			.addValue("usr_id", vo.getUsrId())
-			.addValue("usr_set_name", vo.getUsrSetName());
+			.addValue(UsrSettingVo.COLUMN_USR_SET_VALUE, vo.getUsrSetValue())
+			.addValue(UsrSettingVo.COLUMN_USR_ID, vo.getUsrId())
+			.addValue(UsrSettingVo.COLUMN_USR_SET_NAME, vo.getUsrSetName());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -49,8 +49,8 @@ public abstract class BaseUsrSettingDao <T extends UsrSettingVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer usrId, String usrSetName) {
 		return new MapSqlParameterSource()
-			.addValue("usr_id", usrId)
-			.addValue("usr_set_name", usrSetName);
+			.addValue(UsrSettingVo.COLUMN_USR_ID, usrId)
+			.addValue(UsrSettingVo.COLUMN_USR_SET_NAME, usrSetName);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, UsrSettingRowWrapper.getInstance()); }

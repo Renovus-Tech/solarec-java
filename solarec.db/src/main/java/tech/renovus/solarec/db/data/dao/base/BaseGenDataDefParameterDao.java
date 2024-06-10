@@ -31,20 +31,20 @@ public abstract class BaseGenDataDefParameterDao <T extends GenDataDefParameterV
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("data_def_par_id", vo.getDataDefParId())
-			.addValue("gen_data_def_par_value", vo.getGenDataDefParValue());
+			.addValue(GenDataDefParameterVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenDataDefParameterVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenDataDefParameterVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(GenDataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, vo.getDataDefParId())
+			.addValue(GenDataDefParameterVo.COLUMN_GEN_DATA_DEF_PAR_VALUE, vo.getGenDataDefParValue());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("gen_data_def_par_value", vo.getGenDataDefParValue())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("data_def_par_id", vo.getDataDefParId());
+			.addValue(GenDataDefParameterVo.COLUMN_GEN_DATA_DEF_PAR_VALUE, vo.getGenDataDefParValue())
+			.addValue(GenDataDefParameterVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenDataDefParameterVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenDataDefParameterVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(GenDataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, vo.getDataDefParId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -53,10 +53,10 @@ public abstract class BaseGenDataDefParameterDao <T extends GenDataDefParameterV
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer genId, Integer dataDefId, Integer dataDefParId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("gen_id", genId)
-			.addValue("data_def_id", dataDefId)
-			.addValue("data_def_par_id", dataDefParId);
+			.addValue(GenDataDefParameterVo.COLUMN_CLI_ID, cliId)
+			.addValue(GenDataDefParameterVo.COLUMN_GEN_ID, genId)
+			.addValue(GenDataDefParameterVo.COLUMN_DATA_DEF_ID, dataDefId)
+			.addValue(GenDataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, dataDefParId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenDataDefParameterRowWrapper.getInstance()); }

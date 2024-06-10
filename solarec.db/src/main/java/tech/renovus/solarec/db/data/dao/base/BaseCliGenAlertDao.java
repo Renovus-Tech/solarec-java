@@ -32,26 +32,26 @@ public abstract class BaseCliGenAlertDao <T extends CliGenAlertVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_gen_alert_trigger", vo.getCliGenAlertTrigger())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("cli_gen_alert_id_auto", vo.getCliGenAlertId())
-			.addValue("cli_gen_alert_added", vo.getCliGenAlertAdded())
-			.addValue("cli_gen_alert_type", vo.getCliGenAlertType())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("cli_gen_alert_flags", vo.getCliGenAlertFlags())
-			.addValue("cli_gen_alert_data", vo.getCliGenAlertData());
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_TRIGGER, vo.getCliGenAlertTrigger())
+			.addValue(CliGenAlertVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_ID, vo.getCliGenAlertId())
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_ADDED, vo.getCliGenAlertAdded())
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_TYPE, vo.getCliGenAlertType())
+			.addValue(CliGenAlertVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_FLAGS, vo.getCliGenAlertFlags())
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_DATA, vo.getCliGenAlertData());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_gen_alert_trigger", vo.getCliGenAlertTrigger())
-			.addValue("cli_gen_alert_added", vo.getCliGenAlertAdded())
-			.addValue("cli_gen_alert_type", vo.getCliGenAlertType())
-			.addValue("cli_gen_alert_flags", vo.getCliGenAlertFlags())
-			.addValue("cli_gen_alert_data", vo.getCliGenAlertData())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("cli_gen_alert_id_auto", vo.getCliGenAlertId())
-			.addValue("cli_id", vo.getCliId());
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_TRIGGER, vo.getCliGenAlertTrigger())
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_ADDED, vo.getCliGenAlertAdded())
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_TYPE, vo.getCliGenAlertType())
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_FLAGS, vo.getCliGenAlertFlags())
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_DATA, vo.getCliGenAlertData())
+			.addValue(CliGenAlertVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_ID, vo.getCliGenAlertId())
+			.addValue(CliGenAlertVo.COLUMN_CLI_ID, vo.getCliId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -60,9 +60,9 @@ public abstract class BaseCliGenAlertDao <T extends CliGenAlertVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer genId, Integer cliGenAlertId, Integer cliId) {
 		return new MapSqlParameterSource()
-			.addValue("gen_id", genId)
-			.addValue("cli_gen_alert_id_auto", cliGenAlertId)
-			.addValue("cli_id", cliId);
+			.addValue(CliGenAlertVo.COLUMN_GEN_ID, genId)
+			.addValue(CliGenAlertVo.COLUMN_CLI_GEN_ALERT_ID, cliGenAlertId)
+			.addValue(CliGenAlertVo.COLUMN_CLI_ID, cliId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliGenAlertRowWrapper.getInstance()); }

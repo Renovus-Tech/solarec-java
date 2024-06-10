@@ -31,20 +31,20 @@ public abstract class BaseLocGenAlarmDao <T extends LocGenAlarmVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("alarm_code", vo.getAlarmCode())
-			.addValue("data_cat_id", vo.getDataCatId())
-			.addValue("alarm_description", vo.getAlarmDescription());
+			.addValue(LocGenAlarmVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocGenAlarmVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocGenAlarmVo.COLUMN_ALARM_CODE, vo.getAlarmCode())
+			.addValue(LocGenAlarmVo.COLUMN_DATA_CAT_ID, vo.getDataCatId())
+			.addValue(LocGenAlarmVo.COLUMN_ALARM_DESCRIPTION, vo.getAlarmDescription());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_cat_id", vo.getDataCatId())
-			.addValue("alarm_description", vo.getAlarmDescription())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("alarm_code", vo.getAlarmCode());
+			.addValue(LocGenAlarmVo.COLUMN_DATA_CAT_ID, vo.getDataCatId())
+			.addValue(LocGenAlarmVo.COLUMN_ALARM_DESCRIPTION, vo.getAlarmDescription())
+			.addValue(LocGenAlarmVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocGenAlarmVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocGenAlarmVo.COLUMN_ALARM_CODE, vo.getAlarmCode());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -53,9 +53,9 @@ public abstract class BaseLocGenAlarmDao <T extends LocGenAlarmVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, Double alarmCode) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("loc_id", locId)
-			.addValue("alarm_code", alarmCode);
+			.addValue(LocGenAlarmVo.COLUMN_CLI_ID, cliId)
+			.addValue(LocGenAlarmVo.COLUMN_LOC_ID, locId)
+			.addValue(LocGenAlarmVo.COLUMN_ALARM_CODE, alarmCode);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocGenAlarmRowWrapper.getInstance()); }

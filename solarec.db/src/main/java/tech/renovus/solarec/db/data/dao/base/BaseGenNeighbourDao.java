@@ -31,18 +31,18 @@ public abstract class BaseGenNeighbourDao <T extends GenNeighbourVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("gen_id_neighbour", vo.getGenIdNeighbour())
-			.addValue("gen_id_neighbour_position", vo.getGenIdNeighbourPosition());
+			.addValue(GenNeighbourVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenNeighbourVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenNeighbourVo.COLUMN_GEN_ID_NEIGHBOUR, vo.getGenIdNeighbour())
+			.addValue(GenNeighbourVo.COLUMN_GEN_ID_NEIGHBOUR_POSITION, vo.getGenIdNeighbourPosition());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("gen_id_neighbour_position", vo.getGenIdNeighbourPosition())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("gen_id_neighbour", vo.getGenIdNeighbour());
+			.addValue(GenNeighbourVo.COLUMN_GEN_ID_NEIGHBOUR_POSITION, vo.getGenIdNeighbourPosition())
+			.addValue(GenNeighbourVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenNeighbourVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenNeighbourVo.COLUMN_GEN_ID_NEIGHBOUR, vo.getGenIdNeighbour());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -51,9 +51,9 @@ public abstract class BaseGenNeighbourDao <T extends GenNeighbourVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer genId, Integer genIdNeighbour) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("gen_id", genId)
-			.addValue("gen_id_neighbour", genIdNeighbour);
+			.addValue(GenNeighbourVo.COLUMN_CLI_ID, cliId)
+			.addValue(GenNeighbourVo.COLUMN_GEN_ID, genId)
+			.addValue(GenNeighbourVo.COLUMN_GEN_ID_NEIGHBOUR, genIdNeighbour);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenNeighbourRowWrapper.getInstance()); }

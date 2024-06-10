@@ -31,22 +31,22 @@ public abstract class BaseStaMetadataDao <T extends StaMetadataVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("sta_id", vo.getStaId())
-			.addValue("metadata_date_added", vo.getMetadataDateAdded())
-			.addValue("metadata_name", vo.getMetadataName())
-			.addValue("metadata_title", vo.getMetadataTitle())
-			.addValue("metadata_value", vo.getMetadataValue());
+			.addValue(StaMetadataVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(StaMetadataVo.COLUMN_STA_ID, vo.getStaId())
+			.addValue(StaMetadataVo.COLUMN_METADATA_DATE_ADDED, vo.getMetadataDateAdded())
+			.addValue(StaMetadataVo.COLUMN_METADATA_NAME, vo.getMetadataName())
+			.addValue(StaMetadataVo.COLUMN_METADATA_TITLE, vo.getMetadataTitle())
+			.addValue(StaMetadataVo.COLUMN_METADATA_VALUE, vo.getMetadataValue());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("metadata_date_added", vo.getMetadataDateAdded())
-			.addValue("metadata_title", vo.getMetadataTitle())
-			.addValue("metadata_value", vo.getMetadataValue())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("sta_id", vo.getStaId())
-			.addValue("metadata_name", vo.getMetadataName());
+			.addValue(StaMetadataVo.COLUMN_METADATA_DATE_ADDED, vo.getMetadataDateAdded())
+			.addValue(StaMetadataVo.COLUMN_METADATA_TITLE, vo.getMetadataTitle())
+			.addValue(StaMetadataVo.COLUMN_METADATA_VALUE, vo.getMetadataValue())
+			.addValue(StaMetadataVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(StaMetadataVo.COLUMN_STA_ID, vo.getStaId())
+			.addValue(StaMetadataVo.COLUMN_METADATA_NAME, vo.getMetadataName());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -55,9 +55,9 @@ public abstract class BaseStaMetadataDao <T extends StaMetadataVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer staId, String metadataName) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("sta_id", staId)
-			.addValue("metadata_name", metadataName);
+			.addValue(StaMetadataVo.COLUMN_CLI_ID, cliId)
+			.addValue(StaMetadataVo.COLUMN_STA_ID, staId)
+			.addValue(StaMetadataVo.COLUMN_METADATA_NAME, metadataName);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StaMetadataRowWrapper.getInstance()); }

@@ -32,28 +32,28 @@ public abstract class BaseClientDao <T extends ClientVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_demo_date", vo.getCliDemoDate())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("cli_id_auto", vo.getCliId())
-			.addValue("cli_name_address", vo.getCliNameAddress())
-			.addValue("cli_flags", vo.getCliFlags())
-			.addValue("cli_gmt", vo.getCliGmt())
-			.addValue("cli_sec_code", vo.getCliSecCode())
-			.addValue("cli_name", vo.getCliName())
-			.addValue("cli_name_legal", vo.getCliNameLegal());
+			.addValue(ClientVo.COLUMN_CLI_DEMO_DATE, vo.getCliDemoDate())
+			.addValue(ClientVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(ClientVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(ClientVo.COLUMN_CLI_NAME_ADDRESS, vo.getCliNameAddress())
+			.addValue(ClientVo.COLUMN_CLI_FLAGS, vo.getCliFlags())
+			.addValue(ClientVo.COLUMN_CLI_GMT, vo.getCliGmt())
+			.addValue(ClientVo.COLUMN_CLI_SEC_CODE, vo.getCliSecCode())
+			.addValue(ClientVo.COLUMN_CLI_NAME, vo.getCliName())
+			.addValue(ClientVo.COLUMN_CLI_NAME_LEGAL, vo.getCliNameLegal());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_demo_date", vo.getCliDemoDate())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("cli_name_address", vo.getCliNameAddress())
-			.addValue("cli_flags", vo.getCliFlags())
-			.addValue("cli_gmt", vo.getCliGmt())
-			.addValue("cli_sec_code", vo.getCliSecCode())
-			.addValue("cli_name", vo.getCliName())
-			.addValue("cli_name_legal", vo.getCliNameLegal())
-			.addValue("cli_id_auto", vo.getCliId());
+			.addValue(ClientVo.COLUMN_CLI_DEMO_DATE, vo.getCliDemoDate())
+			.addValue(ClientVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(ClientVo.COLUMN_CLI_NAME_ADDRESS, vo.getCliNameAddress())
+			.addValue(ClientVo.COLUMN_CLI_FLAGS, vo.getCliFlags())
+			.addValue(ClientVo.COLUMN_CLI_GMT, vo.getCliGmt())
+			.addValue(ClientVo.COLUMN_CLI_SEC_CODE, vo.getCliSecCode())
+			.addValue(ClientVo.COLUMN_CLI_NAME, vo.getCliName())
+			.addValue(ClientVo.COLUMN_CLI_NAME_LEGAL, vo.getCliNameLegal())
+			.addValue(ClientVo.COLUMN_CLI_ID, vo.getCliId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -62,7 +62,7 @@ public abstract class BaseClientDao <T extends ClientVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id_auto", cliId);
+			.addValue(ClientVo.COLUMN_CLI_ID, cliId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, ClientRowWrapper.getInstance()); }

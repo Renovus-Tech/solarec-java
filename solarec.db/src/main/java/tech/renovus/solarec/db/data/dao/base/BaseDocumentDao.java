@@ -32,36 +32,36 @@ public abstract class BaseDocumentDao <T extends DocumentVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("doc_id_auto", vo.getDocId())
-			.addValue("doc_type_id", vo.getDocTypeId())
-			.addValue("doc_date_added", vo.getDocDateAdded())
-			.addValue("doc_date_from", vo.getDocDateFrom())
-			.addValue("doc_date_to", vo.getDocDateTo())
-			.addValue("doc_file_size", vo.getDocFileSize())
-			.addValue("doc_flags", vo.getDocFlags())
-			.addValue("doc_name", vo.getDocName())
-			.addValue("doc_observations", vo.getDocObservations())
-			.addValue("doc_file", vo.getDocFile())
-			.addValue("doc_file_name", vo.getDocFileName())
-			.addValue("doc_file_content", vo.getDocFileContent());
+			.addValue(DocumentVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(DocumentVo.COLUMN_DOC_ID, vo.getDocId())
+			.addValue(DocumentVo.COLUMN_DOC_TYPE_ID, vo.getDocTypeId())
+			.addValue(DocumentVo.COLUMN_DOC_DATE_ADDED, vo.getDocDateAdded())
+			.addValue(DocumentVo.COLUMN_DOC_DATE_FROM, vo.getDocDateFrom())
+			.addValue(DocumentVo.COLUMN_DOC_DATE_TO, vo.getDocDateTo())
+			.addValue(DocumentVo.COLUMN_DOC_FILE_SIZE, vo.getDocFileSize())
+			.addValue(DocumentVo.COLUMN_DOC_FLAGS, vo.getDocFlags())
+			.addValue(DocumentVo.COLUMN_DOC_NAME, vo.getDocName())
+			.addValue(DocumentVo.COLUMN_DOC_OBSERVATIONS, vo.getDocObservations())
+			.addValue(DocumentVo.COLUMN_DOC_FILE, vo.getDocFile())
+			.addValue(DocumentVo.COLUMN_DOC_FILE_NAME, vo.getDocFileName())
+			.addValue(DocumentVo.COLUMN_DOC_FILE_CONTENT, vo.getDocFileContent());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("doc_type_id", vo.getDocTypeId())
-			.addValue("doc_date_added", vo.getDocDateAdded())
-			.addValue("doc_date_from", vo.getDocDateFrom())
-			.addValue("doc_date_to", vo.getDocDateTo())
-			.addValue("doc_file_size", vo.getDocFileSize())
-			.addValue("doc_flags", vo.getDocFlags())
-			.addValue("doc_name", vo.getDocName())
-			.addValue("doc_observations", vo.getDocObservations())
-			.addValue("doc_file", vo.getDocFile())
-			.addValue("doc_file_name", vo.getDocFileName())
-			.addValue("doc_file_content", vo.getDocFileContent())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("doc_id_auto", vo.getDocId());
+			.addValue(DocumentVo.COLUMN_DOC_TYPE_ID, vo.getDocTypeId())
+			.addValue(DocumentVo.COLUMN_DOC_DATE_ADDED, vo.getDocDateAdded())
+			.addValue(DocumentVo.COLUMN_DOC_DATE_FROM, vo.getDocDateFrom())
+			.addValue(DocumentVo.COLUMN_DOC_DATE_TO, vo.getDocDateTo())
+			.addValue(DocumentVo.COLUMN_DOC_FILE_SIZE, vo.getDocFileSize())
+			.addValue(DocumentVo.COLUMN_DOC_FLAGS, vo.getDocFlags())
+			.addValue(DocumentVo.COLUMN_DOC_NAME, vo.getDocName())
+			.addValue(DocumentVo.COLUMN_DOC_OBSERVATIONS, vo.getDocObservations())
+			.addValue(DocumentVo.COLUMN_DOC_FILE, vo.getDocFile())
+			.addValue(DocumentVo.COLUMN_DOC_FILE_NAME, vo.getDocFileName())
+			.addValue(DocumentVo.COLUMN_DOC_FILE_CONTENT, vo.getDocFileContent())
+			.addValue(DocumentVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(DocumentVo.COLUMN_DOC_ID, vo.getDocId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -70,8 +70,8 @@ public abstract class BaseDocumentDao <T extends DocumentVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer docId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("doc_id_auto", docId);
+			.addValue(DocumentVo.COLUMN_CLI_ID, cliId)
+			.addValue(DocumentVo.COLUMN_DOC_ID, docId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DocumentRowWrapper.getInstance()); }

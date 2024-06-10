@@ -31,20 +31,20 @@ public abstract class BaseLocDataDefParameterDao <T extends LocDataDefParameterV
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("data_def_par_id", vo.getDataDefParId())
-			.addValue("loc_data_def_par_value", vo.getLocDataDefParValue());
+			.addValue(LocDataDefParameterVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocDataDefParameterVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocDataDefParameterVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(LocDataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, vo.getDataDefParId())
+			.addValue(LocDataDefParameterVo.COLUMN_LOC_DATA_DEF_PAR_VALUE, vo.getLocDataDefParValue());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_data_def_par_value", vo.getLocDataDefParValue())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("data_def_par_id", vo.getDataDefParId());
+			.addValue(LocDataDefParameterVo.COLUMN_LOC_DATA_DEF_PAR_VALUE, vo.getLocDataDefParValue())
+			.addValue(LocDataDefParameterVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocDataDefParameterVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocDataDefParameterVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(LocDataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, vo.getDataDefParId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -53,10 +53,10 @@ public abstract class BaseLocDataDefParameterDao <T extends LocDataDefParameterV
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, Integer dataDefId, Integer dataDefParId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("loc_id", locId)
-			.addValue("data_def_id", dataDefId)
-			.addValue("data_def_par_id", dataDefParId);
+			.addValue(LocDataDefParameterVo.COLUMN_CLI_ID, cliId)
+			.addValue(LocDataDefParameterVo.COLUMN_LOC_ID, locId)
+			.addValue(LocDataDefParameterVo.COLUMN_DATA_DEF_ID, dataDefId)
+			.addValue(LocDataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, dataDefParId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocDataDefParameterRowWrapper.getInstance()); }

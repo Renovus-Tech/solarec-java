@@ -31,24 +31,24 @@ public abstract class BaseLocAlertDao <T extends LocAlertVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("alert_def_id", vo.getAlertDefId())
-			.addValue("alert_pro_id", vo.getAlertProId())
-			.addValue("alert_date_added", vo.getAlertDateAdded())
-			.addValue("alert_date_send", vo.getAlertDateSend())
-			.addValue("alert_message", vo.getAlertMessage());
+			.addValue(LocAlertVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocAlertVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocAlertVo.COLUMN_ALERT_DEF_ID, vo.getAlertDefId())
+			.addValue(LocAlertVo.COLUMN_ALERT_PRO_ID, vo.getAlertProId())
+			.addValue(LocAlertVo.COLUMN_ALERT_DATE_ADDED, vo.getAlertDateAdded())
+			.addValue(LocAlertVo.COLUMN_ALERT_DATE_SEND, vo.getAlertDateSend())
+			.addValue(LocAlertVo.COLUMN_ALERT_MESSAGE, vo.getAlertMessage());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("alert_pro_id", vo.getAlertProId())
-			.addValue("alert_date_send", vo.getAlertDateSend())
-			.addValue("alert_message", vo.getAlertMessage())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("alert_def_id", vo.getAlertDefId())
-			.addValue("alert_date_added", vo.getAlertDateAdded());
+			.addValue(LocAlertVo.COLUMN_ALERT_PRO_ID, vo.getAlertProId())
+			.addValue(LocAlertVo.COLUMN_ALERT_DATE_SEND, vo.getAlertDateSend())
+			.addValue(LocAlertVo.COLUMN_ALERT_MESSAGE, vo.getAlertMessage())
+			.addValue(LocAlertVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocAlertVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocAlertVo.COLUMN_ALERT_DEF_ID, vo.getAlertDefId())
+			.addValue(LocAlertVo.COLUMN_ALERT_DATE_ADDED, vo.getAlertDateAdded());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -57,10 +57,10 @@ public abstract class BaseLocAlertDao <T extends LocAlertVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, Integer alertDefId, java.util.Date alertDateAdded) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("loc_id", locId)
-			.addValue("alert_def_id", alertDefId)
-			.addValue("alert_date_added", alertDateAdded);
+			.addValue(LocAlertVo.COLUMN_CLI_ID, cliId)
+			.addValue(LocAlertVo.COLUMN_LOC_ID, locId)
+			.addValue(LocAlertVo.COLUMN_ALERT_DEF_ID, alertDefId)
+			.addValue(LocAlertVo.COLUMN_ALERT_DATE_ADDED, alertDateAdded);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocAlertRowWrapper.getInstance()); }

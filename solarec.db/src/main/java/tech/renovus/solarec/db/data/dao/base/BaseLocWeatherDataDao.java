@@ -32,22 +32,22 @@ public abstract class BaseLocWeatherDataDao <T extends LocWeatherDataVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("loc_wea_data_id_auto", vo.getLocWeaDataId())
-			.addValue("loc_wea_data_date", vo.getLocWeaDataDate())
-			.addValue("loc_wea_data_resonse_status", vo.getLocWeaDataResonseStatus())
-			.addValue("loc_wea_data_response", vo.getLocWeaDataResponse());
+			.addValue(LocWeatherDataVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocWeatherDataVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocWeatherDataVo.COLUMN_LOC_WEA_DATA_ID, vo.getLocWeaDataId())
+			.addValue(LocWeatherDataVo.COLUMN_LOC_WEA_DATA_DATE, vo.getLocWeaDataDate())
+			.addValue(LocWeatherDataVo.COLUMN_LOC_WEA_DATA_RESONSE_STATUS, vo.getLocWeaDataResonseStatus())
+			.addValue(LocWeatherDataVo.COLUMN_LOC_WEA_DATA_RESPONSE, vo.getLocWeaDataResponse());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_wea_data_date", vo.getLocWeaDataDate())
-			.addValue("loc_wea_data_resonse_status", vo.getLocWeaDataResonseStatus())
-			.addValue("loc_wea_data_response", vo.getLocWeaDataResponse())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("loc_wea_data_id_auto", vo.getLocWeaDataId());
+			.addValue(LocWeatherDataVo.COLUMN_LOC_WEA_DATA_DATE, vo.getLocWeaDataDate())
+			.addValue(LocWeatherDataVo.COLUMN_LOC_WEA_DATA_RESONSE_STATUS, vo.getLocWeaDataResonseStatus())
+			.addValue(LocWeatherDataVo.COLUMN_LOC_WEA_DATA_RESPONSE, vo.getLocWeaDataResponse())
+			.addValue(LocWeatherDataVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocWeatherDataVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocWeatherDataVo.COLUMN_LOC_WEA_DATA_ID, vo.getLocWeaDataId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -56,9 +56,9 @@ public abstract class BaseLocWeatherDataDao <T extends LocWeatherDataVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, Integer locWeaDataId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("loc_id", locId)
-			.addValue("loc_wea_data_id_auto", locWeaDataId);
+			.addValue(LocWeatherDataVo.COLUMN_CLI_ID, cliId)
+			.addValue(LocWeatherDataVo.COLUMN_LOC_ID, locId)
+			.addValue(LocWeatherDataVo.COLUMN_LOC_WEA_DATA_ID, locWeaDataId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocWeatherDataRowWrapper.getInstance()); }

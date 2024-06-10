@@ -31,20 +31,20 @@ public abstract class BaseGenPowerDao <T extends GenPowerVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("pwr_wind_speed", vo.getPwrWindSpeed())
-			.addValue("pwr_air_density", vo.getPwrAirDensity())
-			.addValue("gen_power", vo.getGenPower());
+			.addValue(GenPowerVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenPowerVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenPowerVo.COLUMN_PWR_WIND_SPEED, vo.getPwrWindSpeed())
+			.addValue(GenPowerVo.COLUMN_PWR_AIR_DENSITY, vo.getPwrAirDensity())
+			.addValue(GenPowerVo.COLUMN_GEN_POWER, vo.getGenPower());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("gen_power", vo.getGenPower())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("pwr_wind_speed", vo.getPwrWindSpeed())
-			.addValue("pwr_air_density", vo.getPwrAirDensity());
+			.addValue(GenPowerVo.COLUMN_GEN_POWER, vo.getGenPower())
+			.addValue(GenPowerVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenPowerVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenPowerVo.COLUMN_PWR_WIND_SPEED, vo.getPwrWindSpeed())
+			.addValue(GenPowerVo.COLUMN_PWR_AIR_DENSITY, vo.getPwrAirDensity());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -53,10 +53,10 @@ public abstract class BaseGenPowerDao <T extends GenPowerVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer genId, Double pwrWindSpeed, Double pwrAirDensity) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("gen_id", genId)
-			.addValue("pwr_wind_speed", pwrWindSpeed)
-			.addValue("pwr_air_density", pwrAirDensity);
+			.addValue(GenPowerVo.COLUMN_CLI_ID, cliId)
+			.addValue(GenPowerVo.COLUMN_GEN_ID, genId)
+			.addValue(GenPowerVo.COLUMN_PWR_WIND_SPEED, pwrWindSpeed)
+			.addValue(GenPowerVo.COLUMN_PWR_AIR_DENSITY, pwrAirDensity);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenPowerRowWrapper.getInstance()); }

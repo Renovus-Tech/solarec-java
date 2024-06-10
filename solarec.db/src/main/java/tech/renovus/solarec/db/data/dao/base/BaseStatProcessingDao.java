@@ -32,26 +32,26 @@ public abstract class BaseStatProcessingDao <T extends StatProcessingVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("stat_pro_type", vo.getStatProType())
-			.addValue("stat_def_id", vo.getStatDefId())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("stat_pro_date_start", vo.getStatProDateStart())
-			.addValue("stat_pro_date_end", vo.getStatProDateEnd())
-			.addValue("stat_pro_result", vo.getStatProResult())
-			.addValue("stat_pro_id_auto", vo.getStatProId())
-			.addValue("stat_pro_file_log", vo.getStatProFileLog());
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_TYPE, vo.getStatProType())
+			.addValue(StatProcessingVo.COLUMN_STAT_DEF_ID, vo.getStatDefId())
+			.addValue(StatProcessingVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_DATE_START, vo.getStatProDateStart())
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_DATE_END, vo.getStatProDateEnd())
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_RESULT, vo.getStatProResult())
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_ID, vo.getStatProId())
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_FILE_LOG, vo.getStatProFileLog());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("stat_pro_type", vo.getStatProType())
-			.addValue("stat_def_id", vo.getStatDefId())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("stat_pro_date_start", vo.getStatProDateStart())
-			.addValue("stat_pro_date_end", vo.getStatProDateEnd())
-			.addValue("stat_pro_result", vo.getStatProResult())
-			.addValue("stat_pro_file_log", vo.getStatProFileLog())
-			.addValue("stat_pro_id_auto", vo.getStatProId());
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_TYPE, vo.getStatProType())
+			.addValue(StatProcessingVo.COLUMN_STAT_DEF_ID, vo.getStatDefId())
+			.addValue(StatProcessingVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_DATE_START, vo.getStatProDateStart())
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_DATE_END, vo.getStatProDateEnd())
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_RESULT, vo.getStatProResult())
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_FILE_LOG, vo.getStatProFileLog())
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_ID, vo.getStatProId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -60,7 +60,7 @@ public abstract class BaseStatProcessingDao <T extends StatProcessingVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer statProId) {
 		return new MapSqlParameterSource()
-			.addValue("stat_pro_id_auto", statProId);
+			.addValue(StatProcessingVo.COLUMN_STAT_PRO_ID, statProId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StatProcessingRowWrapper.getInstance()); }

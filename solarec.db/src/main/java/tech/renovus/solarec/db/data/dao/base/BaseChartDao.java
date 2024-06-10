@@ -32,22 +32,22 @@ public abstract class BaseChartDao <T extends ChartVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("chr_id_auto", vo.getChrId())
-			.addValue("chr_name", vo.getChrName())
-			.addValue("chr_title", vo.getChrTitle())
-			.addValue("chr_description", vo.getChrDescription())
-			.addValue("chr_flags", vo.getChrFlags())
-			.addValue("chr_url", vo.getChrUrl());
+			.addValue(ChartVo.COLUMN_CHR_ID, vo.getChrId())
+			.addValue(ChartVo.COLUMN_CHR_NAME, vo.getChrName())
+			.addValue(ChartVo.COLUMN_CHR_TITLE, vo.getChrTitle())
+			.addValue(ChartVo.COLUMN_CHR_DESCRIPTION, vo.getChrDescription())
+			.addValue(ChartVo.COLUMN_CHR_FLAGS, vo.getChrFlags())
+			.addValue(ChartVo.COLUMN_CHR_URL, vo.getChrUrl());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("chr_name", vo.getChrName())
-			.addValue("chr_title", vo.getChrTitle())
-			.addValue("chr_description", vo.getChrDescription())
-			.addValue("chr_flags", vo.getChrFlags())
-			.addValue("chr_url", vo.getChrUrl())
-			.addValue("chr_id_auto", vo.getChrId());
+			.addValue(ChartVo.COLUMN_CHR_NAME, vo.getChrName())
+			.addValue(ChartVo.COLUMN_CHR_TITLE, vo.getChrTitle())
+			.addValue(ChartVo.COLUMN_CHR_DESCRIPTION, vo.getChrDescription())
+			.addValue(ChartVo.COLUMN_CHR_FLAGS, vo.getChrFlags())
+			.addValue(ChartVo.COLUMN_CHR_URL, vo.getChrUrl())
+			.addValue(ChartVo.COLUMN_CHR_ID, vo.getChrId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -56,7 +56,7 @@ public abstract class BaseChartDao <T extends ChartVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer chrId) {
 		return new MapSqlParameterSource()
-			.addValue("chr_id_auto", chrId);
+			.addValue(ChartVo.COLUMN_CHR_ID, chrId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, ChartRowWrapper.getInstance()); }

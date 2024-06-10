@@ -31,24 +31,24 @@ public abstract class BaseGenAlertDao <T extends GenAlertVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("alert_def_id", vo.getAlertDefId())
-			.addValue("alert_pro_id", vo.getAlertProId())
-			.addValue("alert_date_added", vo.getAlertDateAdded())
-			.addValue("alert_date_send", vo.getAlertDateSend())
-			.addValue("alert_message", vo.getAlertMessage());
+			.addValue(GenAlertVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenAlertVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenAlertVo.COLUMN_ALERT_DEF_ID, vo.getAlertDefId())
+			.addValue(GenAlertVo.COLUMN_ALERT_PRO_ID, vo.getAlertProId())
+			.addValue(GenAlertVo.COLUMN_ALERT_DATE_ADDED, vo.getAlertDateAdded())
+			.addValue(GenAlertVo.COLUMN_ALERT_DATE_SEND, vo.getAlertDateSend())
+			.addValue(GenAlertVo.COLUMN_ALERT_MESSAGE, vo.getAlertMessage());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("alert_pro_id", vo.getAlertProId())
-			.addValue("alert_date_send", vo.getAlertDateSend())
-			.addValue("alert_message", vo.getAlertMessage())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("alert_def_id", vo.getAlertDefId())
-			.addValue("alert_date_added", vo.getAlertDateAdded());
+			.addValue(GenAlertVo.COLUMN_ALERT_PRO_ID, vo.getAlertProId())
+			.addValue(GenAlertVo.COLUMN_ALERT_DATE_SEND, vo.getAlertDateSend())
+			.addValue(GenAlertVo.COLUMN_ALERT_MESSAGE, vo.getAlertMessage())
+			.addValue(GenAlertVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenAlertVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenAlertVo.COLUMN_ALERT_DEF_ID, vo.getAlertDefId())
+			.addValue(GenAlertVo.COLUMN_ALERT_DATE_ADDED, vo.getAlertDateAdded());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -57,10 +57,10 @@ public abstract class BaseGenAlertDao <T extends GenAlertVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer genId, Integer alertDefId, java.util.Date alertDateAdded) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("gen_id", genId)
-			.addValue("alert_def_id", alertDefId)
-			.addValue("alert_date_added", alertDateAdded);
+			.addValue(GenAlertVo.COLUMN_CLI_ID, cliId)
+			.addValue(GenAlertVo.COLUMN_GEN_ID, genId)
+			.addValue(GenAlertVo.COLUMN_ALERT_DEF_ID, alertDefId)
+			.addValue(GenAlertVo.COLUMN_ALERT_DATE_ADDED, alertDateAdded);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenAlertRowWrapper.getInstance()); }

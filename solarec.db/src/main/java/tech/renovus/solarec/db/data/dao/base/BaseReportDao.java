@@ -32,30 +32,30 @@ public abstract class BaseReportDao <T extends ReportVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("rep_date_generated", vo.getRepDateGenerated())
-			.addValue("rep_date_from", vo.getRepDateFrom())
-			.addValue("rep_type_id", vo.getRepTypeId())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("rep_date_to", vo.getRepDateTo())
-			.addValue("rep_id_auto", vo.getRepId())
-			.addValue("reg_file", vo.getRegFile())
-			.addValue("rep_title", vo.getRepTitle())
-			.addValue("rep_file", vo.getRepFile())
-			.addValue("rep_flags", vo.getRepFlags());
+			.addValue(ReportVo.COLUMN_REP_DATE_GENERATED, vo.getRepDateGenerated())
+			.addValue(ReportVo.COLUMN_REP_DATE_FROM, vo.getRepDateFrom())
+			.addValue(ReportVo.COLUMN_REP_TYPE_ID, vo.getRepTypeId())
+			.addValue(ReportVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(ReportVo.COLUMN_REP_DATE_TO, vo.getRepDateTo())
+			.addValue(ReportVo.COLUMN_REP_ID, vo.getRepId())
+			.addValue(ReportVo.COLUMN_REG_FILE, vo.getRegFile())
+			.addValue(ReportVo.COLUMN_REP_TITLE, vo.getRepTitle())
+			.addValue(ReportVo.COLUMN_REP_FILE, vo.getRepFile())
+			.addValue(ReportVo.COLUMN_REP_FLAGS, vo.getRepFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("rep_date_generated", vo.getRepDateGenerated())
-			.addValue("rep_date_from", vo.getRepDateFrom())
-			.addValue("rep_type_id", vo.getRepTypeId())
-			.addValue("rep_date_to", vo.getRepDateTo())
-			.addValue("reg_file", vo.getRegFile())
-			.addValue("rep_title", vo.getRepTitle())
-			.addValue("rep_file", vo.getRepFile())
-			.addValue("rep_flags", vo.getRepFlags())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("rep_id_auto", vo.getRepId());
+			.addValue(ReportVo.COLUMN_REP_DATE_GENERATED, vo.getRepDateGenerated())
+			.addValue(ReportVo.COLUMN_REP_DATE_FROM, vo.getRepDateFrom())
+			.addValue(ReportVo.COLUMN_REP_TYPE_ID, vo.getRepTypeId())
+			.addValue(ReportVo.COLUMN_REP_DATE_TO, vo.getRepDateTo())
+			.addValue(ReportVo.COLUMN_REG_FILE, vo.getRegFile())
+			.addValue(ReportVo.COLUMN_REP_TITLE, vo.getRepTitle())
+			.addValue(ReportVo.COLUMN_REP_FILE, vo.getRepFile())
+			.addValue(ReportVo.COLUMN_REP_FLAGS, vo.getRepFlags())
+			.addValue(ReportVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(ReportVo.COLUMN_REP_ID, vo.getRepId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -64,8 +64,8 @@ public abstract class BaseReportDao <T extends ReportVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer repId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("rep_id_auto", repId);
+			.addValue(ReportVo.COLUMN_CLI_ID, cliId)
+			.addValue(ReportVo.COLUMN_REP_ID, repId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, ReportRowWrapper.getInstance()); }

@@ -32,34 +32,34 @@ public abstract class BaseStationDao <T extends StationVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("sta_data_date_min", vo.getStaDataDateMin())
-			.addValue("sta_id_auto", vo.getStaId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("sta_coord_lat", vo.getStaCoordLat())
-			.addValue("sta_coord_lng", vo.getStaCoordLng())
-			.addValue("sta_data_date_max", vo.getStaDataDateMax())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("sta_name", vo.getStaName())
-			.addValue("sta_description", vo.getStaDescription())
-			.addValue("sta_flags", vo.getStaFlags())
-			.addValue("sta_code", vo.getStaCode());
+			.addValue(StationVo.COLUMN_STA_DATA_DATE_MIN, vo.getStaDataDateMin())
+			.addValue(StationVo.COLUMN_STA_ID, vo.getStaId())
+			.addValue(StationVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(StationVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(StationVo.COLUMN_STA_COORD_LAT, vo.getStaCoordLat())
+			.addValue(StationVo.COLUMN_STA_COORD_LNG, vo.getStaCoordLng())
+			.addValue(StationVo.COLUMN_STA_DATA_DATE_MAX, vo.getStaDataDateMax())
+			.addValue(StationVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(StationVo.COLUMN_STA_NAME, vo.getStaName())
+			.addValue(StationVo.COLUMN_STA_DESCRIPTION, vo.getStaDescription())
+			.addValue(StationVo.COLUMN_STA_FLAGS, vo.getStaFlags())
+			.addValue(StationVo.COLUMN_STA_CODE, vo.getStaCode());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("sta_data_date_min", vo.getStaDataDateMin())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("sta_coord_lat", vo.getStaCoordLat())
-			.addValue("sta_coord_lng", vo.getStaCoordLng())
-			.addValue("sta_data_date_max", vo.getStaDataDateMax())
-			.addValue("sta_name", vo.getStaName())
-			.addValue("sta_description", vo.getStaDescription())
-			.addValue("sta_flags", vo.getStaFlags())
-			.addValue("sta_code", vo.getStaCode())
-			.addValue("sta_id_auto", vo.getStaId())
-			.addValue("cli_id", vo.getCliId());
+			.addValue(StationVo.COLUMN_STA_DATA_DATE_MIN, vo.getStaDataDateMin())
+			.addValue(StationVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(StationVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(StationVo.COLUMN_STA_COORD_LAT, vo.getStaCoordLat())
+			.addValue(StationVo.COLUMN_STA_COORD_LNG, vo.getStaCoordLng())
+			.addValue(StationVo.COLUMN_STA_DATA_DATE_MAX, vo.getStaDataDateMax())
+			.addValue(StationVo.COLUMN_STA_NAME, vo.getStaName())
+			.addValue(StationVo.COLUMN_STA_DESCRIPTION, vo.getStaDescription())
+			.addValue(StationVo.COLUMN_STA_FLAGS, vo.getStaFlags())
+			.addValue(StationVo.COLUMN_STA_CODE, vo.getStaCode())
+			.addValue(StationVo.COLUMN_STA_ID, vo.getStaId())
+			.addValue(StationVo.COLUMN_CLI_ID, vo.getCliId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -68,8 +68,8 @@ public abstract class BaseStationDao <T extends StationVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer staId, Integer cliId) {
 		return new MapSqlParameterSource()
-			.addValue("sta_id_auto", staId)
-			.addValue("cli_id", cliId);
+			.addValue(StationVo.COLUMN_STA_ID, staId)
+			.addValue(StationVo.COLUMN_CLI_ID, cliId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StationRowWrapper.getInstance()); }

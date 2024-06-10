@@ -32,20 +32,20 @@ public abstract class BaseDataDefinitionDao <T extends DataDefinitionVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_id_auto", vo.getDataDefId())
-			.addValue("data_def_name", vo.getDataDefName())
-			.addValue("data_def_description", vo.getDataDefDescription())
-			.addValue("data_def_executable", vo.getDataDefExecutable())
-			.addValue("data_def_flags", vo.getDataDefFlags());
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_NAME, vo.getDataDefName())
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_DESCRIPTION, vo.getDataDefDescription())
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_EXECUTABLE, vo.getDataDefExecutable())
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_FLAGS, vo.getDataDefFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_name", vo.getDataDefName())
-			.addValue("data_def_description", vo.getDataDefDescription())
-			.addValue("data_def_executable", vo.getDataDefExecutable())
-			.addValue("data_def_flags", vo.getDataDefFlags())
-			.addValue("data_def_id_auto", vo.getDataDefId());
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_NAME, vo.getDataDefName())
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_DESCRIPTION, vo.getDataDefDescription())
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_EXECUTABLE, vo.getDataDefExecutable())
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_FLAGS, vo.getDataDefFlags())
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_ID, vo.getDataDefId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -54,7 +54,7 @@ public abstract class BaseDataDefinitionDao <T extends DataDefinitionVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer dataDefId) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_id_auto", dataDefId);
+			.addValue(DataDefinitionVo.COLUMN_DATA_DEF_ID, dataDefId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataDefinitionRowWrapper.getInstance()); }

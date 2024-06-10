@@ -31,16 +31,16 @@ public abstract class BaseCliSettingDao <T extends CliSettingVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("cli_set_name", vo.getCliSetName())
-			.addValue("cli_set_value", vo.getCliSetValue());
+			.addValue(CliSettingVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliSettingVo.COLUMN_CLI_SET_NAME, vo.getCliSetName())
+			.addValue(CliSettingVo.COLUMN_CLI_SET_VALUE, vo.getCliSetValue());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_set_value", vo.getCliSetValue())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("cli_set_name", vo.getCliSetName());
+			.addValue(CliSettingVo.COLUMN_CLI_SET_VALUE, vo.getCliSetValue())
+			.addValue(CliSettingVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliSettingVo.COLUMN_CLI_SET_NAME, vo.getCliSetName());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -49,8 +49,8 @@ public abstract class BaseCliSettingDao <T extends CliSettingVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, String cliSetName) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("cli_set_name", cliSetName);
+			.addValue(CliSettingVo.COLUMN_CLI_ID, cliId)
+			.addValue(CliSettingVo.COLUMN_CLI_SET_NAME, cliSetName);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliSettingRowWrapper.getInstance()); }

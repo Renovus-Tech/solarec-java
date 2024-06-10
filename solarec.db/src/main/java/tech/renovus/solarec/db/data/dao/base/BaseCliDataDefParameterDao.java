@@ -31,18 +31,18 @@ public abstract class BaseCliDataDefParameterDao <T extends CliDataDefParameterV
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("data_def_par_id", vo.getDataDefParId())
-			.addValue("cli_data_def_par_value", vo.getCliDataDefParValue());
+			.addValue(CliDataDefParameterVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliDataDefParameterVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(CliDataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, vo.getDataDefParId())
+			.addValue(CliDataDefParameterVo.COLUMN_CLI_DATA_DEF_PAR_VALUE, vo.getCliDataDefParValue());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_data_def_par_value", vo.getCliDataDefParValue())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("data_def_par_id", vo.getDataDefParId());
+			.addValue(CliDataDefParameterVo.COLUMN_CLI_DATA_DEF_PAR_VALUE, vo.getCliDataDefParValue())
+			.addValue(CliDataDefParameterVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliDataDefParameterVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(CliDataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, vo.getDataDefParId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -51,9 +51,9 @@ public abstract class BaseCliDataDefParameterDao <T extends CliDataDefParameterV
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer dataDefId, Integer dataDefParId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("data_def_id", dataDefId)
-			.addValue("data_def_par_id", dataDefParId);
+			.addValue(CliDataDefParameterVo.COLUMN_CLI_ID, cliId)
+			.addValue(CliDataDefParameterVo.COLUMN_DATA_DEF_ID, dataDefId)
+			.addValue(CliDataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, dataDefParId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliDataDefParameterRowWrapper.getInstance()); }

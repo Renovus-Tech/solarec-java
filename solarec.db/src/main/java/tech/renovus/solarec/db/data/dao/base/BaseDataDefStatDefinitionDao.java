@@ -31,16 +31,16 @@ public abstract class BaseDataDefStatDefinitionDao <T extends DataDefStatDefinit
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("stat_def_id", vo.getStatDefId())
-			.addValue("stat_def_call_order", vo.getStatDefCallOrder());
+			.addValue(DataDefStatDefinitionVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(DataDefStatDefinitionVo.COLUMN_STAT_DEF_ID, vo.getStatDefId())
+			.addValue(DataDefStatDefinitionVo.COLUMN_STAT_DEF_CALL_ORDER, vo.getStatDefCallOrder());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("stat_def_call_order", vo.getStatDefCallOrder())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("stat_def_id", vo.getStatDefId());
+			.addValue(DataDefStatDefinitionVo.COLUMN_STAT_DEF_CALL_ORDER, vo.getStatDefCallOrder())
+			.addValue(DataDefStatDefinitionVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(DataDefStatDefinitionVo.COLUMN_STAT_DEF_ID, vo.getStatDefId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -49,8 +49,8 @@ public abstract class BaseDataDefStatDefinitionDao <T extends DataDefStatDefinit
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer dataDefId, Integer statDefId) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_id", dataDefId)
-			.addValue("stat_def_id", statDefId);
+			.addValue(DataDefStatDefinitionVo.COLUMN_DATA_DEF_ID, dataDefId)
+			.addValue(DataDefStatDefinitionVo.COLUMN_STAT_DEF_ID, statDefId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataDefStatDefinitionRowWrapper.getInstance()); }

@@ -31,22 +31,22 @@ public abstract class BaseGenMetadataDao <T extends GenMetadataVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("metadata_date_added", vo.getMetadataDateAdded())
-			.addValue("metadata_code", vo.getMetadataCode())
-			.addValue("metadata_title", vo.getMetadataTitle())
-			.addValue("metadata_value", vo.getMetadataValue());
+			.addValue(GenMetadataVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenMetadataVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenMetadataVo.COLUMN_METADATA_DATE_ADDED, vo.getMetadataDateAdded())
+			.addValue(GenMetadataVo.COLUMN_METADATA_CODE, vo.getMetadataCode())
+			.addValue(GenMetadataVo.COLUMN_METADATA_TITLE, vo.getMetadataTitle())
+			.addValue(GenMetadataVo.COLUMN_METADATA_VALUE, vo.getMetadataValue());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("metadata_date_added", vo.getMetadataDateAdded())
-			.addValue("metadata_title", vo.getMetadataTitle())
-			.addValue("metadata_value", vo.getMetadataValue())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("metadata_code", vo.getMetadataCode());
+			.addValue(GenMetadataVo.COLUMN_METADATA_DATE_ADDED, vo.getMetadataDateAdded())
+			.addValue(GenMetadataVo.COLUMN_METADATA_TITLE, vo.getMetadataTitle())
+			.addValue(GenMetadataVo.COLUMN_METADATA_VALUE, vo.getMetadataValue())
+			.addValue(GenMetadataVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenMetadataVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenMetadataVo.COLUMN_METADATA_CODE, vo.getMetadataCode());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -55,9 +55,9 @@ public abstract class BaseGenMetadataDao <T extends GenMetadataVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer genId, String metadataCode) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("gen_id", genId)
-			.addValue("metadata_code", metadataCode);
+			.addValue(GenMetadataVo.COLUMN_CLI_ID, cliId)
+			.addValue(GenMetadataVo.COLUMN_GEN_ID, genId)
+			.addValue(GenMetadataVo.COLUMN_METADATA_CODE, metadataCode);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenMetadataRowWrapper.getInstance()); }

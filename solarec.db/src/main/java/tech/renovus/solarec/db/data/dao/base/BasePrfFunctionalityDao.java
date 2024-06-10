@@ -31,14 +31,14 @@ public abstract class BasePrfFunctionalityDao <T extends PrfFunctionalityVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("prf_id", vo.getPrfId())
-			.addValue("fnc_id", vo.getFncId());
+			.addValue(PrfFunctionalityVo.COLUMN_PRF_ID, vo.getPrfId())
+			.addValue(PrfFunctionalityVo.COLUMN_FNC_ID, vo.getFncId());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("prf_id", vo.getPrfId())
-			.addValue("fnc_id", vo.getFncId());
+			.addValue(PrfFunctionalityVo.COLUMN_PRF_ID, vo.getPrfId())
+			.addValue(PrfFunctionalityVo.COLUMN_FNC_ID, vo.getFncId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -47,8 +47,8 @@ public abstract class BasePrfFunctionalityDao <T extends PrfFunctionalityVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer prfId, Integer fncId) {
 		return new MapSqlParameterSource()
-			.addValue("prf_id", prfId)
-			.addValue("fnc_id", fncId);
+			.addValue(PrfFunctionalityVo.COLUMN_PRF_ID, prfId)
+			.addValue(PrfFunctionalityVo.COLUMN_FNC_ID, fncId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, PrfFunctionalityRowWrapper.getInstance()); }

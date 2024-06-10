@@ -32,16 +32,16 @@ public abstract class BaseSdgDao <T extends SdgVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("sdg_id_auto", vo.getSdgId())
-			.addValue("sdg_code", vo.getSdgCode())
-			.addValue("sdg_name", vo.getSdgName());
+			.addValue(SdgVo.COLUMN_SDG_ID, vo.getSdgId())
+			.addValue(SdgVo.COLUMN_SDG_CODE, vo.getSdgCode())
+			.addValue(SdgVo.COLUMN_SDG_NAME, vo.getSdgName());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("sdg_code", vo.getSdgCode())
-			.addValue("sdg_name", vo.getSdgName())
-			.addValue("sdg_id_auto", vo.getSdgId());
+			.addValue(SdgVo.COLUMN_SDG_CODE, vo.getSdgCode())
+			.addValue(SdgVo.COLUMN_SDG_NAME, vo.getSdgName())
+			.addValue(SdgVo.COLUMN_SDG_ID, vo.getSdgId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -50,7 +50,7 @@ public abstract class BaseSdgDao <T extends SdgVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer sdgId) {
 		return new MapSqlParameterSource()
-			.addValue("sdg_id_auto", sdgId);
+			.addValue(SdgVo.COLUMN_SDG_ID, sdgId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, SdgRowWrapper.getInstance()); }

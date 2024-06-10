@@ -31,26 +31,26 @@ public abstract class BaseSettingsDao <T extends SettingsVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("set_name", vo.getSetName())
-			.addValue("set_cat_name", vo.getSetCatName())
-			.addValue("set_type", vo.getSetType())
-			.addValue("set_unit", vo.getSetUnit())
-			.addValue("set_value_default", vo.getSetValueDefault())
-			.addValue("set_value_min", vo.getSetValueMin())
-			.addValue("set_value_max", vo.getSetValueMax())
-			.addValue("set_flags", vo.getSetFlags());
+			.addValue(SettingsVo.COLUMN_SET_NAME, vo.getSetName())
+			.addValue(SettingsVo.COLUMN_SET_CAT_NAME, vo.getSetCatName())
+			.addValue(SettingsVo.COLUMN_SET_TYPE, vo.getSetType())
+			.addValue(SettingsVo.COLUMN_SET_UNIT, vo.getSetUnit())
+			.addValue(SettingsVo.COLUMN_SET_VALUE_DEFAULT, vo.getSetValueDefault())
+			.addValue(SettingsVo.COLUMN_SET_VALUE_MIN, vo.getSetValueMin())
+			.addValue(SettingsVo.COLUMN_SET_VALUE_MAX, vo.getSetValueMax())
+			.addValue(SettingsVo.COLUMN_SET_FLAGS, vo.getSetFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("set_cat_name", vo.getSetCatName())
-			.addValue("set_type", vo.getSetType())
-			.addValue("set_unit", vo.getSetUnit())
-			.addValue("set_value_default", vo.getSetValueDefault())
-			.addValue("set_value_min", vo.getSetValueMin())
-			.addValue("set_value_max", vo.getSetValueMax())
-			.addValue("set_flags", vo.getSetFlags())
-			.addValue("set_name", vo.getSetName());
+			.addValue(SettingsVo.COLUMN_SET_CAT_NAME, vo.getSetCatName())
+			.addValue(SettingsVo.COLUMN_SET_TYPE, vo.getSetType())
+			.addValue(SettingsVo.COLUMN_SET_UNIT, vo.getSetUnit())
+			.addValue(SettingsVo.COLUMN_SET_VALUE_DEFAULT, vo.getSetValueDefault())
+			.addValue(SettingsVo.COLUMN_SET_VALUE_MIN, vo.getSetValueMin())
+			.addValue(SettingsVo.COLUMN_SET_VALUE_MAX, vo.getSetValueMax())
+			.addValue(SettingsVo.COLUMN_SET_FLAGS, vo.getSetFlags())
+			.addValue(SettingsVo.COLUMN_SET_NAME, vo.getSetName());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -59,7 +59,7 @@ public abstract class BaseSettingsDao <T extends SettingsVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(String setName) {
 		return new MapSqlParameterSource()
-			.addValue("set_name", setName);
+			.addValue(SettingsVo.COLUMN_SET_NAME, setName);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, SettingsRowWrapper.getInstance()); }

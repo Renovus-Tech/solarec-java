@@ -31,20 +31,20 @@ public abstract class BaseCliMetadataDao <T extends CliMetadataVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("metadata_date_added", vo.getMetadataDateAdded())
-			.addValue("metadata_name", vo.getMetadataName())
-			.addValue("metadata_title", vo.getMetadataTitle())
-			.addValue("metadata_value", vo.getMetadataValue());
+			.addValue(CliMetadataVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliMetadataVo.COLUMN_METADATA_DATE_ADDED, vo.getMetadataDateAdded())
+			.addValue(CliMetadataVo.COLUMN_METADATA_NAME, vo.getMetadataName())
+			.addValue(CliMetadataVo.COLUMN_METADATA_TITLE, vo.getMetadataTitle())
+			.addValue(CliMetadataVo.COLUMN_METADATA_VALUE, vo.getMetadataValue());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("metadata_date_added", vo.getMetadataDateAdded())
-			.addValue("metadata_title", vo.getMetadataTitle())
-			.addValue("metadata_value", vo.getMetadataValue())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("metadata_name", vo.getMetadataName());
+			.addValue(CliMetadataVo.COLUMN_METADATA_DATE_ADDED, vo.getMetadataDateAdded())
+			.addValue(CliMetadataVo.COLUMN_METADATA_TITLE, vo.getMetadataTitle())
+			.addValue(CliMetadataVo.COLUMN_METADATA_VALUE, vo.getMetadataValue())
+			.addValue(CliMetadataVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliMetadataVo.COLUMN_METADATA_NAME, vo.getMetadataName());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -53,8 +53,8 @@ public abstract class BaseCliMetadataDao <T extends CliMetadataVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, String metadataName) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("metadata_name", metadataName);
+			.addValue(CliMetadataVo.COLUMN_CLI_ID, cliId)
+			.addValue(CliMetadataVo.COLUMN_METADATA_NAME, metadataName);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliMetadataRowWrapper.getInstance()); }

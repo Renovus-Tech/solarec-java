@@ -32,32 +32,32 @@ public abstract class BaseDataProcessingDao <T extends DataProcessingVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_pro_id_auto", vo.getDataProId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("tri_id", vo.getTriId())
-			.addValue("data_pro_result", vo.getDataProResult())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("data_pro_date_start", vo.getDataProDateStart())
-			.addValue("data_pro_date_end", vo.getDataProDateEnd())
-			.addValue("data_pro_file_name", vo.getDataProFileName())
-			.addValue("data_pro_file_log", vo.getDataProFileLog());
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
+			.addValue(DataProcessingVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(DataProcessingVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(DataProcessingVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(DataProcessingVo.COLUMN_TRI_ID, vo.getTriId())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_RESULT, vo.getDataProResult())
+			.addValue(DataProcessingVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_DATE_START, vo.getDataProDateStart())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_DATE_END, vo.getDataProDateEnd())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_FILE_NAME, vo.getDataProFileName())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_FILE_LOG, vo.getDataProFileLog());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("tri_id", vo.getTriId())
-			.addValue("data_pro_result", vo.getDataProResult())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("data_pro_date_start", vo.getDataProDateStart())
-			.addValue("data_pro_date_end", vo.getDataProDateEnd())
-			.addValue("data_pro_file_name", vo.getDataProFileName())
-			.addValue("data_pro_file_log", vo.getDataProFileLog())
-			.addValue("data_pro_id_auto", vo.getDataProId());
+			.addValue(DataProcessingVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(DataProcessingVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(DataProcessingVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(DataProcessingVo.COLUMN_TRI_ID, vo.getTriId())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_RESULT, vo.getDataProResult())
+			.addValue(DataProcessingVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_DATE_START, vo.getDataProDateStart())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_DATE_END, vo.getDataProDateEnd())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_FILE_NAME, vo.getDataProFileName())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_FILE_LOG, vo.getDataProFileLog())
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_ID, vo.getDataProId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -66,7 +66,7 @@ public abstract class BaseDataProcessingDao <T extends DataProcessingVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer dataProId) {
 		return new MapSqlParameterSource()
-			.addValue("data_pro_id_auto", dataProId);
+			.addValue(DataProcessingVo.COLUMN_DATA_PRO_ID, dataProId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataProcessingRowWrapper.getInstance()); }

@@ -31,20 +31,20 @@ public abstract class BaseLocUsrRepTypeDao <T extends LocUsrRepTypeVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("usr_id", vo.getUsrId())
-			.addValue("rep_type_id", vo.getRepTypeId())
-			.addValue("loc_usr_rep_type_flags", vo.getLocUsrRepTypeFlags());
+			.addValue(LocUsrRepTypeVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocUsrRepTypeVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocUsrRepTypeVo.COLUMN_USR_ID, vo.getUsrId())
+			.addValue(LocUsrRepTypeVo.COLUMN_REP_TYPE_ID, vo.getRepTypeId())
+			.addValue(LocUsrRepTypeVo.COLUMN_LOC_USR_REP_TYPE_FLAGS, vo.getLocUsrRepTypeFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_usr_rep_type_flags", vo.getLocUsrRepTypeFlags())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("usr_id", vo.getUsrId())
-			.addValue("rep_type_id", vo.getRepTypeId());
+			.addValue(LocUsrRepTypeVo.COLUMN_LOC_USR_REP_TYPE_FLAGS, vo.getLocUsrRepTypeFlags())
+			.addValue(LocUsrRepTypeVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocUsrRepTypeVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocUsrRepTypeVo.COLUMN_USR_ID, vo.getUsrId())
+			.addValue(LocUsrRepTypeVo.COLUMN_REP_TYPE_ID, vo.getRepTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -53,10 +53,10 @@ public abstract class BaseLocUsrRepTypeDao <T extends LocUsrRepTypeVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, Integer usrId, Integer repTypeId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("loc_id", locId)
-			.addValue("usr_id", usrId)
-			.addValue("rep_type_id", repTypeId);
+			.addValue(LocUsrRepTypeVo.COLUMN_CLI_ID, cliId)
+			.addValue(LocUsrRepTypeVo.COLUMN_LOC_ID, locId)
+			.addValue(LocUsrRepTypeVo.COLUMN_USR_ID, usrId)
+			.addValue(LocUsrRepTypeVo.COLUMN_REP_TYPE_ID, repTypeId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocUsrRepTypeRowWrapper.getInstance()); }

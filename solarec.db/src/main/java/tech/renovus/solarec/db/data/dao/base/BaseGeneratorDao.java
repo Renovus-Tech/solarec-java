@@ -32,42 +32,42 @@ public abstract class BaseGeneratorDao <T extends GeneratorVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id_auto", vo.getGenId())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("gen_coord_lat", vo.getGenCoordLat())
-			.addValue("gen_coord_lng", vo.getGenCoordLng())
-			.addValue("gen_rate_power", vo.getGenRatePower())
-			.addValue("gen_data_date_max", vo.getGenDataDateMax())
-			.addValue("gen_data_date_min", vo.getGenDataDateMin())
-			.addValue("gen_model", vo.getGenModel())
-			.addValue("gen_serial_num", vo.getGenSerialNum())
-			.addValue("gen_name", vo.getGenName())
-			.addValue("gen_description", vo.getGenDescription())
-			.addValue("gen_code", vo.getGenCode())
-			.addValue("gen_flags", vo.getGenFlags())
-			.addValue("gen_brand", vo.getGenBrand());
+			.addValue(GeneratorVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GeneratorVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GeneratorVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(GeneratorVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(GeneratorVo.COLUMN_GEN_COORD_LAT, vo.getGenCoordLat())
+			.addValue(GeneratorVo.COLUMN_GEN_COORD_LNG, vo.getGenCoordLng())
+			.addValue(GeneratorVo.COLUMN_GEN_RATE_POWER, vo.getGenRatePower())
+			.addValue(GeneratorVo.COLUMN_GEN_DATA_DATE_MAX, vo.getGenDataDateMax())
+			.addValue(GeneratorVo.COLUMN_GEN_DATA_DATE_MIN, vo.getGenDataDateMin())
+			.addValue(GeneratorVo.COLUMN_GEN_MODEL, vo.getGenModel())
+			.addValue(GeneratorVo.COLUMN_GEN_SERIAL_NUM, vo.getGenSerialNum())
+			.addValue(GeneratorVo.COLUMN_GEN_NAME, vo.getGenName())
+			.addValue(GeneratorVo.COLUMN_GEN_DESCRIPTION, vo.getGenDescription())
+			.addValue(GeneratorVo.COLUMN_GEN_CODE, vo.getGenCode())
+			.addValue(GeneratorVo.COLUMN_GEN_FLAGS, vo.getGenFlags())
+			.addValue(GeneratorVo.COLUMN_GEN_BRAND, vo.getGenBrand());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("gen_coord_lat", vo.getGenCoordLat())
-			.addValue("gen_coord_lng", vo.getGenCoordLng())
-			.addValue("gen_rate_power", vo.getGenRatePower())
-			.addValue("gen_data_date_max", vo.getGenDataDateMax())
-			.addValue("gen_data_date_min", vo.getGenDataDateMin())
-			.addValue("gen_model", vo.getGenModel())
-			.addValue("gen_serial_num", vo.getGenSerialNum())
-			.addValue("gen_name", vo.getGenName())
-			.addValue("gen_description", vo.getGenDescription())
-			.addValue("gen_code", vo.getGenCode())
-			.addValue("gen_flags", vo.getGenFlags())
-			.addValue("gen_brand", vo.getGenBrand())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id_auto", vo.getGenId());
+			.addValue(GeneratorVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(GeneratorVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(GeneratorVo.COLUMN_GEN_COORD_LAT, vo.getGenCoordLat())
+			.addValue(GeneratorVo.COLUMN_GEN_COORD_LNG, vo.getGenCoordLng())
+			.addValue(GeneratorVo.COLUMN_GEN_RATE_POWER, vo.getGenRatePower())
+			.addValue(GeneratorVo.COLUMN_GEN_DATA_DATE_MAX, vo.getGenDataDateMax())
+			.addValue(GeneratorVo.COLUMN_GEN_DATA_DATE_MIN, vo.getGenDataDateMin())
+			.addValue(GeneratorVo.COLUMN_GEN_MODEL, vo.getGenModel())
+			.addValue(GeneratorVo.COLUMN_GEN_SERIAL_NUM, vo.getGenSerialNum())
+			.addValue(GeneratorVo.COLUMN_GEN_NAME, vo.getGenName())
+			.addValue(GeneratorVo.COLUMN_GEN_DESCRIPTION, vo.getGenDescription())
+			.addValue(GeneratorVo.COLUMN_GEN_CODE, vo.getGenCode())
+			.addValue(GeneratorVo.COLUMN_GEN_FLAGS, vo.getGenFlags())
+			.addValue(GeneratorVo.COLUMN_GEN_BRAND, vo.getGenBrand())
+			.addValue(GeneratorVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GeneratorVo.COLUMN_GEN_ID, vo.getGenId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -76,8 +76,8 @@ public abstract class BaseGeneratorDao <T extends GeneratorVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer genId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("gen_id_auto", genId);
+			.addValue(GeneratorVo.COLUMN_CLI_ID, cliId)
+			.addValue(GeneratorVo.COLUMN_GEN_ID, genId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GeneratorRowWrapper.getInstance()); }

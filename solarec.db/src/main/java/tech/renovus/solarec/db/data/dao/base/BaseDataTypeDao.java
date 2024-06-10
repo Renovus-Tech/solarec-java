@@ -31,20 +31,20 @@ public abstract class BaseDataTypeDao <T extends DataTypeVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_type_id", vo.getDataTypeId())
-			.addValue("data_cat_id", vo.getDataCatId())
-			.addValue("data_type_name", vo.getDataTypeName())
-			.addValue("data_type_units", vo.getDataTypeUnits())
-			.addValue("data_type_description", vo.getDataTypeDescription());
+			.addValue(DataTypeVo.COLUMN_DATA_TYPE_ID, vo.getDataTypeId())
+			.addValue(DataTypeVo.COLUMN_DATA_CAT_ID, vo.getDataCatId())
+			.addValue(DataTypeVo.COLUMN_DATA_TYPE_NAME, vo.getDataTypeName())
+			.addValue(DataTypeVo.COLUMN_DATA_TYPE_UNITS, vo.getDataTypeUnits())
+			.addValue(DataTypeVo.COLUMN_DATA_TYPE_DESCRIPTION, vo.getDataTypeDescription());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_cat_id", vo.getDataCatId())
-			.addValue("data_type_name", vo.getDataTypeName())
-			.addValue("data_type_units", vo.getDataTypeUnits())
-			.addValue("data_type_description", vo.getDataTypeDescription())
-			.addValue("data_type_id", vo.getDataTypeId());
+			.addValue(DataTypeVo.COLUMN_DATA_CAT_ID, vo.getDataCatId())
+			.addValue(DataTypeVo.COLUMN_DATA_TYPE_NAME, vo.getDataTypeName())
+			.addValue(DataTypeVo.COLUMN_DATA_TYPE_UNITS, vo.getDataTypeUnits())
+			.addValue(DataTypeVo.COLUMN_DATA_TYPE_DESCRIPTION, vo.getDataTypeDescription())
+			.addValue(DataTypeVo.COLUMN_DATA_TYPE_ID, vo.getDataTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -53,7 +53,7 @@ public abstract class BaseDataTypeDao <T extends DataTypeVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer dataTypeId) {
 		return new MapSqlParameterSource()
-			.addValue("data_type_id", dataTypeId);
+			.addValue(DataTypeVo.COLUMN_DATA_TYPE_ID, dataTypeId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataTypeRowWrapper.getInstance()); }

@@ -31,24 +31,24 @@ public abstract class BaseGenDataDao <T extends GenDataVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("data_date", vo.getDataDate())
-			.addValue("data_type_id", vo.getDataTypeId())
-			.addValue("data_pro_id", vo.getDataProId())
-			.addValue("data_value", vo.getDataValue())
-			.addValue("data_date_added", vo.getDataDateAdded());
+			.addValue(GenDataVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenDataVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenDataVo.COLUMN_DATA_DATE, vo.getDataDate())
+			.addValue(GenDataVo.COLUMN_DATA_TYPE_ID, vo.getDataTypeId())
+			.addValue(GenDataVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
+			.addValue(GenDataVo.COLUMN_DATA_VALUE, vo.getDataValue())
+			.addValue(GenDataVo.COLUMN_DATA_DATE_ADDED, vo.getDataDateAdded());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_pro_id", vo.getDataProId())
-			.addValue("data_value", vo.getDataValue())
-			.addValue("data_date_added", vo.getDataDateAdded())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("gen_id", vo.getGenId())
-			.addValue("data_date", vo.getDataDate())
-			.addValue("data_type_id", vo.getDataTypeId());
+			.addValue(GenDataVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
+			.addValue(GenDataVo.COLUMN_DATA_VALUE, vo.getDataValue())
+			.addValue(GenDataVo.COLUMN_DATA_DATE_ADDED, vo.getDataDateAdded())
+			.addValue(GenDataVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(GenDataVo.COLUMN_GEN_ID, vo.getGenId())
+			.addValue(GenDataVo.COLUMN_DATA_DATE, vo.getDataDate())
+			.addValue(GenDataVo.COLUMN_DATA_TYPE_ID, vo.getDataTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -57,10 +57,10 @@ public abstract class BaseGenDataDao <T extends GenDataVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer genId, java.util.Date dataDate, Integer dataTypeId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("gen_id", genId)
-			.addValue("data_date", dataDate)
-			.addValue("data_type_id", dataTypeId);
+			.addValue(GenDataVo.COLUMN_CLI_ID, cliId)
+			.addValue(GenDataVo.COLUMN_GEN_ID, genId)
+			.addValue(GenDataVo.COLUMN_DATA_DATE, dataDate)
+			.addValue(GenDataVo.COLUMN_DATA_TYPE_ID, dataTypeId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenDataRowWrapper.getInstance()); }

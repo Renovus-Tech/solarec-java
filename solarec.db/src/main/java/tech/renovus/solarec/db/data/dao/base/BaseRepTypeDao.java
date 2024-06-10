@@ -32,22 +32,22 @@ public abstract class BaseRepTypeDao <T extends RepTypeVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("rep_type_id_auto", vo.getRepTypeId())
-			.addValue("rep_order", vo.getRepOrder())
-			.addValue("rep_type_name", vo.getRepTypeName())
-			.addValue("rep_type_title", vo.getRepTypeTitle())
-			.addValue("rep_flags", vo.getRepFlags())
-			.addValue("rep_executable", vo.getRepExecutable());
+			.addValue(RepTypeVo.COLUMN_REP_TYPE_ID, vo.getRepTypeId())
+			.addValue(RepTypeVo.COLUMN_REP_ORDER, vo.getRepOrder())
+			.addValue(RepTypeVo.COLUMN_REP_TYPE_NAME, vo.getRepTypeName())
+			.addValue(RepTypeVo.COLUMN_REP_TYPE_TITLE, vo.getRepTypeTitle())
+			.addValue(RepTypeVo.COLUMN_REP_FLAGS, vo.getRepFlags())
+			.addValue(RepTypeVo.COLUMN_REP_EXECUTABLE, vo.getRepExecutable());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("rep_order", vo.getRepOrder())
-			.addValue("rep_type_name", vo.getRepTypeName())
-			.addValue("rep_type_title", vo.getRepTypeTitle())
-			.addValue("rep_flags", vo.getRepFlags())
-			.addValue("rep_executable", vo.getRepExecutable())
-			.addValue("rep_type_id_auto", vo.getRepTypeId());
+			.addValue(RepTypeVo.COLUMN_REP_ORDER, vo.getRepOrder())
+			.addValue(RepTypeVo.COLUMN_REP_TYPE_NAME, vo.getRepTypeName())
+			.addValue(RepTypeVo.COLUMN_REP_TYPE_TITLE, vo.getRepTypeTitle())
+			.addValue(RepTypeVo.COLUMN_REP_FLAGS, vo.getRepFlags())
+			.addValue(RepTypeVo.COLUMN_REP_EXECUTABLE, vo.getRepExecutable())
+			.addValue(RepTypeVo.COLUMN_REP_TYPE_ID, vo.getRepTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -56,7 +56,7 @@ public abstract class BaseRepTypeDao <T extends RepTypeVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer repTypeId) {
 		return new MapSqlParameterSource()
-			.addValue("rep_type_id_auto", repTypeId);
+			.addValue(RepTypeVo.COLUMN_REP_TYPE_ID, repTypeId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, RepTypeRowWrapper.getInstance()); }

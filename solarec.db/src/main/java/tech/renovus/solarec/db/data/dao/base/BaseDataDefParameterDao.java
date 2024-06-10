@@ -32,18 +32,18 @@ public abstract class BaseDataDefParameterDao <T extends DataDefParameterVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("data_def_par_id_auto", vo.getDataDefParId())
-			.addValue("data_def_par_name", vo.getDataDefParName())
-			.addValue("data_def_description", vo.getDataDefDescription());
+			.addValue(DataDefParameterVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(DataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, vo.getDataDefParId())
+			.addValue(DataDefParameterVo.COLUMN_DATA_DEF_PAR_NAME, vo.getDataDefParName())
+			.addValue(DataDefParameterVo.COLUMN_DATA_DEF_DESCRIPTION, vo.getDataDefDescription());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_par_name", vo.getDataDefParName())
-			.addValue("data_def_description", vo.getDataDefDescription())
-			.addValue("data_def_id", vo.getDataDefId())
-			.addValue("data_def_par_id_auto", vo.getDataDefParId());
+			.addValue(DataDefParameterVo.COLUMN_DATA_DEF_PAR_NAME, vo.getDataDefParName())
+			.addValue(DataDefParameterVo.COLUMN_DATA_DEF_DESCRIPTION, vo.getDataDefDescription())
+			.addValue(DataDefParameterVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(DataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, vo.getDataDefParId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -52,8 +52,8 @@ public abstract class BaseDataDefParameterDao <T extends DataDefParameterVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer dataDefId, Integer dataDefParId) {
 		return new MapSqlParameterSource()
-			.addValue("data_def_id", dataDefId)
-			.addValue("data_def_par_id_auto", dataDefParId);
+			.addValue(DataDefParameterVo.COLUMN_DATA_DEF_ID, dataDefId)
+			.addValue(DataDefParameterVo.COLUMN_DATA_DEF_PAR_ID, dataDefParId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataDefParameterRowWrapper.getInstance()); }

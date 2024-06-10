@@ -32,22 +32,22 @@ public abstract class BaseWeaCallDao <T extends WeaCallVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("wea_id", vo.getWeaId())
-			.addValue("wea_call_id_auto", vo.getWeaCallId())
-			.addValue("wea_call_date", vo.getWeaCallDate())
-			.addValue("wea_call_resonse_status", vo.getWeaCallResonseStatus())
-			.addValue("wea_call_response", vo.getWeaCallResponse());
+			.addValue(WeaCallVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(WeaCallVo.COLUMN_WEA_ID, vo.getWeaId())
+			.addValue(WeaCallVo.COLUMN_WEA_CALL_ID, vo.getWeaCallId())
+			.addValue(WeaCallVo.COLUMN_WEA_CALL_DATE, vo.getWeaCallDate())
+			.addValue(WeaCallVo.COLUMN_WEA_CALL_RESONSE_STATUS, vo.getWeaCallResonseStatus())
+			.addValue(WeaCallVo.COLUMN_WEA_CALL_RESPONSE, vo.getWeaCallResponse());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("wea_call_date", vo.getWeaCallDate())
-			.addValue("wea_call_resonse_status", vo.getWeaCallResonseStatus())
-			.addValue("wea_call_response", vo.getWeaCallResponse())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("wea_id", vo.getWeaId())
-			.addValue("wea_call_id_auto", vo.getWeaCallId());
+			.addValue(WeaCallVo.COLUMN_WEA_CALL_DATE, vo.getWeaCallDate())
+			.addValue(WeaCallVo.COLUMN_WEA_CALL_RESONSE_STATUS, vo.getWeaCallResonseStatus())
+			.addValue(WeaCallVo.COLUMN_WEA_CALL_RESPONSE, vo.getWeaCallResponse())
+			.addValue(WeaCallVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(WeaCallVo.COLUMN_WEA_ID, vo.getWeaId())
+			.addValue(WeaCallVo.COLUMN_WEA_CALL_ID, vo.getWeaCallId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -56,9 +56,9 @@ public abstract class BaseWeaCallDao <T extends WeaCallVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer weaId, Integer weaCallId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("wea_id", weaId)
-			.addValue("wea_call_id_auto", weaCallId);
+			.addValue(WeaCallVo.COLUMN_CLI_ID, cliId)
+			.addValue(WeaCallVo.COLUMN_WEA_ID, weaId)
+			.addValue(WeaCallVo.COLUMN_WEA_CALL_ID, weaCallId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, WeaCallRowWrapper.getInstance()); }

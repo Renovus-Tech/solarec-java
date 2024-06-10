@@ -32,44 +32,44 @@ public abstract class BaseLocEstimationDao <T extends LocEstimationVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_est_12", vo.getLocEst12())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("loc_est_id_auto", vo.getLocEstId())
-			.addValue("loc_est_order", vo.getLocEstOrder())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_est_01", vo.getLocEst01())
-			.addValue("loc_est_02", vo.getLocEst02())
-			.addValue("loc_est_03", vo.getLocEst03())
-			.addValue("loc_est_04", vo.getLocEst04())
-			.addValue("loc_est_05", vo.getLocEst05())
-			.addValue("loc_est_06", vo.getLocEst06())
-			.addValue("loc_est_07", vo.getLocEst07())
-			.addValue("loc_est_08", vo.getLocEst08())
-			.addValue("loc_est_09", vo.getLocEst09())
-			.addValue("loc_est_10", vo.getLocEst10())
-			.addValue("loc_est_11", vo.getLocEst11())
-			.addValue("loc_est_title", vo.getLocEstTitle());
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_12, vo.getLocEst12())
+			.addValue(LocEstimationVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_ID, vo.getLocEstId())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_ORDER, vo.getLocEstOrder())
+			.addValue(LocEstimationVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_01, vo.getLocEst01())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_02, vo.getLocEst02())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_03, vo.getLocEst03())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_04, vo.getLocEst04())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_05, vo.getLocEst05())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_06, vo.getLocEst06())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_07, vo.getLocEst07())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_08, vo.getLocEst08())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_09, vo.getLocEst09())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_10, vo.getLocEst10())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_11, vo.getLocEst11())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_TITLE, vo.getLocEstTitle());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_est_12", vo.getLocEst12())
-			.addValue("loc_est_order", vo.getLocEstOrder())
-			.addValue("loc_est_01", vo.getLocEst01())
-			.addValue("loc_est_02", vo.getLocEst02())
-			.addValue("loc_est_03", vo.getLocEst03())
-			.addValue("loc_est_04", vo.getLocEst04())
-			.addValue("loc_est_05", vo.getLocEst05())
-			.addValue("loc_est_06", vo.getLocEst06())
-			.addValue("loc_est_07", vo.getLocEst07())
-			.addValue("loc_est_08", vo.getLocEst08())
-			.addValue("loc_est_09", vo.getLocEst09())
-			.addValue("loc_est_10", vo.getLocEst10())
-			.addValue("loc_est_11", vo.getLocEst11())
-			.addValue("loc_est_title", vo.getLocEstTitle())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("loc_est_id_auto", vo.getLocEstId())
-			.addValue("cli_id", vo.getCliId());
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_12, vo.getLocEst12())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_ORDER, vo.getLocEstOrder())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_01, vo.getLocEst01())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_02, vo.getLocEst02())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_03, vo.getLocEst03())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_04, vo.getLocEst04())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_05, vo.getLocEst05())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_06, vo.getLocEst06())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_07, vo.getLocEst07())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_08, vo.getLocEst08())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_09, vo.getLocEst09())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_10, vo.getLocEst10())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_11, vo.getLocEst11())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_TITLE, vo.getLocEstTitle())
+			.addValue(LocEstimationVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_ID, vo.getLocEstId())
+			.addValue(LocEstimationVo.COLUMN_CLI_ID, vo.getCliId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -78,9 +78,9 @@ public abstract class BaseLocEstimationDao <T extends LocEstimationVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer locId, Integer locEstId, Integer cliId) {
 		return new MapSqlParameterSource()
-			.addValue("loc_id", locId)
-			.addValue("loc_est_id_auto", locEstId)
-			.addValue("cli_id", cliId);
+			.addValue(LocEstimationVo.COLUMN_LOC_ID, locId)
+			.addValue(LocEstimationVo.COLUMN_LOC_EST_ID, locEstId)
+			.addValue(LocEstimationVo.COLUMN_CLI_ID, cliId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocEstimationRowWrapper.getInstance()); }

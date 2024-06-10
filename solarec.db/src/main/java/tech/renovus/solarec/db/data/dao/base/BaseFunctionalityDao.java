@@ -32,24 +32,24 @@ public abstract class BaseFunctionalityDao <T extends FunctionalityVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("fnc_id_auto", vo.getFncId())
-			.addValue("fnc_order", vo.getFncOrder())
-			.addValue("fnc_title", vo.getFncTitle())
-			.addValue("fnc_flags", vo.getFncFlags())
-			.addValue("fnc_url", vo.getFncUrl())
-			.addValue("fnc_description", vo.getFncDescription())
-			.addValue("fnc_name", vo.getFncName());
+			.addValue(FunctionalityVo.COLUMN_FNC_ID, vo.getFncId())
+			.addValue(FunctionalityVo.COLUMN_FNC_ORDER, vo.getFncOrder())
+			.addValue(FunctionalityVo.COLUMN_FNC_TITLE, vo.getFncTitle())
+			.addValue(FunctionalityVo.COLUMN_FNC_FLAGS, vo.getFncFlags())
+			.addValue(FunctionalityVo.COLUMN_FNC_URL, vo.getFncUrl())
+			.addValue(FunctionalityVo.COLUMN_FNC_DESCRIPTION, vo.getFncDescription())
+			.addValue(FunctionalityVo.COLUMN_FNC_NAME, vo.getFncName());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("fnc_order", vo.getFncOrder())
-			.addValue("fnc_title", vo.getFncTitle())
-			.addValue("fnc_flags", vo.getFncFlags())
-			.addValue("fnc_url", vo.getFncUrl())
-			.addValue("fnc_description", vo.getFncDescription())
-			.addValue("fnc_name", vo.getFncName())
-			.addValue("fnc_id_auto", vo.getFncId());
+			.addValue(FunctionalityVo.COLUMN_FNC_ORDER, vo.getFncOrder())
+			.addValue(FunctionalityVo.COLUMN_FNC_TITLE, vo.getFncTitle())
+			.addValue(FunctionalityVo.COLUMN_FNC_FLAGS, vo.getFncFlags())
+			.addValue(FunctionalityVo.COLUMN_FNC_URL, vo.getFncUrl())
+			.addValue(FunctionalityVo.COLUMN_FNC_DESCRIPTION, vo.getFncDescription())
+			.addValue(FunctionalityVo.COLUMN_FNC_NAME, vo.getFncName())
+			.addValue(FunctionalityVo.COLUMN_FNC_ID, vo.getFncId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -58,7 +58,7 @@ public abstract class BaseFunctionalityDao <T extends FunctionalityVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer fncId) {
 		return new MapSqlParameterSource()
-			.addValue("fnc_id_auto", fncId);
+			.addValue(FunctionalityVo.COLUMN_FNC_ID, fncId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, FunctionalityRowWrapper.getInstance()); }

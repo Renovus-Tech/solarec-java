@@ -32,24 +32,24 @@ public abstract class BaseCountryDao <T extends CountryVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("ctr_id_auto", vo.getCtrId())
-			.addValue("ctr_data_date_max", vo.getCtrDataDateMax())
-			.addValue("ctr_data_date_min", vo.getCtrDataDateMin())
-			.addValue("ctr_code_3", vo.getCtrCode3())
-			.addValue("ctr_code_2", vo.getCtrCode2())
-			.addValue("ctr_name", vo.getCtrName())
-			.addValue("ctr_name_show", vo.getCtrNameShow());
+			.addValue(CountryVo.COLUMN_CTR_ID, vo.getCtrId())
+			.addValue(CountryVo.COLUMN_CTR_DATA_DATE_MAX, vo.getCtrDataDateMax())
+			.addValue(CountryVo.COLUMN_CTR_DATA_DATE_MIN, vo.getCtrDataDateMin())
+			.addValue(CountryVo.COLUMN_CTR_CODE_3, vo.getCtrCode3())
+			.addValue(CountryVo.COLUMN_CTR_CODE_2, vo.getCtrCode2())
+			.addValue(CountryVo.COLUMN_CTR_NAME, vo.getCtrName())
+			.addValue(CountryVo.COLUMN_CTR_NAME_SHOW, vo.getCtrNameShow());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("ctr_data_date_max", vo.getCtrDataDateMax())
-			.addValue("ctr_data_date_min", vo.getCtrDataDateMin())
-			.addValue("ctr_code_3", vo.getCtrCode3())
-			.addValue("ctr_code_2", vo.getCtrCode2())
-			.addValue("ctr_name", vo.getCtrName())
-			.addValue("ctr_name_show", vo.getCtrNameShow())
-			.addValue("ctr_id_auto", vo.getCtrId());
+			.addValue(CountryVo.COLUMN_CTR_DATA_DATE_MAX, vo.getCtrDataDateMax())
+			.addValue(CountryVo.COLUMN_CTR_DATA_DATE_MIN, vo.getCtrDataDateMin())
+			.addValue(CountryVo.COLUMN_CTR_CODE_3, vo.getCtrCode3())
+			.addValue(CountryVo.COLUMN_CTR_CODE_2, vo.getCtrCode2())
+			.addValue(CountryVo.COLUMN_CTR_NAME, vo.getCtrName())
+			.addValue(CountryVo.COLUMN_CTR_NAME_SHOW, vo.getCtrNameShow())
+			.addValue(CountryVo.COLUMN_CTR_ID, vo.getCtrId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -58,7 +58,7 @@ public abstract class BaseCountryDao <T extends CountryVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer ctrId) {
 		return new MapSqlParameterSource()
-			.addValue("ctr_id_auto", ctrId);
+			.addValue(CountryVo.COLUMN_CTR_ID, ctrId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CountryRowWrapper.getInstance()); }

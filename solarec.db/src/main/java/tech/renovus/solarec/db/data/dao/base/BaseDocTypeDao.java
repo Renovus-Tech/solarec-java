@@ -32,18 +32,18 @@ public abstract class BaseDocTypeDao <T extends DocTypeVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("doc_type_id_auto", vo.getDocTypeId())
-			.addValue("doc_type_name", vo.getDocTypeName())
-			.addValue("doc_type_title", vo.getDocTypeTitle())
-			.addValue("doc_type_flags", vo.getDocTypeFlags());
+			.addValue(DocTypeVo.COLUMN_DOC_TYPE_ID, vo.getDocTypeId())
+			.addValue(DocTypeVo.COLUMN_DOC_TYPE_NAME, vo.getDocTypeName())
+			.addValue(DocTypeVo.COLUMN_DOC_TYPE_TITLE, vo.getDocTypeTitle())
+			.addValue(DocTypeVo.COLUMN_DOC_TYPE_FLAGS, vo.getDocTypeFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("doc_type_name", vo.getDocTypeName())
-			.addValue("doc_type_title", vo.getDocTypeTitle())
-			.addValue("doc_type_flags", vo.getDocTypeFlags())
-			.addValue("doc_type_id_auto", vo.getDocTypeId());
+			.addValue(DocTypeVo.COLUMN_DOC_TYPE_NAME, vo.getDocTypeName())
+			.addValue(DocTypeVo.COLUMN_DOC_TYPE_TITLE, vo.getDocTypeTitle())
+			.addValue(DocTypeVo.COLUMN_DOC_TYPE_FLAGS, vo.getDocTypeFlags())
+			.addValue(DocTypeVo.COLUMN_DOC_TYPE_ID, vo.getDocTypeId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -52,7 +52,7 @@ public abstract class BaseDocTypeDao <T extends DocTypeVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer docTypeId) {
 		return new MapSqlParameterSource()
-			.addValue("doc_type_id_auto", docTypeId);
+			.addValue(DocTypeVo.COLUMN_DOC_TYPE_ID, docTypeId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DocTypeRowWrapper.getInstance()); }

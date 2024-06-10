@@ -32,16 +32,16 @@ public abstract class BaseDataCategoryDao <T extends DataCategoryVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_cat_id_auto", vo.getDataCatId())
-			.addValue("data_cat_name", vo.getDataCatName())
-			.addValue("data_cat_description", vo.getDataCatDescription());
+			.addValue(DataCategoryVo.COLUMN_DATA_CAT_ID, vo.getDataCatId())
+			.addValue(DataCategoryVo.COLUMN_DATA_CAT_NAME, vo.getDataCatName())
+			.addValue(DataCategoryVo.COLUMN_DATA_CAT_DESCRIPTION, vo.getDataCatDescription());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_cat_name", vo.getDataCatName())
-			.addValue("data_cat_description", vo.getDataCatDescription())
-			.addValue("data_cat_id_auto", vo.getDataCatId());
+			.addValue(DataCategoryVo.COLUMN_DATA_CAT_NAME, vo.getDataCatName())
+			.addValue(DataCategoryVo.COLUMN_DATA_CAT_DESCRIPTION, vo.getDataCatDescription())
+			.addValue(DataCategoryVo.COLUMN_DATA_CAT_ID, vo.getDataCatId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -50,7 +50,7 @@ public abstract class BaseDataCategoryDao <T extends DataCategoryVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer dataCatId) {
 		return new MapSqlParameterSource()
-			.addValue("data_cat_id_auto", dataCatId);
+			.addValue(DataCategoryVo.COLUMN_DATA_CAT_ID, dataCatId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataCategoryRowWrapper.getInstance()); }

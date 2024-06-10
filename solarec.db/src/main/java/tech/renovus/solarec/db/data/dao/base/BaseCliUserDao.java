@@ -31,18 +31,18 @@ public abstract class BaseCliUserDao <T extends CliUserVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("usr_id", vo.getUsrId())
-			.addValue("cli_user_date_added", vo.getCliUserDateAdded())
-			.addValue("cli_user_date_access", vo.getCliUserDateAccess());
+			.addValue(CliUserVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliUserVo.COLUMN_USR_ID, vo.getUsrId())
+			.addValue(CliUserVo.COLUMN_CLI_USER_DATE_ADDED, vo.getCliUserDateAdded())
+			.addValue(CliUserVo.COLUMN_CLI_USER_DATE_ACCESS, vo.getCliUserDateAccess());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_user_date_added", vo.getCliUserDateAdded())
-			.addValue("cli_user_date_access", vo.getCliUserDateAccess())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("usr_id", vo.getUsrId());
+			.addValue(CliUserVo.COLUMN_CLI_USER_DATE_ADDED, vo.getCliUserDateAdded())
+			.addValue(CliUserVo.COLUMN_CLI_USER_DATE_ACCESS, vo.getCliUserDateAccess())
+			.addValue(CliUserVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(CliUserVo.COLUMN_USR_ID, vo.getUsrId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -51,8 +51,8 @@ public abstract class BaseCliUserDao <T extends CliUserVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer usrId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("usr_id", usrId);
+			.addValue(CliUserVo.COLUMN_CLI_ID, cliId)
+			.addValue(CliUserVo.COLUMN_USR_ID, usrId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliUserRowWrapper.getInstance()); }

@@ -31,18 +31,18 @@ public abstract class BaseLocSdgDao <T extends LocSdgVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("sdg_id", vo.getSdgId())
-			.addValue("loc_sdg_description", vo.getLocSdgDescription());
+			.addValue(LocSdgVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocSdgVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocSdgVo.COLUMN_SDG_ID, vo.getSdgId())
+			.addValue(LocSdgVo.COLUMN_LOC_SDG_DESCRIPTION, vo.getLocSdgDescription());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("loc_sdg_description", vo.getLocSdgDescription())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("loc_id", vo.getLocId())
-			.addValue("sdg_id", vo.getSdgId());
+			.addValue(LocSdgVo.COLUMN_LOC_SDG_DESCRIPTION, vo.getLocSdgDescription())
+			.addValue(LocSdgVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(LocSdgVo.COLUMN_LOC_ID, vo.getLocId())
+			.addValue(LocSdgVo.COLUMN_SDG_ID, vo.getSdgId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -51,9 +51,9 @@ public abstract class BaseLocSdgDao <T extends LocSdgVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer locId, Integer sdgId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("loc_id", locId)
-			.addValue("sdg_id", sdgId);
+			.addValue(LocSdgVo.COLUMN_CLI_ID, cliId)
+			.addValue(LocSdgVo.COLUMN_LOC_ID, locId)
+			.addValue(LocSdgVo.COLUMN_SDG_ID, sdgId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocSdgRowWrapper.getInstance()); }

@@ -31,24 +31,24 @@ public abstract class BaseStaAlertDao <T extends StaAlertVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("sta_id", vo.getStaId())
-			.addValue("alert_def_id", vo.getAlertDefId())
-			.addValue("alert_pro_id", vo.getAlertProId())
-			.addValue("alert_date_added", vo.getAlertDateAdded())
-			.addValue("alert_date_send", vo.getAlertDateSend())
-			.addValue("alert_message", vo.getAlertMessage());
+			.addValue(StaAlertVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(StaAlertVo.COLUMN_STA_ID, vo.getStaId())
+			.addValue(StaAlertVo.COLUMN_ALERT_DEF_ID, vo.getAlertDefId())
+			.addValue(StaAlertVo.COLUMN_ALERT_PRO_ID, vo.getAlertProId())
+			.addValue(StaAlertVo.COLUMN_ALERT_DATE_ADDED, vo.getAlertDateAdded())
+			.addValue(StaAlertVo.COLUMN_ALERT_DATE_SEND, vo.getAlertDateSend())
+			.addValue(StaAlertVo.COLUMN_ALERT_MESSAGE, vo.getAlertMessage());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("alert_pro_id", vo.getAlertProId())
-			.addValue("alert_date_send", vo.getAlertDateSend())
-			.addValue("alert_message", vo.getAlertMessage())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("sta_id", vo.getStaId())
-			.addValue("alert_def_id", vo.getAlertDefId())
-			.addValue("alert_date_added", vo.getAlertDateAdded());
+			.addValue(StaAlertVo.COLUMN_ALERT_PRO_ID, vo.getAlertProId())
+			.addValue(StaAlertVo.COLUMN_ALERT_DATE_SEND, vo.getAlertDateSend())
+			.addValue(StaAlertVo.COLUMN_ALERT_MESSAGE, vo.getAlertMessage())
+			.addValue(StaAlertVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(StaAlertVo.COLUMN_STA_ID, vo.getStaId())
+			.addValue(StaAlertVo.COLUMN_ALERT_DEF_ID, vo.getAlertDefId())
+			.addValue(StaAlertVo.COLUMN_ALERT_DATE_ADDED, vo.getAlertDateAdded());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -57,10 +57,10 @@ public abstract class BaseStaAlertDao <T extends StaAlertVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer staId, Integer alertDefId, java.util.Date alertDateAdded) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("sta_id", staId)
-			.addValue("alert_def_id", alertDefId)
-			.addValue("alert_date_added", alertDateAdded);
+			.addValue(StaAlertVo.COLUMN_CLI_ID, cliId)
+			.addValue(StaAlertVo.COLUMN_STA_ID, staId)
+			.addValue(StaAlertVo.COLUMN_ALERT_DEF_ID, alertDefId)
+			.addValue(StaAlertVo.COLUMN_ALERT_DATE_ADDED, alertDateAdded);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StaAlertRowWrapper.getInstance()); }

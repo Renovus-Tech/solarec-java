@@ -31,18 +31,18 @@ public abstract class BaseUsrProfileDao <T extends UsrProfileVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("usr_id", vo.getUsrId())
-			.addValue("prf_id", vo.getPrfId())
-			.addValue("cli_id", vo.getCliId())
-			.addValue("usr_prf_date_added", vo.getUsrPrfDateAdded());
+			.addValue(UsrProfileVo.COLUMN_USR_ID, vo.getUsrId())
+			.addValue(UsrProfileVo.COLUMN_PRF_ID, vo.getPrfId())
+			.addValue(UsrProfileVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(UsrProfileVo.COLUMN_USR_PRF_DATE_ADDED, vo.getUsrPrfDateAdded());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("usr_prf_date_added", vo.getUsrPrfDateAdded())
-			.addValue("usr_id", vo.getUsrId())
-			.addValue("prf_id", vo.getPrfId())
-			.addValue("cli_id", vo.getCliId());
+			.addValue(UsrProfileVo.COLUMN_USR_PRF_DATE_ADDED, vo.getUsrPrfDateAdded())
+			.addValue(UsrProfileVo.COLUMN_USR_ID, vo.getUsrId())
+			.addValue(UsrProfileVo.COLUMN_PRF_ID, vo.getPrfId())
+			.addValue(UsrProfileVo.COLUMN_CLI_ID, vo.getCliId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -51,9 +51,9 @@ public abstract class BaseUsrProfileDao <T extends UsrProfileVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer usrId, Integer prfId, Integer cliId) {
 		return new MapSqlParameterSource()
-			.addValue("usr_id", usrId)
-			.addValue("prf_id", prfId)
-			.addValue("cli_id", cliId);
+			.addValue(UsrProfileVo.COLUMN_USR_ID, usrId)
+			.addValue(UsrProfileVo.COLUMN_PRF_ID, prfId)
+			.addValue(UsrProfileVo.COLUMN_CLI_ID, cliId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, UsrProfileRowWrapper.getInstance()); }

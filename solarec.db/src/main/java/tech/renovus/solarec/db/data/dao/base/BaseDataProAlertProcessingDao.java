@@ -31,14 +31,14 @@ public abstract class BaseDataProAlertProcessingDao <T extends DataProAlertProce
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_pro_id", vo.getDataProId())
-			.addValue("alert_pro_id", vo.getAlertProId());
+			.addValue(DataProAlertProcessingVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
+			.addValue(DataProAlertProcessingVo.COLUMN_ALERT_PRO_ID, vo.getAlertProId());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("data_pro_id", vo.getDataProId())
-			.addValue("alert_pro_id", vo.getAlertProId());
+			.addValue(DataProAlertProcessingVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
+			.addValue(DataProAlertProcessingVo.COLUMN_ALERT_PRO_ID, vo.getAlertProId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -47,8 +47,8 @@ public abstract class BaseDataProAlertProcessingDao <T extends DataProAlertProce
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer dataProId, Integer alertProId) {
 		return new MapSqlParameterSource()
-			.addValue("data_pro_id", dataProId)
-			.addValue("alert_pro_id", alertProId);
+			.addValue(DataProAlertProcessingVo.COLUMN_DATA_PRO_ID, dataProId)
+			.addValue(DataProAlertProcessingVo.COLUMN_ALERT_PRO_ID, alertProId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataProAlertProcessingRowWrapper.getInstance()); }

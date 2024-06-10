@@ -31,16 +31,16 @@ public abstract class BaseDocLocationDao <T extends DocLocationVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("doc_id", vo.getDocId())
-			.addValue("loc_id", vo.getLocId());
+			.addValue(DocLocationVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(DocLocationVo.COLUMN_DOC_ID, vo.getDocId())
+			.addValue(DocLocationVo.COLUMN_LOC_ID, vo.getLocId());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", vo.getCliId())
-			.addValue("doc_id", vo.getDocId())
-			.addValue("loc_id", vo.getLocId());
+			.addValue(DocLocationVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(DocLocationVo.COLUMN_DOC_ID, vo.getDocId())
+			.addValue(DocLocationVo.COLUMN_LOC_ID, vo.getLocId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {
@@ -49,9 +49,9 @@ public abstract class BaseDocLocationDao <T extends DocLocationVo > {
 	
 	protected MapSqlParameterSource createPkMapSqlParameterSource(Integer cliId, Integer docId, Integer locId) {
 		return new MapSqlParameterSource()
-			.addValue("cli_id", cliId)
-			.addValue("doc_id", docId)
-			.addValue("loc_id", locId);
+			.addValue(DocLocationVo.COLUMN_CLI_ID, cliId)
+			.addValue(DocLocationVo.COLUMN_DOC_ID, docId)
+			.addValue(DocLocationVo.COLUMN_LOC_ID, locId);
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DocLocationRowWrapper.getInstance()); }
