@@ -52,7 +52,7 @@ public abstract class BaseDataProAlertProcessingDao <T extends DataProAlertProce
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataProAlertProcessingRowWrapper.getInstance()); }
-	public DataProAlertProcessingVo findVo(Integer dataProId, Integer alertProId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(dataProId, alertProId), DataProAlertProcessingRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public DataProAlertProcessingVo findVo(Integer dataProId, Integer alertProId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(dataProId, alertProId), DataProAlertProcessingRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

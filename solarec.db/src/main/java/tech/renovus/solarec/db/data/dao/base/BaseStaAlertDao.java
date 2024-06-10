@@ -64,7 +64,7 @@ public abstract class BaseStaAlertDao <T extends StaAlertVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StaAlertRowWrapper.getInstance()); }
-	public StaAlertVo findVo(Integer cliId, Integer staId, Integer alertDefId, java.util.Date alertDateAdded) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, staId, alertDefId, alertDateAdded), StaAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public StaAlertVo findVo(Integer cliId, Integer staId, Integer alertDefId, java.util.Date alertDateAdded) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, staId, alertDefId, alertDateAdded), StaAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

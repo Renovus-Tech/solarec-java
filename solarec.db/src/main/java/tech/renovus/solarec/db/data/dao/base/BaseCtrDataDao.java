@@ -61,7 +61,7 @@ public abstract class BaseCtrDataDao <T extends CtrDataVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CtrDataRowWrapper.getInstance()); }
-	public CtrDataVo findVo(Integer ctrId, java.util.Date dataDate, Integer dataTypeId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(ctrId, dataDate, dataTypeId), CtrDataRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public CtrDataVo findVo(Integer ctrId, java.util.Date dataDate, Integer dataTypeId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(ctrId, dataDate, dataTypeId), CtrDataRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

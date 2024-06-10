@@ -57,7 +57,7 @@ public abstract class BaseUsrProfileDao <T extends UsrProfileVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, UsrProfileRowWrapper.getInstance()); }
-	public UsrProfileVo findVo(Integer usrId, Integer prfId, Integer cliId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(usrId, prfId, cliId), UsrProfileRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public UsrProfileVo findVo(Integer usrId, Integer prfId, Integer cliId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(usrId, prfId, cliId), UsrProfileRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

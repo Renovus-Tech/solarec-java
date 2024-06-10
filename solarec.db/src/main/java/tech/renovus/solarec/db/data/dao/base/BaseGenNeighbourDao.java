@@ -57,7 +57,7 @@ public abstract class BaseGenNeighbourDao <T extends GenNeighbourVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenNeighbourRowWrapper.getInstance()); }
-	public GenNeighbourVo findVo(Integer cliId, Integer genId, Integer genIdNeighbour) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, genId, genIdNeighbour), GenNeighbourRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public GenNeighbourVo findVo(Integer cliId, Integer genId, Integer genIdNeighbour) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, genId, genIdNeighbour), GenNeighbourRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

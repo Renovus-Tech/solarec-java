@@ -60,7 +60,7 @@ public abstract class BaseRepTypeDao <T extends RepTypeVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, RepTypeRowWrapper.getInstance()); }
-	public RepTypeVo findVo(Integer repTypeId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(repTypeId), RepTypeRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public RepTypeVo findVo(Integer repTypeId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(repTypeId), RepTypeRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

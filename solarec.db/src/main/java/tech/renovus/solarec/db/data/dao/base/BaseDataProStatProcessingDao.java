@@ -52,7 +52,7 @@ public abstract class BaseDataProStatProcessingDao <T extends DataProStatProcess
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataProStatProcessingRowWrapper.getInstance()); }
-	public DataProStatProcessingVo findVo(Integer dataProId, Integer statProId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(dataProId, statProId), DataProStatProcessingRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public DataProStatProcessingVo findVo(Integer dataProId, Integer statProId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(dataProId, statProId), DataProStatProcessingRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

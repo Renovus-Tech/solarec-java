@@ -69,7 +69,7 @@ public abstract class BaseReportDao <T extends ReportVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, ReportRowWrapper.getInstance()); }
-	public ReportVo findVo(Integer cliId, Integer repId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, repId), ReportRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public ReportVo findVo(Integer cliId, Integer repId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, repId), ReportRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

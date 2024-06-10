@@ -59,7 +59,7 @@ public abstract class BaseLocGenAlarmDao <T extends LocGenAlarmVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocGenAlarmRowWrapper.getInstance()); }
-	public LocGenAlarmVo findVo(Integer cliId, Integer locId, Double alarmCode) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, locId, alarmCode), LocGenAlarmRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public LocGenAlarmVo findVo(Integer cliId, Integer locId, Double alarmCode) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, locId, alarmCode), LocGenAlarmRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

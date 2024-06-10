@@ -58,7 +58,7 @@ public abstract class BaseAlertDefinitionDao <T extends AlertDefinitionVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, AlertDefinitionRowWrapper.getInstance()); }
-	public AlertDefinitionVo findVo(Integer alertDefId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(alertDefId), AlertDefinitionRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public AlertDefinitionVo findVo(Integer alertDefId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(alertDefId), AlertDefinitionRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

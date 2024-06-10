@@ -68,7 +68,7 @@ public abstract class BaseCliDataDefTriggerDao <T extends CliDataDefTriggerVo > 
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliDataDefTriggerRowWrapper.getInstance()); }
-	public CliDataDefTriggerVo findVo(Integer triId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(triId), CliDataDefTriggerRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public CliDataDefTriggerVo findVo(Integer triId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(triId), CliDataDefTriggerRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

@@ -56,7 +56,7 @@ public abstract class BaseDocTypeDao <T extends DocTypeVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DocTypeRowWrapper.getInstance()); }
-	public DocTypeVo findVo(Integer docTypeId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(docTypeId), DocTypeRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public DocTypeVo findVo(Integer docTypeId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(docTypeId), DocTypeRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

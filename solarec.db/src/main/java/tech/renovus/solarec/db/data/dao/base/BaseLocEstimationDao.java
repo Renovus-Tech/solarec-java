@@ -84,7 +84,7 @@ public abstract class BaseLocEstimationDao <T extends LocEstimationVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocEstimationRowWrapper.getInstance()); }
-	public LocEstimationVo findVo(Integer locId, Integer locEstId, Integer cliId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(locId, locEstId, cliId), LocEstimationRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public LocEstimationVo findVo(Integer locId, Integer locEstId, Integer cliId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(locId, locEstId, cliId), LocEstimationRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

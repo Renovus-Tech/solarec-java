@@ -61,7 +61,7 @@ public abstract class BaseGenMetadataDao <T extends GenMetadataVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenMetadataRowWrapper.getInstance()); }
-	public GenMetadataVo findVo(Integer cliId, Integer genId, String metadataCode) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, genId, metadataCode), GenMetadataRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public GenMetadataVo findVo(Integer cliId, Integer genId, String metadataCode) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, genId, metadataCode), GenMetadataRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

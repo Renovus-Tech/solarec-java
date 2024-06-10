@@ -58,7 +58,7 @@ public abstract class BaseCliMetadataDao <T extends CliMetadataVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliMetadataRowWrapper.getInstance()); }
-	public CliMetadataVo findVo(Integer cliId, String metadataName) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, metadataName), CliMetadataRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public CliMetadataVo findVo(Integer cliId, String metadataName) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, metadataName), CliMetadataRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

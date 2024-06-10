@@ -65,7 +65,7 @@ public abstract class BaseLocDataWeatherDao <T extends LocDataWeatherVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocDataWeatherRowWrapper.getInstance()); }
-	public LocDataWeatherVo findVo(Integer cliId, Integer locId, java.util.Date dataDateAdded, java.util.Date dataDate, Integer dataTypeId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, locId, dataDateAdded, dataDate, dataTypeId), LocDataWeatherRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public LocDataWeatherVo findVo(Integer cliId, Integer locId, java.util.Date dataDateAdded, java.util.Date dataDate, Integer dataTypeId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, locId, dataDateAdded, dataDate, dataTypeId), LocDataWeatherRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

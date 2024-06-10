@@ -62,7 +62,7 @@ public abstract class BaseFunctionalityDao <T extends FunctionalityVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, FunctionalityRowWrapper.getInstance()); }
-	public FunctionalityVo findVo(Integer fncId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(fncId), FunctionalityRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public FunctionalityVo findVo(Integer fncId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(fncId), FunctionalityRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

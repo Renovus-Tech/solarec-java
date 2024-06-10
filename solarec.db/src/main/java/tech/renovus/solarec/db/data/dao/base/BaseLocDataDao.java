@@ -64,7 +64,7 @@ public abstract class BaseLocDataDao <T extends LocDataVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, LocDataRowWrapper.getInstance()); }
-	public LocDataVo findVo(Integer cliId, Integer locId, java.util.Date dataDate, Integer dataTypeId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, locId, dataDate, dataTypeId), LocDataRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public LocDataVo findVo(Integer cliId, Integer locId, java.util.Date dataDate, Integer dataTypeId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, locId, dataDate, dataTypeId), LocDataRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

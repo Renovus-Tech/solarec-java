@@ -70,7 +70,7 @@ public abstract class BaseDataProcessingDao <T extends DataProcessingVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataProcessingRowWrapper.getInstance()); }
-	public DataProcessingVo findVo(Integer dataProId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(dataProId), DataProcessingRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public DataProcessingVo findVo(Integer dataProId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(dataProId), DataProcessingRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

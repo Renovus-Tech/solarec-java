@@ -54,7 +54,7 @@ public abstract class BaseSdgDao <T extends SdgVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, SdgRowWrapper.getInstance()); }
-	public SdgVo findVo(Integer sdgId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(sdgId), SdgRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public SdgVo findVo(Integer sdgId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(sdgId), SdgRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

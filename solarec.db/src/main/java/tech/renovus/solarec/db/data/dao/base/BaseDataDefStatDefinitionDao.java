@@ -54,7 +54,7 @@ public abstract class BaseDataDefStatDefinitionDao <T extends DataDefStatDefinit
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DataDefStatDefinitionRowWrapper.getInstance()); }
-	public DataDefStatDefinitionVo findVo(Integer dataDefId, Integer statDefId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(dataDefId, statDefId), DataDefStatDefinitionRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public DataDefStatDefinitionVo findVo(Integer dataDefId, Integer statDefId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(dataDefId, statDefId), DataDefStatDefinitionRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

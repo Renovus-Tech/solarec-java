@@ -60,7 +60,7 @@ public abstract class BaseGenDataDefParameterDao <T extends GenDataDefParameterV
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenDataDefParameterRowWrapper.getInstance()); }
-	public GenDataDefParameterVo findVo(Integer cliId, Integer genId, Integer dataDefId, Integer dataDefParId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, genId, dataDefId, dataDefParId), GenDataDefParameterRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public GenDataDefParameterVo findVo(Integer cliId, Integer genId, Integer dataDefId, Integer dataDefParId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, genId, dataDefId, dataDefParId), GenDataDefParameterRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

@@ -60,7 +60,7 @@ public abstract class BaseChartDao <T extends ChartVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, ChartRowWrapper.getInstance()); }
-	public ChartVo findVo(Integer chrId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(chrId), ChartRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public ChartVo findVo(Integer chrId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(chrId), ChartRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

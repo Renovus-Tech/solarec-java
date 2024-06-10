@@ -62,7 +62,7 @@ public abstract class BaseCliLocUsrAlertDao <T extends CliLocUsrAlertVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliLocUsrAlertRowWrapper.getInstance()); }
-	public CliLocUsrAlertVo findVo(Integer cliId, Integer locId, Integer usrId, Integer cliLocAlertId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, locId, usrId, cliLocAlertId), CliLocUsrAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public CliLocUsrAlertVo findVo(Integer cliId, Integer locId, Integer usrId, Integer cliLocAlertId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, locId, usrId, cliLocAlertId), CliLocUsrAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

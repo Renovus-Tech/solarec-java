@@ -55,7 +55,7 @@ public abstract class BaseDocStationDao <T extends DocStationVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, DocStationRowWrapper.getInstance()); }
-	public DocStationVo findVo(Integer cliId, Integer docId, Integer staId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, docId, staId), DocStationRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public DocStationVo findVo(Integer cliId, Integer docId, Integer staId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, docId, staId), DocStationRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

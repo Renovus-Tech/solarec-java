@@ -73,7 +73,7 @@ public abstract class BaseStationDao <T extends StationVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StationRowWrapper.getInstance()); }
-	public StationVo findVo(Integer staId, Integer cliId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(staId, cliId), StationRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public StationVo findVo(Integer staId, Integer cliId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(staId, cliId), StationRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

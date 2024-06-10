@@ -66,7 +66,7 @@ public abstract class BaseCliGenAlertDao <T extends CliGenAlertVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliGenAlertRowWrapper.getInstance()); }
-	public CliGenAlertVo findVo(Integer genId, Integer cliGenAlertId, Integer cliId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(genId, cliGenAlertId, cliId), CliGenAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public CliGenAlertVo findVo(Integer genId, Integer cliGenAlertId, Integer cliId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(genId, cliGenAlertId, cliId), CliGenAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

@@ -64,7 +64,7 @@ public abstract class BaseGenStatisticDao <T extends GenStatisticVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenStatisticRowWrapper.getInstance()); }
-	public GenStatisticVo findVo(Integer cliId, Integer genId, java.util.Date statDate, Integer statTypeId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, genId, statDate, statTypeId), GenStatisticRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public GenStatisticVo findVo(Integer cliId, Integer genId, java.util.Date statDate, Integer statTypeId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, genId, statDate, statTypeId), GenStatisticRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

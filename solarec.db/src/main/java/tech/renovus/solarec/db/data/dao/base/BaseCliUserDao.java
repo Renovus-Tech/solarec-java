@@ -56,7 +56,7 @@ public abstract class BaseCliUserDao <T extends CliUserVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, CliUserRowWrapper.getInstance()); }
-	public CliUserVo findVo(Integer cliId, Integer usrId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, usrId), CliUserRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public CliUserVo findVo(Integer cliId, Integer usrId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, usrId), CliUserRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

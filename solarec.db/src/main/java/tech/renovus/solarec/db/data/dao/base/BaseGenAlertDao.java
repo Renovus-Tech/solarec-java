@@ -64,7 +64,7 @@ public abstract class BaseGenAlertDao <T extends GenAlertVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, GenAlertRowWrapper.getInstance()); }
-	public GenAlertVo findVo(Integer cliId, Integer genId, Integer alertDefId, java.util.Date alertDateAdded) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, genId, alertDefId, alertDateAdded), GenAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public GenAlertVo findVo(Integer cliId, Integer genId, Integer alertDefId, java.util.Date alertDateAdded) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, genId, alertDefId, alertDateAdded), GenAlertRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

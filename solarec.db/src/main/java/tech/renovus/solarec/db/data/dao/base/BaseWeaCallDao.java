@@ -62,7 +62,7 @@ public abstract class BaseWeaCallDao <T extends WeaCallVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, WeaCallRowWrapper.getInstance()); }
-	public WeaCallVo findVo(Integer cliId, Integer weaId, Integer weaCallId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, weaId, weaCallId), WeaCallRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public WeaCallVo findVo(Integer cliId, Integer weaId, Integer weaCallId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, weaId, weaCallId), WeaCallRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

@@ -61,7 +61,7 @@ public abstract class BaseStaMetadataDao <T extends StaMetadataVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StaMetadataRowWrapper.getInstance()); }
-	public StaMetadataVo findVo(Integer cliId, Integer staId, String metadataName) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, staId, metadataName), StaMetadataRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public StaMetadataVo findVo(Integer cliId, Integer staId, String metadataName) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(cliId, staId, metadataName), StaMetadataRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();

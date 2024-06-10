@@ -52,7 +52,7 @@ public abstract class BaseStatDefSourceDao <T extends StatDefSourceVo > {
 	}
 	//--- Public methods ------------------------
 	public Collection<T> findAll() { return (Collection<T>) this.jdbc.query(SQL_SELECT_ALL, StatDefSourceRowWrapper.getInstance()); }
-	public StatDefSourceVo findVo(Integer statDefId, Integer dataTypeId) { try { return (T) this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(statDefId, dataTypeId), StatDefSourceRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
+	public StatDefSourceVo findVo(Integer statDefId, Integer dataTypeId) { try { return this.jdbc.queryForObject(SQL_SELECT_BY_ID, this.createPkMapSqlParameterSource(statDefId, dataTypeId), StatDefSourceRowWrapper.getInstance()); } catch (EmptyResultDataAccessException e) { return null; } }
 
 	public void insert(T vo) {
 		KeyHolder holder = new GeneratedKeyHolder();
