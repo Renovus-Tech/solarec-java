@@ -33,13 +33,10 @@ public class BaseStatDefinitionVo extends BaseDbVo implements IFlags {
 
 	//--- Public methods ------------------------
 	public boolean validData() {
-		if (this.statDefId == null) {
-			return false;
-		}
-		return true;
+		return this.statDefId != null;
 	}
 
-	//--- Overriden methods ---------------------
+	//--- Overridden methods --------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseStatDefinitionVo)) return false;

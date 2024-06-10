@@ -36,13 +36,10 @@ public class BaseFunctionalityVo extends BaseDbVo implements IFlags {
 
 	//--- Public methods ------------------------
 	public boolean validData() {
-		if (this.fncId == null) {
-			return false;
-		}
-		return true;
+		return this.fncId != null;
 	}
 
-	//--- Overriden methods ---------------------
+	//--- Overridden methods --------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseFunctionalityVo)) return false;

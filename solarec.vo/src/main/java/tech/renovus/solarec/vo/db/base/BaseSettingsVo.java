@@ -53,7 +53,7 @@ public class BaseSettingsVo extends BaseDbVo implements IFlags {
 		return true;
 	}
 
-	//--- Overriden methods ---------------------
+	//--- Overridden methods --------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseSettingsVo)) return false;

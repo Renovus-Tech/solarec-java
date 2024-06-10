@@ -30,7 +30,7 @@ public class BaseDocLocationVo extends BaseDbVo {
 		return true;
 	}
 
-	//--- Overriden methods ---------------------
+	//--- Overridden methods --------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseDocLocationVo)) return false;

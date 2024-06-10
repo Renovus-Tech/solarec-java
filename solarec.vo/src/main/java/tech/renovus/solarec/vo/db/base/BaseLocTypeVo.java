@@ -20,13 +20,10 @@ public class BaseLocTypeVo extends BaseDbVo {
 
 	//--- Public methods ------------------------
 	public boolean validData() {
-		if (this.locTypeId == null) {
-			return false;
-		}
-		return true;
+		return this.locTypeId != null;
 	}
 
-	//--- Overriden methods ---------------------
+	//--- Overridden methods --------------------
 	@Override public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof BaseLocTypeVo)) return false;
