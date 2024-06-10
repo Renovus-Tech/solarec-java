@@ -70,7 +70,7 @@ public class BaseServiceImpl {
 				
 			
 			switch (filter.getPeriod()) {
-				case ChartFilter.PERIOD_YESTERDAY:		filter.setFrom(filter.getTo()); break; //filter.setFrom(DateUtil.addUnit(currentDate, Calendar.DAY_OF_YEAR, -1));	filter.setTo(filter.getFrom()); break;
+				case ChartFilter.PERIOD_YESTERDAY:		filter.setFrom(filter.getTo()); break;
 				case ChartFilter.PERIOD_30_DAYS:		filter.setFrom(DateUtil.addUnit(currentDate, Calendar.DAY_OF_MONTH, -31));	break;
 				case ChartFilter.PERIOD_4_WEEKS:		filter.setFrom(DateUtil.addUnit(currentDate, Calendar.WEEK_OF_YEAR, -4));	break;
 				case ChartFilter.PERIOD_12_WEEKS:		filter.setFrom(DateUtil.addUnit(currentDate, Calendar.WEEK_OF_YEAR, -12));	break;
@@ -100,11 +100,7 @@ public class BaseServiceImpl {
 					aCalendar.setTime(currentDate);
 					aCalendar.set(Calendar.DAY_OF_MONTH, 1);
 					filter.setFrom(aCalendar.getTime());
-					
-//					aCalendar.add(Calendar.MONTH, 1);
-//					aCalendar.add(Calendar.DAY_OF_MONTH, -1);
-//					filter.setTo(aCalendar.getTime());
-					
+
 					break;
 				
 				case ChartFilter.PERIOD_FILTER_WEEK:
@@ -152,7 +148,7 @@ public class BaseServiceImpl {
 					aCalendar.add(Calendar.DAY_OF_MONTH, -1);
 					filter.setTo(aCalendar.getTime());
 
-					if (filter.isForReport() && filter.getTo().after(currentDate)) { //controlar último día del mes no sea superior al día actual
+					if (filter.isForReport() && filter.getTo().after(currentDate)) {
 						filter.setTo(currentDate);
 					}
 					
@@ -174,7 +170,7 @@ public class BaseServiceImpl {
 					aCalendar.add(Calendar.MONTH, -5); //el to incluye el 6° mes
 					filter.setFrom(aCalendar.getTime());
 					
-					if (filter.isForReport() && filter.getTo().after(currentDate)) { //controlar último día del mes no sea superior al día actual
+					if (filter.isForReport() && filter.getTo().after(currentDate)) {
 						filter.setTo(currentDate);
 					}
 					
@@ -196,7 +192,7 @@ public class BaseServiceImpl {
 					aCalendar.set(Calendar.MONTH, Calendar.JANUARY);
 					filter.setFrom(aCalendar.getTime());
 					
-					if (filter.isForReport() && filter.getTo().after(currentDate)) { //controlar último día del mes no sea superior al día actual
+					if (filter.isForReport() && filter.getTo().after(currentDate)) {
 						filter.setTo(currentDate);
 					}
 					
@@ -208,7 +204,7 @@ public class BaseServiceImpl {
 					filter.setFrom(aCalendar.getTime());
 					break;
 				
-				default: filter.setFrom(currentDate); //colocar la fecha actual para denotar que no el periodo ingresado no es el correcto
+				default: filter.setFrom(currentDate);
 			}
 		} else if (filter.getTo() != null) {
 			Date maxToDate = DateUtil.clearTime(new Date());
@@ -229,8 +225,6 @@ public class BaseServiceImpl {
 		if (dateToUser == null) dateToUser = new Date();
 		return dateToUser;
 	}
-
-	
 
 	public Object execute(Integer statDefId, ChartFilter filter, UserData userData) throws CoreException {
 		StatDefinitionVo vo	= this.staDefDao.findVo(statDefId);

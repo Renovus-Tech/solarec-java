@@ -44,9 +44,6 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	
 	private final static String SQL_GET_MAX_DATA_DATE_FOR_CLIENT		= "select max(data_date) from gen_data d where d.cli_id = :cliId and data_date <= :genDataDateMax " ;
 	
-	//https://roytuts.com/single-and-multiple-records-insert-using-spring-jdbctemplate/
-	//https://mkyong.com/spring/spring-jdbctemplate-batchupdate-example/
-	
 	//--- Constructors --------------------------
 	@Autowired public GenDataDaoImpl(NamedParameterJdbcTemplate jdbc) {
 		super(jdbc);
@@ -56,11 +53,6 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 
 	
 	//--- Overridden methods --------------------
-//	@Override public void insert(Collection<GenDataVo> vos) {
-//		if (CollectionUtil.isEmpty(vos)) return;
-//		for (GenDataVo vo : vos) if (vo != null) this.insert(vo);
-//	}
-	
 	@Override public void insert(Collection<GenDataVo> vos) {
 		if (CollectionUtil.isEmpty(vos)) return;
 		List<MapSqlParameterSource> params = new ArrayList<MapSqlParameterSource>();

@@ -43,11 +43,8 @@ public class ParserServiceImplTest {
 		
 		
 		CliGenAlertVo genAlert = this.createGenAlertVo();
-//		CliLocAlertVo locAlert = this.createLocAlertVo();
 		
 		assertEquals("en-generator.alertPerformanceRatioLow-null-null-null-null-null-2022-09-09-56.13432315371699-84.0792077271813-6-33.23637951506319", service.parseAlert(genAlert, en));
 		assertEquals("en-generator.alertPerformanceRatioLow-null-null-null-null-null-2022-09-09-56.13432315371699-84.0792077271813-6-33.23637951506319", service.parseAlert(genAlert, (UserData) null));
-//		service.parseAlert(locAlert, en);
-		
 	}
 }

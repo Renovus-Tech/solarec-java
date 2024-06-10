@@ -2,7 +2,6 @@ package tech.renovus.solarec.business;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.exceptions.CoreException;
-import tech.renovus.solarec.vo.custom.chart.revenue.Revenue;
 import tech.renovus.solarec.vo.rest.chart.ChartFilter;
 import tech.renovus.solarec.vo.rest.chart.IFilter;
 
@@ -15,9 +14,6 @@ public interface SolarService {
 	}
 	
 	ChartFilter validate(ChartFilter filter, UserData userData);
-	
-	//--- Dashboards ----------------------------
-//	Object dashboard(boolean forNow, UserData userData) throws CoreException;
 	
 	//--- Chart methods -------------------------
 	Object retrieveOverviewAlerts(ChartFilter filter, UserData userData) throws CoreException;

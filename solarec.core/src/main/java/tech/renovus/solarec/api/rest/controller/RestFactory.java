@@ -592,7 +592,6 @@ public class RestFactory {
 		
 		document.setDocId(vo.getId());
 		document.setDocName(vo.getName());
-//		document.setDocType(vo.getDocType());
 		document.setDocDateAdded(vo.getAdded());
 		document.setDocDateFrom(vo.getFrom());
 		document.setDocDateTo(vo.getTo());

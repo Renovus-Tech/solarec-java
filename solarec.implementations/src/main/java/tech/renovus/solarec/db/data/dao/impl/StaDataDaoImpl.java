@@ -35,11 +35,6 @@ public class StaDataDaoImpl extends BaseStaDataDao implements StaDataDao {
 	}
 	
 	//--- Overridden methods --------------------
-//	@Override public void insert(Collection<StaDataVo> vos) {
-//		if (CollectionUtil.isEmpty(vos)) return;
-//		for (StaDataVo vo : vos) if (vo != null) this.insert(vo);
-//	}  
-
 	@Override public void insert(Collection<StaDataVo> vos) {
 		if (CollectionUtil.isEmpty(vos)) return;
 		List<MapSqlParameterSource> params = new ArrayList<MapSqlParameterSource>();

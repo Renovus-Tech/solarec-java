@@ -11,7 +11,6 @@ public class Climate extends AbstractChart {
 	
 	//--- Overridden methods --------------------
 	@Override public Object execute() {
-//		this.filter.setGenerators(null);
 		
 		if (CollectionUtil.isEmpty(this.chartFilter.getGenerators())) this.setAllGeneratorsToChartFilter();
 		if (CollectionUtil.isEmpty(this.chartFilter.getStations())) this.setAllStationsToFilter();
@@ -21,10 +20,7 @@ public class Climate extends AbstractChart {
 			
 			return jsonNode.toPrettyString();
 		} catch (Exception e) {
-			//return ChartFactory.getInstance().getChartExceptionInformation(this.statDefVo.getStatDefName(), e);
 			return this.generateChartResultErrorAsString("climate", e);
 		}
 	}
-	
-//	@Override public Object getChartJs(Object executeResult) { return executeResult; }
 }

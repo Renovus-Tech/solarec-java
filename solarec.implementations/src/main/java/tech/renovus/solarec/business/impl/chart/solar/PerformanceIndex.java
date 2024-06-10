@@ -19,10 +19,7 @@ public class PerformanceIndex extends AbstractChart {
 			
 			return jsonNode.toPrettyString();
 		} catch (Exception e) {
-			//return ChartFactory.getInstance().getChartExceptionInformation(this.statDefVo.getStatDefName(), e);
 			return this.generateChartResultErrorAsString("performance_index", e);
 		}
 	}
-	
-//	@Override public Object getChartJs(Object executeResult) { return executeResult; }
 }

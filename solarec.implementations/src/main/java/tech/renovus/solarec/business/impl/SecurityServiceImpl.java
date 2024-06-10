@@ -203,7 +203,7 @@ public class SecurityServiceImpl implements SecurityService {
 		params.put("${user}", usrVo.getUsrName());
 		params.put("${url}", url.toString());
 		
-		String subject = this.messageSource.getMessage("email.reset-password.subject", null, locale); //"RENOVUS - Password reset request";
+		String subject = this.messageSource.getMessage("email.reset-password.subject", null, locale);
 		String content = StringUtil.replaceAll(this.messageSource.getMessage("email.reset-password.content.html", null, locale), params);
 		
 		this.emailService.sendSimpleHtmlMessage(usrVo.getUsrEmail(), subject, content);
@@ -243,7 +243,7 @@ public class SecurityServiceImpl implements SecurityService {
 					Map<String, String> params = new HashMap<>(2);
 					params.put("${user}", usrVo.getUsrName());
 					
-					String subject = this.messageSource.getMessage("email.password-changed.subject", null, userData.getLocale()); //"RENOVUS - Password reset request";
+					String subject = this.messageSource.getMessage("email.password-changed.subject", null, userData.getLocale());
 					String content = StringUtil.replaceAll(this.messageSource.getMessage("email.password-changed.content.html", null, userData.getLocale()), params);
 					
 					this.emailService.sendSimpleHtmlMessage(usrVo.getUsrEmail(), subject, content);

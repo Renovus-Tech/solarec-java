@@ -68,8 +68,6 @@ public class ElectricMapsService implements DataGridService {
 		params.put("disableEstimations", Boolean.TRUE.toString());
 		params.put("zone", ctrVo.getCtrCode2());
 		params.put("emissionFactorType", EMISSION_FACTOR_TYPE_DIRECT);
-//		params.put("lon", "");
-//		params.put("lat", "");
 		
 		CarbonIntensityHistory response = JsonCaller.get(
 				URL + ENDPOINT_CARBON_INTENSITY_HISTORY, 

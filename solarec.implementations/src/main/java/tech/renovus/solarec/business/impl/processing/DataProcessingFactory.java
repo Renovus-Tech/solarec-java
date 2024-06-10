@@ -21,10 +21,6 @@ public class DataProcessingFactory {
 	}
 	
 	//--- Factory methods -----------------------
-//	public AbstractDataProcessing getSampleProcessing() throws CoreException { return this.get(SampleProcessing.class); }
-//	public AbstractDataProcessing getSacadaProcessing() throws CoreException { return this.get(ScadaExcelProcessing.class); }
-//	public AbstractDataProcessing getCSVSampleProcessing() throws CoreException { return this.get(CSVSampleProcessing.class); }
-	
 	public AbstractDataProcessing get(DataDefinitionVo vo) throws CoreException { return this.get(vo.getDataDefExecutable()); }
 	public AbstractDataProcessing get(String className) throws CoreException {
 		try {

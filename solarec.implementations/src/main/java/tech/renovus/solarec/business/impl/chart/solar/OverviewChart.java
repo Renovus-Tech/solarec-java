@@ -22,7 +22,6 @@ public class OverviewChart extends AbstractChart {
 			
 			return jsonNode.toPrettyString();
 		} catch (Exception e) {
-			//return ChartFactory.getInstance().getChartExceptionInformation(this.statDefVo.getStatDefName(), e);
 			return this.generateChartResultErrorAsString("overview", e);
 		}
 	}

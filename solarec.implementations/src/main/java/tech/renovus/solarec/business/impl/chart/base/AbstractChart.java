@@ -35,7 +35,6 @@ import tech.renovus.solarec.vo.rest.chart.ChartFilter;
 public abstract class AbstractChart {
 
 	//--- Protected properties ------------------
-//	@Autowired private Environment environment;
 	@Autowired protected ChartFactory factory;
 	@Resource GeneratorDao genDao;
 	@Resource StationDao staDao;
@@ -49,7 +48,6 @@ public abstract class AbstractChart {
 	
 	//--- Abstract methods ----------------------
 	public abstract Object execute();
-//	public abstract Object getChartJs(Object executeResult);
 	
 	//--- Protected methods ---------------------
 	protected void setAllGeneratorsToChartFilter() {
@@ -70,7 +68,7 @@ public abstract class AbstractChart {
 		
 		String jsonData = JsonUtil.toString(data);
 		String response = null;
-		boolean atDev	= false; //Arrays.stream(this.environment.getActiveProfiles()).anyMatch("dev"::equals);
+		boolean atDev	= false;
 		String dataKey	= url + "-" + jsonData;
 		File dataToLoad	= atDev ? new File(this.config.getPathLog() + "/jsons/" + dataKey.hashCode() + ".json") : null;
 		

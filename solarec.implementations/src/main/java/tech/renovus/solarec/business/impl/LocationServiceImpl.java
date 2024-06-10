@@ -107,28 +107,6 @@ public class LocationServiceImpl implements LocationService {
 			for (Location location : locations) {
 				LocationVo locVo = locationsById.get(location.getId());
 				if (locVo == null) continue;
-//				if (CollectionUtil.isEmpty(location.getEstimations())) continue;
-//				
-//				for (Estimation estimation : location.getEstimations()) {
-//					LocEstimationVo locEstVo = new LocEstimationVo(locVo.getCliId(), locVo.getLocId(), estimation.getTitle())
-//							.withLocEst01(estimation.getMonth01())
-//							.withLocEst02(estimation.getMonth02())
-//							.withLocEst03(estimation.getMonth03())
-//							.withLocEst04(estimation.getMonth04())
-//							.withLocEst05(estimation.getMonth05())
-//							.withLocEst06(estimation.getMonth06())
-//							.withLocEst07(estimation.getMonth07())
-//							.withLocEst08(estimation.getMonth08())
-//							.withLocEst09(estimation.getMonth09())
-//							.withLocEst10(estimation.getMonth10())
-//							.withLocEst11(estimation.getMonth11())
-//							.withLocEst12(estimation.getMonth12())
-//							.withLocEstOrder(Integer.valueOf(CollectionUtil.size(locVo.getEstimations())));
-//					locEstVo.setSyncType(LocEstimationVo.SYNC_INSERT);
-//					locVo.add(locEstVo);
-//					
-//					if (CollectionUtil.size(locVo.getEstimations()) == MAX_AMOUNT_ESTIMATIONS_PER_LOCATION) break;
-//				}
 				
 				this.locEstimationDao.deleteAllFor(locVo.getCliId(), locVo.getLocId());
 				this.locEstimationDao.synchronize(locVo.getEstimations());

@@ -27,11 +27,6 @@ public class LocDataDaoImpl extends BaseLocDataDao implements LocDataDao {
 	}
 	
 	//--- Overridden methods --------------------
-//	@Override public void insert(Collection<LocDataVo> vos) {
-//		if (CollectionUtil.isEmpty(vos)) return;
-//		for (LocDataVo vo : vos) if (vo != null) this.insert(vo);
-//	}  
-	
 	@Override public void insert(Collection<LocDataVo> vos) {
 		if (CollectionUtil.isEmpty(vos)) return;
 		List<MapSqlParameterSource> params = new ArrayList<MapSqlParameterSource>();
