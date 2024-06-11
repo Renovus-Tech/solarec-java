@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.StaAlertVo;
 
 public abstract class BaseStaAlertDao <T extends StaAlertVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM sta_alert";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM sta_alert WHERE cli_id = :cli_id AND sta_id = :sta_id AND alert_def_id = :alert_def_id AND alert_date_added = :alert_date_added";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM sta_alert";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM sta_alert WHERE cli_id = :cli_id AND sta_id = :sta_id AND alert_def_id = :alert_def_id AND alert_date_added = :alert_date_added";
 	protected String SQL_INSERT					= "INSERT INTO sta_alert (cli_id, sta_id, alert_def_id, alert_pro_id, alert_date_added, alert_date_send, alert_message) VALUES (:cli_id, :sta_id, :alert_def_id, :alert_pro_id, :alert_date_added, :alert_date_send, :alert_message)";
 	protected String SQL_UPDATE					= "UPDATE sta_alert SET alert_pro_id = :alert_pro_id, alert_date_send = :alert_date_send, alert_message = :alert_message WHERE cli_id = :cli_id AND sta_id = :sta_id AND alert_def_id = :alert_def_id AND alert_date_added = :alert_date_added";
 	protected String SQL_DELETE					= "DELETE FROM sta_alert WHERE cli_id = :cli_id AND sta_id = :sta_id AND alert_def_id = :alert_def_id AND alert_date_added = :alert_date_added";
@@ -24,7 +24,7 @@ public abstract class BaseStaAlertDao <T extends StaAlertVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseStaAlertDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseStaAlertDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -83,6 +83,7 @@ public abstract class BaseStaAlertDao <T extends StaAlertVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

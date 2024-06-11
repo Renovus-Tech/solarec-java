@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.CtrDataVo;
 
 public abstract class BaseCtrDataDao <T extends CtrDataVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM ctr_data";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM ctr_data WHERE ctr_id = :ctr_id AND data_date = :data_date AND data_type_id = :data_type_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM ctr_data";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM ctr_data WHERE ctr_id = :ctr_id AND data_date = :data_date AND data_type_id = :data_type_id";
 	protected String SQL_INSERT					= "INSERT INTO ctr_data (ctr_id, data_date, data_type_id, data_pro_id, data_value, data_date_added) VALUES (:ctr_id, :data_date, :data_type_id, :data_pro_id, :data_value, :data_date_added)";
 	protected String SQL_UPDATE					= "UPDATE ctr_data SET data_pro_id = :data_pro_id, data_value = :data_value, data_date_added = :data_date_added WHERE ctr_id = :ctr_id AND data_date = :data_date AND data_type_id = :data_type_id";
 	protected String SQL_DELETE					= "DELETE FROM ctr_data WHERE ctr_id = :ctr_id AND data_date = :data_date AND data_type_id = :data_type_id";
@@ -24,7 +24,7 @@ public abstract class BaseCtrDataDao <T extends CtrDataVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseCtrDataDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseCtrDataDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -80,6 +80,7 @@ public abstract class BaseCtrDataDao <T extends CtrDataVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

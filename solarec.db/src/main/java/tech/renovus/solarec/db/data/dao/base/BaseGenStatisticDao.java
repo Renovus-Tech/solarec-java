@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.GenStatisticVo;
 
 public abstract class BaseGenStatisticDao <T extends GenStatisticVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM gen_statistic";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_statistic WHERE cli_id = :cli_id AND gen_id = :gen_id AND stat_date = :stat_date AND stat_type_id = :stat_type_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM gen_statistic";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_statistic WHERE cli_id = :cli_id AND gen_id = :gen_id AND stat_date = :stat_date AND stat_type_id = :stat_type_id";
 	protected String SQL_INSERT					= "INSERT INTO gen_statistic (cli_id, gen_id, stat_date, stat_type_id, stat_pro_id, stat_value, stat_date_added) VALUES (:cli_id, :gen_id, :stat_date, :stat_type_id, :stat_pro_id, :stat_value, :stat_date_added)";
 	protected String SQL_UPDATE					= "UPDATE gen_statistic SET stat_pro_id = :stat_pro_id, stat_value = :stat_value, stat_date_added = :stat_date_added WHERE cli_id = :cli_id AND gen_id = :gen_id AND stat_date = :stat_date AND stat_type_id = :stat_type_id";
 	protected String SQL_DELETE					= "DELETE FROM gen_statistic WHERE cli_id = :cli_id AND gen_id = :gen_id AND stat_date = :stat_date AND stat_type_id = :stat_type_id";
@@ -24,7 +24,7 @@ public abstract class BaseGenStatisticDao <T extends GenStatisticVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseGenStatisticDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseGenStatisticDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -83,6 +83,7 @@ public abstract class BaseGenStatisticDao <T extends GenStatisticVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

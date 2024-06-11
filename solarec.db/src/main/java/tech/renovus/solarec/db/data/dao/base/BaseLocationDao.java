@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.LocationVo;
 
 public abstract class BaseLocationDao <T extends LocationVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM location";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM location WHERE loc_id_auto = :loc_id_auto AND cli_id = :cli_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM location";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM location WHERE loc_id_auto = :loc_id_auto AND cli_id = :cli_id";
 	protected String SQL_INSERT					= "INSERT INTO location (loc_type_id, data_def_id, loc_output_total_capacity, loc_reference_density, loc_data_date_max, loc_data_date_min, loc_demo_date, ctr_id, cli_id, loc_coord_lat, loc_coord_lng, loc_output_capacity, loc_name, loc_address, loc_state, loc_type, loc_flags, loc_code, loc_gmt) VALUES (:loc_type_id, :data_def_id, :loc_output_total_capacity, :loc_reference_density, :loc_data_date_max, :loc_data_date_min, :loc_demo_date, :ctr_id, :cli_id, :loc_coord_lat, :loc_coord_lng, :loc_output_capacity, :loc_name, :loc_address, :loc_state, :loc_type, :loc_flags, :loc_code, :loc_gmt)";
 	protected String SQL_UPDATE					= "UPDATE location SET loc_type_id = :loc_type_id, data_def_id = :data_def_id, loc_output_total_capacity = :loc_output_total_capacity, loc_reference_density = :loc_reference_density, loc_data_date_max = :loc_data_date_max, loc_data_date_min = :loc_data_date_min, loc_demo_date = :loc_demo_date, ctr_id = :ctr_id, loc_coord_lat = :loc_coord_lat, loc_coord_lng = :loc_coord_lng, loc_output_capacity = :loc_output_capacity, loc_name = :loc_name, loc_address = :loc_address, loc_state = :loc_state, loc_type = :loc_type, loc_flags = :loc_flags, loc_code = :loc_code, loc_gmt = :loc_gmt WHERE loc_id_auto = :loc_id_auto AND cli_id = :cli_id";
 	protected String SQL_DELETE					= "DELETE FROM location WHERE loc_id_auto = :loc_id_auto AND cli_id = :cli_id";
@@ -25,7 +25,7 @@ public abstract class BaseLocationDao <T extends LocationVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseLocationDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseLocationDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -110,6 +110,7 @@ public abstract class BaseLocationDao <T extends LocationVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

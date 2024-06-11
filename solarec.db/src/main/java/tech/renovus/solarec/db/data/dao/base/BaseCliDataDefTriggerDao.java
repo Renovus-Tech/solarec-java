@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 
 public abstract class BaseCliDataDefTriggerDao <T extends CliDataDefTriggerVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM cli_data_def_trigger";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_data_def_trigger WHERE tri_id_auto = :tri_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM cli_data_def_trigger";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_data_def_trigger WHERE tri_id_auto = :tri_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO cli_data_def_trigger (sta_id, data_def_id, tri_source, cli_id, loc_id, gen_id, tri_name, tri_value, tri_flags) VALUES (:sta_id, :data_def_id, :tri_source, :cli_id, :loc_id, :gen_id, :tri_name, :tri_value, :tri_flags)";
 	protected String SQL_UPDATE					= "UPDATE cli_data_def_trigger SET sta_id = :sta_id, data_def_id = :data_def_id, tri_source = :tri_source, cli_id = :cli_id, loc_id = :loc_id, gen_id = :gen_id, tri_name = :tri_name, tri_value = :tri_value, tri_flags = :tri_flags WHERE tri_id_auto = :tri_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM cli_data_def_trigger WHERE tri_id_auto = :tri_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseCliDataDefTriggerDao <T extends CliDataDefTriggerVo > 
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseCliDataDefTriggerDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseCliDataDefTriggerDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -89,6 +89,7 @@ public abstract class BaseCliDataDefTriggerDao <T extends CliDataDefTriggerVo > 
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

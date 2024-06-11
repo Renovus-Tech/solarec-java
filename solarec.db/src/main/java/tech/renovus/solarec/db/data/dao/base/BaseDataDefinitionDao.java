@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 
 public abstract class BaseDataDefinitionDao <T extends DataDefinitionVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM data_definition";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM data_definition WHERE data_def_id_auto = :data_def_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM data_definition";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM data_definition WHERE data_def_id_auto = :data_def_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO data_definition (data_def_name, data_def_description, data_def_executable, data_def_flags) VALUES (:data_def_name, :data_def_description, :data_def_executable, :data_def_flags)";
 	protected String SQL_UPDATE					= "UPDATE data_definition SET data_def_name = :data_def_name, data_def_description = :data_def_description, data_def_executable = :data_def_executable, data_def_flags = :data_def_flags WHERE data_def_id_auto = :data_def_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM data_definition WHERE data_def_id_auto = :data_def_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseDataDefinitionDao <T extends DataDefinitionVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseDataDefinitionDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseDataDefinitionDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -79,6 +79,7 @@ public abstract class BaseDataDefinitionDao <T extends DataDefinitionVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.DocStationVo;
 
 public abstract class BaseDocStationDao <T extends DocStationVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM doc_station";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM doc_station WHERE cli_id = :cli_id AND doc_id = :doc_id AND sta_id = :sta_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM doc_station";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM doc_station WHERE cli_id = :cli_id AND doc_id = :doc_id AND sta_id = :sta_id";
 	protected String SQL_INSERT					= "INSERT INTO doc_station (cli_id, doc_id, sta_id) VALUES (:cli_id, :doc_id, :sta_id)";
 	protected String SQL_UPDATE					= "UPDATE doc_station SET  WHERE cli_id = :cli_id AND doc_id = :doc_id AND sta_id = :sta_id";
 	protected String SQL_DELETE					= "DELETE FROM doc_station WHERE cli_id = :cli_id AND doc_id = :doc_id AND sta_id = :sta_id";
@@ -24,7 +24,7 @@ public abstract class BaseDocStationDao <T extends DocStationVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseDocStationDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseDocStationDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -74,6 +74,7 @@ public abstract class BaseDocStationDao <T extends DocStationVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

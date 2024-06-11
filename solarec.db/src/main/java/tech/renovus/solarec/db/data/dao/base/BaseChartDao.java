@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.ChartVo;
 
 public abstract class BaseChartDao <T extends ChartVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM chart";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM chart WHERE chr_id_auto = :chr_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM chart";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM chart WHERE chr_id_auto = :chr_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO chart (chr_name, chr_title, chr_description, chr_flags, chr_url) VALUES (:chr_name, :chr_title, :chr_description, :chr_flags, :chr_url)";
 	protected String SQL_UPDATE					= "UPDATE chart SET chr_name = :chr_name, chr_title = :chr_title, chr_description = :chr_description, chr_flags = :chr_flags, chr_url = :chr_url WHERE chr_id_auto = :chr_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM chart WHERE chr_id_auto = :chr_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseChartDao <T extends ChartVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseChartDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseChartDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -81,6 +81,7 @@ public abstract class BaseChartDao <T extends ChartVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

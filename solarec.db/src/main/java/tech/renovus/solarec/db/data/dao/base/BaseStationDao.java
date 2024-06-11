@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.StationVo;
 
 public abstract class BaseStationDao <T extends StationVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM station";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM station WHERE sta_id_auto = :sta_id_auto AND cli_id = :cli_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM station";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM station WHERE sta_id_auto = :sta_id_auto AND cli_id = :cli_id";
 	protected String SQL_INSERT					= "INSERT INTO station (sta_data_date_min, data_def_id, loc_id, sta_coord_lat, sta_coord_lng, sta_data_date_max, cli_id, sta_name, sta_description, sta_flags, sta_code) VALUES (:sta_data_date_min, :data_def_id, :loc_id, :sta_coord_lat, :sta_coord_lng, :sta_data_date_max, :cli_id, :sta_name, :sta_description, :sta_flags, :sta_code)";
 	protected String SQL_UPDATE					= "UPDATE station SET sta_data_date_min = :sta_data_date_min, data_def_id = :data_def_id, loc_id = :loc_id, sta_coord_lat = :sta_coord_lat, sta_coord_lng = :sta_coord_lng, sta_data_date_max = :sta_data_date_max, sta_name = :sta_name, sta_description = :sta_description, sta_flags = :sta_flags, sta_code = :sta_code WHERE sta_id_auto = :sta_id_auto AND cli_id = :cli_id";
 	protected String SQL_DELETE					= "DELETE FROM station WHERE sta_id_auto = :sta_id_auto AND cli_id = :cli_id";
@@ -25,7 +25,7 @@ public abstract class BaseStationDao <T extends StationVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseStationDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseStationDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -94,6 +94,7 @@ public abstract class BaseStationDao <T extends StationVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.LocDataWeatherVo;
 
 public abstract class BaseLocDataWeatherDao <T extends LocDataWeatherVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM loc_data_weather";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_data_weather WHERE cli_id = :cli_id AND loc_id = :loc_id AND data_date_added = :data_date_added AND data_date = :data_date AND data_type_id = :data_type_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM loc_data_weather";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_data_weather WHERE cli_id = :cli_id AND loc_id = :loc_id AND data_date_added = :data_date_added AND data_date = :data_date AND data_type_id = :data_type_id";
 	protected String SQL_INSERT					= "INSERT INTO loc_data_weather (cli_id, loc_id, data_date_added, data_date, data_type_id, data_pro_id, data_value) VALUES (:cli_id, :loc_id, :data_date_added, :data_date, :data_type_id, :data_pro_id, :data_value)";
 	protected String SQL_UPDATE					= "UPDATE loc_data_weather SET data_pro_id = :data_pro_id, data_value = :data_value WHERE cli_id = :cli_id AND loc_id = :loc_id AND data_date_added = :data_date_added AND data_date = :data_date AND data_type_id = :data_type_id";
 	protected String SQL_DELETE					= "DELETE FROM loc_data_weather WHERE cli_id = :cli_id AND loc_id = :loc_id AND data_date_added = :data_date_added AND data_date = :data_date AND data_type_id = :data_type_id";
@@ -24,7 +24,7 @@ public abstract class BaseLocDataWeatherDao <T extends LocDataWeatherVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseLocDataWeatherDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseLocDataWeatherDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -84,6 +84,7 @@ public abstract class BaseLocDataWeatherDao <T extends LocDataWeatherVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.GenMetadataVo;
 
 public abstract class BaseGenMetadataDao <T extends GenMetadataVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM gen_metadata";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_metadata WHERE cli_id = :cli_id AND gen_id = :gen_id AND metadata_code = :metadata_code";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM gen_metadata";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_metadata WHERE cli_id = :cli_id AND gen_id = :gen_id AND metadata_code = :metadata_code";
 	protected String SQL_INSERT					= "INSERT INTO gen_metadata (cli_id, gen_id, metadata_date_added, metadata_code, metadata_title, metadata_value) VALUES (:cli_id, :gen_id, :metadata_date_added, :metadata_code, :metadata_title, :metadata_value)";
 	protected String SQL_UPDATE					= "UPDATE gen_metadata SET metadata_date_added = :metadata_date_added, metadata_title = :metadata_title, metadata_value = :metadata_value WHERE cli_id = :cli_id AND gen_id = :gen_id AND metadata_code = :metadata_code";
 	protected String SQL_DELETE					= "DELETE FROM gen_metadata WHERE cli_id = :cli_id AND gen_id = :gen_id AND metadata_code = :metadata_code";
@@ -24,7 +24,7 @@ public abstract class BaseGenMetadataDao <T extends GenMetadataVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseGenMetadataDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseGenMetadataDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -80,6 +80,7 @@ public abstract class BaseGenMetadataDao <T extends GenMetadataVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

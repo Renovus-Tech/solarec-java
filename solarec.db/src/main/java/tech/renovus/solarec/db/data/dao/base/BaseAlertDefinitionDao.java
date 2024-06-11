@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.AlertDefinitionVo;
 
 public abstract class BaseAlertDefinitionDao <T extends AlertDefinitionVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM alert_definition";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM alert_definition WHERE alert_def_id_auto = :alert_def_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM alert_definition";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM alert_definition WHERE alert_def_id_auto = :alert_def_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO alert_definition (alert_def_name, alert_def_description, alert_def_executable, alert_def_flags) VALUES (:alert_def_name, :alert_def_description, :alert_def_executable, :alert_def_flags)";
 	protected String SQL_UPDATE					= "UPDATE alert_definition SET alert_def_name = :alert_def_name, alert_def_description = :alert_def_description, alert_def_executable = :alert_def_executable, alert_def_flags = :alert_def_flags WHERE alert_def_id_auto = :alert_def_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM alert_definition WHERE alert_def_id_auto = :alert_def_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseAlertDefinitionDao <T extends AlertDefinitionVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseAlertDefinitionDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseAlertDefinitionDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -79,6 +79,7 @@ public abstract class BaseAlertDefinitionDao <T extends AlertDefinitionVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

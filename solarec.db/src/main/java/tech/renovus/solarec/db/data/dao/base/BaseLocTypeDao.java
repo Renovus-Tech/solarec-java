@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.LocTypeVo;
 
 public abstract class BaseLocTypeDao <T extends LocTypeVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM loc_type";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_type WHERE loc_type_id_auto = :loc_type_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM loc_type";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_type WHERE loc_type_id_auto = :loc_type_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO loc_type (loc_type_code, loc_type_text) VALUES (:loc_type_code, :loc_type_text)";
 	protected String SQL_UPDATE					= "UPDATE loc_type SET loc_type_code = :loc_type_code, loc_type_text = :loc_type_text WHERE loc_type_id_auto = :loc_type_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM loc_type WHERE loc_type_id_auto = :loc_type_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseLocTypeDao <T extends LocTypeVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseLocTypeDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseLocTypeDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -75,6 +75,7 @@ public abstract class BaseLocTypeDao <T extends LocTypeVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.WeaCallVo;
 
 public abstract class BaseWeaCallDao <T extends WeaCallVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM wea_call";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM wea_call WHERE cli_id = :cli_id AND wea_id = :wea_id AND wea_call_id_auto = :wea_call_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM wea_call";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM wea_call WHERE cli_id = :cli_id AND wea_id = :wea_id AND wea_call_id_auto = :wea_call_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO wea_call (cli_id, wea_id, wea_call_date, wea_call_resonse_status, wea_call_response) VALUES (:cli_id, :wea_id, :wea_call_date, :wea_call_resonse_status, :wea_call_response)";
 	protected String SQL_UPDATE					= "UPDATE wea_call SET wea_call_date = :wea_call_date, wea_call_resonse_status = :wea_call_resonse_status, wea_call_response = :wea_call_response WHERE cli_id = :cli_id AND wea_id = :wea_id AND wea_call_id_auto = :wea_call_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM wea_call WHERE cli_id = :cli_id AND wea_id = :wea_id AND wea_call_id_auto = :wea_call_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseWeaCallDao <T extends WeaCallVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseWeaCallDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseWeaCallDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -83,6 +83,7 @@ public abstract class BaseWeaCallDao <T extends WeaCallVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

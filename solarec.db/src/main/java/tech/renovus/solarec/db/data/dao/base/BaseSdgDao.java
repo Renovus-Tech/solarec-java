@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.SdgVo;
 
 public abstract class BaseSdgDao <T extends SdgVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM sdg";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM sdg WHERE sdg_id_auto = :sdg_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM sdg";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM sdg WHERE sdg_id_auto = :sdg_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO sdg (sdg_code, sdg_name) VALUES (:sdg_code, :sdg_name)";
 	protected String SQL_UPDATE					= "UPDATE sdg SET sdg_code = :sdg_code, sdg_name = :sdg_name WHERE sdg_id_auto = :sdg_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM sdg WHERE sdg_id_auto = :sdg_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseSdgDao <T extends SdgVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseSdgDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseSdgDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -75,6 +75,7 @@ public abstract class BaseSdgDao <T extends SdgVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

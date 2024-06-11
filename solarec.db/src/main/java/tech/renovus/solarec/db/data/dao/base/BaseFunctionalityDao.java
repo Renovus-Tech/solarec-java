@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 
 public abstract class BaseFunctionalityDao <T extends FunctionalityVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM functionality";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM functionality WHERE fnc_id_auto = :fnc_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM functionality";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM functionality WHERE fnc_id_auto = :fnc_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO functionality (fnc_order, fnc_title, fnc_flags, fnc_url, fnc_description, fnc_name) VALUES (:fnc_order, :fnc_title, :fnc_flags, :fnc_url, :fnc_description, :fnc_name)";
 	protected String SQL_UPDATE					= "UPDATE functionality SET fnc_order = :fnc_order, fnc_title = :fnc_title, fnc_flags = :fnc_flags, fnc_url = :fnc_url, fnc_description = :fnc_description, fnc_name = :fnc_name WHERE fnc_id_auto = :fnc_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM functionality WHERE fnc_id_auto = :fnc_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseFunctionalityDao <T extends FunctionalityVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseFunctionalityDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseFunctionalityDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -83,6 +83,7 @@ public abstract class BaseFunctionalityDao <T extends FunctionalityVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

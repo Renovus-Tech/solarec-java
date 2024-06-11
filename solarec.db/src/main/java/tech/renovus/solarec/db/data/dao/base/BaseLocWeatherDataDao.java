@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.LocWeatherDataVo;
 
 public abstract class BaseLocWeatherDataDao <T extends LocWeatherDataVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM loc_weather_data";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_weather_data WHERE cli_id = :cli_id AND loc_id = :loc_id AND loc_wea_data_id_auto = :loc_wea_data_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM loc_weather_data";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_weather_data WHERE cli_id = :cli_id AND loc_id = :loc_id AND loc_wea_data_id_auto = :loc_wea_data_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO loc_weather_data (cli_id, loc_id, loc_wea_data_date, loc_wea_data_resonse_status, loc_wea_data_response) VALUES (:cli_id, :loc_id, :loc_wea_data_date, :loc_wea_data_resonse_status, :loc_wea_data_response)";
 	protected String SQL_UPDATE					= "UPDATE loc_weather_data SET loc_wea_data_date = :loc_wea_data_date, loc_wea_data_resonse_status = :loc_wea_data_resonse_status, loc_wea_data_response = :loc_wea_data_response WHERE cli_id = :cli_id AND loc_id = :loc_id AND loc_wea_data_id_auto = :loc_wea_data_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM loc_weather_data WHERE cli_id = :cli_id AND loc_id = :loc_id AND loc_wea_data_id_auto = :loc_wea_data_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseLocWeatherDataDao <T extends LocWeatherDataVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseLocWeatherDataDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseLocWeatherDataDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -83,6 +83,7 @@ public abstract class BaseLocWeatherDataDao <T extends LocWeatherDataVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.CliSettingVo;
 
 public abstract class BaseCliSettingDao <T extends CliSettingVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM cli_setting";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_setting WHERE cli_id = :cli_id AND cli_set_name = :cli_set_name";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM cli_setting";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_setting WHERE cli_id = :cli_id AND cli_set_name = :cli_set_name";
 	protected String SQL_INSERT					= "INSERT INTO cli_setting (cli_id, cli_set_name, cli_set_value) VALUES (:cli_id, :cli_set_name, :cli_set_value)";
 	protected String SQL_UPDATE					= "UPDATE cli_setting SET cli_set_value = :cli_set_value WHERE cli_id = :cli_id AND cli_set_name = :cli_set_name";
 	protected String SQL_DELETE					= "DELETE FROM cli_setting WHERE cli_id = :cli_id AND cli_set_name = :cli_set_name";
@@ -24,7 +24,7 @@ public abstract class BaseCliSettingDao <T extends CliSettingVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseCliSettingDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseCliSettingDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -73,6 +73,7 @@ public abstract class BaseCliSettingDao <T extends CliSettingVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

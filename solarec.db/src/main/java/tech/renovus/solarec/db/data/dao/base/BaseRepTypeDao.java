@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.RepTypeVo;
 
 public abstract class BaseRepTypeDao <T extends RepTypeVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM rep_type";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM rep_type WHERE rep_type_id_auto = :rep_type_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM rep_type";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM rep_type WHERE rep_type_id_auto = :rep_type_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO rep_type (rep_order, rep_type_name, rep_type_title, rep_flags, rep_executable) VALUES (:rep_order, :rep_type_name, :rep_type_title, :rep_flags, :rep_executable)";
 	protected String SQL_UPDATE					= "UPDATE rep_type SET rep_order = :rep_order, rep_type_name = :rep_type_name, rep_type_title = :rep_type_title, rep_flags = :rep_flags, rep_executable = :rep_executable WHERE rep_type_id_auto = :rep_type_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM rep_type WHERE rep_type_id_auto = :rep_type_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseRepTypeDao <T extends RepTypeVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseRepTypeDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseRepTypeDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -81,6 +81,7 @@ public abstract class BaseRepTypeDao <T extends RepTypeVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

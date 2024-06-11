@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.UsrSettingVo;
 
 public abstract class BaseUsrSettingDao <T extends UsrSettingVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM usr_setting";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM usr_setting WHERE usr_id = :usr_id AND usr_set_name = :usr_set_name";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM usr_setting";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM usr_setting WHERE usr_id = :usr_id AND usr_set_name = :usr_set_name";
 	protected String SQL_INSERT					= "INSERT INTO usr_setting (usr_id, usr_set_name, usr_set_value) VALUES (:usr_id, :usr_set_name, :usr_set_value)";
 	protected String SQL_UPDATE					= "UPDATE usr_setting SET usr_set_value = :usr_set_value WHERE usr_id = :usr_id AND usr_set_name = :usr_set_name";
 	protected String SQL_DELETE					= "DELETE FROM usr_setting WHERE usr_id = :usr_id AND usr_set_name = :usr_set_name";
@@ -24,7 +24,7 @@ public abstract class BaseUsrSettingDao <T extends UsrSettingVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseUsrSettingDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseUsrSettingDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -73,6 +73,7 @@ public abstract class BaseUsrSettingDao <T extends UsrSettingVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

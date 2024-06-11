@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.ClientVo;
 
 public abstract class BaseClientDao <T extends ClientVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM client";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM client WHERE cli_id_auto = :cli_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM client";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM client WHERE cli_id_auto = :cli_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO client (cli_demo_date, data_def_id, cli_name_address, cli_flags, cli_gmt, cli_sec_code, cli_name, cli_name_legal) VALUES (:cli_demo_date, :data_def_id, :cli_name_address, :cli_flags, :cli_gmt, :cli_sec_code, :cli_name, :cli_name_legal)";
 	protected String SQL_UPDATE					= "UPDATE client SET cli_demo_date = :cli_demo_date, data_def_id = :data_def_id, cli_name_address = :cli_name_address, cli_flags = :cli_flags, cli_gmt = :cli_gmt, cli_sec_code = :cli_sec_code, cli_name = :cli_name, cli_name_legal = :cli_name_legal WHERE cli_id_auto = :cli_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM client WHERE cli_id_auto = :cli_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseClientDao <T extends ClientVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseClientDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseClientDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -87,6 +87,7 @@ public abstract class BaseClientDao <T extends ClientVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

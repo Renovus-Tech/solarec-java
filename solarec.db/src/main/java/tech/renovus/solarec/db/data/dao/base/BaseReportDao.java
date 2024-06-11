@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.ReportVo;
 
 public abstract class BaseReportDao <T extends ReportVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM report";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM report WHERE cli_id = :cli_id AND rep_id_auto = :rep_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM report";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM report WHERE cli_id = :cli_id AND rep_id_auto = :rep_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO report (rep_date_generated, rep_date_from, rep_type_id, cli_id, rep_date_to, reg_file, rep_title, rep_file, rep_flags) VALUES (:rep_date_generated, :rep_date_from, :rep_type_id, :cli_id, :rep_date_to, :reg_file, :rep_title, :rep_file, :rep_flags)";
 	protected String SQL_UPDATE					= "UPDATE report SET rep_date_generated = :rep_date_generated, rep_date_from = :rep_date_from, rep_type_id = :rep_type_id, rep_date_to = :rep_date_to, reg_file = :reg_file, rep_title = :rep_title, rep_file = :rep_file, rep_flags = :rep_flags WHERE cli_id = :cli_id AND rep_id_auto = :rep_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM report WHERE cli_id = :cli_id AND rep_id_auto = :rep_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseReportDao <T extends ReportVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseReportDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseReportDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -90,6 +90,7 @@ public abstract class BaseReportDao <T extends ReportVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.LocUsrRepTypeVo;
 
 public abstract class BaseLocUsrRepTypeDao <T extends LocUsrRepTypeVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM loc_usr_rep_type";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_usr_rep_type WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id AND rep_type_id = :rep_type_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM loc_usr_rep_type";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_usr_rep_type WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id AND rep_type_id = :rep_type_id";
 	protected String SQL_INSERT					= "INSERT INTO loc_usr_rep_type (cli_id, loc_id, usr_id, rep_type_id, loc_usr_rep_type_flags) VALUES (:cli_id, :loc_id, :usr_id, :rep_type_id, :loc_usr_rep_type_flags)";
 	protected String SQL_UPDATE					= "UPDATE loc_usr_rep_type SET loc_usr_rep_type_flags = :loc_usr_rep_type_flags WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id AND rep_type_id = :rep_type_id";
 	protected String SQL_DELETE					= "DELETE FROM loc_usr_rep_type WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id AND rep_type_id = :rep_type_id";
@@ -24,7 +24,7 @@ public abstract class BaseLocUsrRepTypeDao <T extends LocUsrRepTypeVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseLocUsrRepTypeDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseLocUsrRepTypeDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -79,6 +79,7 @@ public abstract class BaseLocUsrRepTypeDao <T extends LocUsrRepTypeVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

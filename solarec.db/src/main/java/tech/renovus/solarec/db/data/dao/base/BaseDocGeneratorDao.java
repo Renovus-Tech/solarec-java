@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.DocGeneratorVo;
 
 public abstract class BaseDocGeneratorDao <T extends DocGeneratorVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM doc_generator";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM doc_generator WHERE cli_id = :cli_id AND doc_id = :doc_id AND gen_id = :gen_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM doc_generator";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM doc_generator WHERE cli_id = :cli_id AND doc_id = :doc_id AND gen_id = :gen_id";
 	protected String SQL_INSERT					= "INSERT INTO doc_generator (cli_id, doc_id, gen_id) VALUES (:cli_id, :doc_id, :gen_id)";
 	protected String SQL_UPDATE					= "UPDATE doc_generator SET  WHERE cli_id = :cli_id AND doc_id = :doc_id AND gen_id = :gen_id";
 	protected String SQL_DELETE					= "DELETE FROM doc_generator WHERE cli_id = :cli_id AND doc_id = :doc_id AND gen_id = :gen_id";
@@ -24,7 +24,7 @@ public abstract class BaseDocGeneratorDao <T extends DocGeneratorVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseDocGeneratorDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseDocGeneratorDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -74,6 +74,7 @@ public abstract class BaseDocGeneratorDao <T extends DocGeneratorVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

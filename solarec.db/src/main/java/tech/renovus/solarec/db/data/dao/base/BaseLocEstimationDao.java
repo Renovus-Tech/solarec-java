@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.LocEstimationVo;
 
 public abstract class BaseLocEstimationDao <T extends LocEstimationVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM loc_estimation";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_estimation WHERE loc_id = :loc_id AND loc_est_id_auto = :loc_est_id_auto AND cli_id = :cli_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM loc_estimation";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_estimation WHERE loc_id = :loc_id AND loc_est_id_auto = :loc_est_id_auto AND cli_id = :cli_id";
 	protected String SQL_INSERT					= "INSERT INTO loc_estimation (loc_est_12, loc_id, loc_est_order, cli_id, loc_est_01, loc_est_02, loc_est_03, loc_est_04, loc_est_05, loc_est_06, loc_est_07, loc_est_08, loc_est_09, loc_est_10, loc_est_11, loc_est_title) VALUES (:loc_est_12, :loc_id, :loc_est_order, :cli_id, :loc_est_01, :loc_est_02, :loc_est_03, :loc_est_04, :loc_est_05, :loc_est_06, :loc_est_07, :loc_est_08, :loc_est_09, :loc_est_10, :loc_est_11, :loc_est_title)";
 	protected String SQL_UPDATE					= "UPDATE loc_estimation SET loc_est_12 = :loc_est_12, loc_est_order = :loc_est_order, loc_est_01 = :loc_est_01, loc_est_02 = :loc_est_02, loc_est_03 = :loc_est_03, loc_est_04 = :loc_est_04, loc_est_05 = :loc_est_05, loc_est_06 = :loc_est_06, loc_est_07 = :loc_est_07, loc_est_08 = :loc_est_08, loc_est_09 = :loc_est_09, loc_est_10 = :loc_est_10, loc_est_11 = :loc_est_11, loc_est_title = :loc_est_title WHERE loc_id = :loc_id AND loc_est_id_auto = :loc_est_id_auto AND cli_id = :cli_id";
 	protected String SQL_DELETE					= "DELETE FROM loc_estimation WHERE loc_id = :loc_id AND loc_est_id_auto = :loc_est_id_auto AND cli_id = :cli_id";
@@ -25,7 +25,7 @@ public abstract class BaseLocEstimationDao <T extends LocEstimationVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseLocEstimationDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseLocEstimationDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -105,6 +105,7 @@ public abstract class BaseLocEstimationDao <T extends LocEstimationVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

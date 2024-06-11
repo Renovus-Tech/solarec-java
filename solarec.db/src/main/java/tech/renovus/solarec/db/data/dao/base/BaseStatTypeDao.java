@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.StatTypeVo;
 
 public abstract class BaseStatTypeDao <T extends StatTypeVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM stat_type";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM stat_type WHERE stat_type_id = :stat_type_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM stat_type";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM stat_type WHERE stat_type_id = :stat_type_id";
 	protected String SQL_INSERT					= "INSERT INTO stat_type (stat_type_id, stat_type_name, stat_type_unit, stat_type_description) VALUES (:stat_type_id, :stat_type_name, :stat_type_unit, :stat_type_description)";
 	protected String SQL_UPDATE					= "UPDATE stat_type SET stat_type_name = :stat_type_name, stat_type_unit = :stat_type_unit, stat_type_description = :stat_type_description WHERE stat_type_id = :stat_type_id";
 	protected String SQL_DELETE					= "DELETE FROM stat_type WHERE stat_type_id = :stat_type_id";
@@ -24,7 +24,7 @@ public abstract class BaseStatTypeDao <T extends StatTypeVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseStatTypeDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseStatTypeDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -74,6 +74,7 @@ public abstract class BaseStatTypeDao <T extends StatTypeVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

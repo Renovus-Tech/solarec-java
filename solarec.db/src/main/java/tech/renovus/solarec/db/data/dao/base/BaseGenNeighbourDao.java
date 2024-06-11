@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.GenNeighbourVo;
 
 public abstract class BaseGenNeighbourDao <T extends GenNeighbourVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM gen_neighbour";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_neighbour WHERE cli_id = :cli_id AND gen_id = :gen_id AND gen_id_neighbour = :gen_id_neighbour";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM gen_neighbour";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_neighbour WHERE cli_id = :cli_id AND gen_id = :gen_id AND gen_id_neighbour = :gen_id_neighbour";
 	protected String SQL_INSERT					= "INSERT INTO gen_neighbour (cli_id, gen_id, gen_id_neighbour, gen_id_neighbour_position) VALUES (:cli_id, :gen_id, :gen_id_neighbour, :gen_id_neighbour_position)";
 	protected String SQL_UPDATE					= "UPDATE gen_neighbour SET gen_id_neighbour_position = :gen_id_neighbour_position WHERE cli_id = :cli_id AND gen_id = :gen_id AND gen_id_neighbour = :gen_id_neighbour";
 	protected String SQL_DELETE					= "DELETE FROM gen_neighbour WHERE cli_id = :cli_id AND gen_id = :gen_id AND gen_id_neighbour = :gen_id_neighbour";
@@ -24,7 +24,7 @@ public abstract class BaseGenNeighbourDao <T extends GenNeighbourVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseGenNeighbourDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseGenNeighbourDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -76,6 +76,7 @@ public abstract class BaseGenNeighbourDao <T extends GenNeighbourVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

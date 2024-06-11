@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.CliGenUsrAlertVo;
 
 public abstract class BaseCliGenUsrAlertDao <T extends CliGenUsrAlertVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM cli_gen_usr_alert";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_gen_usr_alert WHERE cli_id = :cli_id AND gen_id = :gen_id AND usr_id = :usr_id AND cli_gen_alert_id = :cli_gen_alert_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM cli_gen_usr_alert";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_gen_usr_alert WHERE cli_id = :cli_id AND gen_id = :gen_id AND usr_id = :usr_id AND cli_gen_alert_id = :cli_gen_alert_id";
 	protected String SQL_INSERT					= "INSERT INTO cli_gen_usr_alert (cli_id, gen_id, usr_id, cli_gen_alert_id, cli_gen_usr_alert_send_date, cli_gen_usr_alert_send_result) VALUES (:cli_id, :gen_id, :usr_id, :cli_gen_alert_id, :cli_gen_usr_alert_send_date, :cli_gen_usr_alert_send_result)";
 	protected String SQL_UPDATE					= "UPDATE cli_gen_usr_alert SET cli_gen_usr_alert_send_date = :cli_gen_usr_alert_send_date, cli_gen_usr_alert_send_result = :cli_gen_usr_alert_send_result WHERE cli_id = :cli_id AND gen_id = :gen_id AND usr_id = :usr_id AND cli_gen_alert_id = :cli_gen_alert_id";
 	protected String SQL_DELETE					= "DELETE FROM cli_gen_usr_alert WHERE cli_id = :cli_id AND gen_id = :gen_id AND usr_id = :usr_id AND cli_gen_alert_id = :cli_gen_alert_id";
@@ -24,7 +24,7 @@ public abstract class BaseCliGenUsrAlertDao <T extends CliGenUsrAlertVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseCliGenUsrAlertDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseCliGenUsrAlertDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -81,6 +81,7 @@ public abstract class BaseCliGenUsrAlertDao <T extends CliGenUsrAlertVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

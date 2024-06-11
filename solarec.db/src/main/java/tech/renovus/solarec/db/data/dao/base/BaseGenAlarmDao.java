@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.GenAlarmVo;
 
 public abstract class BaseGenAlarmDao <T extends GenAlarmVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM gen_alarm";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_alarm WHERE cli_id = :cli_id AND gen_id = :gen_id AND alarm_code = :alarm_code";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM gen_alarm";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_alarm WHERE cli_id = :cli_id AND gen_id = :gen_id AND alarm_code = :alarm_code";
 	protected String SQL_INSERT					= "INSERT INTO gen_alarm (cli_id, gen_id, alarm_code, data_cat_id, alarm_description) VALUES (:cli_id, :gen_id, :alarm_code, :data_cat_id, :alarm_description)";
 	protected String SQL_UPDATE					= "UPDATE gen_alarm SET data_cat_id = :data_cat_id, alarm_description = :alarm_description WHERE cli_id = :cli_id AND gen_id = :gen_id AND alarm_code = :alarm_code";
 	protected String SQL_DELETE					= "DELETE FROM gen_alarm WHERE cli_id = :cli_id AND gen_id = :gen_id AND alarm_code = :alarm_code";
@@ -24,7 +24,7 @@ public abstract class BaseGenAlarmDao <T extends GenAlarmVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseGenAlarmDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseGenAlarmDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -78,6 +78,7 @@ public abstract class BaseGenAlarmDao <T extends GenAlarmVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.DocumentVo;
 
 public abstract class BaseDocumentDao <T extends DocumentVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM document";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM document WHERE cli_id = :cli_id AND doc_id_auto = :doc_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM document";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM document WHERE cli_id = :cli_id AND doc_id_auto = :doc_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO document (cli_id, doc_type_id, doc_date_added, doc_date_from, doc_date_to, doc_file_size, doc_flags, doc_name, doc_observations, doc_file, doc_file_name, doc_file_content) VALUES (:cli_id, :doc_type_id, :doc_date_added, :doc_date_from, :doc_date_to, :doc_file_size, :doc_flags, :doc_name, :doc_observations, :doc_file, :doc_file_name, :doc_file_content)";
 	protected String SQL_UPDATE					= "UPDATE document SET doc_type_id = :doc_type_id, doc_date_added = :doc_date_added, doc_date_from = :doc_date_from, doc_date_to = :doc_date_to, doc_file_size = :doc_file_size, doc_flags = :doc_flags, doc_name = :doc_name, doc_observations = :doc_observations, doc_file = :doc_file, doc_file_name = :doc_file_name, doc_file_content = :doc_file_content WHERE cli_id = :cli_id AND doc_id_auto = :doc_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM document WHERE cli_id = :cli_id AND doc_id_auto = :doc_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseDocumentDao <T extends DocumentVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseDocumentDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseDocumentDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -96,6 +96,7 @@ public abstract class BaseDocumentDao <T extends DocumentVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

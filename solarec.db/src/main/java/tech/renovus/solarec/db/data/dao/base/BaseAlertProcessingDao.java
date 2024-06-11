@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.AlertProcessingVo;
 
 public abstract class BaseAlertProcessingDao <T extends AlertProcessingVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM alert_processing";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM alert_processing WHERE alert_pro_id_auto = :alert_pro_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM alert_processing";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM alert_processing WHERE alert_pro_id_auto = :alert_pro_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO alert_processing (alert_pro_result, cli_id, loc_id, alert_def_id, alert_pro_date_start, alert_pro_date_end, alert_pro_file_log, alert_pro_file_name) VALUES (:alert_pro_result, :cli_id, :loc_id, :alert_def_id, :alert_pro_date_start, :alert_pro_date_end, :alert_pro_file_log, :alert_pro_file_name)";
 	protected String SQL_UPDATE					= "UPDATE alert_processing SET alert_pro_result = :alert_pro_result, cli_id = :cli_id, loc_id = :loc_id, alert_def_id = :alert_def_id, alert_pro_date_start = :alert_pro_date_start, alert_pro_date_end = :alert_pro_date_end, alert_pro_file_log = :alert_pro_file_log, alert_pro_file_name = :alert_pro_file_name WHERE alert_pro_id_auto = :alert_pro_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM alert_processing WHERE alert_pro_id_auto = :alert_pro_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseAlertProcessingDao <T extends AlertProcessingVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseAlertProcessingDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseAlertProcessingDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -87,6 +87,7 @@ public abstract class BaseAlertProcessingDao <T extends AlertProcessingVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

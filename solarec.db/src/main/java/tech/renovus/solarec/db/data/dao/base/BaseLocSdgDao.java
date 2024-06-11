@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.LocSdgVo;
 
 public abstract class BaseLocSdgDao <T extends LocSdgVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM loc_sdg";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_sdg WHERE cli_id = :cli_id AND loc_id = :loc_id AND sdg_id = :sdg_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM loc_sdg";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_sdg WHERE cli_id = :cli_id AND loc_id = :loc_id AND sdg_id = :sdg_id";
 	protected String SQL_INSERT					= "INSERT INTO loc_sdg (cli_id, loc_id, sdg_id, loc_sdg_description) VALUES (:cli_id, :loc_id, :sdg_id, :loc_sdg_description)";
 	protected String SQL_UPDATE					= "UPDATE loc_sdg SET loc_sdg_description = :loc_sdg_description WHERE cli_id = :cli_id AND loc_id = :loc_id AND sdg_id = :sdg_id";
 	protected String SQL_DELETE					= "DELETE FROM loc_sdg WHERE cli_id = :cli_id AND loc_id = :loc_id AND sdg_id = :sdg_id";
@@ -24,7 +24,7 @@ public abstract class BaseLocSdgDao <T extends LocSdgVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseLocSdgDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseLocSdgDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -76,6 +76,7 @@ public abstract class BaseLocSdgDao <T extends LocSdgVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

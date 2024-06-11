@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.LocStatisticVo;
 
 public abstract class BaseLocStatisticDao <T extends LocStatisticVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM loc_statistic";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_statistic WHERE cli_id = :cli_id AND loc_id = :loc_id AND stat_date = :stat_date AND stat_type_id = :stat_type_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM loc_statistic";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_statistic WHERE cli_id = :cli_id AND loc_id = :loc_id AND stat_date = :stat_date AND stat_type_id = :stat_type_id";
 	protected String SQL_INSERT					= "INSERT INTO loc_statistic (cli_id, loc_id, stat_date, stat_type_id, stat_pro_id, stat_value, stat_date_added) VALUES (:cli_id, :loc_id, :stat_date, :stat_type_id, :stat_pro_id, :stat_value, :stat_date_added)";
 	protected String SQL_UPDATE					= "UPDATE loc_statistic SET stat_pro_id = :stat_pro_id, stat_value = :stat_value, stat_date_added = :stat_date_added WHERE cli_id = :cli_id AND loc_id = :loc_id AND stat_date = :stat_date AND stat_type_id = :stat_type_id";
 	protected String SQL_DELETE					= "DELETE FROM loc_statistic WHERE cli_id = :cli_id AND loc_id = :loc_id AND stat_date = :stat_date AND stat_type_id = :stat_type_id";
@@ -24,7 +24,7 @@ public abstract class BaseLocStatisticDao <T extends LocStatisticVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseLocStatisticDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseLocStatisticDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -83,6 +83,7 @@ public abstract class BaseLocStatisticDao <T extends LocStatisticVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

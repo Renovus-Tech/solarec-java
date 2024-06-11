@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.StatDefinitionVo;
 
 public abstract class BaseStatDefinitionDao <T extends StatDefinitionVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM stat_definition";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM stat_definition WHERE stat_def_id_auto = :stat_def_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM stat_definition";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM stat_definition WHERE stat_def_id_auto = :stat_def_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO stat_definition (stat_def_type, stat_def_name, stat_def_description, stat_def_executable, stat_def_flags) VALUES (:stat_def_type, :stat_def_name, :stat_def_description, :stat_def_executable, :stat_def_flags)";
 	protected String SQL_UPDATE					= "UPDATE stat_definition SET stat_def_type = :stat_def_type, stat_def_name = :stat_def_name, stat_def_description = :stat_def_description, stat_def_executable = :stat_def_executable, stat_def_flags = :stat_def_flags WHERE stat_def_id_auto = :stat_def_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM stat_definition WHERE stat_def_id_auto = :stat_def_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseStatDefinitionDao <T extends StatDefinitionVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseStatDefinitionDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseStatDefinitionDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -81,6 +81,7 @@ public abstract class BaseStatDefinitionDao <T extends StatDefinitionVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

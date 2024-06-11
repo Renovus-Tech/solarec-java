@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.StatProcessingVo;
 
 public abstract class BaseStatProcessingDao <T extends StatProcessingVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM stat_processing";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM stat_processing WHERE stat_pro_id_auto = :stat_pro_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM stat_processing";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM stat_processing WHERE stat_pro_id_auto = :stat_pro_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO stat_processing (stat_pro_type, stat_def_id, cli_id, stat_pro_date_start, stat_pro_date_end, stat_pro_result, stat_pro_file_log) VALUES (:stat_pro_type, :stat_def_id, :cli_id, :stat_pro_date_start, :stat_pro_date_end, :stat_pro_result, :stat_pro_file_log)";
 	protected String SQL_UPDATE					= "UPDATE stat_processing SET stat_pro_type = :stat_pro_type, stat_def_id = :stat_def_id, cli_id = :cli_id, stat_pro_date_start = :stat_pro_date_start, stat_pro_date_end = :stat_pro_date_end, stat_pro_result = :stat_pro_result, stat_pro_file_log = :stat_pro_file_log WHERE stat_pro_id_auto = :stat_pro_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM stat_processing WHERE stat_pro_id_auto = :stat_pro_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseStatProcessingDao <T extends StatProcessingVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseStatProcessingDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseStatProcessingDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -85,6 +85,7 @@ public abstract class BaseStatProcessingDao <T extends StatProcessingVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

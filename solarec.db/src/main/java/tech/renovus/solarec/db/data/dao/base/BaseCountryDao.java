@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.CountryVo;
 
 public abstract class BaseCountryDao <T extends CountryVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM country";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM country WHERE ctr_id_auto = :ctr_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM country";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM country WHERE ctr_id_auto = :ctr_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO country (ctr_data_date_max, ctr_data_date_min, ctr_code_3, ctr_code_2, ctr_name, ctr_name_show) VALUES (:ctr_data_date_max, :ctr_data_date_min, :ctr_code_3, :ctr_code_2, :ctr_name, :ctr_name_show)";
 	protected String SQL_UPDATE					= "UPDATE country SET ctr_data_date_max = :ctr_data_date_max, ctr_data_date_min = :ctr_data_date_min, ctr_code_3 = :ctr_code_3, ctr_code_2 = :ctr_code_2, ctr_name = :ctr_name, ctr_name_show = :ctr_name_show WHERE ctr_id_auto = :ctr_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM country WHERE ctr_id_auto = :ctr_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseCountryDao <T extends CountryVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseCountryDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseCountryDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -83,6 +83,7 @@ public abstract class BaseCountryDao <T extends CountryVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

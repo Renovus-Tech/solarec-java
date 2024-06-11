@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.CliDataDefParameterVo;
 
 public abstract class BaseCliDataDefParameterDao <T extends CliDataDefParameterVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM cli_data_def_parameter";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_data_def_parameter WHERE cli_id = :cli_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM cli_data_def_parameter";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_data_def_parameter WHERE cli_id = :cli_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
 	protected String SQL_INSERT					= "INSERT INTO cli_data_def_parameter (cli_id, data_def_id, data_def_par_id, cli_data_def_par_value) VALUES (:cli_id, :data_def_id, :data_def_par_id, :cli_data_def_par_value)";
 	protected String SQL_UPDATE					= "UPDATE cli_data_def_parameter SET cli_data_def_par_value = :cli_data_def_par_value WHERE cli_id = :cli_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
 	protected String SQL_DELETE					= "DELETE FROM cli_data_def_parameter WHERE cli_id = :cli_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
@@ -24,7 +24,7 @@ public abstract class BaseCliDataDefParameterDao <T extends CliDataDefParameterV
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseCliDataDefParameterDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseCliDataDefParameterDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -76,6 +76,7 @@ public abstract class BaseCliDataDefParameterDao <T extends CliDataDefParameterV
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

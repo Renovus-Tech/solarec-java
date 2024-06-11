@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.DataTypeVo;
 
 public abstract class BaseDataTypeDao <T extends DataTypeVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM data_type";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM data_type WHERE data_type_id = :data_type_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM data_type";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM data_type WHERE data_type_id = :data_type_id";
 	protected String SQL_INSERT					= "INSERT INTO data_type (data_type_id, data_cat_id, data_type_name, data_type_units, data_type_description) VALUES (:data_type_id, :data_cat_id, :data_type_name, :data_type_units, :data_type_description)";
 	protected String SQL_UPDATE					= "UPDATE data_type SET data_cat_id = :data_cat_id, data_type_name = :data_type_name, data_type_units = :data_type_units, data_type_description = :data_type_description WHERE data_type_id = :data_type_id";
 	protected String SQL_DELETE					= "DELETE FROM data_type WHERE data_type_id = :data_type_id";
@@ -24,7 +24,7 @@ public abstract class BaseDataTypeDao <T extends DataTypeVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseDataTypeDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseDataTypeDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -76,6 +76,7 @@ public abstract class BaseDataTypeDao <T extends DataTypeVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

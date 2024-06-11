@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.DataCategoryVo;
 
 public abstract class BaseDataCategoryDao <T extends DataCategoryVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM data_category";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM data_category WHERE data_cat_id_auto = :data_cat_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM data_category";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM data_category WHERE data_cat_id_auto = :data_cat_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO data_category (data_cat_name, data_cat_description) VALUES (:data_cat_name, :data_cat_description)";
 	protected String SQL_UPDATE					= "UPDATE data_category SET data_cat_name = :data_cat_name, data_cat_description = :data_cat_description WHERE data_cat_id_auto = :data_cat_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM data_category WHERE data_cat_id_auto = :data_cat_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseDataCategoryDao <T extends DataCategoryVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseDataCategoryDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseDataCategoryDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -75,6 +75,7 @@ public abstract class BaseDataCategoryDao <T extends DataCategoryVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

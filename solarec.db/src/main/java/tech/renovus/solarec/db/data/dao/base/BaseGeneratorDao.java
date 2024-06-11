@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.GeneratorVo;
 
 public abstract class BaseGeneratorDao <T extends GeneratorVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM generator";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM generator WHERE cli_id = :cli_id AND gen_id_auto = :gen_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM generator";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM generator WHERE cli_id = :cli_id AND gen_id_auto = :gen_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO generator (cli_id, data_def_id, loc_id, gen_coord_lat, gen_coord_lng, gen_rate_power, gen_data_date_max, gen_data_date_min, gen_model, gen_serial_num, gen_name, gen_description, gen_code, gen_flags, gen_brand) VALUES (:cli_id, :data_def_id, :loc_id, :gen_coord_lat, :gen_coord_lng, :gen_rate_power, :gen_data_date_max, :gen_data_date_min, :gen_model, :gen_serial_num, :gen_name, :gen_description, :gen_code, :gen_flags, :gen_brand)";
 	protected String SQL_UPDATE					= "UPDATE generator SET data_def_id = :data_def_id, loc_id = :loc_id, gen_coord_lat = :gen_coord_lat, gen_coord_lng = :gen_coord_lng, gen_rate_power = :gen_rate_power, gen_data_date_max = :gen_data_date_max, gen_data_date_min = :gen_data_date_min, gen_model = :gen_model, gen_serial_num = :gen_serial_num, gen_name = :gen_name, gen_description = :gen_description, gen_code = :gen_code, gen_flags = :gen_flags, gen_brand = :gen_brand WHERE cli_id = :cli_id AND gen_id_auto = :gen_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM generator WHERE cli_id = :cli_id AND gen_id_auto = :gen_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseGeneratorDao <T extends GeneratorVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseGeneratorDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseGeneratorDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -102,6 +102,7 @@ public abstract class BaseGeneratorDao <T extends GeneratorVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

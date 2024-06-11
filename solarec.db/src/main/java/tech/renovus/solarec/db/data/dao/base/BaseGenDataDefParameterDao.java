@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.GenDataDefParameterVo;
 
 public abstract class BaseGenDataDefParameterDao <T extends GenDataDefParameterVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM gen_data_def_parameter";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_data_def_parameter WHERE cli_id = :cli_id AND gen_id = :gen_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM gen_data_def_parameter";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_data_def_parameter WHERE cli_id = :cli_id AND gen_id = :gen_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
 	protected String SQL_INSERT					= "INSERT INTO gen_data_def_parameter (cli_id, gen_id, data_def_id, data_def_par_id, gen_data_def_par_value) VALUES (:cli_id, :gen_id, :data_def_id, :data_def_par_id, :gen_data_def_par_value)";
 	protected String SQL_UPDATE					= "UPDATE gen_data_def_parameter SET gen_data_def_par_value = :gen_data_def_par_value WHERE cli_id = :cli_id AND gen_id = :gen_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
 	protected String SQL_DELETE					= "DELETE FROM gen_data_def_parameter WHERE cli_id = :cli_id AND gen_id = :gen_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";
@@ -24,7 +24,7 @@ public abstract class BaseGenDataDefParameterDao <T extends GenDataDefParameterV
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseGenDataDefParameterDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseGenDataDefParameterDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -79,6 +79,7 @@ public abstract class BaseGenDataDefParameterDao <T extends GenDataDefParameterV
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

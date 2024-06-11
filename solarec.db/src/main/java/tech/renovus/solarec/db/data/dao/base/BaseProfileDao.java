@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.ProfileVo;
 
 public abstract class BaseProfileDao <T extends ProfileVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM profile";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM profile WHERE prf_id_auto = :prf_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM profile";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM profile WHERE prf_id_auto = :prf_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO profile (prf_name, prf_description, prf_flags) VALUES (:prf_name, :prf_description, :prf_flags)";
 	protected String SQL_UPDATE					= "UPDATE profile SET prf_name = :prf_name, prf_description = :prf_description, prf_flags = :prf_flags WHERE prf_id_auto = :prf_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM profile WHERE prf_id_auto = :prf_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseProfileDao <T extends ProfileVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseProfileDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseProfileDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -77,6 +77,7 @@ public abstract class BaseProfileDao <T extends ProfileVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

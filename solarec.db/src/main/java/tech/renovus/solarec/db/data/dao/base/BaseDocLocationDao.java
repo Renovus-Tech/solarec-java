@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.DocLocationVo;
 
 public abstract class BaseDocLocationDao <T extends DocLocationVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM doc_location";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM doc_location WHERE cli_id = :cli_id AND doc_id = :doc_id AND loc_id = :loc_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM doc_location";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM doc_location WHERE cli_id = :cli_id AND doc_id = :doc_id AND loc_id = :loc_id";
 	protected String SQL_INSERT					= "INSERT INTO doc_location (cli_id, doc_id, loc_id) VALUES (:cli_id, :doc_id, :loc_id)";
 	protected String SQL_UPDATE					= "UPDATE doc_location SET  WHERE cli_id = :cli_id AND doc_id = :doc_id AND loc_id = :loc_id";
 	protected String SQL_DELETE					= "DELETE FROM doc_location WHERE cli_id = :cli_id AND doc_id = :doc_id AND loc_id = :loc_id";
@@ -24,7 +24,7 @@ public abstract class BaseDocLocationDao <T extends DocLocationVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseDocLocationDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseDocLocationDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -74,6 +74,7 @@ public abstract class BaseDocLocationDao <T extends DocLocationVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

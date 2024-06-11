@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.UsrProfileVo;
 
 public abstract class BaseUsrProfileDao <T extends UsrProfileVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM usr_profile";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM usr_profile WHERE usr_id = :usr_id AND prf_id = :prf_id AND cli_id = :cli_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM usr_profile";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM usr_profile WHERE usr_id = :usr_id AND prf_id = :prf_id AND cli_id = :cli_id";
 	protected String SQL_INSERT					= "INSERT INTO usr_profile (usr_id, prf_id, cli_id, usr_prf_date_added) VALUES (:usr_id, :prf_id, :cli_id, :usr_prf_date_added)";
 	protected String SQL_UPDATE					= "UPDATE usr_profile SET usr_prf_date_added = :usr_prf_date_added WHERE usr_id = :usr_id AND prf_id = :prf_id AND cli_id = :cli_id";
 	protected String SQL_DELETE					= "DELETE FROM usr_profile WHERE usr_id = :usr_id AND prf_id = :prf_id AND cli_id = :cli_id";
@@ -24,7 +24,7 @@ public abstract class BaseUsrProfileDao <T extends UsrProfileVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseUsrProfileDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseUsrProfileDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -76,6 +76,7 @@ public abstract class BaseUsrProfileDao <T extends UsrProfileVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.UsersVo;
 
 public abstract class BaseUsersDao <T extends UsersVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM users";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM users WHERE usr_id_auto = :usr_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM users";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM users WHERE usr_id_auto = :usr_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO users (usr_date_login, usr_date_added, usr_date_locked, usr_pwd_reset_requested, usr_pwd_reset_uuid, usr_comments, usr_email, usr_name, usr_flags, usr_password) VALUES (:usr_date_login, :usr_date_added, :usr_date_locked, :usr_pwd_reset_requested, :usr_pwd_reset_uuid, :usr_comments, :usr_email, :usr_name, :usr_flags, :usr_password)";
 	protected String SQL_UPDATE					= "UPDATE users SET usr_date_login = :usr_date_login, usr_date_added = :usr_date_added, usr_date_locked = :usr_date_locked, usr_pwd_reset_requested = :usr_pwd_reset_requested, usr_pwd_reset_uuid = :usr_pwd_reset_uuid, usr_comments = :usr_comments, usr_email = :usr_email, usr_name = :usr_name, usr_flags = :usr_flags, usr_password = :usr_password WHERE usr_id_auto = :usr_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM users WHERE usr_id_auto = :usr_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseUsersDao <T extends UsersVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseUsersDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseUsersDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -91,6 +91,7 @@ public abstract class BaseUsersDao <T extends UsersVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

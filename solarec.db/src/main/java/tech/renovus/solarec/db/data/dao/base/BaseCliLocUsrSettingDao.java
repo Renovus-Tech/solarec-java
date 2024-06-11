@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.CliLocUsrSettingVo;
 
 public abstract class BaseCliLocUsrSettingDao <T extends CliLocUsrSettingVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM cli_loc_usr_setting";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_loc_usr_setting WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM cli_loc_usr_setting";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_loc_usr_setting WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id";
 	protected String SQL_INSERT					= "INSERT INTO cli_loc_usr_setting (cli_id, loc_id, usr_id, cli_loc_alert_flags) VALUES (:cli_id, :loc_id, :usr_id, :cli_loc_alert_flags)";
 	protected String SQL_UPDATE					= "UPDATE cli_loc_usr_setting SET cli_loc_alert_flags = :cli_loc_alert_flags WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id";
 	protected String SQL_DELETE					= "DELETE FROM cli_loc_usr_setting WHERE cli_id = :cli_id AND loc_id = :loc_id AND usr_id = :usr_id";
@@ -24,7 +24,7 @@ public abstract class BaseCliLocUsrSettingDao <T extends CliLocUsrSettingVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseCliLocUsrSettingDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseCliLocUsrSettingDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -76,6 +76,7 @@ public abstract class BaseCliLocUsrSettingDao <T extends CliLocUsrSettingVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

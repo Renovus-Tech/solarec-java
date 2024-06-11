@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.SettingsVo;
 
 public abstract class BaseSettingsDao <T extends SettingsVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM settings";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM settings WHERE set_name = :set_name";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM settings";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM settings WHERE set_name = :set_name";
 	protected String SQL_INSERT					= "INSERT INTO settings (set_name, set_cat_name, set_type, set_unit, set_value_default, set_value_min, set_value_max, set_flags) VALUES (:set_name, :set_cat_name, :set_type, :set_unit, :set_value_default, :set_value_min, :set_value_max, :set_flags)";
 	protected String SQL_UPDATE					= "UPDATE settings SET set_cat_name = :set_cat_name, set_type = :set_type, set_unit = :set_unit, set_value_default = :set_value_default, set_value_min = :set_value_min, set_value_max = :set_value_max, set_flags = :set_flags WHERE set_name = :set_name";
 	protected String SQL_DELETE					= "DELETE FROM settings WHERE set_name = :set_name";
@@ -24,7 +24,7 @@ public abstract class BaseSettingsDao <T extends SettingsVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseSettingsDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseSettingsDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -82,6 +82,7 @@ public abstract class BaseSettingsDao <T extends SettingsVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.DataProAlertProcessingVo;
 
 public abstract class BaseDataProAlertProcessingDao <T extends DataProAlertProcessingVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM data_pro_alert_processing";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM data_pro_alert_processing WHERE data_pro_id = :data_pro_id AND alert_pro_id = :alert_pro_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM data_pro_alert_processing";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM data_pro_alert_processing WHERE data_pro_id = :data_pro_id AND alert_pro_id = :alert_pro_id";
 	protected String SQL_INSERT					= "INSERT INTO data_pro_alert_processing (data_pro_id, alert_pro_id) VALUES (:data_pro_id, :alert_pro_id)";
 	protected String SQL_UPDATE					= "UPDATE data_pro_alert_processing SET  WHERE data_pro_id = :data_pro_id AND alert_pro_id = :alert_pro_id";
 	protected String SQL_DELETE					= "DELETE FROM data_pro_alert_processing WHERE data_pro_id = :data_pro_id AND alert_pro_id = :alert_pro_id";
@@ -24,7 +24,7 @@ public abstract class BaseDataProAlertProcessingDao <T extends DataProAlertProce
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseDataProAlertProcessingDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseDataProAlertProcessingDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -71,6 +71,7 @@ public abstract class BaseDataProAlertProcessingDao <T extends DataProAlertProce
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

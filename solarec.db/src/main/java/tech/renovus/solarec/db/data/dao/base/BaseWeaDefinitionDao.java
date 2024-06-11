@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.WeaDefinitionVo;
 
 public abstract class BaseWeaDefinitionDao <T extends WeaDefinitionVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM wea_definition";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM wea_definition WHERE cli_id = :cli_id AND wea_id_auto = :wea_id_auto";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM wea_definition";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM wea_definition WHERE cli_id = :cli_id AND wea_id_auto = :wea_id_auto";
 	protected String SQL_INSERT					= "INSERT INTO wea_definition (cli_id, wea_coord_lng, wea_check_type, wea_check_frequency, wea_coord_lat, wea_name, wea_description, wea_flags) VALUES (:cli_id, :wea_coord_lng, :wea_check_type, :wea_check_frequency, :wea_coord_lat, :wea_name, :wea_description, :wea_flags)";
 	protected String SQL_UPDATE					= "UPDATE wea_definition SET wea_coord_lng = :wea_coord_lng, wea_check_type = :wea_check_type, wea_check_frequency = :wea_check_frequency, wea_coord_lat = :wea_coord_lat, wea_name = :wea_name, wea_description = :wea_description, wea_flags = :wea_flags WHERE cli_id = :cli_id AND wea_id_auto = :wea_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM wea_definition WHERE cli_id = :cli_id AND wea_id_auto = :wea_id_auto";
@@ -25,7 +25,7 @@ public abstract class BaseWeaDefinitionDao <T extends WeaDefinitionVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseWeaDefinitionDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseWeaDefinitionDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -88,6 +88,7 @@ public abstract class BaseWeaDefinitionDao <T extends WeaDefinitionVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

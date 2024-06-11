@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.GenPowerVo;
 
 public abstract class BaseGenPowerDao <T extends GenPowerVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM gen_power";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_power WHERE cli_id = :cli_id AND gen_id = :gen_id AND pwr_wind_speed = :pwr_wind_speed AND pwr_air_density = :pwr_air_density";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM gen_power";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_power WHERE cli_id = :cli_id AND gen_id = :gen_id AND pwr_wind_speed = :pwr_wind_speed AND pwr_air_density = :pwr_air_density";
 	protected String SQL_INSERT					= "INSERT INTO gen_power (cli_id, gen_id, pwr_wind_speed, pwr_air_density, gen_power) VALUES (:cli_id, :gen_id, :pwr_wind_speed, :pwr_air_density, :gen_power)";
 	protected String SQL_UPDATE					= "UPDATE gen_power SET gen_power = :gen_power WHERE cli_id = :cli_id AND gen_id = :gen_id AND pwr_wind_speed = :pwr_wind_speed AND pwr_air_density = :pwr_air_density";
 	protected String SQL_DELETE					= "DELETE FROM gen_power WHERE cli_id = :cli_id AND gen_id = :gen_id AND pwr_wind_speed = :pwr_wind_speed AND pwr_air_density = :pwr_air_density";
@@ -24,7 +24,7 @@ public abstract class BaseGenPowerDao <T extends GenPowerVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseGenPowerDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseGenPowerDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -79,6 +79,7 @@ public abstract class BaseGenPowerDao <T extends GenPowerVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

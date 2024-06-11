@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.PrfFunctionalityVo;
 
 public abstract class BasePrfFunctionalityDao <T extends PrfFunctionalityVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM prf_functionality";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM prf_functionality WHERE prf_id = :prf_id AND fnc_id = :fnc_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM prf_functionality";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM prf_functionality WHERE prf_id = :prf_id AND fnc_id = :fnc_id";
 	protected String SQL_INSERT					= "INSERT INTO prf_functionality (prf_id, fnc_id) VALUES (:prf_id, :fnc_id)";
 	protected String SQL_UPDATE					= "UPDATE prf_functionality SET  WHERE prf_id = :prf_id AND fnc_id = :fnc_id";
 	protected String SQL_DELETE					= "DELETE FROM prf_functionality WHERE prf_id = :prf_id AND fnc_id = :fnc_id";
@@ -24,7 +24,7 @@ public abstract class BasePrfFunctionalityDao <T extends PrfFunctionalityVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BasePrfFunctionalityDao(NamedParameterJdbcTemplate jdbc) {
+	protected BasePrfFunctionalityDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -71,6 +71,7 @@ public abstract class BasePrfFunctionalityDao <T extends PrfFunctionalityVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

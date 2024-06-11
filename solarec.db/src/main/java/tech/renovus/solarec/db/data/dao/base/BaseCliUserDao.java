@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.CliUserVo;
 
 public abstract class BaseCliUserDao <T extends CliUserVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM cli_user";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_user WHERE cli_id = :cli_id AND usr_id = :usr_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM cli_user";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_user WHERE cli_id = :cli_id AND usr_id = :usr_id";
 	protected String SQL_INSERT					= "INSERT INTO cli_user (cli_id, usr_id, cli_user_date_added, cli_user_date_access) VALUES (:cli_id, :usr_id, :cli_user_date_added, :cli_user_date_access)";
 	protected String SQL_UPDATE					= "UPDATE cli_user SET cli_user_date_added = :cli_user_date_added, cli_user_date_access = :cli_user_date_access WHERE cli_id = :cli_id AND usr_id = :usr_id";
 	protected String SQL_DELETE					= "DELETE FROM cli_user WHERE cli_id = :cli_id AND usr_id = :usr_id";
@@ -24,7 +24,7 @@ public abstract class BaseCliUserDao <T extends CliUserVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseCliUserDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseCliUserDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -75,6 +75,7 @@ public abstract class BaseCliUserDao <T extends CliUserVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

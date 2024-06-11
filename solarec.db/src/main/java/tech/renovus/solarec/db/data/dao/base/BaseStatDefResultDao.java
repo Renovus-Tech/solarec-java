@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.StatDefResultVo;
 
 public abstract class BaseStatDefResultDao <T extends StatDefResultVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM stat_def_result";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM stat_def_result WHERE stat_def_id = :stat_def_id AND stat_type_id = :stat_type_id";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM stat_def_result";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM stat_def_result WHERE stat_def_id = :stat_def_id AND stat_type_id = :stat_type_id";
 	protected String SQL_INSERT					= "INSERT INTO stat_def_result (stat_def_id, stat_type_id) VALUES (:stat_def_id, :stat_type_id)";
 	protected String SQL_UPDATE					= "UPDATE stat_def_result SET  WHERE stat_def_id = :stat_def_id AND stat_type_id = :stat_type_id";
 	protected String SQL_DELETE					= "DELETE FROM stat_def_result WHERE stat_def_id = :stat_def_id AND stat_type_id = :stat_type_id";
@@ -24,7 +24,7 @@ public abstract class BaseStatDefResultDao <T extends StatDefResultVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseStatDefResultDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseStatDefResultDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -71,6 +71,7 @@ public abstract class BaseStatDefResultDao <T extends StatDefResultVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {

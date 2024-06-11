@@ -12,8 +12,8 @@ import tech.renovus.solarec.vo.db.data.CliMetadataVo;
 
 public abstract class BaseCliMetadataDao <T extends CliMetadataVo > {
 	//--- Protected constants -------------------
-	protected final String SQL_SELECT_ALL		= "SELECT * FROM cli_metadata";
-	protected final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_metadata WHERE cli_id = :cli_id AND metadata_name = :metadata_name";
+	protected static final String SQL_SELECT_ALL		= "SELECT * FROM cli_metadata";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_metadata WHERE cli_id = :cli_id AND metadata_name = :metadata_name";
 	protected String SQL_INSERT					= "INSERT INTO cli_metadata (cli_id, metadata_date_added, metadata_name, metadata_title, metadata_value) VALUES (:cli_id, :metadata_date_added, :metadata_name, :metadata_title, :metadata_value)";
 	protected String SQL_UPDATE					= "UPDATE cli_metadata SET metadata_date_added = :metadata_date_added, metadata_title = :metadata_title, metadata_value = :metadata_value WHERE cli_id = :cli_id AND metadata_name = :metadata_name";
 	protected String SQL_DELETE					= "DELETE FROM cli_metadata WHERE cli_id = :cli_id AND metadata_name = :metadata_name";
@@ -24,7 +24,7 @@ public abstract class BaseCliMetadataDao <T extends CliMetadataVo > {
 	protected NamedParameterJdbcTemplate jdbc;
 
 	//--- Constructors --------------------------
-	public BaseCliMetadataDao(NamedParameterJdbcTemplate jdbc) {
+	protected BaseCliMetadataDao(NamedParameterJdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
 
@@ -77,6 +77,7 @@ public abstract class BaseCliMetadataDao <T extends CliMetadataVo > {
 			case T.SYNC_INSERT: this.insert(vo); break;
 			case T.SYNC_UPDATE: this.update(vo); break;
 			case T.SYNC_DELETE: this.delete(vo); break;
+			default: 
 		}
 	}
 	public void synchronize(Collection<T> vos) {
