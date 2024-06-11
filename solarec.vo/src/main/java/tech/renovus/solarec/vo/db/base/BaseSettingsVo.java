@@ -59,10 +59,7 @@ public class BaseSettingsVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseSettingsVo)) return false;
 		
 		BaseSettingsVo aObj = (BaseSettingsVo) obj;
-		if (!ClassUtil.equals(this.setName,aObj.setName)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.setName,aObj.setName);
 	}
 
 	@Override public int hashCode() {
@@ -107,7 +104,7 @@ public class BaseSettingsVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((String)null);
 		} else {
-			this.setPk((String)aVo.setName);
+			this.setPk(aVo.setName);
 		}
 	}
 

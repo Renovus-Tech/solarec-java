@@ -43,10 +43,7 @@ public class BaseChartVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseChartVo)) return false;
 		
 		BaseChartVo aObj = (BaseChartVo) obj;
-		if (!ClassUtil.equals(this.chrId,aObj.chrId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.chrId,aObj.chrId);
 	}
 
 	@Override public int hashCode() {
@@ -85,7 +82,7 @@ public class BaseChartVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.chrId);
+			this.setPk(aVo.chrId);
 		}
 	}
 

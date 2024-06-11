@@ -40,10 +40,7 @@ public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseAlertDefinitionVo)) return false;
 		
 		BaseAlertDefinitionVo aObj = (BaseAlertDefinitionVo) obj;
-		if (!ClassUtil.equals(this.alertDefId,aObj.alertDefId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.alertDefId,aObj.alertDefId);
 	}
 
 	@Override public int hashCode() {
@@ -79,7 +76,7 @@ public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.alertDefId);
+			this.setPk(aVo.alertDefId);
 		}
 	}
 

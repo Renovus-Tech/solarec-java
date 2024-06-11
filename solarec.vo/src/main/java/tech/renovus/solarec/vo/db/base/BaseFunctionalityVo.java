@@ -45,10 +45,7 @@ public class BaseFunctionalityVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseFunctionalityVo)) return false;
 		
 		BaseFunctionalityVo aObj = (BaseFunctionalityVo) obj;
-		if (!ClassUtil.equals(this.fncId,aObj.fncId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.fncId,aObj.fncId);
 	}
 
 	@Override public int hashCode() {
@@ -90,7 +87,7 @@ public class BaseFunctionalityVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.fncId);
+			this.setPk(aVo.fncId);
 		}
 	}
 

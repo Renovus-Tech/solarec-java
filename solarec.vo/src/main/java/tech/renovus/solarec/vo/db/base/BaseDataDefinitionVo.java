@@ -40,10 +40,7 @@ public class BaseDataDefinitionVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseDataDefinitionVo)) return false;
 		
 		BaseDataDefinitionVo aObj = (BaseDataDefinitionVo) obj;
-		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.dataDefId,aObj.dataDefId);
 	}
 
 	@Override public int hashCode() {
@@ -79,7 +76,7 @@ public class BaseDataDefinitionVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.dataDefId);
+			this.setPk(aVo.dataDefId);
 		}
 	}
 

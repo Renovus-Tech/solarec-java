@@ -61,10 +61,7 @@ public class BaseCliDataDefTriggerVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseCliDataDefTriggerVo)) return false;
 		
 		BaseCliDataDefTriggerVo aObj = (BaseCliDataDefTriggerVo) obj;
-		if (!ClassUtil.equals(this.triId,aObj.triId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.triId,aObj.triId);
 	}
 
 	@Override public int hashCode() {
@@ -115,7 +112,7 @@ public class BaseCliDataDefTriggerVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.triId);
+			this.setPk(aVo.triId);
 		}
 	}
 

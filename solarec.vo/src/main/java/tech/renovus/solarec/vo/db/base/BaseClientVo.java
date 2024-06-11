@@ -50,10 +50,7 @@ public class BaseClientVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseClientVo)) return false;
 		
 		BaseClientVo aObj = (BaseClientVo) obj;
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.cliId,aObj.cliId);
 	}
 
 	@Override public int hashCode() {
@@ -101,7 +98,7 @@ public class BaseClientVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.cliId);
+			this.setPk(aVo.cliId);
 		}
 	}
 

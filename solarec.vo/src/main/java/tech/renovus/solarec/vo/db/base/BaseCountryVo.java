@@ -48,10 +48,7 @@ public class BaseCountryVo extends BaseDbVo {
 		if (!(obj instanceof BaseCountryVo)) return false;
 		
 		BaseCountryVo aObj = (BaseCountryVo) obj;
-		if (!ClassUtil.equals(this.ctrId,aObj.ctrId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.ctrId,aObj.ctrId);
 	}
 
 	@Override public int hashCode() {
@@ -93,7 +90,7 @@ public class BaseCountryVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.ctrId);
+			this.setPk(aVo.ctrId);
 		}
 	}
 

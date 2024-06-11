@@ -51,10 +51,7 @@ public class BaseRepTypeVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseRepTypeVo)) return false;
 		
 		BaseRepTypeVo aObj = (BaseRepTypeVo) obj;
-		if (!ClassUtil.equals(this.repTypeId,aObj.repTypeId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.repTypeId,aObj.repTypeId);
 	}
 
 	@Override public int hashCode() {
@@ -93,7 +90,7 @@ public class BaseRepTypeVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.repTypeId);
+			this.setPk(aVo.repTypeId);
 		}
 	}
 

@@ -29,10 +29,7 @@ public class BaseLocTypeVo extends BaseDbVo {
 		if (!(obj instanceof BaseLocTypeVo)) return false;
 		
 		BaseLocTypeVo aObj = (BaseLocTypeVo) obj;
-		if (!ClassUtil.equals(this.locTypeId,aObj.locTypeId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.locTypeId,aObj.locTypeId);
 	}
 
 	@Override public int hashCode() {
@@ -62,7 +59,7 @@ public class BaseLocTypeVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.locTypeId);
+			this.setPk(aVo.locTypeId);
 		}
 	}
 

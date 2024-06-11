@@ -37,10 +37,7 @@ public class BaseProfileVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseProfileVo)) return false;
 		
 		BaseProfileVo aObj = (BaseProfileVo) obj;
-		if (!ClassUtil.equals(this.prfId,aObj.prfId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.prfId,aObj.prfId);
 	}
 
 	@Override public int hashCode() {
@@ -73,7 +70,7 @@ public class BaseProfileVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.prfId);
+			this.setPk(aVo.prfId);
 		}
 	}
 

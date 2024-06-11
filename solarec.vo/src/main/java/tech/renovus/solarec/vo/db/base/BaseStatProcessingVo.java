@@ -47,10 +47,7 @@ public class BaseStatProcessingVo extends BaseDbVo {
 		if (!(obj instanceof BaseStatProcessingVo)) return false;
 		
 		BaseStatProcessingVo aObj = (BaseStatProcessingVo) obj;
-		if (!ClassUtil.equals(this.statProId,aObj.statProId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.statProId,aObj.statProId);
 	}
 
 	@Override public int hashCode() {
@@ -95,7 +92,7 @@ public class BaseStatProcessingVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.statProId);
+			this.setPk(aVo.statProId);
 		}
 	}
 

@@ -38,10 +38,7 @@ public class BaseSdgVo extends BaseDbVo {
 		if (!(obj instanceof BaseSdgVo)) return false;
 		
 		BaseSdgVo aObj = (BaseSdgVo) obj;
-		if (!ClassUtil.equals(this.sdgId,aObj.sdgId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.sdgId,aObj.sdgId);
 	}
 
 	@Override public int hashCode() {
@@ -71,7 +68,7 @@ public class BaseSdgVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.sdgId);
+			this.setPk(aVo.sdgId);
 		}
 	}
 

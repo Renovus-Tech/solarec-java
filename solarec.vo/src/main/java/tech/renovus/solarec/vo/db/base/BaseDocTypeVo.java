@@ -46,10 +46,7 @@ public class BaseDocTypeVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseDocTypeVo)) return false;
 		
 		BaseDocTypeVo aObj = (BaseDocTypeVo) obj;
-		if (!ClassUtil.equals(this.docTypeId,aObj.docTypeId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.docTypeId,aObj.docTypeId);
 	}
 
 	@Override public int hashCode() {
@@ -82,7 +79,7 @@ public class BaseDocTypeVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.docTypeId);
+			this.setPk(aVo.docTypeId);
 		}
 	}
 

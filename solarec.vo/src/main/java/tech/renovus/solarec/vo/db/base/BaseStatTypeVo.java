@@ -32,10 +32,7 @@ public class BaseStatTypeVo extends BaseDbVo {
 		if (!(obj instanceof BaseStatTypeVo)) return false;
 		
 		BaseStatTypeVo aObj = (BaseStatTypeVo) obj;
-		if (!ClassUtil.equals(this.statTypeId,aObj.statTypeId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.statTypeId,aObj.statTypeId);
 	}
 
 	@Override public int hashCode() {
@@ -68,7 +65,7 @@ public class BaseStatTypeVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.statTypeId);
+			this.setPk(aVo.statTypeId);
 		}
 	}
 

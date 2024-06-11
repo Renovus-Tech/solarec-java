@@ -54,10 +54,7 @@ public class BaseUsersVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseUsersVo)) return false;
 		
 		BaseUsersVo aObj = (BaseUsersVo) obj;
-		if (!ClassUtil.equals(this.usrId,aObj.usrId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.usrId,aObj.usrId);
 	}
 
 	@Override public int hashCode() {
@@ -111,7 +108,7 @@ public class BaseUsersVo extends BaseDbVo implements IFlags {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.usrId);
+			this.setPk(aVo.usrId);
 		}
 	}
 

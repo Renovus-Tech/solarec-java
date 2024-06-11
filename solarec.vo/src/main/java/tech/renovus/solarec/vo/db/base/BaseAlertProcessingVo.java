@@ -50,10 +50,7 @@ public class BaseAlertProcessingVo extends BaseDbVo {
 		if (!(obj instanceof BaseAlertProcessingVo)) return false;
 		
 		BaseAlertProcessingVo aObj = (BaseAlertProcessingVo) obj;
-		if (!ClassUtil.equals(this.alertProId,aObj.alertProId)) {
-			return false;
-		}
-		return true;
+		return ClassUtil.equals(this.alertProId,aObj.alertProId);
 	}
 
 	@Override public int hashCode() {
@@ -101,7 +98,7 @@ public class BaseAlertProcessingVo extends BaseDbVo {
 		if(aVo == null) { 
 			this.setPk((Integer)null);
 		} else {
-			this.setPk((Integer)aVo.alertProId);
+			this.setPk(aVo.alertProId);
 		}
 	}
 
