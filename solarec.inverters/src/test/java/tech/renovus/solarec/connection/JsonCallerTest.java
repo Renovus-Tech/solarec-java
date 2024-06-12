@@ -21,9 +21,9 @@ import tech.renovus.solarec.connection.api.TestRequest;
 public class JsonCallerTest {
 	
 	//--- Private constants ---------------------
-	private static final String ENDPOIT_STATUS	= "https://postman-echo.com/status/";
-	private static final String ENDPOIT_POST	= "https://postman-echo.com/post";
-	private static final String ENDPOIT_GET		= "https://postman-echo.com/get";
+	private static final String ENDPOIT_STATUS	= "http://postman-echo.com/status/";
+	private static final String ENDPOIT_POST	= "http://postman-echo.com/post";
+	private static final String ENDPOIT_GET		= "http://postman-echo.com/get";
 	
 	//--- Private methods -----------------------
 	private void assertParameters(Map<String, String> params, OnlyProperties response) {

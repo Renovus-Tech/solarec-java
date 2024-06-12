@@ -17,8 +17,6 @@ public interface GenDataDao {
 	void insert(Collection<GenDataVo> vos);
 	
 	void deleteAllForGenerator(Integer cliId, Integer genId);
-	Collection<GenDataVo> getForRPMProduction(Integer cliId, Integer genId, Date from, Date to);
-	Collection<GenDataVo> getForPitchWind(Integer cliId, Integer genId, Date from, Date to);
 	Collection<GenDataVo> getGeneratorDataSumValueEquals(Integer cliId, Integer locId, Integer dataTypeId, Double value, Date from, Date to);
 	Collection<GenDataVo> getGeneratorDataSumValueEquals(Integer cliId, Integer locId, Integer dataTypeId, Double value, Date from, Date to, String groupBy);
 	Collection<GenDataVo> getGeneratorDataAvg(Integer cliId, Integer locId, Integer dataTypeId, Date from, Date to);
