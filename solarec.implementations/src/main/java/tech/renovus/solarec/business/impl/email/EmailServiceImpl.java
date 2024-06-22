@@ -1,26 +1,18 @@
 package tech.renovus.solarec.business.impl.email;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.Calendar;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Properties;
 
-import javax.mail.Address;
-import javax.mail.Authenticator;
-import javax.mail.Folder;
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Store;
 import javax.mail.internet.MimeMessage;
-import javax.mail.search.ComparisonTerm;
-import javax.mail.search.ReceivedDateTerm;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -31,7 +23,6 @@ import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.exceptions.CoreException;
 import tech.renovus.solarec.util.CollectionUtil;
-import tech.renovus.solarec.util.DateUtil;
 
 /**
  * @source https://www.baeldung.com/spring-email
@@ -92,6 +83,29 @@ public class EmailServiceImpl implements EmailService {
 			throw new CoreException(e);
 		}
 	}
+	
+	@Override
+	public void sendMessageWithAttachment(String to, String subject, String text, String fileName, InputStream inputStream, boolean asHtml) throws CoreException {
+		try {
+			MimeMessage message = emailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			
+			helper.setFrom(this.config.getMailSendFrom());
+			helper.setTo(to);
+			helper.setSubject(subject);
+			helper.setText(text, asHtml);
+			
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	        IOUtils.copy(inputStream, byteArrayOutputStream);
+	        byte[] byteArray = byteArrayOutputStream.toByteArray();
+			
+			helper.addAttachment(fileName, new ByteArrayResource(byteArray));
+			
+			emailSender.send(message);
+		} catch (MessagingException | IOException e) {
+			throw new CoreException(e);
+		}
+	}
 
 	@Override
 	public void sendMessageWithAttachment(List<String> emails, List<String> emailsCc, List<String> emailsBcc, String subject, String content, Collection<EmailFile> files, boolean asHtml) throws CoreException {
@@ -100,9 +114,15 @@ public class EmailServiceImpl implements EmailService {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 	
 			helper.setFrom(this.config.getMailSendFrom());
-			if (CollectionUtil.notEmpty(emails)) helper.setTo(emails.toArray(new String[0]));
-			if (CollectionUtil.notEmpty(emailsCc)) helper.setCc(emailsCc.toArray(new String[0]));
-			if (CollectionUtil.notEmpty(emailsBcc)) helper.setBcc(emailsBcc.toArray(new String[0]));
+			if (CollectionUtil.notEmpty(emails)) {
+				helper.setTo(emails.toArray(new String[0]));
+			}
+			if (CollectionUtil.notEmpty(emailsCc)) {
+				helper.setCc(emailsCc.toArray(new String[0]));
+			}
+			if (CollectionUtil.notEmpty(emailsBcc)) {
+				helper.setBcc(emailsBcc.toArray(new String[0]));
+			}
 			helper.setSubject(subject);
 			helper.setText(content, asHtml);
 	
