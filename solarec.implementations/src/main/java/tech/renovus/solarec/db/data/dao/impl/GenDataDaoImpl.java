@@ -16,7 +16,6 @@ import tech.renovus.solarec.db.data.dao.interfaces.GenDataDao;
 import tech.renovus.solarec.db.data.dao.wrapper.GenDataRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.GeneratorMaxDataDate;
 import tech.renovus.solarec.util.CollectionUtil;
-import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.rest.chart.ChartFilter;
 
@@ -25,8 +24,6 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	
 	//--- Private properties --------------------
 	private final String SQL_DELETE_ALL_FOR_GENERATOR					= "DELETE FROM gen_data WHERE cli_id = :cli_id AND gen_id = :gen_id";
-	private final String SQL_DELETE_ALL_FOR_RPM_PRODUCTION				= "SELECT * FROM gen_data WHERE cli_id = :cli_id AND gen_id = :gen_id AND :date_from <= data_date and data_date < :date_to AND data_type_id in (" + DataTypeVo.TYPE_GENERATOR_POWER_KWH + "," + DataTypeVo.TYPE_GENERATOR_GENERATOR_RPM_AVG + ")";
-	private final String SQL_DELETE_ALL_FOR_PITCH_WIND					= "SELECT * FROM gen_data WHERE cli_id = :cli_id AND gen_id = :gen_id AND :date_from <= data_date and data_date < :date_to AND data_type_id in (" + DataTypeVo.TYPE_GENERATOR_PITCH + "," + DataTypeVo.TYPE_GENERATOR_WIND_SPEED_METERS_PER_SECOND + ")";
 	
 	private final String SQL_AVG_VALUE_FOR_CLIENT_LOCATION_GENERATORS					= "select gd.cli_id, gd.gen_id, cast(null as timestamp) as data_date, gd.data_type_id, cast(null as int) as data_pro_id, avg(gd.data_value) as data_value, cast(null as timestamp) as data_date_added from generator g left join gen_data gd on g.cli_id = gd.cli_id and g.gen_id_auto = gd.gen_id where g.cli_id = :cli_id and g.loc_id = :loc_id and gd.data_type_id = :data_type_id and :date_from <= gd.data_date and gd.data_date < :date_to group by gd.cli_id, gd.gen_id, gd.data_type_id";
 	private final String SQL_AVG_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_DAY		= "select gd.cli_id, gd.gen_id, date_trunc('day', gd.data_date) as data_date, gd.data_type_id, cast(null as int) as data_pro_id, avg(gd.data_value) as data_value, cast(null as timestamp) as data_date_added from generator g left join gen_data gd on g.cli_id = gd.cli_id and g.gen_id_auto = gd.gen_id where g.cli_id = :cli_id and g.loc_id = :loc_id and gd.data_type_id = :data_type_id and :date_from <= gd.data_date and gd.data_date < :date_to group by gd.cli_id, gd.gen_id, gd.data_type_id, date_trunc('day', gd.data_date)";
@@ -54,10 +51,13 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	
 	//--- Overridden methods --------------------
 	@Override public void insert(Collection<GenDataVo> vos) {
-		if (CollectionUtil.isEmpty(vos)) return;
+		if (CollectionUtil.isEmpty(vos)) {
+			return;
+		}
 		List<MapSqlParameterSource> params = new ArrayList<MapSqlParameterSource>();
-		for (GenDataVo vo : vos)
+		for (GenDataVo vo : vos) {
 			params.add(this.createInsertMapSqlParameterSource(vo));
+		}
 		this.jdbc.batchUpdate(SQL_INSERT, params.toArray(new MapSqlParameterSource[0]));
 	}
 	
@@ -69,45 +69,17 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 			);
 	}
 
-	@Override public Collection<GenDataVo> getForRPMProduction(Integer cliId, Integer genId, Date from, Date to) {
-		try {
-			return this.jdbc.query(
-				SQL_DELETE_ALL_FOR_RPM_PRODUCTION,
-				new MapSqlParameterSource()
-					.addValue("cli_id", cliId)
-					.addValue("gen_id", genId)
-					.addValue("date_from", from)
-					.addValue("date_to", to),
-				GenDataRowWrapper.getInstance()
-			);
-		} catch (EmptyResultDataAccessException e) {
-			return null;
-		}
-	}
-	
-	@Override public Collection<GenDataVo> getForPitchWind(Integer cliId, Integer genId, Date from, Date to) {
-		try {
-			return this.jdbc.query(
-					SQL_DELETE_ALL_FOR_PITCH_WIND,
-					new MapSqlParameterSource()
-					.addValue("cli_id", cliId)
-					.addValue("gen_id", genId)
-					.addValue("date_from", from)
-					.addValue("date_to", to),
-					GenDataRowWrapper.getInstance()
-					);
-		} catch (EmptyResultDataAccessException e) {
-			return null;
-		}
-	}
-
 	@Override public Collection<GenDataVo> getGeneratorDataAvg(Integer cliId, Integer locId, Integer dataTypeId, Date from, Date to) { return this.getGeneratorDataAvg(cliId, locId, dataTypeId, from, to, null); }
 	
 	@Override public Collection<GenDataVo> getGeneratorDataAvg(Integer cliId, Integer locId, Integer dataTypeId, Date from, Date to, String groupBy) {
 		String 											sql = SQL_AVG_VALUE_FOR_CLIENT_LOCATION_GENERATORS;
-		if (ChartFilter.GROUP_BY_DAY.equals(groupBy))		sql = SQL_AVG_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_DAY;
-		else if (ChartFilter.GROUP_BY_WEEK.equals(groupBy))	sql = SQL_AVG_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_WEEK;
-		else if (ChartFilter.GROUP_BY_MONTH.equals(groupBy)) sql = SQL_AVG_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_MONTH;
+		if (ChartFilter.GROUP_BY_DAY.equals(groupBy)) {
+			sql = SQL_AVG_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_DAY;
+		} else if (ChartFilter.GROUP_BY_WEEK.equals(groupBy)) {
+			sql = SQL_AVG_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_WEEK;
+		} else if (ChartFilter.GROUP_BY_MONTH.equals(groupBy)) {
+			sql = SQL_AVG_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_MONTH;
+		}
 		
 		try {
 			return this.jdbc.query(
@@ -129,9 +101,13 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	
 	@Override public Collection<GenDataVo> getGeneratorDataSumValueEquals(Integer cliId, Integer locId, Integer dataTypeId, Double dataValue, Date from, Date to, String groupBy) {
 		String 											sql = SQL_COUNT_VALUE_FOR_CLIENT_LOCATION_GENERATORS;
-		if (ChartFilter.GROUP_BY_DAY.equals(groupBy))		sql = SQL_COUNT_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_DAY;
-		else if (ChartFilter.GROUP_BY_WEEK.equals(groupBy))	sql = SQL_COUNT_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_WEEK;
-		else if (ChartFilter.GROUP_BY_MONTH.equals(groupBy)) sql = SQL_COUNT_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_MONTH;
+		if (ChartFilter.GROUP_BY_DAY.equals(groupBy)) {
+			sql = SQL_COUNT_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_DAY;
+		} else if (ChartFilter.GROUP_BY_WEEK.equals(groupBy)) {
+			sql = SQL_COUNT_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_WEEK;
+		} else if (ChartFilter.GROUP_BY_MONTH.equals(groupBy)) {
+			sql = SQL_COUNT_VALUE_FOR_CLIENT_LOCATION_GENERATORS_GROUP_BY_MONTH;
+		}
 		
 		try {
 			return this.jdbc.query(
@@ -163,7 +139,9 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 		if (codes != null && codes.length > 0) {
 			sql.append(" AND data_type_id in (");
 			for (int i = 0; i < codes.length; i++) { 
-				if (i > 0) sql.append(", ");
+				if (i > 0) {
+					sql.append(", ");
+				}
 				sql.append(":code_" + i);
 				binding.addValue("code_" + i, Integer.valueOf(codes[i]));
 			}
@@ -193,7 +171,9 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 		
 		sql.append("(");
 		for (int i = 0; i < codes.length; i++) { 
-			if (i > 0) sql.append(", ");
+			if (i > 0) {
+				sql.append(", ");
+			}
 			sql.append(":code_" + i);
 			binding.addValue("code_" + i, Integer.valueOf(codes[i]));
 		}
@@ -222,7 +202,9 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 		if (codes != null && codes.length > 0) {
 			sql.append(" AND data_type_id in (");
 			for (int i = 0; i < codes.length; i++) { 
-				if (i > 0) sql.append(", ");
+				if (i > 0) {
+					sql.append(", ");
+				}
 				sql.append(":code_" + i);
 				binding.addValue("code_" + i, Integer.valueOf(codes[i]));
 			}

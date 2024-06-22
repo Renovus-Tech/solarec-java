@@ -19,6 +19,8 @@ public class Chart {
     private List<Integer> id = null;
 
     //--- Constructors --------------------------
+    public Chart() {}
+    
     public Chart(String type) {
     	this.type = type;
     }

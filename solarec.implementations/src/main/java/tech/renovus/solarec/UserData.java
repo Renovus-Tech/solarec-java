@@ -1,5 +1,6 @@
 package tech.renovus.solarec;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.TreeSet;
@@ -11,8 +12,11 @@ import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.UsersVo;
 
-public class UserData {
+public class UserData implements Serializable {
 
+	//--- Private constants ---------------------
+	private static final long serialVersionUID = -2441310133954854926L;
+	
 	//--- Private properties --------------------
 	private UsersVo userVo;
 	private ClientVo clientVo;
@@ -37,7 +41,9 @@ public class UserData {
 			this.locationFunctionalities = null;
 		} else {
 			this.locationFunctionalities = new TreeSet<>();
-			if (CollectionUtil.notEmpty(this.functionalities)) this.locationFunctionalities = this.functionalities.stream().filter(x -> x.isValidFor(this.locationVo.getLocType())).collect(Collectors.toList());
+			if (CollectionUtil.notEmpty(this.functionalities)) {
+				this.locationFunctionalities = this.functionalities.stream().filter(x -> x.isValidFor(this.locationVo.getLocType())).collect(Collectors.toList());
+			}
 		}
 	}
 	

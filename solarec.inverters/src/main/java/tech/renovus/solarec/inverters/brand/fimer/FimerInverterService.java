@@ -96,13 +96,15 @@ public class FimerInverterService implements InverterService {
 		if (data != null && CollectionUtil.notEmpty(data.getResult())) {
 			for (Result aData : data.getResult()) {
 				Date dataDate = new Date(aData.getStart().intValue() * 1000);
-				if (dataDate.before(dateFrom)) continue;
+				if (dataDate.before(dateFrom)) {
+					continue;
+				}
 				
 				GenDataVo genData = new GenDataVo();
 				genData.setCliId(generator.getCliId());
 				genData.setGenId(generator.getGenId());
 				genData.setDataDate(dataDate);
-				genData.setDataTypeId(DataTypeVo.TYPE_GENERATOR_POWER_KWH);
+				genData.setDataTypeId(DataTypeVo.TYPE_SOLAR_INVERTER_AC_POWER);
 				genData.setDataValue(aData.getValue());
 				
 				result.add(genData);

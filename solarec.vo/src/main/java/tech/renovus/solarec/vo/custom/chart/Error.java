@@ -17,6 +17,8 @@ public class Error {
     private boolean noData;
 
     //--- Constructors --------------------------
+    public Error() {}
+    
     public Error(Integer code, String message, boolean noData) {
     	this.time		= new Date();
     	this.code		= code;

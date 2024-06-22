@@ -4,6 +4,13 @@
 ![Java Version](https://img.shields.io/badge/Java-11%2B-orange)
 [![CLA assistant](https://cla-assistant.io/readme/badge/Renovus-Tech/solarec-java)](https://cla-assistant.io/Renovus-Tech/solarec-java)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Renovus-Tech_solarec-java&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Renovus-Tech_solarec-java)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Renovus-Tech_solarec-java&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Renovus-Tech_solarec-java)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Renovus-Tech_solarec-java&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Renovus-Tech_solarec-java)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Renovus-Tech_solarec-java&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Renovus-Tech_solarec-java)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Renovus-Tech_solarec-java&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Renovus-Tech_solarec-java)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Renovus-Tech_solarec-java&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Renovus-Tech_solarec-java)
+
 # Solarec Java
 
 The Solarec Java repository is parte of the Solarec solution of Renovus. Incombination with the other repositories Ract, Python and Database generates the Solarec solution.
