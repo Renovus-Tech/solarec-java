@@ -48,6 +48,11 @@ tech.renovus.solarec.python.solarSales.url =
 tech.renovus.solarec.python.solarCertificate.url = 
 tech.renovus.solarec.python.emissons.url = 
 
+#Services
+solarec.service.weather.provider = 
+solarec.service.grid.provider = 
+solarec.service.certificate.provider = 
+
 #Meteoblue
 solarec.meteoblue.key = 
 

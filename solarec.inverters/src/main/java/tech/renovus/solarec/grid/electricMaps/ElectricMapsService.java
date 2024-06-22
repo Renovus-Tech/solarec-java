@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.connection.JsonCaller;
@@ -27,6 +28,7 @@ import tech.renovus.solarec.vo.db.data.DataTypeVo;
  * Prices: https://www.electricitymaps.com/pricing
  */
 @Service
+@ConditionalOnProperty(name = "solarec.service.grid.provider", havingValue = "electricmaps")
 public class ElectricMapsService implements DataGridService {
 
 	//--- Private constants ---------------------

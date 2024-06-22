@@ -1,6 +1,7 @@
 package tech.renovus.solarec.certificate.drecs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.certificate.common.CertificateService;
@@ -20,6 +21,7 @@ import tech.renovus.solarec.vo.db.data.GeneratorVo;
  * API information: https://api.drecs.org/swagger
  */
 @Service
+@ConditionalOnProperty(name = "solarec.service.certificate.provider", havingValue = "drecs")
 public class DRecsService implements CertificateService {
 	
 	//--- Private constants ---------------------

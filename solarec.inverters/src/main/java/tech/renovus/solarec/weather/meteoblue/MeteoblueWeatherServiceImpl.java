@@ -14,6 +14,7 @@ import java.util.TimeZone;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.connection.JsonCaller;
@@ -455,6 +456,7 @@ import tech.renovus.solarec.weather.meteoblue.api.WeatherData;
  */
 
 @Service
+@ConditionalOnProperty(name = "solarec.service.weather.provider", havingValue = "meteoblue")
 public class MeteoblueWeatherServiceImpl implements WeatherService {
 
 	//--- Private constants --------------------
@@ -509,7 +511,10 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 	}
 	
 	private void createData(StationVo station, int typeId, Double value, Date dateDate, Collection<StaDataVo> result) {
-		if (value == null) return; //in same cases, meteoblue returns null values
+		if (value == null)
+		 {
+			return; //in same cases, meteoblue returns null values
+		}
 		
 		//Data is every hour, we need to split it to 15 minutes period
 		Calendar cal = GregorianCalendar.getInstance();
@@ -549,8 +554,12 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 			int index = 0;
 			for (String time : data.getData1h().getTime()) {
 				Date date = WeatherService.DATE_HOUR_FORMATTER.parse(time);
-				if (startIndex == -1 && dateFrom.after(date)) startIndex = index;
-				if (date.before(dateTo)) endIndex = index;
+				if (startIndex == -1 && dateFrom.after(date)) {
+					startIndex = index;
+				}
+				if (date.before(dateTo)) {
+					endIndex = index;
+				}
 				index ++;
 			}
 			

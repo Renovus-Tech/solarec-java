@@ -14,6 +14,8 @@ import java.util.GregorianCalendar;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import tech.renovus.solarec.grid.DataGridService;
@@ -21,6 +23,8 @@ import tech.renovus.solarec.vo.db.data.CountryVo;
 import tech.renovus.solarec.vo.db.data.CtrDataVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
 
+@Service
+@ConditionalOnProperty(name = "solarec.service.grid.provider", havingValue = "ember")
 public class EmberDataGridService implements DataGridService {
 	
 	//--- Private constants ----------------------
@@ -62,7 +66,9 @@ public class EmberDataGridService implements DataGridService {
 				
 				for (CSVRecord csvRecord : csvParser) {
 					String country = csvRecord.get(COL_COUNTRY_CODE);
-					if (! ctrCode.equals(country)) continue;
+					if (! ctrCode.equals(country)) {
+						continue;
+					}
 					
 					int year = Integer.parseInt(csvRecord.get(COL_YEAR));
 					int daysInYear = Year.of(year).length();

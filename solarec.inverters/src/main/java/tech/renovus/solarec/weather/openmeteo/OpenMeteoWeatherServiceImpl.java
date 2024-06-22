@@ -13,6 +13,9 @@ import java.util.TimeZone;
 
 import javax.annotation.Resource;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Service;
+
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.db.data.dao.interfaces.LocDataWeatherDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
@@ -33,7 +36,8 @@ import tech.renovus.solarec.weather.openmeteo.api.WeatherData;
  * Sample: https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m
  * 
  */
-
+@Service
+@ConditionalOnProperty(name = "solarec.service.weather.provider", havingValue = "openmeteo")
 public class OpenMeteoWeatherServiceImpl implements WeatherService {
 
 	//--- Private constants --------------------
