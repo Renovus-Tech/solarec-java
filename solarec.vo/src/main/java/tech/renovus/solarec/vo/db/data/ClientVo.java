@@ -11,9 +11,11 @@ import tech.renovus.solarec.vo.db.relation.DbClientVo;
 public class ClientVo extends DbClientVo {
 
 	//--- Flags ---------------------------------
-	public static final int FLAG_REPORT_ENABLED				= 0;
-	public static final int FLAG_ALERT_CALCULATION_ENABLED	= 1;
-	public static final int FLAG_ENABLED_FOR_EMAIL_ALERT	= 2;
+	public static final int FLAG_REPORT_ENABLED					= 0;
+	public static final int FLAG_ALERT_CALCULATION_ENABLED		= 1;
+	public static final int FLAG_ENABLED_FOR_EMAIL_ALERT		= 2;
+	public static final int FLAG_ENABLED						= 3;
+	public static final int FLAG_REGISTERED_AT_CERT_PROVIDER	= 4;
 	
 	//--- Constructors --------------------------
 	public ClientVo() {

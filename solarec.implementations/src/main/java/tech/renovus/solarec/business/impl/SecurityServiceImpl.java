@@ -34,6 +34,7 @@ import tech.renovus.solarec.db.data.dao.interfaces.UsrSettingDao;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
+import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.CliUserVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
@@ -90,21 +91,29 @@ public class SecurityServiceImpl implements SecurityService {
 		userData.setLogged(true);
 		
 		UsrSettingVo settingVo = usrVo.getSetting(SettingsVo.PREFER_LANGUAGE);
-		if (settingVo != null) userData.setLocale(this.translationService.getLocale(settingVo.getValue()));
+		if (settingVo != null) {
+			userData.setLocale(this.translationService.getLocale(settingVo.getValue()));
+		}
 	}
 
 	private boolean accessEnable(UsersVo usrVo, ClientVo cliVo) {
-		if  (usrVo == null || cliVo == null) return false;
+		if  (usrVo == null || cliVo == null || ! FlagUtil.getFlagValue(cliVo, ClientVo.FLAG_ENABLED)) {
+			return false;
+		}
 		return this.cliUserDao.findVo(cliVo.getCliId(), usrVo.getUsrId()) != null;
 	}
 
 	private boolean authenticate(UsersVo usrVo, String password) {
-		if (usrVo == null || StringUtil.isEmpty(password)) return false;
+		if (usrVo == null || StringUtil.isEmpty(password) || ! FlagUtil.getFlagValue(usrVo, UsersVo.FLAG_ENABLED)) {
+			return false;
+		}
 		return ClassUtil.equals(usrVo.getUsrPassword(), password);
 	}
 	
 	private ClientVo getDefaultClient(String cliName, Integer usrId) {
-		if (StringUtil.notEmpty(cliName)) return this.clientsDao.findBy(cliName);
+		if (StringUtil.notEmpty(cliName)) {
+			return this.clientsDao.findBy(cliName);
+		}
 		
 		Collection<ClientVo> clients = usrId == null ? null : this.clientsDao.findAllForUser(usrId, true);
 		return CollectionUtil.notEmpty(clients) ? clients.iterator().next() : null;
@@ -113,7 +122,9 @@ public class SecurityServiceImpl implements SecurityService {
 	private void setDefaultLocation(UserData userData) {
 		userData.setLocationVo(null);
 		Collection<LocationVo> locations = this.locationDao.findAllForUser(userData.getCliId(), userData.getUsrId(), true);
-		if (CollectionUtil.size(locations) >= 1) userData.setLocationVo(locations.iterator().next());
+		if (CollectionUtil.size(locations) >= 1) {
+			userData.setLocationVo(locations.iterator().next());
+		}
 		
 		if (userData.getLocationVo() != null) {
 			userData.getLocationVo().setSdgs(this.locSdgDao.getAllForLocation(userData.getLocationVo().getCliId(), userData.getLocationVo().getLocId()));
@@ -161,7 +172,9 @@ public class SecurityServiceImpl implements SecurityService {
 		}
 		
 		ClientVo cliVo			= this.clientsDao.findVo(cliId);
-		if (cliVo.getDataDefId() != null) cliVo.setDataDefinitionVo(this.dataDefinitionDao.findVo(cliVo.getDataDefId()));
+		if (cliVo.getDataDefId() != null) {
+			cliVo.setDataDefinitionVo(this.dataDefinitionDao.findVo(cliVo.getDataDefId()));
+		}
 		userData.setClientVo(cliVo);
 		this.cliUserDao.setAccessDate(cliUsrVo.getCliId(), cliUsrVo.getUsrId(), new Date());
 		this.setDefaultLocation(userData);
@@ -170,7 +183,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override public void setLocation(Integer locId, UserData userData) {
 		LocationVo locVo	= this.locationDao.findForUser(userData.getUsrId(), userData.getCliId(), locId);
 		
-		if (locVo != null) {
+		if (locVo != null && FlagUtil.getFlagValue(locVo, LocationVo.FLAG_ENABLED)) {
 			locVo.setSdgs(this.locSdgDao.getAllForLocation(locVo.getCliId(), locVo.getLocId()));
 			userData.setLocationVo(locVo);
 		}
@@ -185,7 +198,9 @@ public class SecurityServiceImpl implements SecurityService {
 	//--- Password reset methods ----------------
 	@Override public void startPasswordReset(String email, Locale locale) {
 		UsersVo usrVo = this.usersDao.findBy(email);
-		if (usrVo == null) return;
+		if (usrVo == null) {
+			return;
+		}
 		
 		usrVo.setUsrPwdResetRequested(new Date());
 		usrVo.setUsrPwdResetUuid(UUID.randomUUID().toString());
@@ -195,7 +210,9 @@ public class SecurityServiceImpl implements SecurityService {
 		this.usersDao.synchronize(usrVo);
 		
 		StringBuilder url = new StringBuilder(this.configuration.getSiteUrl());
-		if (! this.configuration.getSiteUrl().endsWith("/")) url.append("/");
+		if (! this.configuration.getSiteUrl().endsWith("/")) {
+			url.append("/");
+		}
 		url.append("#/resetPassword/?reset_token=");
 		url.append(usrVo.getUsrPwdResetUuid());
 		
@@ -212,13 +229,17 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override public PasswordReset doPassworReset(PasswordReset passwordReset, UserData userData) {
 		PasswordReset result = null;
 		
-		if (passwordReset == null)																									result = new PasswordReset(PasswordReset.ERROR_INVALID_REQUEST, "Invalid information received.");
-		else if (StringUtil.isEmpty(passwordReset.getId()) && ! userData.isLogged())												result = new PasswordReset(PasswordReset.ERROR_INVALID_ID, "Invalid password request.");
-		else if (StringUtil.isEmpty(passwordReset.getNewPassword()))																result = new PasswordReset(PasswordReset.ERROR_INVALID_PASSWORD, "Invalid new password.");
-		else if (! ClassUtil.equals(passwordReset.getNewPassword(), passwordReset.getNewPasswordConfirm()))							result = new PasswordReset(PasswordReset.ERROR_INVALID_PASSWORD, "Invalid new password.");
-		else if (passwordReset.getNewPassword().length() > 100)																		result = new PasswordReset(PasswordReset.ERROR_INVALID_PASSWORD, "Invalid new password.");
-		
-		else {
+		if (passwordReset == null) {
+			result = new PasswordReset(PasswordReset.ERROR_INVALID_REQUEST, "Invalid information received.");
+		} else if (StringUtil.isEmpty(passwordReset.getId()) && ! userData.isLogged()) {
+			result = new PasswordReset(PasswordReset.ERROR_INVALID_ID, "Invalid password request.");
+		} else if (StringUtil.isEmpty(passwordReset.getNewPassword())) {
+			result = new PasswordReset(PasswordReset.ERROR_INVALID_PASSWORD, "Invalid new password.");
+		} else if (! ClassUtil.equals(passwordReset.getNewPassword(), passwordReset.getNewPasswordConfirm())) {
+			result = new PasswordReset(PasswordReset.ERROR_INVALID_PASSWORD, "Invalid new password.");
+		} else if (passwordReset.getNewPassword().length() > 100) {
+			result = new PasswordReset(PasswordReset.ERROR_INVALID_PASSWORD, "Invalid new password.");
+		} else {
 			boolean fromResetEmail	= StringUtil.notEmpty(passwordReset.getId());
 			UsersVo usrVo			= fromResetEmail ? this.usersDao.findByResetUuid(passwordReset.getId()) : this.usersDao.findBy(userData.getUsrEmail());
 			
@@ -261,7 +282,9 @@ public class SecurityServiceImpl implements SecurityService {
 		if (user != null && CollectionUtil.notEmpty(user.getSettings())) {
 			Collection<String> settingsNames = this.settingsDao.getAllNamesForUser();
 			for (Setting setting : user.getSettings()) {
-				if (! settingsNames.contains(setting.getName())) continue;
+				if (! settingsNames.contains(setting.getName())) {
+					continue;
+				}
 				
 				UsrSettingVo usrSetVo = new UsrSettingVo(userData.getUsrId(), setting.getName(), setting.getValue());
 				usrSetVo.setSyncType(UsrSettingVo.SYNC_INSERT);

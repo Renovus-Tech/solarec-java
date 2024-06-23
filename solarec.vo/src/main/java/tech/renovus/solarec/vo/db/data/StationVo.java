@@ -11,8 +11,10 @@ import tech.renovus.solarec.vo.db.relation.DbStationVo;
 public class StationVo extends DbStationVo implements IDataContainer {
 
 	//--- Public constants ----------------------
-	public static int FLAG_DEFAULT	= 0;
-	
+	public static final int FLAG_DEFAULT						= 0;
+	public static final int FLAG_ENABLED						= 1;
+	public static final int FLAG_REGISTERED_AT_CERT_PROVIDER	= 2;
+
 	//--- Private properties --------------------
 //	private Map<Integer, Collection<Date>> typeDates;
 	private boolean required = true;
@@ -34,7 +36,9 @@ public class StationVo extends DbStationVo implements IDataContainer {
 	
 	//--- Public methods ------------------------
 	public StaMetadataVo getMetadataVo(String name) {
-		if (CollectionUtil.isEmpty(this.metadata)) return null;
+		if (CollectionUtil.isEmpty(this.metadata)) {
+			return null;
+		}
 		Optional<StaMetadataVo> option = this.metadata.stream().filter(x -> ClassUtil.equals(name, x.getMetadataName())).findFirst();
 		return option.isPresent() ? option.get() :  null;
 	}
@@ -44,10 +48,12 @@ public class StationVo extends DbStationVo implements IDataContainer {
 		this.required = required;
 	}
 	
+	@Override
 	public Integer getLocId() {
 		return locId;
 	}
 
+	@Override
 	public void setLocId(Integer locId) {
 		this.locId = locId;
 	}

@@ -12,6 +12,10 @@ public class UsersVo extends DbUsersVo {
 	public static final int FLAG_RECEIVE_REPORT_BY_EMAIL_BCC		= 1;
 	public static final int FLAG_RECEIVE_ALERT_LOCATION_BY_EMAIL	= 2;
 	public static final int FLAG_RECEIVE_ALERT_GENERATOR_NBY_EMAIL	= 3;
+	public static final int FLAG_ENABLED							= 4;
+	public static final int FLAG_FIRST_LOGIN_DONE					= 5;
+	public static final int FLAG_ACCEPTED_TERMS_AND_CONDITIONS		= 6;
+	public static final int FLAG_REGISTERED_AT_CERT_PROVIDER		= 7;
 
 	//--- Constructors --------------------------
 	public UsersVo() {
