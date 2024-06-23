@@ -44,6 +44,7 @@ public class Generator extends BaseEntity {
 	private String model;
 	private String serialNumber;
 	private Double ratePower;
+	private boolean enabled;
 	
 	private Integer dataDefinitionId;
 	private DataDefinition dataDefinition;
@@ -123,5 +124,11 @@ public class Generator extends BaseEntity {
 	}
 	public void setNeighbors(Collection<Integer> neighbours) {
 		this.neighbors = neighbours;
+	}
+	public boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

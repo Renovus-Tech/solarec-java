@@ -9,6 +9,7 @@ public class Station extends BaseEntity {
 	private Integer locationId;
 	private Double latitude;
 	private Double longitude;
+	private boolean enabled;
 	
 	private Integer dataDefinitionId;
 	private DataDefinition dataDefinition;
@@ -49,5 +50,11 @@ public class Station extends BaseEntity {
 	}
 	public void setDataDefinition(DataDefinition dataDefinition) {
 		this.dataDefinition = dataDefinition;
+	}
+	public boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

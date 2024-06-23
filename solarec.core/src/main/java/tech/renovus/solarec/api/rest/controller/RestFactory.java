@@ -63,7 +63,11 @@ public class RestFactory {
 	public List<Processing> convertProcessings(Collection<DataProcessingVo> vos) {
 		List<Processing> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (DataProcessingVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (DataProcessingVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		
 		return result;
 	}
@@ -71,7 +75,11 @@ public class RestFactory {
 	public List<DataDefinition> convertDataDefinitions(Collection<DataDefinitionVo> vos) {
 		List<DataDefinition> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (DataDefinitionVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (DataDefinitionVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		
 		return result;
 	}
@@ -79,7 +87,11 @@ public class RestFactory {
 	public List<Location> convertLocations(Collection<LocationVo> vos) {
 		List<Location> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (LocationVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (LocationVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		
 		return result;
 	}
@@ -87,7 +99,11 @@ public class RestFactory {
 	public List<Station> convertStations(Collection<StationVo> vos) {
 		List<Station> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (StationVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (StationVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		
 		return result;
 	}
@@ -95,7 +111,11 @@ public class RestFactory {
 	public List<Generator> convertGenerators(Collection<GeneratorVo> vos) {
 		List<Generator> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (GeneratorVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (GeneratorVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		
 		return result;
 	}
@@ -103,7 +123,11 @@ public class RestFactory {
 	public List<Functionality> convertFunctionalities(Collection<FunctionalityVo> vos) {
 		List<Functionality> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (FunctionalityVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (FunctionalityVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		
 		return result;
 	}
@@ -111,7 +135,11 @@ public class RestFactory {
 	public <T extends ISetting> Collection<Setting> convertSettings(Collection<T> vos, UserData userData) {
 		List<Setting> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (ISetting vo : vos) result.add(convert(vo, userData));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (ISetting vo : vos) {
+				result.add(convert(vo, userData));
+			}
+		}
 		
 		return result;
 	}
@@ -119,7 +147,11 @@ public class RestFactory {
 	public List<Client> convertClients(Collection<ClientVo> vos, UserData userData) {
 		List<Client> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (ClientVo vo : vos) result.add(convert(vo, userData));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (ClientVo vo : vos) {
+				result.add(convert(vo, userData));
+			}
+		}
 		
 		return result;
 	}
@@ -127,7 +159,11 @@ public class RestFactory {
 	public List<DocType> convertDocTypes(Collection<DocTypeVo> vos) {
 		List<DocType> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (DocTypeVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (DocTypeVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		
 		return result;
 	}
@@ -135,7 +171,11 @@ public class RestFactory {
 	public List<Document> convertDocuments(Collection<DocumentVo> vos) {
 		List<Document> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (DocumentVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (DocumentVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		
 		return result;
 	}
@@ -143,32 +183,50 @@ public class RestFactory {
 	public List<Generator.Power> convertPower(Collection<GenPowerVo> vos) {
 		List<Generator.Power> result = new ArrayList<>(CollectionUtil.size(vos));
 		
-		if (CollectionUtil.notEmpty(vos)) for (GenPowerVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (GenPowerVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		
 		return result;
 	}
 	
 	public List<WeatherDefinition> convertWeatherDefinitions(Collection<WeaDefinitionVo> vos) {
 		List<WeatherDefinition> result = new ArrayList<>(CollectionUtil.size(vos));
-		if (CollectionUtil.notEmpty(vos)) for (WeaDefinitionVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (WeaDefinitionVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		return result;
 	}
 	
 	public Collection<GenPowerVo> convertRestPowerCurve(Collection<Generator.Power> vos) {
 		Collection<GenPowerVo> result = new ArrayList<>(CollectionUtil.size(vos));
-		if (CollectionUtil.notEmpty(vos)) for (Generator.Power vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (Generator.Power vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		return result;
 	}
 	
 	public List<Report> convertReportTypes(Collection<RepTypeVo> vos) {
 		List<Report> result = new ArrayList<>(CollectionUtil.size(vos));
-		if (CollectionUtil.notEmpty(vos)) for (RepTypeVo vo : vos) result.add(convert(vo));
+		if (CollectionUtil.notEmpty(vos)) {
+			for (RepTypeVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
 		return result;
 	}
 	
 	//--- VO to JSON methods --------------------
 	public Country convert(CountryVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Country result = new Country();
 		result.setName(vo.getCtrName());
@@ -179,7 +237,9 @@ public class RestFactory {
 	}
 	
 	public Location.Type convert(LocTypeVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Location.Type result = new Location.Type();
 		result.setCode(vo.getLocTypeCode());
@@ -189,7 +249,9 @@ public class RestFactory {
 	}
 	
 	public Location convert(LocationVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Location result = new Location();
 		
@@ -209,6 +271,7 @@ public class RestFactory {
 		result.setType(vo.getLocType());
 		result.setDemoDate(vo.getLocDemoDate());
 		result.setGridConnected(FlagUtil.getFlagValue(vo, LocationVo.FLAG_CONNECTED_TO_GRID));
+		result.setEnabled(FlagUtil.getFlagValue(vo, LocationVo.FLAG_ENABLED));
 		
 		result.setDataDefinition(convert(vo.getDataDefinitionVo()));
 		
@@ -236,7 +299,9 @@ public class RestFactory {
 	}
 	
 	public Generator convert(GeneratorVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Generator result = new Generator();
 		
@@ -252,6 +317,7 @@ public class RestFactory {
 		result.setModel(vo.getGenModel());
 		result.setSerialNumber(vo.getGenSerialNum());
 		result.setRatePower(vo.getGenRatePower());
+		result.setEnabled(FlagUtil.getFlagValue(vo, GeneratorVo.FLAG_ENABLED));
 		
 		result.setPowerCurve(convertPower(vo.getPowerCurve()));
 		result.setNeighbors(convertNeighbours(vo.getNeighbours()));
@@ -260,12 +326,16 @@ public class RestFactory {
 	}
 	
 	private Collection<Integer> convertNeighbours(Collection<GenNeighbourVo> neighbours) {
-		if (CollectionUtil.isEmpty(neighbours)) return null;
+		if (CollectionUtil.isEmpty(neighbours)) {
+			return null;
+		}
 		return neighbours.stream().map(vo -> vo.getGenIdNeighbour()).collect(Collectors.toList());
 	}
 
 	private Generator.Power convert(GenPowerVo vo) {
-		if  (vo == null) return null;
+		if  (vo == null) {
+			return null;
+		}
 		
 		Generator.Power result = new Generator.Power();
 		
@@ -277,7 +347,9 @@ public class RestFactory {
 	}
 	
 	public Sdg convert(LocSdgVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Sdg result = new Sdg();
 		
@@ -289,7 +361,9 @@ public class RestFactory {
 	}
 	
 	public Station convert(StationVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Station result = new Station();
 		
@@ -301,12 +375,15 @@ public class RestFactory {
 		result.setDescription(vo.getStaDescription());
 		result.setLatitude(vo.getStaCoordLat());
 		result.setLongitude(vo.getStaCoordLng());
+		result.setEnabled(FlagUtil.getFlagValue(vo, StationVo.FLAG_ENABLED));
 		
 		return result;
 	}
 	
 	public DataDefinition convert(DataDefinitionVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		DataDefinition result = new DataDefinition();
 		
@@ -318,7 +395,9 @@ public class RestFactory {
 	}
 	
 	public Functionality convert(FunctionalityVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Functionality result = new Functionality();
 		
@@ -331,7 +410,9 @@ public class RestFactory {
 	}
 	
 	public Setting convert(ISetting vo, UserData userData) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Setting result = new Setting();
 		
@@ -356,7 +437,9 @@ public class RestFactory {
 	}
 	
 	public Client convert(ClientVo vo, UserData userData) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Client client = new Client();
 		
@@ -368,12 +451,15 @@ public class RestFactory {
 		client.setDataDefinition(convert(vo.getDataDefinitionVo()));
 		client.setSettings(convertSettings(vo.getSettings(), userData));
 		client.setDemoDate(vo.getCliDemoDate());
+		client.setEnabled(FlagUtil.getFlagValue(vo, ClientVo.FLAG_ENABLED));
 		
 		return client;
 	}
 	
 	public Processing convert(DataProcessingVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Processing result = new Processing();
 		
@@ -392,7 +478,9 @@ public class RestFactory {
 	}
 	
 	private DocType convert(DocTypeVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		DocType docType = new DocType();
 		docType.setId(vo.getDocTypeId());
@@ -403,7 +491,9 @@ public class RestFactory {
 	}
 
 	public Document convert(DocumentVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Document document = new Document();
 		
@@ -418,15 +508,23 @@ public class RestFactory {
 		document.setIsOpen(Boolean.valueOf(FlagUtil.getFlagValue(vo, DocumentVo.FLAG_IS_OPEN)));
 		document.setDownloadLink(EndPointFactory.REST_ADMINISTRATION_DOCUMENTS_DOWNLOAD + "/" + vo.getDocId());
 		
-		if (CollectionUtil.notEmpty(vo.getGenerators()))	document.setGenerators(convertGenerators(vo.getGenerators().stream().map(x -> x.getGeneratorVo()).collect(Collectors.toSet())));
-		if (CollectionUtil.notEmpty(vo.getStations()))		document.setStations(convertStations(vo.getStations().stream().map(x -> x.getStationVo()).collect(Collectors.toSet())));
-		if (CollectionUtil.notEmpty(vo.getLocations()))		document.setLocations(convertLocations(vo.getLocations().stream().map(x -> x.getLocationVo()).collect(Collectors.toSet())));
+		if (CollectionUtil.notEmpty(vo.getGenerators())) {
+			document.setGenerators(convertGenerators(vo.getGenerators().stream().map(x -> x.getGeneratorVo()).collect(Collectors.toSet())));
+		}
+		if (CollectionUtil.notEmpty(vo.getStations())) {
+			document.setStations(convertStations(vo.getStations().stream().map(x -> x.getStationVo()).collect(Collectors.toSet())));
+		}
+		if (CollectionUtil.notEmpty(vo.getLocations())) {
+			document.setLocations(convertLocations(vo.getLocations().stream().map(x -> x.getLocationVo()).collect(Collectors.toSet())));
+		}
 		
 		return document;
 	}
 	
 	public Report convert(RepTypeVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		Report report = new Report();
 		
@@ -439,7 +537,9 @@ public class RestFactory {
 	
 	//--- JSON to VO methods --------------------
 	public LocationVo convert(Location vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		LocationVo result = new LocationVo();
 		
@@ -454,14 +554,24 @@ public class RestFactory {
 		result.setLocReferenceDensity(vo.getReferenceDensity());
 		result.setDataDefId(vo.getDataDefinitionId());
 		
-		if (CollectionUtil.notEmpty(vo.getGenerators()))	for (Generator genVo : vo.getGenerators())	result.add(convert(genVo));
-		if (CollectionUtil.notEmpty(vo.getStations()))		for (Station staVo : vo.getStations())		result.add(convert(staVo));
+		if (CollectionUtil.notEmpty(vo.getGenerators())) {
+			for (Generator genVo : vo.getGenerators()) {
+				result.add(convert(genVo));
+			}
+		}
+		if (CollectionUtil.notEmpty(vo.getStations())) {
+			for (Station staVo : vo.getStations()) {
+				result.add(convert(staVo));
+			}
+		}
 		
 		return result;
 	}
 	
 	public GeneratorVo convert(Generator vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		GeneratorVo result = new GeneratorVo();
 		
@@ -484,7 +594,9 @@ public class RestFactory {
 	}
 	
 	public GenPowerVo convert(Generator.Power vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		GenPowerVo result = new GenPowerVo();
 		
@@ -496,7 +608,9 @@ public class RestFactory {
 	}
 	
 	public StationVo convert(Station vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		StationVo result = new StationVo();
 		
@@ -540,7 +654,9 @@ public class RestFactory {
 	}
 
 	public WeatherDefinition convert(WeaDefinitionVo vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		WeatherDefinition result = new WeatherDefinition();
 		
@@ -560,7 +676,9 @@ public class RestFactory {
 	}
 	
 	public List<DataDefinitionTrigger> convertTriggers(Collection<CliDataDefTriggerVo> triggers, UserData userData) {
-		if (triggers == null) return null;
+		if (triggers == null) {
+			return null;
+		}
 		
 		List<DataDefinitionTrigger> result = new ArrayList<>(CollectionUtil.size(triggers));
 		for (CliDataDefTriggerVo vo : triggers) {
@@ -586,7 +704,9 @@ public class RestFactory {
 	}
 	
 	public DocumentVo convert(Document vo) {
-		if (vo == null) return null;
+		if (vo == null) {
+			return null;
+		}
 		
 		DocumentVo document = new DocumentVo();
 		
