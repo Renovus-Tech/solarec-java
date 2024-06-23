@@ -35,8 +35,6 @@ public class EmailServiceImpl implements EmailService {
 	// --- Properties ----------------------------
 	@Autowired private JavaMailSender emailSender;
 	@Autowired private RenovusSolarecConfiguration config;
-
-	
 	
 	// --- Overridden methods --------------------
 	@Override

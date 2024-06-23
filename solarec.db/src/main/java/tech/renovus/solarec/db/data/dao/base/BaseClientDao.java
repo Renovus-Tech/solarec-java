@@ -14,10 +14,10 @@ public abstract class BaseClientDao <T extends ClientVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM client";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM client WHERE cli_id_auto = :cli_id_auto";
-	protected String SQL_INSERT					= "INSERT INTO client (cli_demo_date, data_def_id, cli_name_address, cli_flags, cli_gmt, cli_sec_code, cli_name, cli_name_legal) VALUES (:cli_demo_date, :data_def_id, :cli_name_address, :cli_flags, :cli_gmt, :cli_sec_code, :cli_name, :cli_name_legal)";
-	protected String SQL_UPDATE					= "UPDATE client SET cli_demo_date = :cli_demo_date, data_def_id = :data_def_id, cli_name_address = :cli_name_address, cli_flags = :cli_flags, cli_gmt = :cli_gmt, cli_sec_code = :cli_sec_code, cli_name = :cli_name, cli_name_legal = :cli_name_legal WHERE cli_id_auto = :cli_id_auto";
+	protected String SQL_INSERT					= "INSERT INTO client (data_def_id, cli_demo_date, cli_name_address, cli_flags, cli_gmt, cli_sec_code, cli_cert_prov_data, cli_name, cli_name_legal) VALUES (:data_def_id, :cli_demo_date, :cli_name_address, :cli_flags, :cli_gmt, :cli_sec_code, :cli_cert_prov_data, :cli_name, :cli_name_legal)";
+	protected String SQL_UPDATE					= "UPDATE client SET data_def_id = :data_def_id, cli_demo_date = :cli_demo_date, cli_name_address = :cli_name_address, cli_flags = :cli_flags, cli_gmt = :cli_gmt, cli_sec_code = :cli_sec_code, cli_cert_prov_data = :cli_cert_prov_data, cli_name = :cli_name, cli_name_legal = :cli_name_legal WHERE cli_id_auto = :cli_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM client WHERE cli_id_auto = :cli_id_auto";
-	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id_auto) DO UPDATE SET cli_demo_date = EXCLUDED.cli_demo_date, data_def_id = EXCLUDED.data_def_id, cli_name_address = EXCLUDED.cli_name_address, cli_flags = EXCLUDED.cli_flags, cli_gmt = EXCLUDED.cli_gmt, cli_sec_code = EXCLUDED.cli_sec_code, cli_name = EXCLUDED.cli_name, cli_name_legal = EXCLUDED.cli_name_legal";
+	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id_auto) DO UPDATE SET data_def_id = EXCLUDED.data_def_id, cli_demo_date = EXCLUDED.cli_demo_date, cli_name_address = EXCLUDED.cli_name_address, cli_flags = EXCLUDED.cli_flags, cli_gmt = EXCLUDED.cli_gmt, cli_sec_code = EXCLUDED.cli_sec_code, cli_cert_prov_data = EXCLUDED.cli_cert_prov_data, cli_name = EXCLUDED.cli_name, cli_name_legal = EXCLUDED.cli_name_legal";
 
 	protected String[] AUTO_INCREMENT_COLUMNS	= new String[] {"cli_id_auto"};
 
@@ -32,25 +32,27 @@ public abstract class BaseClientDao <T extends ClientVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue(ClientVo.COLUMN_CLI_DEMO_DATE, vo.getCliDemoDate())
 			.addValue(ClientVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(ClientVo.COLUMN_CLI_DEMO_DATE, vo.getCliDemoDate())
 			.addValue(ClientVo.COLUMN_CLI_ID, vo.getCliId())
 			.addValue(ClientVo.COLUMN_CLI_NAME_ADDRESS, vo.getCliNameAddress())
 			.addValue(ClientVo.COLUMN_CLI_FLAGS, vo.getCliFlags())
 			.addValue(ClientVo.COLUMN_CLI_GMT, vo.getCliGmt())
 			.addValue(ClientVo.COLUMN_CLI_SEC_CODE, vo.getCliSecCode())
+			.addValue(ClientVo.COLUMN_CLI_CERT_PROV_DATA, vo.getCliCertProvData())
 			.addValue(ClientVo.COLUMN_CLI_NAME, vo.getCliName())
 			.addValue(ClientVo.COLUMN_CLI_NAME_LEGAL, vo.getCliNameLegal());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue(ClientVo.COLUMN_CLI_DEMO_DATE, vo.getCliDemoDate())
 			.addValue(ClientVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
+			.addValue(ClientVo.COLUMN_CLI_DEMO_DATE, vo.getCliDemoDate())
 			.addValue(ClientVo.COLUMN_CLI_NAME_ADDRESS, vo.getCliNameAddress())
 			.addValue(ClientVo.COLUMN_CLI_FLAGS, vo.getCliFlags())
 			.addValue(ClientVo.COLUMN_CLI_GMT, vo.getCliGmt())
 			.addValue(ClientVo.COLUMN_CLI_SEC_CODE, vo.getCliSecCode())
+			.addValue(ClientVo.COLUMN_CLI_CERT_PROV_DATA, vo.getCliCertProvData())
 			.addValue(ClientVo.COLUMN_CLI_NAME, vo.getCliName())
 			.addValue(ClientVo.COLUMN_CLI_NAME_LEGAL, vo.getCliNameLegal())
 			.addValue(ClientVo.COLUMN_CLI_ID, vo.getCliId());

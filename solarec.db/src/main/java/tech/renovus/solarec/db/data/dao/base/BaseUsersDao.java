@@ -14,10 +14,10 @@ public abstract class BaseUsersDao <T extends UsersVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM users";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM users WHERE usr_id_auto = :usr_id_auto";
-	protected String SQL_INSERT					= "INSERT INTO users (usr_date_login, usr_date_added, usr_date_locked, usr_pwd_reset_requested, usr_pwd_reset_uuid, usr_comments, usr_email, usr_name, usr_flags, usr_password) VALUES (:usr_date_login, :usr_date_added, :usr_date_locked, :usr_pwd_reset_requested, :usr_pwd_reset_uuid, :usr_comments, :usr_email, :usr_name, :usr_flags, :usr_password)";
-	protected String SQL_UPDATE					= "UPDATE users SET usr_date_login = :usr_date_login, usr_date_added = :usr_date_added, usr_date_locked = :usr_date_locked, usr_pwd_reset_requested = :usr_pwd_reset_requested, usr_pwd_reset_uuid = :usr_pwd_reset_uuid, usr_comments = :usr_comments, usr_email = :usr_email, usr_name = :usr_name, usr_flags = :usr_flags, usr_password = :usr_password WHERE usr_id_auto = :usr_id_auto";
+	protected String SQL_INSERT					= "INSERT INTO users (usr_date_login, usr_date_added, usr_date_locked, usr_pwd_reset_requested, usr_comments, usr_cert_prov_data, usr_pwd_reset_uuid, usr_email, usr_name, usr_flags, usr_password) VALUES (:usr_date_login, :usr_date_added, :usr_date_locked, :usr_pwd_reset_requested, :usr_comments, :usr_cert_prov_data, :usr_pwd_reset_uuid, :usr_email, :usr_name, :usr_flags, :usr_password)";
+	protected String SQL_UPDATE					= "UPDATE users SET usr_date_login = :usr_date_login, usr_date_added = :usr_date_added, usr_date_locked = :usr_date_locked, usr_pwd_reset_requested = :usr_pwd_reset_requested, usr_comments = :usr_comments, usr_cert_prov_data = :usr_cert_prov_data, usr_pwd_reset_uuid = :usr_pwd_reset_uuid, usr_email = :usr_email, usr_name = :usr_name, usr_flags = :usr_flags, usr_password = :usr_password WHERE usr_id_auto = :usr_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM users WHERE usr_id_auto = :usr_id_auto";
-	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (usr_id_auto) DO UPDATE SET usr_date_login = EXCLUDED.usr_date_login, usr_date_added = EXCLUDED.usr_date_added, usr_date_locked = EXCLUDED.usr_date_locked, usr_pwd_reset_requested = EXCLUDED.usr_pwd_reset_requested, usr_pwd_reset_uuid = EXCLUDED.usr_pwd_reset_uuid, usr_comments = EXCLUDED.usr_comments, usr_email = EXCLUDED.usr_email, usr_name = EXCLUDED.usr_name, usr_flags = EXCLUDED.usr_flags, usr_password = EXCLUDED.usr_password";
+	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (usr_id_auto) DO UPDATE SET usr_date_login = EXCLUDED.usr_date_login, usr_date_added = EXCLUDED.usr_date_added, usr_date_locked = EXCLUDED.usr_date_locked, usr_pwd_reset_requested = EXCLUDED.usr_pwd_reset_requested, usr_comments = EXCLUDED.usr_comments, usr_cert_prov_data = EXCLUDED.usr_cert_prov_data, usr_pwd_reset_uuid = EXCLUDED.usr_pwd_reset_uuid, usr_email = EXCLUDED.usr_email, usr_name = EXCLUDED.usr_name, usr_flags = EXCLUDED.usr_flags, usr_password = EXCLUDED.usr_password";
 
 	protected String[] AUTO_INCREMENT_COLUMNS	= new String[] {"usr_id_auto"};
 
@@ -37,8 +37,9 @@ public abstract class BaseUsersDao <T extends UsersVo > {
 			.addValue(UsersVo.COLUMN_USR_DATE_ADDED, vo.getUsrDateAdded())
 			.addValue(UsersVo.COLUMN_USR_DATE_LOCKED, vo.getUsrDateLocked())
 			.addValue(UsersVo.COLUMN_USR_PWD_RESET_REQUESTED, vo.getUsrPwdResetRequested())
-			.addValue(UsersVo.COLUMN_USR_PWD_RESET_UUID, vo.getUsrPwdResetUuid())
 			.addValue(UsersVo.COLUMN_USR_COMMENTS, vo.getUsrComments())
+			.addValue(UsersVo.COLUMN_USR_CERT_PROV_DATA, vo.getUsrCertProvData())
+			.addValue(UsersVo.COLUMN_USR_PWD_RESET_UUID, vo.getUsrPwdResetUuid())
 			.addValue(UsersVo.COLUMN_USR_EMAIL, vo.getUsrEmail())
 			.addValue(UsersVo.COLUMN_USR_NAME, vo.getUsrName())
 			.addValue(UsersVo.COLUMN_USR_FLAGS, vo.getUsrFlags())
@@ -51,8 +52,9 @@ public abstract class BaseUsersDao <T extends UsersVo > {
 			.addValue(UsersVo.COLUMN_USR_DATE_ADDED, vo.getUsrDateAdded())
 			.addValue(UsersVo.COLUMN_USR_DATE_LOCKED, vo.getUsrDateLocked())
 			.addValue(UsersVo.COLUMN_USR_PWD_RESET_REQUESTED, vo.getUsrPwdResetRequested())
-			.addValue(UsersVo.COLUMN_USR_PWD_RESET_UUID, vo.getUsrPwdResetUuid())
 			.addValue(UsersVo.COLUMN_USR_COMMENTS, vo.getUsrComments())
+			.addValue(UsersVo.COLUMN_USR_CERT_PROV_DATA, vo.getUsrCertProvData())
+			.addValue(UsersVo.COLUMN_USR_PWD_RESET_UUID, vo.getUsrPwdResetUuid())
 			.addValue(UsersVo.COLUMN_USR_EMAIL, vo.getUsrEmail())
 			.addValue(UsersVo.COLUMN_USR_NAME, vo.getUsrName())
 			.addValue(UsersVo.COLUMN_USR_FLAGS, vo.getUsrFlags())

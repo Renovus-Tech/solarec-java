@@ -12,15 +12,17 @@ public class BaseUsersVo extends BaseDbVo implements IFlags {
 	public static final String COLUMN_USR_DATE_ADDED = "usr_date_added";
 	public static final String COLUMN_USR_DATE_LOCKED = "usr_date_locked";
 	public static final String COLUMN_USR_PWD_RESET_REQUESTED = "usr_pwd_reset_requested";
-	public static final String COLUMN_USR_PWD_RESET_UUID = "usr_pwd_reset_uuid";
 	public static final String COLUMN_USR_COMMENTS = "usr_comments";
+	public static final String COLUMN_USR_CERT_PROV_DATA = "usr_cert_prov_data";
+	public static final String COLUMN_USR_PWD_RESET_UUID = "usr_pwd_reset_uuid";
 	public static final String COLUMN_USR_EMAIL = "usr_email";
 	public static final String COLUMN_USR_NAME = "usr_name";
 	public static final String COLUMN_USR_FLAGS = "usr_flags";
 	public static final String COLUMN_USR_PASSWORD = "usr_password";
 
-	public static final int LENGTH_COLUMN_USR_PWD_RESET_UUID =  500;
 	public static final int LENGTH_COLUMN_USR_COMMENTS =  500;
+	public static final int LENGTH_COLUMN_USR_CERT_PROV_DATA =  2000;
+	public static final int LENGTH_COLUMN_USR_PWD_RESET_UUID =  500;
 	public static final int LENGTH_COLUMN_USR_EMAIL =  500;
 	public static final int LENGTH_COLUMN_USR_NAME =  100;
 	public static final int LENGTH_COLUMN_USR_FLAGS =  20;
@@ -36,8 +38,9 @@ public class BaseUsersVo extends BaseDbVo implements IFlags {
 	private java.util.Date usrDateAdded;
 	private java.util.Date usrDateLocked;
 	private java.util.Date usrPwdResetRequested;
-	private String usrPwdResetUuid;
 	private String usrComments;
+	private String usrCertProvData;
+	private String usrPwdResetUuid;
 	private String usrEmail;
 	private String usrName;
 	private String usrFlags;
@@ -79,10 +82,13 @@ public class BaseUsersVo extends BaseDbVo implements IFlags {
 		if (!ClassUtil.equals(this.usrPwdResetRequested,aObj.usrPwdResetRequested)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.usrPwdResetUuid,aObj.usrPwdResetUuid)) {
+		if (!ClassUtil.equals(this.usrComments,aObj.usrComments)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.usrComments,aObj.usrComments)) {
+		if (!ClassUtil.equals(this.usrCertProvData,aObj.usrCertProvData)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.usrPwdResetUuid,aObj.usrPwdResetUuid)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.usrEmail,aObj.usrEmail)) {
@@ -148,18 +154,25 @@ public class BaseUsersVo extends BaseDbVo implements IFlags {
 		this.usrPwdResetRequested = usrPwdResetRequested;
 	}
 
-	public String getUsrPwdResetUuid() {
-		return this.usrPwdResetUuid;
-	}
-	public void setUsrPwdResetUuid(String usrPwdResetUuid) {
-		this.usrPwdResetUuid = usrPwdResetUuid;
-	}
-
 	public String getUsrComments() {
 		return this.usrComments;
 	}
 	public void setUsrComments(String usrComments) {
 		this.usrComments = usrComments;
+	}
+
+	public String getUsrCertProvData() {
+		return this.usrCertProvData;
+	}
+	public void setUsrCertProvData(String usrCertProvData) {
+		this.usrCertProvData = usrCertProvData;
+	}
+
+	public String getUsrPwdResetUuid() {
+		return this.usrPwdResetUuid;
+	}
+	public void setUsrPwdResetUuid(String usrPwdResetUuid) {
+		this.usrPwdResetUuid = usrPwdResetUuid;
 	}
 
 	public String getUsrEmail() {

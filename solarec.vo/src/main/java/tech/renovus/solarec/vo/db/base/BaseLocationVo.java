@@ -7,67 +7,70 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 public class BaseLocationVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
-	public static final String COLUMN_LOC_TYPE_ID = "loc_type_id";
+	public static final String COLUMN_CLI_ID = "cli_id";
 	public static final String COLUMN_LOC_ID = "loc_id_auto";
 	public static final String COLUMN_DATA_DEF_ID = "data_def_id";
+	public static final String COLUMN_LOC_OUTPUT_CAPACITY = "loc_output_capacity";
 	public static final String COLUMN_LOC_OUTPUT_TOTAL_CAPACITY = "loc_output_total_capacity";
 	public static final String COLUMN_LOC_REFERENCE_DENSITY = "loc_reference_density";
 	public static final String COLUMN_LOC_DATA_DATE_MAX = "loc_data_date_max";
 	public static final String COLUMN_LOC_DATA_DATE_MIN = "loc_data_date_min";
 	public static final String COLUMN_LOC_DEMO_DATE = "loc_demo_date";
 	public static final String COLUMN_CTR_ID = "ctr_id";
-	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_LOC_TYPE_ID = "loc_type_id";
 	public static final String COLUMN_LOC_COORD_LAT = "loc_coord_lat";
 	public static final String COLUMN_LOC_COORD_LNG = "loc_coord_lng";
-	public static final String COLUMN_LOC_OUTPUT_CAPACITY = "loc_output_capacity";
 	public static final String COLUMN_LOC_NAME = "loc_name";
 	public static final String COLUMN_LOC_ADDRESS = "loc_address";
-	public static final String COLUMN_LOC_STATE = "loc_state";
-	public static final String COLUMN_LOC_TYPE = "loc_type";
+	public static final String COLUMN_LOC_GMT = "loc_gmt";
+	public static final String COLUMN_LOC_CERT_PROV_DATA = "loc_cert_prov_data";
 	public static final String COLUMN_LOC_FLAGS = "loc_flags";
 	public static final String COLUMN_LOC_CODE = "loc_code";
-	public static final String COLUMN_LOC_GMT = "loc_gmt";
+	public static final String COLUMN_LOC_STATE = "loc_state";
+	public static final String COLUMN_LOC_TYPE = "loc_type";
 
 	public static final int LENGTH_COLUMN_LOC_NAME =  100;
 	public static final int LENGTH_COLUMN_LOC_ADDRESS =  500;
-	public static final int LENGTH_COLUMN_LOC_STATE =  100;
-	public static final int LENGTH_COLUMN_LOC_TYPE =  50;
+	public static final int LENGTH_COLUMN_LOC_GMT =  8;
+	public static final int LENGTH_COLUMN_LOC_CERT_PROV_DATA =  2000;
 	public static final int LENGTH_COLUMN_LOC_FLAGS =  20;
 	public static final int LENGTH_COLUMN_LOC_CODE =  100;
-	public static final int LENGTH_COLUMN_LOC_GMT =  8;
+	public static final int LENGTH_COLUMN_LOC_STATE =  100;
+	public static final int LENGTH_COLUMN_LOC_TYPE =  50;
 
 	//--- Implemented methods -------------------
 	@Override public String getFlags() { return this.locFlags; }
 	@Override public void setFlags(String locFlags) { this.locFlags = locFlags; }
 
 	//--- Private properties --------------------
-	private Integer locTypeId;
+	private Integer cliId;
 	private Integer locId;
 	private Integer dataDefId;
+	private Double locOutputCapacity;
 	private Double locOutputTotalCapacity;
 	private Double locReferenceDensity;
 	private java.util.Date locDataDateMax;
 	private java.util.Date locDataDateMin;
 	private java.util.Date locDemoDate;
 	private Integer ctrId;
-	private Integer cliId;
+	private Integer locTypeId;
 	private Double locCoordLat;
 	private Double locCoordLng;
-	private Double locOutputCapacity;
 	private String locName;
 	private String locAddress;
-	private String locState;
-	private String locType;
+	private String locGmt;
+	private String locCertProvData;
 	private String locFlags;
 	private String locCode;
-	private String locGmt;
+	private String locState;
+	private String locType;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
-		if (this.locId == null) {
+		if (this.cliId == null) {
 			return false;
 		}
-		if (this.cliId == null) {
+		if (this.locId == null) {
 			return false;
 		}
 		return true;
@@ -79,10 +82,10 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseLocationVo)) return false;
 		
 		BaseLocationVo aObj = (BaseLocationVo) obj;
-		if (!ClassUtil.equals(this.locId,aObj.locId)) {
+		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
+		if (!ClassUtil.equals(this.locId,aObj.locId)) {
 			return false;
 		}
 		return true;
@@ -90,8 +93,8 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 
 	@Override public int hashCode() {
 		int hashCode = 1;
-		if (this.locId != null) hashCode += this.locId.hashCode();
 		if (this.cliId != null) hashCode += this.cliId.hashCode();
+		if (this.locId != null) hashCode += this.locId.hashCode();
 		return hashCode;
 	}
 
@@ -99,10 +102,10 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		if (! this.equals(obj)) return false;
 		
 		BaseLocationVo aObj = (BaseLocationVo) obj;
-		if (!ClassUtil.equals(this.locTypeId,aObj.locTypeId)) {
+		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
+		if (!ClassUtil.equals(this.locOutputCapacity,aObj.locOutputCapacity)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.locOutputTotalCapacity,aObj.locOutputTotalCapacity)) {
@@ -123,13 +126,13 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		if (!ClassUtil.equals(this.ctrId,aObj.ctrId)) {
 			return false;
 		}
+		if (!ClassUtil.equals(this.locTypeId,aObj.locTypeId)) {
+			return false;
+		}
 		if (!ClassUtil.equals(this.locCoordLat,aObj.locCoordLat)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.locCoordLng,aObj.locCoordLng)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.locOutputCapacity,aObj.locOutputCapacity)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.locName,aObj.locName)) {
@@ -138,10 +141,10 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		if (!ClassUtil.equals(this.locAddress,aObj.locAddress)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.locState,aObj.locState)) {
+		if (!ClassUtil.equals(this.locGmt,aObj.locGmt)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.locType,aObj.locType)) {
+		if (!ClassUtil.equals(this.locCertProvData,aObj.locCertProvData)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.locFlags,aObj.locFlags)) {
@@ -150,31 +153,34 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		if (!ClassUtil.equals(this.locCode,aObj.locCode)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.locGmt,aObj.locGmt)) {
+		if (!ClassUtil.equals(this.locState,aObj.locState)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.locType,aObj.locType)) {
 			return false;
 		}
 		return true;
 	}
 
-	public void setPk(Integer locId, Integer cliId) {
-		this.locId = locId;
+	public void setPk(Integer cliId, Integer locId) {
 		this.cliId = cliId;
+		this.locId = locId;
 	}
 
 	public void setPk(BaseLocationVo aVo) {
 		if(aVo == null) { 
 			this.setPk(null, null);
 		} else {
-			this.setPk(aVo.locId, aVo.cliId);
+			this.setPk(aVo.cliId, aVo.locId);
 		}
 	}
 
 	//--- Getters and Setters -------------------
-	public Integer getLocTypeId() {
-		return this.locTypeId;
+	public Integer getCliId() {
+		return this.cliId;
 	}
-	public void setLocTypeId(Integer locTypeId) {
-		this.locTypeId = locTypeId;
+	public void setCliId(Integer cliId) {
+		this.cliId = cliId;
 	}
 
 	public Integer getLocId() {
@@ -189,6 +195,13 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 	}
 	public void setDataDefId(Integer dataDefId) {
 		this.dataDefId = dataDefId;
+	}
+
+	public Double getLocOutputCapacity() {
+		return this.locOutputCapacity;
+	}
+	public void setLocOutputCapacity(Double locOutputCapacity) {
+		this.locOutputCapacity = locOutputCapacity;
 	}
 
 	public Double getLocOutputTotalCapacity() {
@@ -233,11 +246,11 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		this.ctrId = ctrId;
 	}
 
-	public Integer getCliId() {
-		return this.cliId;
+	public Integer getLocTypeId() {
+		return this.locTypeId;
 	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
+	public void setLocTypeId(Integer locTypeId) {
+		this.locTypeId = locTypeId;
 	}
 
 	public Double getLocCoordLat() {
@@ -254,13 +267,6 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		this.locCoordLng = locCoordLng;
 	}
 
-	public Double getLocOutputCapacity() {
-		return this.locOutputCapacity;
-	}
-	public void setLocOutputCapacity(Double locOutputCapacity) {
-		this.locOutputCapacity = locOutputCapacity;
-	}
-
 	public String getLocName() {
 		return this.locName;
 	}
@@ -275,18 +281,18 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		this.locAddress = locAddress;
 	}
 
-	public String getLocState() {
-		return this.locState;
+	public String getLocGmt() {
+		return this.locGmt;
 	}
-	public void setLocState(String locState) {
-		this.locState = locState;
+	public void setLocGmt(String locGmt) {
+		this.locGmt = locGmt;
 	}
 
-	public String getLocType() {
-		return this.locType;
+	public String getLocCertProvData() {
+		return this.locCertProvData;
 	}
-	public void setLocType(String locType) {
-		this.locType = locType;
+	public void setLocCertProvData(String locCertProvData) {
+		this.locCertProvData = locCertProvData;
 	}
 
 	public String getLocFlags() {
@@ -303,11 +309,18 @@ public class BaseLocationVo extends BaseDbVo implements IFlags {
 		this.locCode = locCode;
 	}
 
-	public String getLocGmt() {
-		return this.locGmt;
+	public String getLocState() {
+		return this.locState;
 	}
-	public void setLocGmt(String locGmt) {
-		this.locGmt = locGmt;
+	public void setLocState(String locState) {
+		this.locState = locState;
+	}
+
+	public String getLocType() {
+		return this.locType;
+	}
+	public void setLocType(String locType) {
+		this.locType = locType;
 	}
 
 }

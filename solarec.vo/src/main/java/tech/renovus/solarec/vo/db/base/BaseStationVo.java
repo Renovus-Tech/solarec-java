@@ -7,48 +7,51 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 public class BaseStationVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
-	public static final String COLUMN_STA_DATA_DATE_MIN = "sta_data_date_min";
+	public static final String COLUMN_CLI_ID = "cli_id";
 	public static final String COLUMN_STA_ID = "sta_id_auto";
 	public static final String COLUMN_DATA_DEF_ID = "data_def_id";
 	public static final String COLUMN_LOC_ID = "loc_id";
 	public static final String COLUMN_STA_COORD_LAT = "sta_coord_lat";
 	public static final String COLUMN_STA_COORD_LNG = "sta_coord_lng";
 	public static final String COLUMN_STA_DATA_DATE_MAX = "sta_data_date_max";
-	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_STA_DATA_DATE_MIN = "sta_data_date_min";
+	public static final String COLUMN_STA_FLAGS = "sta_flags";
 	public static final String COLUMN_STA_NAME = "sta_name";
 	public static final String COLUMN_STA_DESCRIPTION = "sta_description";
-	public static final String COLUMN_STA_FLAGS = "sta_flags";
 	public static final String COLUMN_STA_CODE = "sta_code";
+	public static final String COLUMN_STA_CERT_PROV_DATA = "sta_cert_prov_data";
 
+	public static final int LENGTH_COLUMN_STA_FLAGS =  20;
 	public static final int LENGTH_COLUMN_STA_NAME =  100;
 	public static final int LENGTH_COLUMN_STA_DESCRIPTION =  200;
-	public static final int LENGTH_COLUMN_STA_FLAGS =  20;
 	public static final int LENGTH_COLUMN_STA_CODE =  100;
+	public static final int LENGTH_COLUMN_STA_CERT_PROV_DATA =  2000;
 
 	//--- Implemented methods -------------------
 	@Override public String getFlags() { return this.staFlags; }
 	@Override public void setFlags(String staFlags) { this.staFlags = staFlags; }
 
 	//--- Private properties --------------------
-	private java.util.Date staDataDateMin;
+	private Integer cliId;
 	private Integer staId;
 	private Integer dataDefId;
 	private Integer locId;
 	private Double staCoordLat;
 	private Double staCoordLng;
 	private java.util.Date staDataDateMax;
-	private Integer cliId;
+	private java.util.Date staDataDateMin;
+	private String staFlags;
 	private String staName;
 	private String staDescription;
-	private String staFlags;
 	private String staCode;
+	private String staCertProvData;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
-		if (this.staId == null) {
+		if (this.cliId == null) {
 			return false;
 		}
-		if (this.cliId == null) {
+		if (this.staId == null) {
 			return false;
 		}
 		return true;
@@ -60,10 +63,10 @@ public class BaseStationVo extends BaseDbVo implements IFlags {
 		if (!(obj instanceof BaseStationVo)) return false;
 		
 		BaseStationVo aObj = (BaseStationVo) obj;
-		if (!ClassUtil.equals(this.staId,aObj.staId)) {
+		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
+		if (!ClassUtil.equals(this.staId,aObj.staId)) {
 			return false;
 		}
 		return true;
@@ -71,8 +74,8 @@ public class BaseStationVo extends BaseDbVo implements IFlags {
 
 	@Override public int hashCode() {
 		int hashCode = 1;
-		if (this.staId != null) hashCode += this.staId.hashCode();
 		if (this.cliId != null) hashCode += this.cliId.hashCode();
+		if (this.staId != null) hashCode += this.staId.hashCode();
 		return hashCode;
 	}
 
@@ -80,9 +83,6 @@ public class BaseStationVo extends BaseDbVo implements IFlags {
 		if (! this.equals(obj)) return false;
 		
 		BaseStationVo aObj = (BaseStationVo) obj;
-		if (!ClassUtil.equals(this.staDataDateMin,aObj.staDataDateMin)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
 			return false;
 		}
@@ -98,40 +98,46 @@ public class BaseStationVo extends BaseDbVo implements IFlags {
 		if (!ClassUtil.equals(this.staDataDateMax,aObj.staDataDateMax)) {
 			return false;
 		}
+		if (!ClassUtil.equals(this.staDataDateMin,aObj.staDataDateMin)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.staFlags,aObj.staFlags)) {
+			return false;
+		}
 		if (!ClassUtil.equals(this.staName,aObj.staName)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.staDescription,aObj.staDescription)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.staFlags,aObj.staFlags)) {
+		if (!ClassUtil.equals(this.staCode,aObj.staCode)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.staCode,aObj.staCode)) {
+		if (!ClassUtil.equals(this.staCertProvData,aObj.staCertProvData)) {
 			return false;
 		}
 		return true;
 	}
 
-	public void setPk(Integer staId, Integer cliId) {
-		this.staId = staId;
+	public void setPk(Integer cliId, Integer staId) {
 		this.cliId = cliId;
+		this.staId = staId;
 	}
 
 	public void setPk(BaseStationVo aVo) {
 		if(aVo == null) { 
 			this.setPk(null, null);
 		} else {
-			this.setPk(aVo.staId, aVo.cliId);
+			this.setPk(aVo.cliId, aVo.staId);
 		}
 	}
 
 	//--- Getters and Setters -------------------
-	public java.util.Date getStaDataDateMin() {
-		return this.staDataDateMin;
+	public Integer getCliId() {
+		return this.cliId;
 	}
-	public void setStaDataDateMin(java.util.Date staDataDateMin) {
-		this.staDataDateMin = staDataDateMin;
+	public void setCliId(Integer cliId) {
+		this.cliId = cliId;
 	}
 
 	public Integer getStaId() {
@@ -176,11 +182,18 @@ public class BaseStationVo extends BaseDbVo implements IFlags {
 		this.staDataDateMax = staDataDateMax;
 	}
 
-	public Integer getCliId() {
-		return this.cliId;
+	public java.util.Date getStaDataDateMin() {
+		return this.staDataDateMin;
 	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
+	public void setStaDataDateMin(java.util.Date staDataDateMin) {
+		this.staDataDateMin = staDataDateMin;
+	}
+
+	public String getStaFlags() {
+		return this.staFlags;
+	}
+	public void setStaFlags(String staFlags) {
+		this.staFlags = staFlags;
 	}
 
 	public String getStaName() {
@@ -197,18 +210,18 @@ public class BaseStationVo extends BaseDbVo implements IFlags {
 		this.staDescription = staDescription;
 	}
 
-	public String getStaFlags() {
-		return this.staFlags;
-	}
-	public void setStaFlags(String staFlags) {
-		this.staFlags = staFlags;
-	}
-
 	public String getStaCode() {
 		return this.staCode;
 	}
 	public void setStaCode(String staCode) {
 		this.staCode = staCode;
+	}
+
+	public String getStaCertProvData() {
+		return this.staCertProvData;
+	}
+	public void setStaCertProvData(String staCertProvData) {
+		this.staCertProvData = staCertProvData;
 	}
 
 }

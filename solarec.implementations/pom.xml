@@ -39,6 +39,12 @@
 			<version>20231013</version>
 		</dependency>
 
+		<dependency> <!-- Work with files -->
+        	<groupId>commons-io</groupId>
+    		<artifactId>commons-io</artifactId>
+    		<version>2.16.1</version>
+    	</dependency>
+
 		<!-- SLF4J API -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
