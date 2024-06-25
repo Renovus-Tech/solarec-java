@@ -43,6 +43,7 @@ public class Location {
 	private Double referenceDensity;
 	private String type;
 	private boolean gridConnected;
+	private boolean enabled;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss") private Date demoDate;
 	
 	private Integer dataDefinitionId;
@@ -54,17 +55,23 @@ public class Location {
 	
 	//--- Public methods ------------------------
 	public void add(Station vo) {
-		if (this.stations == null) this.stations = new ArrayList<>();
+		if (this.stations == null) {
+			this.stations = new ArrayList<>();
+		}
 		this.stations.add(vo);
 	}
 	
 	public void add(Generator vo) {
-		if (this.generators == null) this.generators = new ArrayList<>();
+		if (this.generators == null) {
+			this.generators = new ArrayList<>();
+		}
 		this.generators.add(vo);
 	}
 	
 	public void add(Sdg vo) {
-		if (this.sdgs == null) this.sdgs = new ArrayList<>();
+		if (this.sdgs == null) {
+			this.sdgs = new ArrayList<>();
+		}
 		this.sdgs.add(vo);
 	}
 	
@@ -190,5 +197,11 @@ public class Location {
 	}
 	public void setGridConnected(boolean gridConnected) {
 		this.gridConnected = gridConnected;
+	}
+	public boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

@@ -12,6 +12,7 @@ public class Client {
 	private String name;
 	private String legalName;
 	private String address;
+	private boolean enabled;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss") private Date demoDate;
 	
 	private Integer dataDefinitionId;
@@ -67,5 +68,11 @@ public class Client {
 	}
 	public void setDemoDate(Date demoDate) {
 		this.demoDate = demoDate;
+	}
+	public boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

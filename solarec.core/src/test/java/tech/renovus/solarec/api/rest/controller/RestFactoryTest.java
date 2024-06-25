@@ -1,7 +1,6 @@
 package tech.renovus.solarec.api.rest.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -63,11 +62,12 @@ public class RestFactoryTest {
 		result.setLocCode("T1");
 		result.setLocType(LocationVo.TYPE_SOLAR);
 		result.setLocGmt("-3:00");
-		FlagUtil.setFlagValue(result, LocationVo.FLAG_REPORT_ENABLED		    , false);
-		FlagUtil.setFlagValue(result, LocationVo.FLAG_HIDE_FROM_DASHBOARD		, false);
-		FlagUtil.setFlagValue(result, LocationVo.FLAG_ALERT_CALCULATION_ENABLED	, false);
-		FlagUtil.setFlagValue(result, LocationVo.FLAG_ENABLED_FOR_EMAIL_ALERT	, false);
-		FlagUtil.setFlagValue(result, LocationVo.FLAG_CONNECTED_TO_GRID			, false);
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_REPORT_ENABLED		    , true);
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_HIDE_FROM_DASHBOARD		, true);
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_ALERT_CALCULATION_ENABLED	, true);
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_ENABLED_FOR_EMAIL_ALERT	, true);
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_CONNECTED_TO_GRID			, true);
+		FlagUtil.setFlagValue(result, LocationVo.FLAG_ENABLED					, true);
 
 		result.add(this.creteGenerator());
 		result.add(this.createStation());
@@ -118,6 +118,12 @@ public class RestFactoryTest {
 		result.setStaFlags("1010101");
 		result.setStaCode("S1");
 		
+		FlagUtil.setFlagValue(result, StationVo.FLAG_ENABLED, true);
+		
+		FlagUtil.setFlagValue(result, StationVo.FLAG_DEFAULT					, true);
+		FlagUtil.setFlagValue(result, StationVo.FLAG_ENABLED					, true);
+		FlagUtil.setFlagValue(result, StationVo.FLAG_REGISTERED_AT_CERT_PROVIDER, true);
+		
 		return result;
 	}
 
@@ -140,6 +146,11 @@ public class RestFactoryTest {
 		result.setGenCode("Code");
 		result.setGenFlags("101010");
 		result.setGenBrand("Brand");
+		
+		FlagUtil.setFlagValue(result, GeneratorVo.FLAG_ENABLED						, true);
+		FlagUtil.setFlagValue(result, GeneratorVo.FLAG_ENABLED_FOR_EMAIL_ALERT		, true);
+		FlagUtil.setFlagValue(result, GeneratorVo.FLAG_REGISTERED_AT_CERT_PROVIDER	, true);
+
 		
 		return result;
 	}
@@ -230,6 +241,12 @@ public class RestFactoryTest {
 		result.setSettings(Arrays.asList(this.createISetting()));
 		result.setCliDemoDate(new Date());
 		
+		FlagUtil.setFlagValue(result, ClientVo.FLAG_REPORT_ENABLED				, true);
+		FlagUtil.setFlagValue(result, ClientVo.FLAG_ALERT_CALCULATION_ENABLED	, true);
+		FlagUtil.setFlagValue(result, ClientVo.FLAG_ENABLED_FOR_EMAIL_ALERT		, true);
+		FlagUtil.setFlagValue(result, ClientVo.FLAG_ENABLED						, true);
+		FlagUtil.setFlagValue(result, ClientVo.FLAG_REGISTERED_AT_CERT_PROVIDER	, true);
+		
 		return result;
 	}
 	
@@ -306,7 +323,9 @@ public class RestFactoryTest {
 		assertEquals(result.getDataDefinitionId(), vo.getDataDefId());
 		assertEquals(result.getType(), vo.getLocType());
 		assertEquals(result.getDemoDate(), vo.getLocDemoDate());
-		assertFalse(result.getGridConnected());
+		
+		assertEquals(FlagUtil.getFlagValue(vo, LocationVo.FLAG_CONNECTED_TO_GRID), result.getGridConnected());
+		assertEquals(FlagUtil.getFlagValue(vo, LocationVo.FLAG_ENABLED), result.getEnabled());
 		
 		assertEquals(CollectionUtil.size(result.getGenerators()), CollectionUtil.size(vo.getGenerators()));
 		assertEquals(CollectionUtil.size(result.getStations()), CollectionUtil.size(vo.getStations()));
@@ -406,6 +425,8 @@ public class RestFactoryTest {
 		assertEquals(vo.getCliNameLegal(), result.getLegalName());
 		assertEquals(vo.getCliNameAddress(), result.getAddress());
 		assertEquals(vo.getDataDefId(), result.getDataDefinitionId());
+		
+		assertEquals(FlagUtil.getFlagValue(vo, ClientVo.FLAG_REPORT_ENABLED), result.getEnabled());
 		
 		assertNotNull(result.getDataDefinition());
 		
