@@ -13,7 +13,9 @@ public class BaseGenDataVo extends BaseDbVo {
 	public static final String COLUMN_DATA_PRO_ID = "data_pro_id";
 	public static final String COLUMN_DATA_VALUE = "data_value";
 	public static final String COLUMN_DATA_DATE_ADDED = "data_date_added";
+	public static final String COLUMN_GEN_DATA_CERT_PROV_DATA = "gen_data_cert_prov_data";
 
+	public static final int LENGTH_COLUMN_GEN_DATA_CERT_PROV_DATA =  2000;
 
 	//--- Private properties --------------------
 	private Integer cliId;
@@ -23,6 +25,7 @@ public class BaseGenDataVo extends BaseDbVo {
 	private Integer dataProId;
 	private Double dataValue;
 	private java.util.Date dataDateAdded;
+	private String genDataCertProvData;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -85,6 +88,9 @@ public class BaseGenDataVo extends BaseDbVo {
 			return false;
 		}
 		if (!ClassUtil.equals(this.dataDateAdded,aObj.dataDateAdded)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.genDataCertProvData,aObj.genDataCertProvData)) {
 			return false;
 		}
 		return true;
@@ -153,6 +159,13 @@ public class BaseGenDataVo extends BaseDbVo {
 	}
 	public void setDataDateAdded(java.util.Date dataDateAdded) {
 		this.dataDateAdded = dataDateAdded;
+	}
+
+	public String getGenDataCertProvData() {
+		return this.genDataCertProvData;
+	}
+	public void setGenDataCertProvData(String genDataCertProvData) {
+		this.genDataCertProvData = genDataCertProvData;
 	}
 
 }

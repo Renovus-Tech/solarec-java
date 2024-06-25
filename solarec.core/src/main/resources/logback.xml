@@ -10,6 +10,26 @@
     </appender>
 
     <!-- Appenders -->
+    <appender name="email_daily_appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}/email/email.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}/email/email.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory> <!-- Keep logs for 7 days -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="datagrid_daily_appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}/datagrid/datagrid.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}/datagrid/datagrid.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory> <!-- Keep logs for 7 days -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
     <appender name="weather_daily_appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${logFilePath}/weather/weather.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -52,6 +72,8 @@
     </appender>
 
     <!-- Loggers -->
+    <logger name="email" 		level="all" additivity="true"><appender-ref ref="email_daily_appender"/></logger>
+    <logger name="datagrid" 	level="all" additivity="true"><appender-ref ref="datagrid_daily_appender"/></logger>
     <logger name="weather" 		level="all" additivity="true"><appender-ref ref="weather_daily_appender"/></logger>
     <logger name="schedule" 	level="all" additivity="true"><appender-ref ref="schedule_daily_appender"/></logger>
     <logger name="inverter" 	level="all" additivity="true"><appender-ref ref="inverter_daily_appender"/></logger>

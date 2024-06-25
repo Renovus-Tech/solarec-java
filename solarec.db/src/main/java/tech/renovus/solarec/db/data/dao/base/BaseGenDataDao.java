@@ -14,10 +14,10 @@ public abstract class BaseGenDataDao <T extends GenDataVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM gen_data";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_data WHERE cli_id = :cli_id AND gen_id = :gen_id AND data_date = :data_date AND data_type_id = :data_type_id";
-	protected String SQL_INSERT					= "INSERT INTO gen_data (cli_id, gen_id, data_date, data_type_id, data_pro_id, data_value, data_date_added) VALUES (:cli_id, :gen_id, :data_date, :data_type_id, :data_pro_id, :data_value, :data_date_added)";
-	protected String SQL_UPDATE					= "UPDATE gen_data SET data_pro_id = :data_pro_id, data_value = :data_value, data_date_added = :data_date_added WHERE cli_id = :cli_id AND gen_id = :gen_id AND data_date = :data_date AND data_type_id = :data_type_id";
+	protected String SQL_INSERT					= "INSERT INTO gen_data (cli_id, gen_id, data_date, data_type_id, data_pro_id, data_value, data_date_added, gen_data_cert_prov_data) VALUES (:cli_id, :gen_id, :data_date, :data_type_id, :data_pro_id, :data_value, :data_date_added, :gen_data_cert_prov_data)";
+	protected String SQL_UPDATE					= "UPDATE gen_data SET data_pro_id = :data_pro_id, data_value = :data_value, data_date_added = :data_date_added, gen_data_cert_prov_data = :gen_data_cert_prov_data WHERE cli_id = :cli_id AND gen_id = :gen_id AND data_date = :data_date AND data_type_id = :data_type_id";
 	protected String SQL_DELETE					= "DELETE FROM gen_data WHERE cli_id = :cli_id AND gen_id = :gen_id AND data_date = :data_date AND data_type_id = :data_type_id";
-	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id, gen_id, data_date, data_type_id) DO UPDATE SET data_pro_id = EXCLUDED.data_pro_id, data_value = EXCLUDED.data_value, data_date_added = EXCLUDED.data_date_added";
+	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id, gen_id, data_date, data_type_id) DO UPDATE SET data_pro_id = EXCLUDED.data_pro_id, data_value = EXCLUDED.data_value, data_date_added = EXCLUDED.data_date_added, gen_data_cert_prov_data = EXCLUDED.gen_data_cert_prov_data";
 
 
 	//--- Protected properties ------------------
@@ -37,7 +37,8 @@ public abstract class BaseGenDataDao <T extends GenDataVo > {
 			.addValue(GenDataVo.COLUMN_DATA_TYPE_ID, vo.getDataTypeId())
 			.addValue(GenDataVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
 			.addValue(GenDataVo.COLUMN_DATA_VALUE, vo.getDataValue())
-			.addValue(GenDataVo.COLUMN_DATA_DATE_ADDED, vo.getDataDateAdded());
+			.addValue(GenDataVo.COLUMN_DATA_DATE_ADDED, vo.getDataDateAdded())
+			.addValue(GenDataVo.COLUMN_GEN_DATA_CERT_PROV_DATA, vo.getGenDataCertProvData());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
@@ -45,6 +46,7 @@ public abstract class BaseGenDataDao <T extends GenDataVo > {
 			.addValue(GenDataVo.COLUMN_DATA_PRO_ID, vo.getDataProId())
 			.addValue(GenDataVo.COLUMN_DATA_VALUE, vo.getDataValue())
 			.addValue(GenDataVo.COLUMN_DATA_DATE_ADDED, vo.getDataDateAdded())
+			.addValue(GenDataVo.COLUMN_GEN_DATA_CERT_PROV_DATA, vo.getGenDataCertProvData())
 			.addValue(GenDataVo.COLUMN_CLI_ID, vo.getCliId())
 			.addValue(GenDataVo.COLUMN_GEN_ID, vo.getGenId())
 			.addValue(GenDataVo.COLUMN_DATA_DATE, vo.getDataDate())
