@@ -1,5 +1,4 @@
 package tech.renovus.solarec.db.data.dao.wrapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -14,14 +13,15 @@ public class GenDataRowWrapper implements RowMapper<GenDataVo> {
 	private static GenDataRowWrapper instance = new GenDataRowWrapper();
 	public static GenDataRowWrapper getInstance() { return GenDataRowWrapper.instance; }
 
-	//--- Private methods -----------------------
+	//--- Protected methods --------------------
 	protected Integer getResultSetCliId(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return Integer.valueOf(resultSet.getInt(columnName)); } else { return null; } }
 	protected Integer getResultSetGenId(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return Integer.valueOf(resultSet.getInt(columnName)); } else { return null; } }
 	protected java.util.Date getResultSetDataDate(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return resultSet.getTimestamp(columnName); } else { return null; } }
 	protected Integer getResultSetDataTypeId(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return Integer.valueOf(resultSet.getInt(columnName)); } else { return null; } }
 	protected Integer getResultSetDataProId(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return Integer.valueOf(resultSet.getInt(columnName)); } else { return null; } }
-	protected Double getResultSetDataValue(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return new Double(resultSet.getDouble(columnName)); } else { return null; } }
+	protected Double getResultSetDataValue(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return Double.valueOf(resultSet.getDouble(columnName)); } else { return null; } }
 	protected java.util.Date getResultSetDataDateAdded(ResultSet resultSet, String columnName) throws SQLException { if (resultSet.getString(columnName) != null) { return resultSet.getTimestamp(columnName); } else { return null; } }
+	protected String getResultSetGenDataCertProvData(ResultSet resultSet, String columnName) throws SQLException { return resultSet.getString(columnName); }
 
 	//--- Overridden methods --------------------
 	@Override public GenDataVo mapRow(ResultSet resultSet, int arg1) throws SQLException {
@@ -34,8 +34,8 @@ public class GenDataRowWrapper implements RowMapper<GenDataVo> {
 		vo.setDataProId(this.getResultSetDataProId(resultSet, GenDataVo.COLUMN_DATA_PRO_ID));
 		vo.setDataValue(this.getResultSetDataValue(resultSet, GenDataVo.COLUMN_DATA_VALUE));
 		vo.setDataDateAdded(this.getResultSetDataDateAdded(resultSet, GenDataVo.COLUMN_DATA_DATE_ADDED));
+		vo.setGenDataCertProvData(this.getResultSetGenDataCertProvData(resultSet, GenDataVo.COLUMN_GEN_DATA_CERT_PROV_DATA));
 
 		return vo;
 	}
 }
-
