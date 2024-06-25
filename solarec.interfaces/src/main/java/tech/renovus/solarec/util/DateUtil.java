@@ -328,7 +328,9 @@ public final class DateUtil {
 	 * @see #clearTime(Date)
 	 */
 	public static boolean equalsDate(Date aDate, Date anotherDate) {
-		if (aDate == null || anotherDate == null) return false;
+		if (aDate == null || anotherDate == null) {
+			return false;
+		}
 		return DateUtil.clearTime(aDate).equals(DateUtil.clearTime(anotherDate));
 	}
 	
@@ -339,7 +341,9 @@ public final class DateUtil {
 	 * @return		A new <code>Date</code> with time 0.
 	 */
 	public static Date clearTime(Date date) {
-		if (date == null) return date;
+		if (date == null) {
+			return date;
+		}
 		
 		Calendar aCalendar = Calendar.getInstance();
 		aCalendar.setTime(date);
@@ -377,8 +381,12 @@ public final class DateUtil {
 	 * @see DateUtil#addDate(Date,Date)
 	 */
 	public static Date addTime(Date date, Date time) {
-		if (time == null) return date;
-		if (date == null) return null;
+		if (time == null) {
+			return date;
+		}
+		if (date == null) {
+			return null;
+		}
 		
 		Calendar aCalendar = Calendar.getInstance();
 		Calendar aTime = Calendar.getInstance();
@@ -406,8 +414,12 @@ public final class DateUtil {
 	 * see DateUtil#addTime(Date,Date)
 	 */
 	public static Date addDate(Date date, Date time) {
-		if (time == null) return date;
-		if (date == null) return null;
+		if (time == null) {
+			return date;
+		}
+		if (date == null) {
+			return null;
+		}
 		
 		Calendar aCalendar = Calendar.getInstance();
 		Calendar aTime = Calendar.getInstance();
@@ -442,7 +454,9 @@ public final class DateUtil {
 	 * @see java.util.Calendar#PM
 	 */
 	public static Date addTime(Date date, int hour, int minute, int second, int millisecond, int ampm) {
-		if (date == null) return null;
+		if (date == null) {
+			return null;
+		}
 		
 		Calendar aCalendar = Calendar.getInstance();
 
@@ -467,7 +481,9 @@ public final class DateUtil {
 	 * @return		A new <code>Date</code>
 	 */
 	public static Date addUnit(Date date, int unit, int value) {
-		if (date == null) return null;
+		if (date == null) {
+			return null;
+		}
 		
 		Calendar aCalendar = Calendar.getInstance();
 
@@ -487,7 +503,9 @@ public final class DateUtil {
 	 * @return		The unit value
 	 */
 	public static int getUnit(Date date, int unit) {
-		if (date == null) return -1;
+		if (date == null) {
+			return -1;
+		}
 		
 		Calendar aCalendar = Calendar.getInstance();
 		
@@ -546,8 +564,12 @@ public final class DateUtil {
 	 * @see Long#MIN_VALUE
 	 */
 	public static double dateDiffIn(int diffType, Date aDate, Date anotherDate) {
-		if (aDate == null) return Long.MIN_VALUE;
-		if (anotherDate == null) return Long.MIN_VALUE;
+		if (aDate == null) {
+			return Long.MIN_VALUE;
+		}
+		if (anotherDate == null) {
+			return Long.MIN_VALUE;
+		}
 		
 		long milliseconds1 = aDate.getTime();
 	    long milliseconds2 = anotherDate.getTime();
@@ -560,6 +582,7 @@ public final class DateUtil {
 	    	case DateUtil.DATE_DIFF_IN_HOURS: return diff / (60 * 60 * 1000);
 	    	case DateUtil.DATE_DIFF_IN_DAYS: return diff / (24 * 60 * 60 * 1000);
 	    	case DateUtil.DATE_DIFF_IN_YEARS: return diff / (24 * 60 * 60 * 1000 * 365);
+	    	default:
 	    }
 	    
 	    return diff / (24 * 60 * 60 * 1000);
@@ -578,9 +601,15 @@ public final class DateUtil {
 	}
 	
 	public static boolean sameDate(Date date1, Date date2) {
-		if (date1 == null && date2 != null) return false;
-		if (date2 != null && date1 == null) return false;
-		if (date1 == null && date2 == null) return true;
+		if (date1 == null && date2 != null) {
+			return false;
+		}
+		if (date2 != null && date1 == null) {
+			return false;
+		}
+		if (date1 == null && date2 == null) {
+			return true;
+		}
 		
 		Calendar cal1 = GregorianCalendar.getInstance();
 		Calendar cal2 = GregorianCalendar.getInstance();
@@ -592,7 +621,9 @@ public final class DateUtil {
 	}
 
 	public static boolean isWeekend(Date date) {
-		if (date == null) return false;
+		if (date == null) {
+			return false;
+		}
 
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime(date);

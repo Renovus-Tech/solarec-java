@@ -74,16 +74,23 @@ public abstract class BaseMlDataRunDetailsDao {
 	public void delete(MlDataRunDetailsVo vo) { this.jdbc.update(SQL_DELETE, this.craeteDeleteMapSqlParameterSource(vo)); }
 
 	public void synchronize(MlDataRunDetailsVo vo) {
-		if (vo == null) return;
+		if (vo == null) {
+			return;
+		}
 		switch (vo.getSyncType()) {
 			case MlDataRunDetailsVo.SYNC_INSERT: this.insert(vo); break;
 			case MlDataRunDetailsVo.SYNC_UPDATE: this.update(vo); break;
 			case MlDataRunDetailsVo.SYNC_DELETE: this.delete(vo); break;
+			default:
 		}
 	}
 	public void synchronize(Collection<MlDataRunDetailsVo> vos) {
-		if (vos == null) return;
-		for (MlDataRunDetailsVo vo : vos) this.synchronize(vo);
+		if (vos == null) {
+			return;
+		}
+		for (MlDataRunDetailsVo vo : vos) {
+			this.synchronize(vo);
+		}
 }
 
 

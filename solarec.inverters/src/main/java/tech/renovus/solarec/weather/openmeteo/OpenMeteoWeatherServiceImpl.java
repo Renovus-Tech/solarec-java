@@ -47,7 +47,7 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 	@Resource LocationDao locDao;
 	@Resource LocDataWeatherDao locDataWeatherDao;
 	
-	public OpenMeteoWeatherServiceImpl() {}
+	public OpenMeteoWeatherServiceImpl() { /* required for fast testing */ }
 	
 	//--- Private methods -----------------------
 	private Map<String, String> getParams(LocationVo vo, Date dateFrom, Date dateEnd, boolean includeTime) {

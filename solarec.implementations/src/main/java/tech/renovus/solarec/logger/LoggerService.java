@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 	public class LoggerService {
 
 	//--- Constructors --------------------------
-	public LoggerService() {}
+	public LoggerService() { /* Required for testing */ }
 	
 	//--- Util methods --------------------------
 	public static Logger schedulerLogger() { return LoggerFactory.getLogger("schedule"); }

@@ -647,6 +647,7 @@ public class RestFactory {
 				case SecurityService.AUTHENTICATION_ERROR_BAD_EMAIL_PASSWORD_CLIENT:	result.setError("Not authenticated, bad combination of email, password and client."); break;
 				case SecurityService.AUTHENTICATION_NOT_ALLOWED:						result.setError("Not allowed."); break;
 				case SecurityService.AUTHENTICATION_NOT_LOGGED:							result.setError("Not logged."); break;
+				default:
 			}
 		}
 		

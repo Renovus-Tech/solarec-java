@@ -21,10 +21,13 @@ public class WeaDefinitionVo extends DbWeaDefinitionVo {
 
 	//--- Public methods ------------------------
 	public String getType() {
-		if (this.getWeaCheckType() == null) return null;
+		if (this.getWeaCheckType() == null) {
+			return null;
+		}
 		switch (this.getWeaCheckType().intValue()) {
 			case TYPE_LIGHTNING:	return "lighting";
 			case TYPE_FORECAST:		return "forecast";
+			default:
 		}
 		return null;
 	}
