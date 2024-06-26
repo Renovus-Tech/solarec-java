@@ -25,5 +25,6 @@ public interface GenDataDao {
 	Collection<GenDataVo> getGenDataForDatePeriod(Integer cliId, Integer genId, Date genDataDateMin, Date genDataDateMax, int... codes);
 	Collection<GenDataVo> getGenDataForDate(Integer cliId, Integer genId, Date genDataDateMax, int... codes);
 	Date getMaxDataDate(Integer cliId, Date currentDate, int... codes);
+	Collection<GenDataVo> getAllWithoutCertProvData(Integer cliId, Integer locId, int... codes);
 }
 

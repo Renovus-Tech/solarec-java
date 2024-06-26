@@ -44,7 +44,7 @@ public class Location extends Mode {
 	@JsonProperty("code")
 	private String code;
 	@JsonProperty("timezone_gmt")
-	private Integer timezoneGmt;
+	private Double timezoneGmt;
 	@JsonProperty("output_capacity")
 	private Double outputCapacity;
 	@JsonProperty("type_of_installation")
@@ -232,16 +232,16 @@ public class Location extends Mode {
 	}
 
 	@JsonProperty("timezone_gmt")
-	public Integer getTimezoneGmt() {
+	public Double getTimezoneGmt() {
 		return timezoneGmt;
 	}
 
 	@JsonProperty("timezone_gmt")
-	public void setTimezoneGmt(Integer timezoneGmt) {
+	public void setTimezoneGmt(Double timezoneGmt) {
 		this.timezoneGmt = timezoneGmt;
 	}
 
-	public Location withTimezoneGmt(Integer timezoneGmt) {
+	public Location withTimezoneGmt(Double timezoneGmt) {
 		this.timezoneGmt = timezoneGmt;
 		return this;
 	}

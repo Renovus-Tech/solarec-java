@@ -38,6 +38,7 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	
 	private final String GET_FOR_CLI_GEN_DATE_CODES						= "select * from gen_data g WHERE cli_id = :cli_id AND gen_id = :gen_id AND data_date = :data_date ";
 	private final String GET_FOR_CLI_GEN_DATE_PERIOD_CODES				= "select * from gen_data WHERE cli_id = :cli_id AND gen_id = :gen_id AND :data_date_min <= data_date and data_date < :data_date_max AND data_type_id in ";
+	private final String GET_FOR_CLI_LOC_NO_CERT_PROV_DATA				= "select * from gen_data WHERE cli_id = :cli_id AND gen_id in (SELECT gen_id_auto FROM generator g WHERE g.cli_id = :cli_id ADN g.loc_id = :loc_id) AND gen_data_cert_prov_data is null AND data_type_id in ";
 	
 	private final static String SQL_GET_MAX_DATA_DATE_FOR_CLIENT		= "select max(data_date) from gen_data d where d.cli_id = :cliId and data_date <= :genDataDateMax " ;
 	
@@ -217,6 +218,33 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 					binding, 
 					GeneratorMaxDataDate.getInstance()
 				);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+
+	@Override
+	public Collection<GenDataVo> getAllWithoutCertProvData(Integer cliId, Integer locId, int... codes) {
+		MapSqlParameterSource binding = new MapSqlParameterSource()
+				.addValue("cli_id", cliId)
+				.addValue("loc_id", locId);
+
+		StringBuilder sql = new StringBuilder();
+		sql.append(GET_FOR_CLI_LOC_NO_CERT_PROV_DATA);
+
+		sql.append("(");
+		for (int i = 0; i < codes.length; i++) {
+			if (i > 0) {
+				sql.append(", ");
+			}
+			sql.append(":code_" + i);
+			binding.addValue("code_" + i, Integer.valueOf(codes[i]));
+		}
+		sql.append(")");
+
+		try {
+			return this.jdbc.query(sql.toString(), binding, GenDataRowWrapper.getInstance());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}

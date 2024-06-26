@@ -23,7 +23,7 @@ public class Record {
 	@JsonProperty("data_pro_id")
 	private Integer dataProId;
 	@JsonProperty("power")
-	private Integer power;
+	private Double power;
 	@JsonProperty("data_start_date")
 	private String dataStartDate;
 	@JsonProperty("data_end_date")
@@ -70,16 +70,16 @@ public class Record {
 	}
 
 	@JsonProperty("power")
-	public Integer getPower() {
+	public Double getPower() {
 		return power;
 	}
 
 	@JsonProperty("power")
-	public void setPower(Integer power) {
+	public void setPower(Double power) {
 		this.power = power;
 	}
 
-	public Record withPower(Integer power) {
+	public Record withPower(Double power) {
 		this.power = power;
 		return this;
 	}

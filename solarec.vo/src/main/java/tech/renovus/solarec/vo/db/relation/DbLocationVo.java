@@ -10,6 +10,7 @@ import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseLocationVo;
 import tech.renovus.solarec.vo.db.data.CountryVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
+import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocAlertVo;
 import tech.renovus.solarec.vo.db.data.LocDataDefParameterVo;
@@ -40,6 +41,8 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 	protected Collection<LocMetadataVo> metadata;
 	protected Collection<LocSdgVo> sdgs;
 	
+	protected Collection<GenDataVo> generatorData;
+	
 	//--- Constructors --------------------------
 	public DbLocationVo() {
 	}
@@ -50,7 +53,9 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 
 	//--- Private methods -----------------------
 	private void setChildrensId(Collection<? extends BaseDbVo> col) {
-		if (CollectionUtil.isEmpty(col)) return;
+		if (CollectionUtil.isEmpty(col)) {
+			return;
+		}
 		
 		for (BaseDbVo obj : col) {
 			if (obj instanceof LocDataVo) {
@@ -79,7 +84,9 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 				((LocSdgVo) obj).setLocId(this.getLocId());
 			}
 			
-			if (obj instanceof ISynchronizable) ((ISynchronizable) obj).setChildrensId();
+			if (obj instanceof ISynchronizable) {
+				((ISynchronizable) obj).setChildrensId();
+			}
 		}
 	}
 
@@ -111,66 +118,110 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 	
 	//--- Public methods ------------------------
 	public void add(StationVo vo) {
-		if (vo == null) return;
-		if (this.stations == null) this.stations = new ArrayList<>(1);
+		if (vo == null) {
+			return;
+		}
+		if (this.stations == null) {
+			this.stations = new ArrayList<>(1);
+		}
 		this.stations.add(vo);
 	}
 	
 	public void add(GeneratorVo vo) {
-		if (vo == null) return;
-		if (this.generators == null) this.generators = new ArrayList<>(1);
+		if (vo == null) {
+			return;
+		}
+		if (this.generators == null) {
+			this.generators = new ArrayList<>(1);
+		}
 		this.generators.add(vo);
 	}
 	
 	public void add(LocDataVo vo) {
-		if (vo == null) return;
-		if (this.datas == null) this.datas = new ArrayList<>(1);
+		if (vo == null) {
+			return;
+		}
+		if (this.datas == null) {
+			this.datas = new ArrayList<>(1);
+		}
 		this.datas.add(vo);
 	}
 	
 	public void add(LocAlertVo vo) {
-		if (vo == null) return;
-		if (this.alerts == null) this.alerts = new ArrayList<>(1);
+		if (vo == null) {
+			return;
+		}
+		if (this.alerts == null) {
+			this.alerts = new ArrayList<>(1);
+		}
 		this.alerts.add(vo);
 	}
 
 	public void add(LocEstimationVo vo) {
-		if (vo == null) return;
-		if (this.estimations == null) this.estimations = new ArrayList<>(1);
+		if (vo == null) {
+			return;
+		}
+		if (this.estimations == null) {
+			this.estimations = new ArrayList<>(1);
+		}
 		this.estimations.add(vo);
 	}
 	
 	public void add(LocDataDefParameterVo vo) {
-		if (vo == null) return;
-		if (this.dataDefParameters == null) this.dataDefParameters = new ArrayList<>(1);
+		if (vo == null) {
+			return;
+		}
+		if (this.dataDefParameters == null) {
+			this.dataDefParameters = new ArrayList<>(1);
+		}
 		this.dataDefParameters.add(vo);
 	}
 	
 	public void add(LocMetadataVo vo) {
-		if (vo == null) return;
-		if (this.metadata == null) this.metadata = new ArrayList<>(1);
+		if (vo == null) {
+			return;
+		}
+		if (this.metadata == null) {
+			this.metadata = new ArrayList<>(1);
+		}
 		this.metadata.add(vo);
 	}
 	
 	public void add(LocSdgVo vo) {
-		if (vo == null) return;
-		if (this.sdgs == null) this.sdgs = new ArrayList<>(0);
+		if (vo == null) {
+			return;
+		}
+		if (this.sdgs == null) {
+			this.sdgs = new ArrayList<>(0);
+		}
 		this.sdgs.add(vo);
 	}
 	
 	public void addGenerators(Collection<GeneratorVo> vos) {
-		if (CollectionUtil.isEmpty(vos)) return;
-		for (GeneratorVo vo : vos) this.add(vo);
+		if (CollectionUtil.isEmpty(vos)) {
+			return;
+		}
+		for (GeneratorVo vo : vos) {
+			this.add(vo);
+		}
 	}
 	
 	public void addStations(Collection<StationVo> vos) {
-		if (CollectionUtil.isEmpty(vos)) return;
-		for (StationVo vo : vos) this.add(vo);
+		if (CollectionUtil.isEmpty(vos)) {
+			return;
+		}
+		for (StationVo vo : vos) {
+			this.add(vo);
+		}
 	}
 	
 	public void addEstimations(Collection<LocEstimationVo> vos) {
-		if (CollectionUtil.isEmpty(vos)) return;
-		for (LocEstimationVo vo : vos) this.add(vo);
+		if (CollectionUtil.isEmpty(vos)) {
+			return;
+		}
+		for (LocEstimationVo vo : vos) {
+			this.add(vo);
+		}
 	}
 	
 	//--- Getters and Setters -------------------
@@ -239,5 +290,13 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 	}
 	public void setLocTypeVo(LocTypeVo locTypeVo) {
 		this.locTypeVo = locTypeVo;
+	}
+
+	public Collection<GenDataVo> getGeneratorData() {
+		return generatorData;
+	}
+
+	public void setGeneratorData(Collection<GenDataVo> generatorData) {
+		this.generatorData = generatorData;
 	}
 }

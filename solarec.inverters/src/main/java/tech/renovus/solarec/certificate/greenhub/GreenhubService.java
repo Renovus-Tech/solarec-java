@@ -2,6 +2,10 @@ package tech.renovus.solarec.certificate.greenhub;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,12 +22,15 @@ import tech.renovus.solarec.certificate.greenhub.api.Redemption;
 import tech.renovus.solarec.certificate.greenhub.api.Response;
 import tech.renovus.solarec.certificate.greenhub.api.Sdg;
 import tech.renovus.solarec.connection.JsonCaller;
+import tech.renovus.solarec.db.data.dao.interfaces.GenDataDao;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.vo.db.data.DataTypeVo;
+import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 
 @Service
@@ -39,11 +46,11 @@ public class GreenhubService implements CertificateService {
 	private static final String END_POINT_REDEMPTION_EXISTS		= "/redemption/${redemption}/exists";
 
 	//--- Private properties --------------------
+	private @Autowired GreenhubConfiguration config; 
+	private @Resource GenDataDao genDataDao;
+	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'sss'Z'");
 	
-	//--- Protected properties ------------------
-	protected @Autowired GreenhubConfiguration config; 
-
 	//--- Private methods -----------------------
 	private <T extends Object> Response<T> doPostCall(String endPoint, T payload) {
 		return JsonCaller.post(this.config.getUrl() + endPoint, payload, new Response<T>().getClass());
@@ -51,6 +58,15 @@ public class GreenhubService implements CertificateService {
 	
 	private <T extends Object> Response<T> doGetCall(String endPoint, Class<T> response) { 
 		return JsonCaller.get(this.config.getUrl() + endPoint, new Response<T>().getClass());
+	}
+	
+	private Double convertGMT(String gmt) {
+		boolean isNegative	= gmt.startsWith("-");
+        String[] parts		= (isNegative ? gmt.substring(1) : gmt).split(":");
+        int hours			= Integer.parseInt(parts[0]);
+        int minutes			= parts.length > 1 ? Integer.parseInt(parts[1]) : 0;
+        double result		= hours + minutes / 60.0;
+        return isNegative ? -result : result;
 	}
 	
 	private void setMode(Mode mode) {
@@ -93,7 +109,7 @@ public class GreenhubService implements CertificateService {
 				.withCountryCode3(locVo.getCountryVo().getCtrCode3())
 				.withCoordLat(locVo.getLocCoordLat())
 				.withCoordLng(locVo.getLocCoordLng())
-//				.withTimezoneGmt(locVo.getLocGmt())
+				.withTimezoneGmt(this.convertGMT(locVo.getLocGmt()))
 				.withOutputCapacity(locVo.getLocOutputCapacity())
 				.withTypeOfInstallation(locVo.getLocType())
 				.withConnectionToGrid(Boolean.valueOf(FlagUtil.getFlagValue(locVo, LocationVo.FLAG_CONNECTED_TO_GRID)))
@@ -117,18 +133,19 @@ public class GreenhubService implements CertificateService {
 		return response.getData();
 	}
 	
-	private void recordGeneration(LocationVo locVo) throws CertificateServiceException {
-		Record record = new Record()
+	private Record recordGeneration(LocationVo locVo, Date dateStart, Date dateEnd, Double power) throws CertificateServiceException {
+		Record recordToSend = new Record()
 				.withLocationId(locVo.getLocId())
-				.withDataProId(null)
-				.withPower(null)
-				.withDataStartDate(this.dateFormat.format(null))
-				.withDataEndDate(this.dateFormat.format(null))
+				.withDataProId(Integer.valueOf(Long.valueOf(System.currentTimeMillis()).intValue()))
+				.withPower(power)
+				.withDataStartDate(this.dateFormat.format(dateStart))
+				.withDataEndDate(this.dateFormat.format(dateEnd))
 			;
 		
-		Response<Record> response = this.doPostCall(END_POINT_LOCATION_GENERATIONR, record);
+		Response<Record> response = this.doPostCall(END_POINT_LOCATION_GENERATIONR, recordToSend);
 		
 		this.checkSuccesResponse(response);
+		return response.getData();
 
 	}
 	
@@ -180,8 +197,50 @@ public class GreenhubService implements CertificateService {
 		}
 	}
 	
-	@Override public void registerGeneration(ClientVo cliVo) {
-		
+	@Override public void registerGeneration(ClientVo cliVo) throws CertificateServiceException {
+		if (CollectionUtil.notEmpty(cliVo.getLocations())) {
+			for (LocationVo locVo : cliVo.getLocations()) {
+				Collection<GenDataVo> dataToSend = this.genDataDao.getAllWithoutCertProvData(locVo.getCliId(), locVo.getLocId(), DataTypeVo.TYPE_SOLAR_INVERTER_AC_POWER);
+				
+				if (CollectionUtil.notEmpty(dataToSend)) {
+					long dateStart	= -1;
+					long dateEnd	= -1;
+					double power	= 0;
+					
+					for (GenDataVo genDataVo : dataToSend) {
+						if (genDataVo.getDataValue() == null) {
+							continue;
+						}
+						
+						if (dateStart == -1) {
+							dateStart	= genDataVo.getDataDate().getTime();
+							dateEnd		= genDataVo.getDataDate().getTime();
+						} else {
+							dateStart	= Math.min(dateStart, genDataVo.getDataDate().getTime());
+							dateEnd		= Math.min(dateEnd, genDataVo.getDataDate().getTime());
+						}
+						
+						power += genDataVo.getDataValue().doubleValue();
+					}
+					
+					try {
+						Record dataRecord	= this.recordGeneration(locVo, new Date(dateStart), new Date(dateEnd), Double.valueOf(power));
+						String jsonRecord	= JsonUtil.toString(dataRecord);
+						
+						dataToSend.stream().forEach(vo -> {
+							vo.setGenDataCertProvData(jsonRecord);
+							vo.setSyncType(GenDataVo.SYNC_UPDATE);
+						});
+						
+						locVo.setGeneratorData(dataToSend);
+						
+					} catch (JsonProcessingException e) {
+						throw new CertificateServiceException(e);
+					}
+				}
+				
+			}
+		}
 	}
 	
 	@Override public void generateCertificate(ClientVo client) {}
