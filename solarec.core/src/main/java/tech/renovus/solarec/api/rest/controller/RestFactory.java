@@ -96,6 +96,18 @@ public class RestFactory {
 		return result;
 	}
 	
+	public List<Country> convertCountries(Collection<CountryVo> vos) {
+		List<Country> result = new ArrayList<>(CollectionUtil.size(vos));
+		
+		if (CollectionUtil.notEmpty(vos)) {
+			for (CountryVo vo : vos) {
+				result.add(convert(vo));
+			}
+		}
+		
+		return result;
+	}
+	
 	public List<Station> convertStations(Collection<StationVo> vos) {
 		List<Station> result = new ArrayList<>(CollectionUtil.size(vos));
 		

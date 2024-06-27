@@ -15,4 +15,6 @@ public interface CountryDao {
 	void synchronize(Collection<CountryVo> vos);
 	
 	Collection<CountryVo> getCountriesInUse();
+	CountryVo findByCode2(String code2);
+	CountryVo findByCode3(String code3);
 }
