@@ -457,7 +457,7 @@ public class RestFactoryTest {
 		
 		assertNotNull(user);
 		assertEquals(userData.isLogged(), user.isAuthenticated());
-		assertNull(user.getId());
+		assertNotNull(user.getId());
 		assertNotNull(user.getErrorCode());
 		assertEquals(userData.getAuthenticationError(), user.getErrorCode().intValue());
 		assertEquals("Not authenticated, bad combination of email, password and client.", user.getError());

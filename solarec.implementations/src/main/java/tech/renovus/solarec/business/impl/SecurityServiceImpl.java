@@ -150,6 +150,7 @@ public class SecurityServiceImpl implements SecurityService {
 			userData.setAuthenticationError(SecurityService.AUTHENTICATION_ERROR_BAD_EMAIL_PASSWORD_CLIENT);
 			return;
 		}
+		userData.setAuthenticationError(SecurityService.AUTHENTICATION_LOGGED);
 		
 		if (! this.customFlow.afterAuthentication(authentication, userData)) {
 			return;
