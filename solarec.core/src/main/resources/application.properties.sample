@@ -49,6 +49,7 @@ tech.renovus.solarec.python.solarCertificate.url =
 tech.renovus.solarec.python.emissons.url = 
 
 #Services
+solarec.service.custom_flow = 
 solarec.service.weather.provider = 
 solarec.service.grid.provider = 
 solarec.service.certificate.provider = 

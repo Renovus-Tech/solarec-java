@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.ClientService;
+import tech.renovus.solarec.business.CustomFlowInterface;
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.SecurityService;
 import tech.renovus.solarec.business.TranslationService;
@@ -62,6 +63,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Autowired RenovusSolarecConfiguration configuration;
 	@Autowired MessageSource messageSource;
 	@Autowired TranslationService translationService;
+	@Autowired CustomFlowInterface customFlow;
 	
 	@Resource DataDefinitionDao dataDefinitionDao;
 	@Resource UsersDao usersDao;
@@ -77,6 +79,8 @@ public class SecurityServiceImpl implements SecurityService {
 	
 	//--- Private methods -----------------------
 	private void logout(UserData userData) {
+		this.customFlow.beforeLogOut(userData);
+		
 		userData.setUserVo(null);
 		userData.setClientVo(null);
 		userData.setFunctionalities(null);
@@ -147,6 +151,10 @@ public class SecurityServiceImpl implements SecurityService {
 			return;
 		}
 		
+		if (! this.customFlow.afterAuthentication(authentication, userData)) {
+			return;
+		}
+		
 		Date currentDate = new Date();
 		this.usersDao.setLoginDate(usrVo.getUsrId(), currentDate);
 		this.cliUserDao.setAccessDate(cliVo.getCliId(), usrVo.getUsrId(), currentDate);
@@ -156,6 +164,8 @@ public class SecurityServiceImpl implements SecurityService {
 		
 		this.login(userData, usrVo, cliVo, this.functionalitiesDao.findFor(usrVo.getUsrId(), cliVo.getCliId()));
 		this.setDefaultLocation(userData);
+		
+		this.customFlow.beforeSendingToHomepage(userData);
 	}
 
 	@Override public Collection<ClientVo> listClients(UserData userData) {

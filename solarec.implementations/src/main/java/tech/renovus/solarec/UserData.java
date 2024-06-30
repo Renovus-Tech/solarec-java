@@ -29,6 +29,7 @@ public class UserData implements Serializable {
 	private boolean logged;
 	
 	private int authenticationError;
+	private String authenticationErrorMessage;
 
 	//--- Constructors --------------------------
 	public UserData() {
@@ -113,5 +114,13 @@ public class UserData implements Serializable {
 	}
 	public void setLocationFunctionalities(Collection<FunctionalityVo> locationFunctionalities) {
 		this.locationFunctionalities = locationFunctionalities;
+	}
+
+	public String getAuthenticationErrorMessage() {
+		return authenticationErrorMessage;
+	}
+
+	public void setAuthenticationErrorMessage(String authenticationErrorMessage) {
+		this.authenticationErrorMessage = authenticationErrorMessage;
 	}
 }
