@@ -653,13 +653,15 @@ public class RestFactory {
 		result.setLocation(this.convert(userData.getLocationVo()));
 		
 		result.setFunctionalities(this.convertFunctionalities(userData.getLocationFunctionalities()));
-		result.setSettings(this.convertSettings(userData.getUserVo().getSettings(), userData));
-		result.setErrorCode(Integer.valueOf(userData.getAuthenticationError()));
-		switch (userData.getAuthenticationError()) {
-			case SecurityService.AUTHENTICATION_ERROR_BAD_EMAIL_PASSWORD_CLIENT:	result.setError("Not authenticated, bad combination of email, password and client."); break;
-			case SecurityService.AUTHENTICATION_NOT_ALLOWED:						result.setError("Not allowed."); break;
-			case SecurityService.AUTHENTICATION_NOT_LOGGED:							result.setError("Not logged."); break;
-			default:																result.setError(userData.getAuthenticationErrorMessage());
+		if (userData != null) {
+			if (userData.getUserVo() != null) result.setSettings(this.convertSettings(userData.getUserVo().getSettings(), userData));
+			result.setErrorCode(Integer.valueOf(userData.getAuthenticationError()));
+			switch (userData.getAuthenticationError()) {
+				case SecurityService.AUTHENTICATION_ERROR_BAD_EMAIL_PASSWORD_CLIENT:	result.setError("Not authenticated, bad combination of email, password and client."); break;
+				case SecurityService.AUTHENTICATION_NOT_ALLOWED:						result.setError("Not allowed."); break;
+				case SecurityService.AUTHENTICATION_NOT_LOGGED:							result.setError("Not logged."); break;
+				default:																result.setError(userData.getAuthenticationErrorMessage());
+			}
 		}
 		
 		return result;
