@@ -1,4 +1,4 @@
-package tech.renovus.solarec.certificate.greenhub;
+package tech.renovus.solarec.certificate.surentis;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,15 +14,19 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import tech.renovus.solarec.certificate.common.CertificateService;
-import tech.renovus.solarec.certificate.greenhub.api.Client;
-import tech.renovus.solarec.certificate.greenhub.api.Location;
-import tech.renovus.solarec.certificate.greenhub.api.Mode;
-import tech.renovus.solarec.certificate.greenhub.api.Record;
-import tech.renovus.solarec.certificate.greenhub.api.Redemption;
-import tech.renovus.solarec.certificate.greenhub.api.Response;
-import tech.renovus.solarec.certificate.greenhub.api.Sdg;
+import tech.renovus.solarec.certificate.surentis.api.Client;
+import tech.renovus.solarec.certificate.surentis.api.Location;
+import tech.renovus.solarec.certificate.surentis.api.Mode;
+import tech.renovus.solarec.certificate.surentis.api.Record;
+import tech.renovus.solarec.certificate.surentis.api.Response;
+import tech.renovus.solarec.certificate.surentis.api.ResponseClient;
+import tech.renovus.solarec.certificate.surentis.api.ResponseLocation;
+import tech.renovus.solarec.certificate.surentis.api.ResponseRecord;
+import tech.renovus.solarec.certificate.surentis.api.ResponseRedemption;
+import tech.renovus.solarec.certificate.surentis.api.Sdg;
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.db.data.dao.interfaces.GenDataDao;
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.FlagUtil;
@@ -34,8 +38,8 @@ import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 
 @Service
-@ConditionalOnProperty(name = "solarec.service.certificate.provider", havingValue = "greenhub")
-public class GreenhubService implements CertificateService {
+@ConditionalOnProperty(name = "solarec.service.certificate.provider", havingValue = "surentis")
+public class SurentisService implements CertificateService {
 	
 	//--- Private constants ---------------------
 	private static final String END_POINT_LOCATION				= "/location";
@@ -52,12 +56,20 @@ public class GreenhubService implements CertificateService {
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'sss'Z'");
 	
 	//--- Private methods -----------------------
-	private <T extends Object> Response<T> doPostCall(String endPoint, T payload) {
-		return JsonCaller.post(this.config.getUrl() + endPoint, payload, new Response<T>().getClass());
+	private <T extends Object, R extends Object> R doPostCall(String endPoint, T payload, Class<R> responseClass) throws JsonProcessingException {
+		LoggerService.certificateLogger().info("Calling 'POST " + endPoint + "' with payload: " + JsonUtil.toString(payload));
+		R response = JsonCaller.post(this.config.getUrl() + endPoint, payload, responseClass);
+		LoggerService.certificateLogger().info("Call ended 'POST " + endPoint + "' with result: " + JsonUtil.toString(response));
+		
+		return response;
+//		return new Response<T>(payload).withStatusCode(Integer.valueOf(200));
 	}
 	
-	private <T extends Object> Response<T> doGetCall(String endPoint, Class<T> response) { 
-		return JsonCaller.get(this.config.getUrl() + endPoint, new Response<T>().getClass());
+	private <R extends Object> R doGetCall(String endPoint, Class<R> responseClass) throws JsonProcessingException {
+		LoggerService.certificateLogger().info("Calling 'GET " + endPoint + "'");
+		R response =  JsonCaller.get(this.config.getUrl() + endPoint, responseClass);
+		LoggerService.certificateLogger().info("Call ended 'GET " + endPoint + "' with result: " + JsonUtil.toString(response));
+		return response;
 	}
 	
 	private Double convertGMT(String gmt) {
@@ -73,7 +85,7 @@ public class GreenhubService implements CertificateService {
 		mode.setTestMode(Boolean.valueOf(this.config.getTestMode())); 
 	}
 	
-	private <T extends Object> void checkSuccesResponse(Response<T> response) throws CertificateServiceException {
+	private <T extends Response<?>> void checkSuccesResponse(T response) throws CertificateServiceException {
 		if (response.getStatusCode() == null) {
 			throw new CertificateServiceException("No response return from server.");
 		}
@@ -90,23 +102,24 @@ public class GreenhubService implements CertificateService {
 				.withNameAddress(cliVo.getCliNameAddress())
 			;
 		
-		Response<Client> response = this.doPostCall(END_POINT_CLIENT, client);
-		
-		this.checkSuccesResponse(response);
-		return response.getData();
+		try {
+			ResponseClient response = this.doPostCall(END_POINT_CLIENT, client, ResponseClient.class);
+			
+			this.checkSuccesResponse(response);
+			return response.getData();
+		} catch (JsonProcessingException e) {
+			throw new CertificateServiceException(e);
+		}
 	}
 	
-	private Location createLocation(LocationVo locVo) throws CertificateServiceException {
+	private Location createLocation(LocationVo locVo, Integer certId) throws CertificateServiceException {
 		Location location = new Location()
-				.withClientId(locVo.getCliId())
-				.withExternalId(locVo.getLocId())
+				.withClientId(certId)
+				.withExternalId(locVo.getCliId())
 				.withName(locVo.getName())
 				.withCode(locVo.getLocCode())
 				.withAddress(locVo.getLocAddress())
 				.withState(locVo.getLocState())
-				.withCountry(locVo.getCountryVo().getCtrName())
-				.withCountryCode2(locVo.getCountryVo().getCtrCode2())
-				.withCountryCode3(locVo.getCountryVo().getCtrCode3())
 				.withCoordLat(locVo.getLocCoordLat())
 				.withCoordLng(locVo.getLocCoordLng())
 				.withTimezoneGmt(this.convertGMT(locVo.getLocGmt()))
@@ -115,9 +128,17 @@ public class GreenhubService implements CertificateService {
 				.withConnectionToGrid(Boolean.valueOf(FlagUtil.getFlagValue(locVo, LocationVo.FLAG_CONNECTED_TO_GRID)))
 				.withSdgs(new ArrayList<>())
 			;
+		
+		if (locVo.getCountryVo() != null) {
+			location
+				.withCountry(locVo.getCountryVo().getCtrName())
+				.withCountryCode2(locVo.getCountryVo().getCtrCode2())
+				.withCountryCode3(locVo.getCountryVo().getCtrCode3())
+			;
+		}
 
 		if (CollectionUtil.notEmpty(locVo.getSdgs())) {
-			locVo.getSdgs().stream().forEach(sdg -> 				new Sdg()
+			locVo.getSdgs().stream().forEach(sdg -> new Sdg()
 				.withName(sdg.getSdgVo().getSdgName())
 				.withCode(sdg.getSdgVo().getSdgCode())
 				.withDescription(sdg.getLocSdgDescription())
@@ -126,11 +147,16 @@ public class GreenhubService implements CertificateService {
 		
 		this.setMode(location);
 		
-		Response<Location> response = this.doPostCall(END_POINT_LOCATION, location);
-		
-		this.checkSuccesResponse(response);
-		
-		return response.getData();
+		try {
+			ResponseLocation response = this.doPostCall(END_POINT_LOCATION, location, ResponseLocation.class);
+			
+			this.checkSuccesResponse(response);
+			
+			return response.getData();
+			
+		} catch (JsonProcessingException e) {
+			throw new CertificateServiceException(e);
+		}
 	}
 	
 	private Record recordGeneration(LocationVo locVo, Date dateStart, Date dateEnd, Double power) throws CertificateServiceException {
@@ -142,21 +168,28 @@ public class GreenhubService implements CertificateService {
 				.withDataEndDate(this.dateFormat.format(dateEnd))
 			;
 		
-		Response<Record> response = this.doPostCall(END_POINT_LOCATION_GENERATIONR, recordToSend);
-		
-		this.checkSuccesResponse(response);
-		return response.getData();
-
+		try {
+			ResponseRecord response = this.doPostCall(END_POINT_LOCATION_GENERATIONR, recordToSend, ResponseRecord.class);
+			
+			this.checkSuccesResponse(response);
+			return response.getData();
+		} catch (JsonProcessingException e) {
+			throw new CertificateServiceException(e);
+		}
 	}
 	
 	private boolean checkRedemptionExists(String redemption) throws CertificateServiceException {
 		String url = StringUtil.replace(END_POINT_REDEMPTION_EXISTS, "${redemption}", redemption);
 		
-		Response<Redemption> response = this.doGetCall(url, Redemption.class);
-
-		this.checkSuccesResponse(response);
-		
-		return BooleanUtils.isTrue(response.getData().getExists());
+		try {
+			ResponseRedemption response = this.doGetCall(url, ResponseRedemption.class);
+	
+			this.checkSuccesResponse(response);
+			
+			return BooleanUtils.isTrue(response.getData().getExists());
+		} catch (JsonProcessingException e) {
+			throw new CertificateServiceException(e);
+		}
 	}
 	
 	//--- Implemented methods -------------------
@@ -168,7 +201,7 @@ public class GreenhubService implements CertificateService {
 			
 			if (CollectionUtil.notEmpty(cliVo.getLocations())) {
 				for (LocationVo locVo : cliVo.getLocations()) {
-					Location location = this.createLocation(locVo);
+					Location location = this.createLocation(locVo, client.getId());
 					locVo.setLocCertProvData(JsonUtil.toString(location));
 					locVo.setSyncType(LocationVo.SYNC_UPDATE);
 				}
@@ -181,12 +214,14 @@ public class GreenhubService implements CertificateService {
 	
 	@Override public void updateRegistration(ClientVo cliVo) throws CertificateServiceException {
 		try {
+			Client client = JsonUtil.toObject(cliVo.getCliCertProvData(), Client.class);
+			
 			if (CollectionUtil.notEmpty(cliVo.getLocations())) {
 				for (LocationVo locVo : cliVo.getLocations()) {
 					if (StringUtil.notEmpty(locVo.getLocCertProvData())) {
 						continue;
 					}
-					Location location = this.createLocation(locVo);
+					Location location = this.createLocation(locVo, client.getId());
 					locVo.setLocCertProvData(JsonUtil.toString(location));
 					locVo.setSyncType(LocationVo.SYNC_UPDATE);
 	

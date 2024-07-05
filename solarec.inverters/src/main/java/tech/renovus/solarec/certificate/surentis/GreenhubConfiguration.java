@@ -1,4 +1,4 @@
-package tech.renovus.solarec.certificate.greenhub;
+package tech.renovus.solarec.certificate.surentis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 public class GreenhubConfiguration {
 	
 	//--- API configuration ---------------------
-	@Value("${greenhub.url}")						private String url;
-	@Value("${greenhub.test_mode}")					private boolean testMode;
+	@Value("${surentis.url}")						private String url;
+	@Value("${surentis.test_mode}")				private boolean testMode;
 
 	//--- Getters methods -----------------------
 	public boolean getTestMode() {

@@ -1,5 +1,5 @@
 
-package tech.renovus.solarec.certificate.greenhub.api;
+package tech.renovus.solarec.certificate.surentis.api;
 
 import java.util.LinkedHashMap;
 import java.util.List;
