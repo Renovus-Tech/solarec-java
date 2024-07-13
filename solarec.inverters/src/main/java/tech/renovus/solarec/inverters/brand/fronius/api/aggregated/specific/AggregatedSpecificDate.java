@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import tech.renovus.solarec.inverters.brand.fronius.api.ErrorResponse;
+import tech.renovus.solarec.inverters.brand.fronius.api.Links;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({

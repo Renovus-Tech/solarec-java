@@ -1,5 +1,5 @@
 
-package tech.renovus.solarec.inverters.brand.fronius.api.history.data;
+package tech.renovus.solarec.inverters.brand.fronius.api;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class Links {
     @JsonProperty("first")
     private String first;
     @JsonProperty("prev")
-    private Object prev;
+    private String prev;
     @JsonProperty("self")
     private String self;
     @JsonProperty("next")
@@ -54,16 +54,16 @@ public class Links {
     }
 
     @JsonProperty("prev")
-    public Object getPrev() {
+    public String getPrev() {
         return prev;
     }
 
     @JsonProperty("prev")
-    public void setPrev(Object prev) {
+    public void setPrev(String prev) {
         this.prev = prev;
     }
 
-    public Links withPrev(Object prev) {
+    public Links withPrev(String prev) {
         this.prev = prev;
         return this;
     }

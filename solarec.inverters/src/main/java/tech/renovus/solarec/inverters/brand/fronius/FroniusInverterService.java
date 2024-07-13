@@ -19,6 +19,8 @@ import tech.renovus.solarec.inverters.brand.fronius.api.aggregated.specific.Aggr
 import tech.renovus.solarec.inverters.brand.fronius.api.history.data.Channel;
 import tech.renovus.solarec.inverters.brand.fronius.api.history.data.Datum;
 import tech.renovus.solarec.inverters.brand.fronius.api.history.data.HistoryDataResponse;
+import tech.renovus.solarec.inverters.brand.fronius.api.history.device.DeviceHistoryDataResponse;
+import tech.renovus.solarec.inverters.brand.fronius.api.metadata.DeviceListResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.metadata.PvSystemsListResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.user.InfoUserResponse;
 import tech.renovus.solarec.inverters.common.InverterService;
@@ -64,7 +66,10 @@ public class FroniusInverterService implements InverterService {
 	protected static final String ENDPOINT_INFO_RELEASE								= "/info/release";
 	protected static final String ENDPOINT_INFO_USER								= "/info/user";
 	protected static final String ENDPOINT_PV_SYSTEMS_LIST							= "/pvsystems-list";
+	protected static final String ENDPOINT_PV_SYSTEM_DEVICE_LIST					= "/pvsystems/{pvSystemId}/devices-list";
+	
 	protected static final String ENDPOINT_PV_SYSTEMS_HISTORY_DATA					= "/pvsystems/{pvSystemId}/histdata";
+	protected static final String ENDPOINT_PV_SYSTEMS_DEVICE_HISTORY_DATA			= "/pvsystems/{pvSystemId}/devices/{deviceId}/histdata";
 	protected static final String ENDPOINT_PV_SYSTEM_AGGREGATED_DATA_SPECIFIC_DATE	= "/pvsystems/{pvSystemId}/aggdata/years/{year}/months/{month}/days/{day}";
 	
 	protected static final String PV_SYSTEMS_HIST_DATA_LIMIT						= "288";
@@ -303,9 +308,19 @@ public class FroniusInverterService implements InverterService {
 				this.getUrl(betaMode) + ENDPOINT_PV_SYSTEMS_LIST,
 				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
 				null,
-				PvSystemsListResponse.class);
+				PvSystemsListResponse.class
+			);
 	}
 
+	public DeviceListResponse getPvSystemDevicesList(boolean betaMode, String accessKeyId, String accessKeyValue, String pvSystemsId) {
+		return JsonCaller.get(
+				this.generateUrl(betaMode, ENDPOINT_PV_SYSTEM_DEVICE_LIST, "\\{pvSystemId\\}", pvSystemsId),
+				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
+				null,
+				DeviceListResponse.class
+			);
+	}
+	
 	public AggregatedSpecificDate getPvSystemsAggredatedDataSpecificDate(boolean betaMode, String accessKeyId, String accessKeyValue, String pvSystemsId, int year, int month, int day) {
 		return JsonCaller.get(
 			this.generateUrl(betaMode, ENDPOINT_PV_SYSTEM_AGGREGATED_DATA_SPECIFIC_DATE, 
@@ -331,6 +346,20 @@ public class FroniusInverterService implements InverterService {
 				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
 				params,
 				HistoryDataResponse.class
+			);
+	}
+	
+	public DeviceHistoryDataResponse getPvSystemsDeviceHistData(boolean betaMode, String accessKeyId, String accessKeyValue, String pvSystemsId, String deviceId, Date from, Date to) {
+		Map<String, String> params = new HashMap<>(2);
+		params.put("from", this.formatDate.format(from));
+		params.put("to", this.formatDate.format(to));
+		params.put("limit", PV_SYSTEMS_HIST_DATA_LIMIT);
+		
+		return JsonCaller.get(
+				this.generateUrl(betaMode, ENDPOINT_PV_SYSTEMS_DEVICE_HISTORY_DATA, "\\{pvSystemId\\}", pvSystemsId, "\\{deviceId\\}", deviceId ),
+				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
+				params,
+				DeviceHistoryDataResponse.class
 			);
 	}
 }

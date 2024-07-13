@@ -4,6 +4,7 @@ package tech.renovus.solarec.inverters.brand.fronius.api.history.data;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Generated;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import tech.renovus.solarec.inverters.brand.fronius.api.ErrorResponse;
+import tech.renovus.solarec.inverters.brand.fronius.api.Links;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -28,7 +30,7 @@ public class HistoryDataResponse extends ErrorResponse {
     @JsonProperty("pvSystemId")
     private String pvSystemId;
     @JsonProperty("deviceId")
-    private Object deviceId;
+    private String deviceId;
     @JsonProperty("data")
     private List<Datum> data;
     @JsonProperty("links")
@@ -52,16 +54,16 @@ public class HistoryDataResponse extends ErrorResponse {
     }
 
     @JsonProperty("deviceId")
-    public Object getDeviceId() {
+    public String getDeviceId() {
         return deviceId;
     }
 
     @JsonProperty("deviceId")
-    public void setDeviceId(Object deviceId) {
+    public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
     }
 
-    public HistoryDataResponse withDeviceId(Object deviceId) {
+    public HistoryDataResponse withDeviceId(String deviceId) {
         this.deviceId = deviceId;
         return this;
     }

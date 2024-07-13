@@ -135,6 +135,23 @@ public class FimerInverterService implements InverterService {
 		return StringUtil.notEmpty(authenticationKey);
 	}
 	
+	private  TelemetryDataEnergyTimeseriesResponse getTelemetryDataPowerTimeseries(
+		String auroraVisionApiKey, 
+		int entityID, 
+		String dataType, 	// REQUIRED - Available values : GenerationEnergy, DCGenerationEnergy, Insolation, StorageInEnergy, StorageOutEnergy, GridEnergyExport, GridEnergyImport, SelfConsumedEnergy, ActiveEnergyEV, SessionEnergyEV
+		String valueType, 	// REQUIRED - Available values : maximum, minimum, average, delta
+		String sampleSize,	// REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
+		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
+		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
+		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
+	) {
+		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
+		Map<String, String> params	= generateParams(sampleSize, startDate, endDate, timeZone); 
+		String url					= this.generateUrl(URL + ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES, entityID, dataType, valueType); 
+		TelemetryDataEnergyTimeseriesResponse response = JsonCaller.get(url, headers, params, TelemetryDataEnergyTimeseriesResponse.class);
+		
+		return response == null ? null : response;
+	}
 
 	// --- Implemented methods -------------------
 	@Override public void prepareFor(ClientVo client) {
@@ -192,9 +209,6 @@ public class FimerInverterService implements InverterService {
 							TelemetryDataEnergyTimeseriesResponse data = this.getTelemetryDataPowerTimeseries(
 									this.authentication.getResult(), 
 									deviceId, 
-									DATA_TYPE_GENERATION_POWER, 
-									VALUE_TYPE_DELTA,
-									SAMPLE_SIZE_MIN_15, 
 									dateFrom, 
 									dateTo, 
 									timeZone
@@ -249,6 +263,25 @@ public class FimerInverterService implements InverterService {
 	public TelemetryDataEnergyTimeseriesResponse getTelemetryDataEnergyTimeseries(
 		String auroraVisionApiKey, 
 		int entityID, 
+		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
+		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
+		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
+	) {
+		return this.getTelemetryDataEnergyTimeseries(
+				auroraVisionApiKey, 
+				entityID, 
+				FimerInverterService.DATA_TYPE_GENERATION_ENERGY, 
+				FimerInverterService.VALUE_TYPE_DELTA, 
+				FimerInverterService.SAMPLE_SIZE_MIN_15, 
+				startDate, 
+				endDate, 
+				timeZone
+			);
+	}
+	
+	private TelemetryDataEnergyTimeseriesResponse getTelemetryDataEnergyTimeseries(
+		String auroraVisionApiKey, 
+		int entityID, 
 		String dataType, 	// REQUIRED - Available values : GenerationEnergy, DCGenerationEnergy, Insolation, StorageInEnergy, StorageOutEnergy, GridEnergyExport, GridEnergyImport, SelfConsumedEnergy, ActiveEnergyEV, SessionEnergyEV
 		String valueType, 	// REQUIRED - Available values : maximum, minimum, average, delta
 		String sampleSize,	// REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
@@ -266,21 +299,22 @@ public class FimerInverterService implements InverterService {
 	}
 
 	public TelemetryDataEnergyTimeseriesResponse getTelemetryDataPowerTimeseries(
-			String auroraVisionApiKey, 
-			int entityID, 
-			String dataType, 	// REQUIRED - Available values : GenerationEnergy, DCGenerationEnergy, Insolation, StorageInEnergy, StorageOutEnergy, GridEnergyExport, GridEnergyImport, SelfConsumedEnergy, ActiveEnergyEV, SessionEnergyEV
-			String valueType, 	// REQUIRED - Available values : maximum, minimum, average, delta
-			String sampleSize,	// REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
-			Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
-			Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
-			String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
-		) {
-		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
-		Map<String, String> params	= generateParams(sampleSize, startDate, endDate, timeZone); 
-		String url					= this.generateUrl(URL + ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES, entityID, dataType, valueType); 
-		TelemetryDataEnergyTimeseriesResponse response = JsonCaller.get(url, headers, params, TelemetryDataEnergyTimeseriesResponse.class);
-		
-		return response == null ? null : response;
+		String auroraVisionApiKey, 
+		int entityID, 
+		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
+		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
+		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
+	) {
+		return this.getTelemetryDataPowerTimeseries(
+				auroraVisionApiKey, 
+				entityID, 
+				FimerInverterService.DATA_TYPE_GENERATION_POWER, 
+				FimerInverterService.VALUE_TYPE_AVERAGE, 
+				FimerInverterService.SAMPLE_SIZE_MIN_15, 
+				startDate, 
+				endDate, 
+				timeZone
+			);
 	}
 	
 	public IpRangeDataloggerResponse getIpRangeDatalogger(String auroraVisionApiKey) {
