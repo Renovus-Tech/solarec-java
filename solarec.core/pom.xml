@@ -52,12 +52,6 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
-		<!-- DEBUGGING -->
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-
 		<!-- TESTING DEPENDENCIES -->
         <dependency>
             <groupId>junit</groupId>
