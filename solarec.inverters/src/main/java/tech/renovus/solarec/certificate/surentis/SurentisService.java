@@ -197,12 +197,14 @@ public class SurentisService implements CertificateService {
 		Client client = this.createClient(cliVo);
 		try {
 			cliVo.setCliCertProvData(JsonUtil.toString(client));
+			FlagUtil.setFlagValue(cliVo, ClientVo.FLAG_REGISTERED_AT_CERT_PROVIDER, true);
 			cliVo.setSyncType(ClientVo.SYNC_UPDATE);
 			
 			if (CollectionUtil.notEmpty(cliVo.getLocations())) {
 				for (LocationVo locVo : cliVo.getLocations()) {
 					Location location = this.createLocation(locVo, client.getId());
 					locVo.setLocCertProvData(JsonUtil.toString(location));
+					FlagUtil.setFlagValue(locVo, LocationVo.FLAG_REGISTERED_AT_CERT_PROVIDER, true);
 					locVo.setSyncType(LocationVo.SYNC_UPDATE);
 				}
 			}
@@ -222,9 +224,9 @@ public class SurentisService implements CertificateService {
 						continue;
 					}
 					Location location = this.createLocation(locVo, client.getId());
+					FlagUtil.setFlagValue(locVo, LocationVo.FLAG_REGISTERED_AT_CERT_PROVIDER, true);
 					locVo.setLocCertProvData(JsonUtil.toString(location));
 					locVo.setSyncType(LocationVo.SYNC_UPDATE);
-	
 				}
 			}
 		} catch (JsonProcessingException e) {
