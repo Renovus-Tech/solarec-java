@@ -3,21 +3,25 @@ package tech.renovus.solarec.connection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import reactor.netty.http.client.HttpClient;
 import tech.renovus.solarec.logger.LoggerService;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.JsonUtil;
 
 public class JsonCaller {
@@ -60,6 +64,31 @@ public class JsonCaller {
 		}
 	}
 	
+	private static <T extends Object> void addHeaders(ResponseEntity<T> response) {
+		if (response == null) {
+			return;
+		}
+		
+		T entity = response.getBody();
+		if (entity instanceof IWithHeaders) {
+			IWithHeaders withHeaders = (IWithHeaders) entity;
+			List<String> headers = withHeaders.getHeadersToSet();
+			if (CollectionUtil.notEmpty(headers)) {
+				for (String header : headers) {
+					withHeaders.setHeader(header, response.getHeaders().getFirst(header));
+				}
+			}
+			
+		}
+	}
+	
+	private static <T extends Object> T processResponse(ResponseSpec responseSpec, Class<T> responseClass) throws WebClientResponseException {
+		ResponseEntity<T> response = responseSpec.toEntity(responseClass).block();
+		addHeaders(response);
+		
+		return response == null ? null : response.getBody();
+	}
+	
 	//--- Generators methods --------------------
 	public static String generateCompleteURL(String baseEndpoint, Map<String, String> queryParams) {
         try {
@@ -80,14 +109,14 @@ public class JsonCaller {
 	//--- Post methods --------------------------
 	public static <T extends Object> T post(String url, Object payload, Class<T> responseClass) {
 		try {
-			return buildWebClient()
+			ResponseSpec responseSpec = buildWebClient()
 					.post()
 		            .uri(url)
 		            .contentType(MediaType.APPLICATION_JSON)
 		            .body(BodyInserters.fromValue(payload))
-		            .retrieve()
-		            .bodyToMono(responseClass)
-		            .block();
+		            .retrieve();
+					
+			return processResponse(responseSpec, responseClass);
 		} catch (WebClientResponseException webClientError) {
 			return processError(url, webClientError, responseClass);
 		}
@@ -95,7 +124,7 @@ public class JsonCaller {
 	
 	public static <T extends Object> T post(String url, Map<String, String> headers, Object payload, Class<T> responseClass) {
 		try {
-			return buildWebClient()
+			ResponseSpec responseSpec = buildWebClient()
 					.post()
 		            .uri(url)
 		            .contentType(MediaType.APPLICATION_JSON)
@@ -105,9 +134,9 @@ public class JsonCaller {
 		            	}
 		            })
 		            .body(BodyInserters.fromValue(payload))
-		            .retrieve()
-		            .bodyToMono(responseClass)
-		            .block();
+		            .retrieve();
+					
+			return processResponse(responseSpec, responseClass);
 		} catch (WebClientResponseException webClientError) {
 			return processError(url, webClientError, responseClass);
 		}
@@ -115,15 +144,15 @@ public class JsonCaller {
 
 	public static <T extends Object> T bearerPost(String url, Object payload, String authCode, Class<T> responseClass) {
 		try {
-			return buildWebClient()
+			ResponseSpec responseSpec = buildWebClient()
 					.post()
 		            .uri(url)
 		            .contentType(MediaType.APPLICATION_JSON)
 		            .header("Authorization", "Bearer " + authCode)
 		            .body(BodyInserters.fromValue(payload))
-		            .retrieve()
-		            .bodyToMono(responseClass)
-		            .block();
+		            .retrieve();
+					
+			return processResponse(responseSpec, responseClass);
 		} catch (WebClientResponseException webClientError) {
 			return processError(url, webClientError, responseClass);
 		}
@@ -131,17 +160,19 @@ public class JsonCaller {
 	
 	public static <T extends Object> T post(String url, Map<String,String> queryParams, Class<T> responseClass) {
 		MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-		if (queryParams != null) queryParams.forEach(formData::add);
+		if (queryParams != null) {
+			queryParams.forEach(formData::add);
+		}
 
 		try {
-			return buildWebClient()
+			ResponseSpec responseSpec = buildWebClient()
 					.post()
 		            .uri(url)
 		            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
 		            .bodyValue(formData)
-		            .retrieve()
-		            .bodyToMono(responseClass)
-		            .block();
+		            .retrieve();
+					
+			return processResponse(responseSpec, responseClass);
 		} catch (WebClientResponseException webClientError) {
 			return processError(url, webClientError, responseClass);
 		}
@@ -154,42 +185,36 @@ public class JsonCaller {
 	
 	public static <T extends Object> T get(String url, Map<String,String> queryParams, Class<T> responseClass) {
 		try {
-			return buildWebClient()
+			ResponseSpec responseSpec = buildWebClient()
 					.get()
 		            .uri(generateCompleteURL(url, queryParams))
-		            .retrieve()
-		            .bodyToMono(responseClass)
-		            .block();
+		            .retrieve();
+					
+			return processResponse(responseSpec, responseClass);
 		} catch (WebClientResponseException webClientError) {
 			return processError(url, webClientError, responseClass);
 		}
 	}
 	
 	public static <T extends Object> T bearerGet(String url, Map<String,String> queryParams, String authCode, Class<T> responseClass) {
-		String result = null;
 		url = generateCompleteURL(url, queryParams);
 		try {
-			result = buildWebClient()
+			ResponseSpec responseSpec = buildWebClient()
 					.get()
 					.uri(url)
 					.header("Authorization", "Bearer " + authCode)
-					.retrieve()
-					.bodyToMono(String.class)
-				.block();
-			return JsonUtil.toObject(result, responseClass);
+					.retrieve();
+					
+			return processResponse(responseSpec, responseClass);
 		} catch (WebClientResponseException webClientError) {
 			return processError(url, webClientError, responseClass);
-		} catch (JsonProcessingException e) {
-			LoggerService.inverterLogger().error("Error calling URL: " + url, e);
-			return null;
 		}
 	}
 	
 	public static <T extends Object> T get(String url, Map<String, String> headers, final Map<String,String> queryParams, Class<T> responseClass) {
-		String result = null;
 		url = generateCompleteURL(url, queryParams);
 		try {
-			result = buildWebClient()
+			ResponseSpec responseSpec = buildWebClient()
 					.get()
 		            .uri(url)
 		            .headers(consumer -> {
@@ -197,17 +222,11 @@ public class JsonCaller {
 		            		headers.entrySet().forEach(entry -> consumer.add(entry.getKey(), entry.getValue()));
 		            	}
 		            })
-		            .retrieve()
-		            .bodyToMono(String.class)
-		            .block();
+		            .retrieve();
 			
-			return JsonUtil.toObject(result, responseClass);
+			return processResponse(responseSpec, responseClass);
 		} catch (WebClientResponseException webClientError) {
 			return processError(url, webClientError, responseClass);
-		} catch (JsonProcessingException e) {
-			LoggerService.inverterLogger().error("Error calling URL: " + url, e);
-			return null;
-
 		}
 	}
 }
