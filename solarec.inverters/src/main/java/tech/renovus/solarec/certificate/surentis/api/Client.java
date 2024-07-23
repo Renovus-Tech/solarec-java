@@ -13,12 +13,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "external_id", "name", "name_legal", "name_address", "id" })
+@JsonPropertyOrder({ "external_id", "name", "name_legal", "name_address", "id", "system_id" })
 @Generated("jsonschema2pojo")
 public class Client {
 
 	@JsonProperty("external_id")
 	private Integer externalId;
+	@JsonProperty("system_id")
+	private Integer systemId;
 	@JsonProperty("name")
 	private String name;
 	@JsonProperty("name_legal")
@@ -45,6 +47,21 @@ public class Client {
 		return this;
 	}
 
+	@JsonProperty("system_id")
+	public Integer getSystemId() {
+		return systemId;
+	}
+	
+	@JsonProperty("system_id")
+	public void setSystemId(Integer systemId) {
+		this.systemId = systemId;
+	}
+	
+	public Client withSystemId(Integer systemId) {
+		this.systemId = systemId;
+		return this;
+	}
+	
 	@JsonProperty("name")
 	public String getName() {
 		return name;

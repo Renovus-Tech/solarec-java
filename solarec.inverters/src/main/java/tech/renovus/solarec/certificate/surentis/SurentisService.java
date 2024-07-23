@@ -50,7 +50,7 @@ public class SurentisService implements CertificateService {
 	private static final String END_POINT_REDEMPTION_EXISTS		= "/redemption/${redemption}/exists";
 
 	//--- Private properties --------------------
-	private @Autowired GreenhubConfiguration config; 
+	private @Autowired SurentisConfiguration config; 
 	private @Resource GenDataDao genDataDao;
 	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'sss'Z'");
@@ -100,6 +100,7 @@ public class SurentisService implements CertificateService {
 				.withName(cliVo.getCliName())
 				.withNameLegal(cliVo.getCliNameLegal())
 				.withNameAddress(cliVo.getCliNameAddress())
+				.withSystemId(this.config.getSystemId())
 			;
 		
 		try {
