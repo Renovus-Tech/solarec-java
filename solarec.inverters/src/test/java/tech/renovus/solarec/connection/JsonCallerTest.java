@@ -105,6 +105,7 @@ public class JsonCallerTest {
 		PostResponse response = JsonCaller.post(ENDPOIT_POST, params, PostResponse.class);
 		
 		assertEquals(ENDPOIT_POST, response.getUrl());
+		assertEquals("application/json; charset=utf-8", response.getHeaderContentType());
 		this.assertParameters(params, response.getForm());
 	}
 	
