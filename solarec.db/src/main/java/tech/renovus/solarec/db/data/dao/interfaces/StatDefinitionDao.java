@@ -14,5 +14,6 @@ public interface StatDefinitionDao {
 	void synchronize(StatDefinitionVo vo);
 	void synchronize(Collection<StatDefinitionVo> vos);
 
+	StatDefinitionVo findVo(String statDefName);
 }
 

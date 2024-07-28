@@ -226,8 +226,8 @@ public class BaseServiceImpl {
 		return dateToUser;
 	}
 
-	public Object execute(Integer statDefId, ChartFilter filter, UserData userData) throws CoreException {
-		StatDefinitionVo vo	= this.staDefDao.findVo(statDefId);
+	public Object execute(String statDefName, ChartFilter filter, UserData userData) throws CoreException {
+		StatDefinitionVo vo	= this.staDefDao.findVo(statDefName);
 		if (vo == null) return this.factory.generateChartResultErrorAsString(null, "can't find the requested chart information.", filter);
 		if (vo.getStatDefExecutable() == null) return this.factory.generateChartResultErrorAsString(vo.getStatDefName(), "Chart has an invalid executable", filter);
 		
