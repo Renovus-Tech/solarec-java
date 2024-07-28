@@ -28,7 +28,7 @@ public class LoginResponse implements IWithHeaders {
 	@JsonProperty("failCode")
 	private Integer failCode;
 	@JsonProperty("params")
-	private Params params;
+	private BasePowerStationResponseParams params;
 	@JsonProperty("message")
 	private String message;
 	@JsonIgnore
@@ -80,16 +80,16 @@ public class LoginResponse implements IWithHeaders {
 	}
 
 	@JsonProperty("params")
-	public Params getParams() {
+	public BasePowerStationResponseParams getParams() {
 		return params;
 	}
 
 	@JsonProperty("params")
-	public void setParams(Params params) {
+	public void setParams(BasePowerStationResponseParams params) {
 		this.params = params;
 	}
 
-	public LoginResponse withParams(Params params) {
+	public LoginResponse withParams(BasePowerStationResponseParams params) {
 		this.params = params;
 		return this;
 	}
