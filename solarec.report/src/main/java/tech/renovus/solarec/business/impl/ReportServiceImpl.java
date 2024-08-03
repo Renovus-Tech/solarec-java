@@ -19,8 +19,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import tech.renovus.solarec.RestFactory;
 import tech.renovus.solarec.UserData;
-import tech.renovus.solarec.api.rest.controller.RestFactory;
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.ReportService;
 import tech.renovus.solarec.business.impl.email.EmailFile;

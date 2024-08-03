@@ -50,8 +50,6 @@ import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.custom.chart.Error;
 import tech.renovus.solarec.vo.rest.chart.ChartFilter;
 import tech.renovus.solarec.vo.rest.chart.IFilter;
-import tech.renovus.solarec.weather.WeatherService;
-
 
 public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtml<T> {
 
@@ -84,8 +82,7 @@ public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtm
 	@Autowired protected EmailService emailService;
 
 	@Resource protected SolarService chartService;
-	@Resource protected WeatherService weatherService;
-	@Resource LocationDao locDao;
+	@Resource protected LocationDao locDao;
 	
 	//--- Abstract methods ----------------------
 	@Override public abstract String getTitle();

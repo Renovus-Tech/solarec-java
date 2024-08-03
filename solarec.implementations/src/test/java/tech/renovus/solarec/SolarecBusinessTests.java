@@ -9,6 +9,7 @@ import tech.renovus.solarec.business.TranslationServiceTest;
 @RunWith(Suite.class)
 @SuiteClasses({
 	TranslationServiceTest.class, 
+	RestFactoryTest.class, 
 })
 
 public class SolarecBusinessTests {

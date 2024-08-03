@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import tech.renovus.solarec.RestFactory;
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.api.rest.controller.BasicController;
 import tech.renovus.solarec.api.rest.controller.EndPointFactory;
-import tech.renovus.solarec.api.rest.controller.RestFactory;
 import tech.renovus.solarec.business.GeneratorService;
 import tech.renovus.solarec.exceptions.CoreException;
 import tech.renovus.solarec.util.CollectionUtil;

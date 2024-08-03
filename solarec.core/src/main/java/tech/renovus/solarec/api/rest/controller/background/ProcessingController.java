@@ -15,10 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import tech.renovus.solarec.RestFactory;
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.api.rest.controller.BasicController;
 import tech.renovus.solarec.api.rest.controller.EndPointFactory;
-import tech.renovus.solarec.api.rest.controller.RestFactory;
 import tech.renovus.solarec.business.ProcessingService;
 import tech.renovus.solarec.exceptions.CoreException;
 import tech.renovus.solarec.util.JsonUtil;

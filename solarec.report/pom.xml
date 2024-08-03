@@ -12,11 +12,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>tech.renovus.solarec</groupId>
-			<artifactId>solarec.core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>tech.renovus.solarec</groupId>
 			<artifactId>solarec.interfaces</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

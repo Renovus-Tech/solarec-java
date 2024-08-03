@@ -1,4 +1,4 @@
-package tech.renovus.solarec.api.rest.controller;
+package tech.renovus.solarec;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -11,6 +11,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import tech.renovus.solarec.RestFactory;
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.SecurityService;
 import tech.renovus.solarec.interfaces.ISetting;

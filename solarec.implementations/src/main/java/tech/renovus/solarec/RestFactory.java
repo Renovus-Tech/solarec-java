@@ -1,4 +1,4 @@
-package tech.renovus.solarec.api.rest.controller;
+package tech.renovus.solarec;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.SecurityService;
 import tech.renovus.solarec.business.TranslationService;
 import tech.renovus.solarec.interfaces.ISetting;
@@ -518,7 +517,7 @@ public class RestFactory {
 		document.setSize(vo.getDocFileSize() == null ? "n/a" : Integer.toString(vo.getDocFileSize().intValue()));
 		document.setObservations(vo.getDocObservations());
 		document.setIsOpen(Boolean.valueOf(FlagUtil.getFlagValue(vo, DocumentVo.FLAG_IS_OPEN)));
-		document.setDownloadLink(EndPointFactory.REST_ADMINISTRATION_DOCUMENTS_DOWNLOAD + "/" + vo.getDocId());
+//		document.setDownloadLink(EndPointFactory.REST_ADMINISTRATION_DOCUMENTS_DOWNLOAD + "/" + vo.getDocId());
 		
 		if (CollectionUtil.notEmpty(vo.getGenerators())) {
 			document.setGenerators(convertGenerators(vo.getGenerators().stream().map(x -> x.getGeneratorVo()).collect(Collectors.toSet())));
@@ -654,7 +653,9 @@ public class RestFactory {
 		
 		result.setFunctionalities(this.convertFunctionalities(userData.getLocationFunctionalities()));
 		if (userData != null) {
-			if (userData.getUserVo() != null) result.setSettings(this.convertSettings(userData.getUserVo().getSettings(), userData));
+			if (userData.getUserVo() != null) {
+				result.setSettings(this.convertSettings(userData.getUserVo().getSettings(), userData));
+			}
 			result.setErrorCode(Integer.valueOf(userData.getAuthenticationError()));
 			switch (userData.getAuthenticationError()) {
 				case SecurityService.AUTHENTICATION_ERROR_BAD_EMAIL_PASSWORD_CLIENT:	result.setError("Not authenticated, bad combination of email, password and client."); break;
