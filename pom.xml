@@ -31,6 +31,7 @@
 		<module>solarec.implementations</module>
 		<module>solarec.inverters</module>
 		<module>solarec.schedule</module>
+		<module>solarec.report</module>
 		<module>solarec.core</module>
 	</modules>
 	
