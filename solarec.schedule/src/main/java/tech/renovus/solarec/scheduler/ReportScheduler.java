@@ -1,8 +1,5 @@
 package tech.renovus.solarec.scheduler;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -10,7 +7,6 @@ import java.util.Date;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +16,7 @@ import tech.renovus.solarec.db.data.dao.interfaces.LocUsrRepTypeDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.RepTypeDao;
 import tech.renovus.solarec.db.data.dao.interfaces.UsersDao;
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.FlagUtil;
@@ -43,8 +40,7 @@ import tech.renovus.solarec.vo.report.ReportResponse;
  * Year can be empty, have values 1970-2099 or the special characters , - * / .
  */
 @Component
-@Profile("prod")
-public class ReporteScheduler {
+public class ReportScheduler {
 	
 	//--- Private properties --------------------
 	@Autowired RenovusSolarecConfiguration config;
@@ -68,32 +64,29 @@ public class ReporteScheduler {
 			return;
 		}
 		
-		Date dateStart = new Date();
-		StringBuilder log = new StringBuilder();
-		
 		try {
-			
-			this.log(log, "Start of report " + repTypeVo.getRepTypeName() + " for date " + DateUtil.formatDateTime(date, DateUtil.FMT_MILITAR));
+			LoggerService.reportLogger().info("Start of report {} for date {}", repTypeVo.getRepTypeName(), DateUtil.formatDateTime(date, DateUtil.FMT_MILITAR));
 			Collection<LocationVo> locations = this.locationDao.getAllForReport();
 			
-			this.log(log, "Locations found: " + CollectionUtil.size(locations));
+			LoggerService.reportLogger().info("Locations found: {}", CollectionUtil.size(locations));
 			if (CollectionUtil.notEmpty(locations)) {
 				for (LocationVo locVo : locations) {
+					Collection<UsersVo> users = this.userDao.getAllForLocationReport(locVo.getCliId(), locVo.getLocId(), repTypeVo.getRepTypeId());
+					if (CollectionUtil.isEmpty(users)) {
+						LoggerService.reportLogger().debug("Skipping no users to send to for location: {}" + locVo.getLocName());
+						continue;
+					}
+					
 					ReportRequest request = new ReportRequest();
 					request.setCliId(locVo.getCliId());
-					request.addLocId(locVo.getLocId());
+					request.setLocId(locVo.getLocId());
+					request.setLocName(locVo.getLocName());
 					request.setTypeId(repTypeVo.getRepTypeId());
 					request.setType(repTypeVo.getRepTypeName());
 					request.setDate(DateUtil.formatDateTime(date, DateUtil.FMT_PARAMETER_DATE));
 		
 					request.setSendByEmail(true);
 		
-					Collection<UsersVo> users = this.userDao.getAllForLocationReport(locVo.getCliId(), locVo.getLocId(), repTypeVo.getRepTypeId());
-					if (CollectionUtil.isEmpty(users)) {
-						this.log(log, "Skipping no users to send to.");
-						continue;
-					}
-					
 					for (UsersVo usrVo : users) {
 						if (StringUtil.isEmpty(usrVo.getUsrEmail())) {
 							continue;
@@ -109,75 +102,27 @@ public class ReporteScheduler {
 						}
 					}
 
-					this.log(log, "Report request: " + JsonUtil.toString(request));
-					
 					if (CollectionUtil.isEmpty(request.getEmails()) && CollectionUtil.isEmpty(request.getEmailsBCC())) {
-						this.log(log, "Skipping no emails to send to");
+						LoggerService.reportLogger().debug("Skipping no emails to send to for location: {}" + locVo.getLocName());
 						continue;
 					}
 					
+					LoggerService.reportLogger().debug("Report request: {}", JsonUtil.toString(request));
+					
 					try {
-						this.log(log, "Calling report...");
-						Collection<ReportResponse> responses = this.reporte.generateReport(request);
-						
-						this.log(log, "Report result");
-						if (CollectionUtil.notEmpty(responses)) {
-							for (ReportResponse response : responses) {
-								this.log(log, JsonUtil.toString(response));
-							}
-						}
+						LoggerService.reportLogger().debug("Calling report...");
+						ReportResponse response = this.reporte.generateReport(request);
+						LoggerService.reportLogger().debug("Report result: {}", JsonUtil.toString(response));
 					} catch (Exception e) {
-						this.log(log, e);
+						LoggerService.reportLogger().error("Error found: {}\r\n{}", e.getLocalizedMessage(), StringUtil.toString(e));
 					}
 				}
 			}
 		} catch (Exception e) {
-			this.log(log, e);
+			LoggerService.reportLogger().error("Error found: {}\r\n{}", e.getLocalizedMessage(), StringUtil.toString(e));
 		} finally {
-			this.log(log, "End of report");
-			
-			this.createLogFile(log, dateStart);
+			LoggerService.reportLogger().info("End of report");
 		}
-	}
-	
-	private void createLogFile(StringBuilder log, Date date) {
-		File logFile	= new File(this.config.getPathLog(), DateUtil.formatDateTime(date, DateUtil.FMT_DATE) + File.separator + "report_generation" + DateUtil.formatDateTime(date, DateUtil.FMT_TIME_MILI) + ".log");
-		logFile.getParentFile().mkdirs();
-		try (
-			FileWriter o = new FileWriter(logFile, false);
-		) {
-			o.write(log.toString());
-			o.flush();
-		} catch (IOException e) {
-			System.out.println("Error saving repot generation log file: " + e.getLocalizedMessage());
-			System.out.println(StringUtil.toString(e));
-			System.out.println("Content of file: ");
-			System.out.println(log.toString());
-			System.out.println();
-		}
-	}
-	
-	private void log(StringBuilder log, Exception e) {
-		log
-			.append(DateUtil.formatDateTime(new Date(), DateUtil.FMT_MILITAR))
-			.append(StringUtil.BAR_SPARATOR)
-			.append("ERROR")
-			.append(StringUtil.BAR_SPARATOR)
-			.append("Error found: ")
-			.append(e.getLocalizedMessage())
-			.append(StringUtil.NEW_LINE)
-			.append(StringUtil.toString(e))
-			.append(StringUtil.NEW_LINE);
-	}
-
-	private void log(StringBuilder log, String msg) {
-		log
-			.append(DateUtil.formatDateTime(new Date(), DateUtil.FMT_MILITAR))
-			.append(StringUtil.BAR_SPARATOR)
-			.append("INFO")
-			.append(StringUtil.BAR_SPARATOR)
-			.append(msg)
-			.append(StringUtil.NEW_LINE);
 	}
 	
 	//--- Schedule methods ----------------------

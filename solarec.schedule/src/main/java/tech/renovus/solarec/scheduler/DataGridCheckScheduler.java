@@ -66,6 +66,7 @@ public class DataGridCheckScheduler {
 		Collection<CountryVo> countriesInUse = this.countryDao.getCountriesInUse();
 		
 		LoggerService.dataGridLogger().info("Starting check of data grid");
+		LoggerService.dataGridLogger().info("Amount of countries in use: " + CollectionUtil.size(countriesInUse));
 		
 		try {
 			for (CountryVo ctrVo : countriesInUse) {

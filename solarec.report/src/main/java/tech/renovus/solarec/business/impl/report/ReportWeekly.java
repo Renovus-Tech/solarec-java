@@ -28,50 +28,34 @@ public class ReportWeekly extends BaseReport {
 	@Autowired private AlertSummaryHtmlFactory alertSummary;
 
 	//--- Overridden methods --------------------
-	@Override public List<ReportResponse> generate(ReportRequest request) {
+	@Override public ReportResponse generate(ReportRequest request) {
 		UserData userData		= this.getUserData(request.getCliId(), Integer.valueOf(0));
 		if (userData.getClientVo() == null) {
 			return null;
 		}
 		
-		Collection<LocationVo> locations = null;
-		if (CollectionUtil.isEmpty(request.getLocIds())) {
-			locations = this.locationDao.findAll(request.getCliId());
-		} else {
-			locations = new ArrayList<>(CollectionUtil.size(request.getLocIds()));
-			for (Integer locId : request.getLocIds()) {
-				locations.add(this.locationDao.findVo(request.getCliId(), locId));
-			}
-		}
-		
-		List<ReportResponse> result = new ArrayList<>(CollectionUtil.size(locations));
+		LocationVo locVo = this.locationDao.findVo(request.getCliId(), request.getLocId());
 		
 		Collection<IReportHtml<ChartFilter>> factories = new ArrayList<>();
 		factories.add(this.productionAndClimate);
 		factories.add(this.alertSummary);
 		
-		for (LocationVo locVo : locations) {
-			userData.setLocationVo(locVo);
-			
-			System.out.println("Doing weekly report for: " + userData.getCliName() + " - " + userData.getLocName());
-			
-			ChartFilter filter 			= new ChartFilter();
-			Date firstDate			= request.getTheDate();
-			
-			filter.setType(ChartFilter.TYPE_JSON);
-			filter.setFrom(firstDate);
-			filter.setTo(DateUtil.addUnit(firstDate, Calendar.DAY_OF_MONTH, 6));
-			filter.setPeriod(null);
-			filter.setClient(userData.getCliId());
-			filter.setLocation(userData.getLocId());
-			
-			filter = this.service.validate(filter, userData);
-			
-			ReportResponse response = this.generateHtmlFor("Weekly", locVo, filter, factories, userData);
-			result.add(response);
-
-		}
+		userData.setLocationVo(locVo);
 		
-		return result;
+		System.out.println("Doing weekly report for: " + userData.getCliName() + " - " + userData.getLocName());
+		
+		ChartFilter filter 			= new ChartFilter();
+		Date firstDate			= request.getTheDate();
+		
+		filter.setType(ChartFilter.TYPE_JSON);
+		filter.setFrom(firstDate);
+		filter.setTo(DateUtil.addUnit(firstDate, Calendar.DAY_OF_MONTH, 6));
+		filter.setPeriod(null);
+		filter.setClient(userData.getCliId());
+		filter.setLocation(userData.getLocId());
+		
+		filter = this.service.validate(filter, userData);
+		
+		return this.generateHtmlFor("Weekly", locVo, filter, factories, userData);
 	}
 }

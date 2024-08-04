@@ -166,7 +166,7 @@ public class FimerInverterService implements InverterService {
 	
 	@Override public InverterData retrieveData() throws InveterServiceException {
 		long t = System.currentTimeMillis();
-		LoggerService.inverterLogger().info("[{t}] Start retrieve for: {client} ({cliId})", t, this.cliVo.getCliName(), this.cliVo.getCliId());
+		LoggerService.inverterLogger().info("[{}] Start retrieve for: {} ({})", t, this.cliVo.getCliName(), this.cliVo.getCliId());
 		InverterData result = new InverterData(new ArrayList<>(), new ArrayList<>());
 
 		Calendar cal = GregorianCalendar.getInstance();
@@ -190,7 +190,7 @@ public class FimerInverterService implements InverterService {
 						
 						boolean authenticated = this.isAuthenticated();
 
-						LoggerService.inverterLogger().info("[{t}] Authentication ok: {authenticated} ", t, authenticated);
+						LoggerService.inverterLogger().info("[{}] Authentication ok: {} ", t, authenticated);
 						if (authenticated) {
 							String timeZone = InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_TIME_ZONE);
 
@@ -233,7 +233,10 @@ public class FimerInverterService implements InverterService {
 							
 							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
 						} else {
-							LoggerService.inverterLogger().error("[{t}] Error: {s} | {s} | {s}", t, authentication.getError(), authentication.getMessage(), authentication.getException());
+							String error = authentication == null ? "n/a" : authentication.getError();
+							String message = authentication == null ? "n/a" : authentication.getMessage();
+							String exception = authentication == null ? "n/a" : authentication.getException();
+							LoggerService.inverterLogger().error("[{}] Error: {} | {} | {}", t, error, message, exception);
 						}
 					}
 				}

@@ -14,7 +14,7 @@ public interface TranslationService {
 	Locale getLocale(String language);
 	Locale getLocale(UserData userData);
 	
-	String forLabel(Locale locale, String labe, Object... params);
+	String forLabel(Locale locale, String label, Object... params);
 	String forSetting(Locale locale, String setting);
 	String forSettingCategory(Locale locale, String settingCateotgyr);
 	String forAlert(Locale locale, String alert, Object... params);

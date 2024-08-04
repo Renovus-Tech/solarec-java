@@ -17,7 +17,8 @@ public class ReportRequest {
 	
 	//--- Private properties --------------------
 	private Integer cliId;
-	private List<Integer> locIds;
+	private String locName;
+	private Integer locId;
 	private Integer typeId;
 	private String type;
 	private String date;
@@ -29,21 +30,14 @@ public class ReportRequest {
 	private List<String> emailsBCC;
 	private List<String> sections;
 	
+	private String subjectLabel = "email.report.subject";
+	private String contentLabel = "email.report.content";
+	
 	//--- Public methods ------------------------
 	public Date getTheDate() { return DateUtil.stringToDate(this.date, DateUtil.FMT_PARAMETER_DATE); }
 	public Date getTheDateTo() { return DateUtil.stringToDate(this.dateTo, DateUtil.FMT_PARAMETER_DATE); }
 	
 	public void setDate(Date date) { this.date = DateUtil.formatDateTime(date, DateUtil.FMT_PARAMETER_DATE); }
-	
-	public void addLocId(Integer locId) {
-		if (locId == null) {
-			return;
-		}
-		if (this.locIds == null) {
-			this.locIds = new ArrayList<>(1);
-		}
-		this.locIds.add(locId);
-	}
 	
 	public void addEmail(String email) {
 		if (StringUtil.isEmpty(email)) {
@@ -81,12 +75,6 @@ public class ReportRequest {
 	}
 	public void setCliId(Integer cliId) {
 		this.cliId = cliId;
-	}
-	public List<Integer> getLocIds() {
-		return locIds;
-	}
-	public void setLocIds(List<Integer> locIds) {
-		this.locIds = locIds;
 	}
 	public String getType() {
 		return type;
@@ -141,5 +129,29 @@ public class ReportRequest {
 	}
 	public void setTypeId(Integer typeId) {
 		this.typeId = typeId;
+	}
+	public String getSubjectLabel() {
+		return subjectLabel;
+	}
+	public void setSubjectLabel(String subjectLabel) {
+		this.subjectLabel = subjectLabel;
+	}
+	public String getContentLabel() {
+		return contentLabel;
+	}
+	public void setContentLabel(String contentLabel) {
+		this.contentLabel = contentLabel;
+	}
+	public Integer getLocId() {
+		return locId;
+	}
+	public void setLocId(Integer locId) {
+		this.locId = locId;
+	}
+	public String getLocName() {
+		return locName;
+	}
+	public void setLocName(String locName) {
+		this.locName = locName;
 	}
 }

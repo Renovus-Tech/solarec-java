@@ -127,17 +127,17 @@ public class InvertersCheckScheduler {
 	private void doCalculation(DataProcessingVo dataProVo) throws CoreException {
 		try {
 			DataProcessing request = new DataProcessing(dataProVo);
-			LoggerService.inverterLogger().info("Calculation for: {0}", JsonUtil.toString(dataProVo));
-			LoggerService.inverterLogger().info("Request ({0}): {1}", this.config.getAlertCalculations(), JsonUtil.toString(request));
+			LoggerService.inverterLogger().info("Calculation for: " + JsonUtil.toString(dataProVo));
+			LoggerService.inverterLogger().info("Request (" + this.config.getAlertCalculations() + "): " + JsonUtil.toString(request));
 			
 			Map<String, Object> params = new HashMap<>();
 			params.put("param_json", JsonUtil.toString(request));
 			
 			String jsonResponse			= JsonUtil.get(this.config.getAlertCalculations(), params);
-			LoggerService.inverterLogger().info("Response: {0}", jsonResponse);
+			LoggerService.inverterLogger().info("Response: " + jsonResponse);
 			
 		} catch (JsonProcessingException e) {
-			LoggerService.inverterLogger().error("Error: {0}", e.getLocalizedMessage(), e);
+			LoggerService.inverterLogger().error("Error: " + e.getLocalizedMessage() + StringUtil.NEW_LINE + StringUtil.toString(e));
 			throw new CoreException(e);
 		}
 	}

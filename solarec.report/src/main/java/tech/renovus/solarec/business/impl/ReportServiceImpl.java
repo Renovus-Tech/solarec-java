@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -23,9 +22,11 @@ import tech.renovus.solarec.RestFactory;
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.ReportService;
+import tech.renovus.solarec.business.TranslationService;
 import tech.renovus.solarec.business.impl.email.EmailFile;
 import tech.renovus.solarec.business.impl.report.ReportCustom;
 import tech.renovus.solarec.business.impl.report.ReportWeekly;
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.LocUsrRepTypeDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.RepTypeDao;
@@ -50,8 +51,9 @@ public class ReportServiceImpl implements ReportService {
 
 	//--- Properties ----------------------------
 	@Autowired ApplicationEventPublisher eventPublisher;
-	@Autowired MessageSource messageSource;
+	@Autowired TranslationService translationService;
 	
+	@Autowired RenovusSolarecConfiguration configuration;
 	@Autowired RestFactory restFactory;
 	@Autowired ReportWeekly	reportWeekly;
 	@Autowired ReportCustom	reportCustom;
@@ -97,26 +99,32 @@ public class ReportServiceImpl implements ReportService {
 	}
 	
 	//--- Overridden ----------------------------
-	@Override public List<ReportResponse> generateReport(ReportRequest request) throws CoreException {
-		List<ReportResponse> reports = null;
+	@Override public ReportResponse generateReport(ReportRequest request) throws CoreException {
+		ReportResponse report = null;
 		
 		if (ClassUtil.equals(request.getType(), ReportRequest.TYPE_WEEKLY)) {
-			reports = this.reportWeekly.generate(request);
+			report = this.reportWeekly.generate(request);
 		} else if (ClassUtil.equals(request.getType(), ReportRequest.TYPE_CUSTOM)) {
-			reports = this.reportCustom.generate(request);
+			report = this.reportCustom.generate(request);
 		}
 		
-		if (CollectionUtil.notEmpty(reports) && request.isSendByEmail()) {
-			Map<String, String> params = new HashMap<String, String>(1);
-			params.put("${date}", request.getDate());
-			String subject = StringUtil.replaceAll(this.messageSource.getMessage("email.report.subject", null, Locale.ENGLISH), params);
-			String content = this.messageSource.getMessage("email.report.content.html", null, Locale.ENGLISH); 
+		if (report != null && request.isSendByEmail()) {
+			Locale locale			= Locale.ENGLISH;
 			
-			Collection<EmailFile> files = new ArrayList<>(CollectionUtil.size(reports));
-			for (ReportResponse report : reports) {
-				if (report.isGenerated()) {
-					files.add(new EmailFile(report.getName(), report.getPath()));
-				}
+			String subject = this.translationService.forLabel(locale, request.getSubjectLabel(), request.getDate());
+			
+			Map<String, Object> variables = new HashMap<>();
+	        variables.put("reportContent", this.translationService.forLabel(
+	        		locale, 
+	        		request.getContentLabel(),
+	        		request.getLocName()
+	        	));
+	        
+	        String emailContent			= this.translationService.forTemplate(locale, "email_report", variables);
+	        
+			Collection<EmailFile> files = new ArrayList<>(1);
+			if (report.isGenerated()) {
+				files.add(new EmailFile(report.getName(), report.getPath()));
 			}
 			
 			try {
@@ -125,7 +133,7 @@ public class ReportServiceImpl implements ReportService {
 					request.getEmailsCC(), 
 					request.getEmailsBCC(), 
 					subject, 
-					content, 
+					emailContent, 
 					files,
 					true
 				);
@@ -134,7 +142,7 @@ public class ReportServiceImpl implements ReportService {
 			}
 		}
 		
-		return reports;
+		return report;
 	}
 
 	@Override public ReportConfiguration getConfiguration(UserData userData) {
@@ -222,8 +230,8 @@ public class ReportServiceImpl implements ReportService {
 		if (vo != null) {
 			ReportRequest request = new ReportRequest();
 			request.setCliId(userData.getCliId());
-			request.setLocIds(new ArrayList<>(1));
-			request.getLocIds().add(userData.getLocId());
+			request.setLocId(userData.getLocId());
+			request.setLocName(userData.getLocName());
 			request.setSendByEmail(true);
 			request.setEmails(new ArrayList<>(1));
 			request.getEmails().add(userData.getUsrEmail());
@@ -301,17 +309,15 @@ public class ReportServiceImpl implements ReportService {
 		} catch (CoreException e) {
 			try {
 				this.emailService.sendMessageWithAttachment(
-						request.getEmails(), 
+						Arrays.asList(this.configuration.getOnErrorSendEmailTo()), 
 						null, 
 						null,
-						this.messageSource.getMessage("email.report-error.subject", null, Locale.ENGLISH), //"RENOVUS - Error during report generation",
-						this.messageSource.getMessage("email.report-error.content.html", null, Locale.ENGLISH), //"Your reporte request was not generated due to an error. Please try again alter", 
+						this.translationService.forLabel(Locale.ENGLISH, "email.report-error.subject"),
+						this.translationService.forLabel(Locale.ENGLISH, "email.report-error.content.html", e.getLocalizedMessage(), StringUtil.toString(e,  true)), 
 						null, 
 						true
 					);
 			} catch (CoreException ee) { /* do nothing */ }
-			
-			try { this.emailService.sendMessageWithAttachment(Arrays.asList("pferrari@gmail.com"), null, null, "RENOVUS - Error during report generation", "Error: " + StringUtil.toString(e), null, false); } catch (CoreException ee) { }
 		}
     }
 }

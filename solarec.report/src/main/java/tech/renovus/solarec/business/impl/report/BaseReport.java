@@ -43,7 +43,7 @@ public abstract class BaseReport {
 	@Resource SolarService service;
 
 	//--- Abstract methods ----------------------
-	public abstract List<ReportResponse> generate(ReportRequest request);
+	public abstract ReportResponse generate(ReportRequest request);
 	
 	//--- Protected methods ---------------------
 	protected UserData getUserData(Integer cliId, Integer locId) {
