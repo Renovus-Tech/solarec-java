@@ -358,10 +358,6 @@ public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtm
 	    return this.generatePNG(chart);
 	}
 	
-//	protected final String generateLineChart(DefaultCategoryDataset dataset, String title, String categoryAxisLabel, String valueAxisLabel)																						throws IOException { return this.generateLineChart(dataset, title, categoryAxisLabel, valueAxisLabel, true, -1, -1, 0); }
-//	protected final String generateLineChart(DefaultCategoryDataset dataset, String title, String categoryAxisLabel, String valueAxisLabel, boolean showLegend)																	throws IOException { return this.generateLineChart(dataset, title, categoryAxisLabel, valueAxisLabel, showLegend, -1, -1, 0); }
-//	protected final String generateLineChart(DefaultCategoryDataset dataset, String title, String categoryAxisLabel, String valueAxisLabel, boolean showLegend, double min, double max)											throws IOException { return this.generateLineChart(dataset, title, categoryAxisLabel, valueAxisLabel, showLegend, options, 0); }
-//	protected final String generateLineChart(DefaultCategoryDataset dataset, String title, String categoryAxisLabel, String valueAxisLabel, boolean showLegend, double min, double max, int plotSplitFactor)					throws IOException { return this.generateLineChart(dataset, title, categoryAxisLabel, valueAxisLabel, showLegend, options, 0, null); }
 	protected final String generateLineChart(DefaultCategoryDataset dataset, ChartOptions options)	throws IOException {
 		JFreeChart chart			= this.createLineChart(dataset, options);
 		LegendTitle legend			= chart.getLegend();

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.LocationService;
+import tech.renovus.solarec.db.data.dao.interfaces.CountryDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocEstimationDao;
@@ -35,6 +36,7 @@ public class LocationServiceImpl implements LocationService {
 	@Resource StationDao stationsDao;
 	@Resource DataDefinitionDao dataDefinitionDao;
 	@Resource LocEstimationDao locEstimationDao;
+	@Resource CountryDao countryDao;
 	
 	//--- Overridden methods ------------------------
 	@Override public Collection<LocationVo> findAll(Integer offset, Integer size, String name, UserData userData) throws CoreException {
@@ -53,6 +55,7 @@ public class LocationServiceImpl implements LocationService {
 			result.addGenerators(this.generatorsDao.findAll(result.getCliId(), result.getLocId()));
 			result.addStations(this.stationsDao.findAll(result.getCliId(), result.getLocId()));
 			result.addEstimations(this.locEstimationDao.findAll(result.getCliId(), result.getLocId()));
+			result.setCountryVo(this.countryDao.findVo(result.getCtrId()));
 		}
 		
 		return result;

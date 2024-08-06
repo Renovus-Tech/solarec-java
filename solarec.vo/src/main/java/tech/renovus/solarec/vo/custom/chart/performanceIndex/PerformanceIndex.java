@@ -3,7 +3,9 @@ package tech.renovus.solarec.vo.custom.chart.performanceIndex;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,7 +24,7 @@ public class PerformanceIndex {
     @JsonProperty("chart")
     private Chart chart;
     @JsonProperty("data")
-    private List<Datum> data;
+    private List<DataPerformance> data;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -55,16 +57,16 @@ public class PerformanceIndex {
     }
 
     @JsonProperty("data")
-    public List<Datum> getData() {
+    public List<DataPerformance> getData() {
         return data;
     }
 
     @JsonProperty("data")
-    public void setData(List<Datum> data) {
+    public void setData(List<DataPerformance> data) {
         this.data = data;
     }
 
-    public PerformanceIndex withData(List<Datum> data) {
+    public PerformanceIndex withData(List<DataPerformance> data) {
         this.data = data;
         return this;
     }

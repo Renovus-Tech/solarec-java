@@ -1,12 +1,40 @@
 package tech.renovus.solarec.business.impl.report.html;
 
+import java.io.IOException;
+
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.impl.report.html.basic.BasicHtmlFactory;
+import tech.renovus.solarec.business.impl.report.html.basic.config.ChartOptions;
+import tech.renovus.solarec.exceptions.CoreException;
+import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
+import tech.renovus.solarec.vo.custom.chart.climate.Climate;
+import tech.renovus.solarec.vo.custom.chart.overview.Datum;
+import tech.renovus.solarec.vo.custom.chart.overview.Overview;
+import tech.renovus.solarec.vo.custom.chart.performanceIndex.DataPerformance;
+import tech.renovus.solarec.vo.custom.chart.performanceIndex.GenDatum;
+import tech.renovus.solarec.vo.custom.chart.performanceIndex.PerformanceIndex;
 import tech.renovus.solarec.vo.rest.chart.ChartFilter;
 
+/**
+ * 
+ * 
+- Alerts
+  - Time-based availabliity (%) `GET /overview { data.timeBasedAvailability }`
+  - Perfromance ratio (%) `GET /overview { data.performanceRatio }`
+  - Charts (group by day)
+    - Trends `GET /solar/climate { data.data[].genData[].id | productionMwh }`
+    - Performance `GET /performanceIndex`
+      - Performance ratio `{ data.data[].genData[].id | performanceRatio }`
+      - Production and Irradiation `{ data.data[].genData[].id | productionMwh + irradiationKwhM2  }`
+
+ */
 @Service
 public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 
@@ -15,67 +43,86 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 	///--- Resources ----------------------------
 	
 	//--- Private methods ------------------------
-//	private Object createHtml(Alerts alerts) {
-//		
-//		StringBuilder html = new StringBuilder();
-//		
-//		html.append("Wind turbines with performance < 90% (current month): <strong>");	
-//		if (alerts.getAlert1Error() != null) {
-//			html.append("Error: "+alerts.getAlert1Error());
-//		} else {
-//			html.append(StringUtil.SPACE_STRING);
-//			if (alerts.getAlerts1() != null) {
-//				html.append(String.join(", ", alerts.getAlerts1()));
-//			} else {
-//				html.append(" - ");
-//			}
-//		}
-//		html.append("</strong>");
-//		html.append("<br><br>");
-//		
-//		html.append("Wind turbines with negative change exceeding -6% in performance (yesterday): <strong>");
-//		if (alerts.getAlert2Error() != null) {
-//			html.append("Error: "+alerts.getAlert2Error());
-//		} else {
-//			html.append(StringUtil.SPACE_STRING);
-//			if (alerts.getAlerts2() != null) {
-//				html.append(String.join(", ", alerts.getAlerts2()));
-//			} else {
-//				html.append(" - ");
-//			}
-//		}
-//		html.append("</strong>");
-//		html.append("<br><br>");
-//		
-//		html.append("Wind turbines with total stopped time > 10.0 hours (yesterday): <strong>");
-//		if (alerts.getAlert3Error() != null) {
-//			html.append("Error: "+alerts.getAlert3Error());
-//		} else {
-//			html.append(StringUtil.SPACE_STRING);
-//			if (alerts.getAlerts3() != null) {
-//				html.append(String.join(", ", alerts.getAlerts3()));
-//			} else {
-//				html.append(" - ");
-//			}
-//		}
-//		html.append("</strong>");
-//		html.append("<br><br>");
-//		
-//		html.append("< 90% data available (yesterday): <strong>");
-//		if (alerts.getAlert4Error() != null) {
-//			html.append("Error: "+alerts.getAlert4Error());
-//		} else {
-//			html.append(StringUtil.SPACE_STRING);
-//			if (alerts.getAlerts4() != null) {
-//				html.append(String.join(", ", alerts.getAlerts4()));
-//			} else {
-//				html.append(" - ");
-//			}
-//		}
-//		html.append("</strong>");
-//		html.append("<br><br>");
-//		return html.toString();
-//	}
+	private String createHtml(PerformanceIndex performance) {
+		StringBuilder html = new StringBuilder();
+		
+		DefaultCategoryDataset categoryDataset	= new DefaultCategoryDataset();
+		
+		for (DataPerformance data : performance.getData()) {
+			String fromDate = data.getFrom();
+			if (fromDate.indexOf(' ') != -1) fromDate = fromDate.substring(0, fromDate.indexOf(' '));
+			for (GenDatum genData : data.getGenData()) {
+				categoryDataset.addValue(genData.getPerformanceRatio(), genData.getCode(), fromDate);
+			}
+		}
+		
+        String title							= "Performance Ratio";
+        String categoryAxisLabel				= "";
+        String valueAxisLabel					= "Performance Ratio";
+
+        try {
+	        html
+	        	.append("<div class='image'><img src='")
+		        .append(this.generateLineChart(
+		        		categoryDataset, 
+		        		new ChartOptions()
+		        			.withTitle(title) 
+		        			.withTitle(categoryAxisLabel) 
+		        			.withTitle(valueAxisLabel)
+		        	))
+		       .append("'></div>");
+        } catch (IOException e) {
+			html.append("<div class='error'><p>Error found: " + e.getLocalizedMessage() + "</p><small>" + StringUtil.toString(e, true) + "</small></div>");
+		}
+        
+		return html.toString();
+	}
+	
+	private String createHtml(Climate climate) {
+		StringBuilder html = new StringBuilder();
+		
+		
+		
+		return html.toString();
+	}
+	
+	private String createHtml(Overview overview) {
+		
+		StringBuilder html = new StringBuilder();
+		
+		double timeBasedAvailability	= 0;
+		double performanceRatio			= 0;
+		int amount						= 0;
+		
+		if (overview != null && CollectionUtil.notEmpty(overview.getData())) {
+			for (Datum data : overview.getData()) {
+				if (data != null) {
+					timeBasedAvailability	+= data.getTimeBasedAvailability();
+					performanceRatio		+= data.getPerformanceRatio();
+					
+					amount ++;
+				}
+			}
+		}
+		
+		timeBasedAvailability /= amount;
+		performanceRatio /= amount;
+		
+		html
+			.append("Time-based availabliity: <strong>")
+			.append(timeBasedAvailability)
+			.append(" %")	
+			.append("</strong>")
+			.append("<br><br>")
+		
+			.append("Performance ratio: <strong>")
+			.append(performanceRatio)
+			.append(" %")	
+			.append("</strong>")
+			.append("<br><br>");
+		
+		return html.toString();
+	}
 	
 	//--- Overridden methods ---------------------
 	@Override public String getTitle() { return "Alerts"; }
@@ -87,27 +134,64 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 		html.append("<div class='section alerts'><h1>" + this.getTitle() + "</h1>");
 		html.append("<div class='content'>");
 		
-		filter.setTo(filter.getFrom());
 		filter.setGenerators(null);
 		filter.setStations(null);
-		filter.setGroupBy("day");
+		filter.setGroupBy(ChartFilter.GROUP_BY_WEEK);
 		
 		filter = this.chartService.validate(filter, userData);
 		
-//		try {
-//			Alerts callResult		= (Alerts) this.chartService.alerts(filter, userData);
-//			String error				= callResult.getAlert1Error();
-//			if (error != null) {
-//				html.append(error);
-//			} else {
-//				html.append(this.createHtml(callResult));
-//			}
-//			
-//		} catch (CoreException e) {
-//			html.append(this.generateHtmlError(e));
-//		}
+		try {
+			String result	= (String) this.chartService.runOverview(filter, userData);
+			Overview call	= JsonUtil.toObject(result, Overview.class);
 			
-		html.append("</div></div>");
+			String error	= call.getError();
+			if (error != null) {
+				html.append(error);
+			} else {
+				html.append(this.createHtml(call));
+			}
+			
+		} catch (JsonProcessingException | CoreException e) {
+			html.append(this.generateHtmlError(e));
+		}
+		
+		try {
+			filter.setGroupBy(ChartFilter.GROUP_BY_DAY);
+			
+			String result	= (String) this.chartService.runClimate(filter, userData);
+			Climate call	= JsonUtil.toObject(result, Climate.class);
+			
+			String error	= call.getError();
+			if (error != null) {
+				html.append(error);
+			} else {
+				html.append(this.createHtml(call));
+			}
+			
+		} catch (JsonProcessingException | CoreException e) {
+			html.append(this.generateHtmlError(e));
+		}
+		
+		try {
+			filter.setGroupBy(ChartFilter.GROUP_BY_DAY);
+			
+			String result			= (String) this.chartService.runPerformanceIndex(filter, userData);
+			PerformanceIndex call	= JsonUtil.toObject(result, PerformanceIndex.class);
+			
+			Error error	= call.getError();
+			if (error != null) {
+				html.append(error.getMessage());
+			} else {
+				html.append(this.createHtml(call));
+			}
+			
+		} catch (JsonProcessingException | CoreException e) {
+			html.append(this.generateHtmlError(e));
+		}
+			
+		html
+			.append(this.generatePeriodHtml(filter))
+			.append("</div></div>");
 		
 		return html.toString();
 	}

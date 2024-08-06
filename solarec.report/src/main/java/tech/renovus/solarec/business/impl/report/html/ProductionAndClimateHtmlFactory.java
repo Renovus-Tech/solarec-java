@@ -2,11 +2,26 @@ package tech.renovus.solarec.business.impl.report.html;
 
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.impl.report.html.basic.BasicHtmlFactory;
+import tech.renovus.solarec.exceptions.CoreException;
+import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
+import tech.renovus.solarec.vo.custom.chart.overview.Datum;
+import tech.renovus.solarec.vo.custom.chart.overview.Overview;
 import tech.renovus.solarec.vo.rest.chart.ChartFilter;
 
+/**
+ * 
+ *
+Production and climate
+Production GET /overview { data.production }
+Irradiation GET /overview { data.irradiationKwhM2 }
+Average ambient temperature GET /overview { data.agvgAmbientTemp }
+ */
 @Service
 public class ProductionAndClimateHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 
@@ -15,67 +30,46 @@ public class ProductionAndClimateHtmlFactory extends BasicHtmlFactory<ChartFilte
 	///--- Resources ----------------------------
 	
 	//--- Private methods ------------------------
-//	private Object createHtml(Alerts alerts) {
-//		
-//		StringBuilder html = new StringBuilder();
-//		
-//		html.append("Wind turbines with performance < 90% (current month): <strong>");	
-//		if (alerts.getAlert1Error() != null) {
-//			html.append("Error: "+alerts.getAlert1Error());
-//		} else {
-//			html.append(StringUtil.SPACE_STRING);
-//			if (alerts.getAlerts1() != null) {
-//				html.append(String.join(", ", alerts.getAlerts1()));
-//			} else {
-//				html.append(" - ");
-//			}
-//		}
-//		html.append("</strong>");
-//		html.append("<br><br>");
-//		
-//		html.append("Wind turbines with negative change exceeding -6% in performance (yesterday): <strong>");
-//		if (alerts.getAlert2Error() != null) {
-//			html.append("Error: "+alerts.getAlert2Error());
-//		} else {
-//			html.append(StringUtil.SPACE_STRING);
-//			if (alerts.getAlerts2() != null) {
-//				html.append(String.join(", ", alerts.getAlerts2()));
-//			} else {
-//				html.append(" - ");
-//			}
-//		}
-//		html.append("</strong>");
-//		html.append("<br><br>");
-//		
-//		html.append("Wind turbines with total stopped time > 10.0 hours (yesterday): <strong>");
-//		if (alerts.getAlert3Error() != null) {
-//			html.append("Error: "+alerts.getAlert3Error());
-//		} else {
-//			html.append(StringUtil.SPACE_STRING);
-//			if (alerts.getAlerts3() != null) {
-//				html.append(String.join(", ", alerts.getAlerts3()));
-//			} else {
-//				html.append(" - ");
-//			}
-//		}
-//		html.append("</strong>");
-//		html.append("<br><br>");
-//		
-//		html.append("< 90% data available (yesterday): <strong>");
-//		if (alerts.getAlert4Error() != null) {
-//			html.append("Error: "+alerts.getAlert4Error());
-//		} else {
-//			html.append(StringUtil.SPACE_STRING);
-//			if (alerts.getAlerts4() != null) {
-//				html.append(String.join(", ", alerts.getAlerts4()));
-//			} else {
-//				html.append(" - ");
-//			}
-//		}
-//		html.append("</strong>");
-//		html.append("<br><br>");
-//		return html.toString();
-//	}
+	private Object createHtml(Overview overview) {
+		
+		StringBuilder html = new StringBuilder();
+		
+		double production		= 0;
+		double irradiation		= 0;
+		double avgAmbientTemp	= 0;
+		
+		if (overview != null && CollectionUtil.notEmpty(overview.getData())) {
+			for (Datum data : overview.getData()) {
+				if (data != null) {
+					production		+= data.getProductionMwh();
+					irradiation		+= data.getIrradiationKwhM2();
+					avgAmbientTemp	+= data.getAvgAmbientTemp();
+				}
+			}
+		}
+		
+		html
+			.append("Production: <strong>")
+			.append(production)
+			.append(" MWh")	
+			.append("</strong>")
+			.append("<br><br>")
+		
+			.append("Irradiation: <strong>")
+			.append(irradiation)
+			.append(" Kwh/m2")	
+			.append("</strong>")
+			.append("<br><br>")
+		
+			.append("Average ambient temperature: <strong>")
+			.append(avgAmbientTemp)
+			.append(" °C")
+			.append("</strong>")
+			.append("<br><br>");
+			
+		
+		return html.toString();
+	}
 	
 	//--- Overridden methods ---------------------
 	@Override public String getTitle() { return "Production and climate"; }
@@ -87,25 +81,29 @@ public class ProductionAndClimateHtmlFactory extends BasicHtmlFactory<ChartFilte
 		html.append("<div class='section alerts'><h1>" + this.getTitle() + "</h1>");
 		html.append("<div class='content'>");
 		
-		filter.setTo(filter.getFrom());
 		filter.setGenerators(null);
 		filter.setStations(null);
-		filter.setGroupBy("day");
+		filter.setGroupBy(ChartFilter.GROUP_BY_WEEK);
 		
 		filter = this.chartService.validate(filter, userData);
 		
-//		try {
-//			Alerts callResult		= (Alerts) this.chartService.alerts(filter, userData);
-//			String error				= callResult.getAlert1Error();
-//			if (error != null) {
-//				html.append(error);
-//			} else {
-//				html.append(this.createHtml(callResult));
-//			}
-//			
-//		} catch (CoreException e) {
-//			html.append(this.generateHtmlError(e));
-//		}
+		
+		try {
+			String result = (String) this.chartService.runOverview(filter, userData);
+			Overview callResult = JsonUtil.toObject(result, Overview.class);
+			
+			String error				= callResult.getError();
+			if (error != null) {
+				html.append(error);
+			} else {
+				html.append(this.createHtml(callResult));
+			}
+			
+		} catch (JsonProcessingException | CoreException e) {
+			html.append(this.generateHtmlError(e));
+		} finally {
+			html.append(this.generatePeriodHtml(filter));
+		}
 			
 		html.append("</div></div>");
 		

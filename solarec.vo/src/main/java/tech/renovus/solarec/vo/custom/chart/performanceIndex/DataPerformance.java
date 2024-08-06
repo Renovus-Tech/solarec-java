@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "timeBasedAvailability"
 })
 @Generated("jsonschema2pojo")
-public class Datum {
+public class DataPerformance {
 
     @JsonProperty("from")
     private String from;
@@ -54,7 +54,7 @@ public class Datum {
         this.from = from;
     }
 
-    public Datum withFrom(String from) {
+    public DataPerformance withFrom(String from) {
         this.from = from;
         return this;
     }
@@ -69,7 +69,7 @@ public class Datum {
         this.to = to;
     }
 
-    public Datum withTo(String to) {
+    public DataPerformance withTo(String to) {
         this.to = to;
         return this;
     }
@@ -84,7 +84,7 @@ public class Datum {
         this.genData = genData;
     }
 
-    public Datum withGenData(List<GenDatum> genData) {
+    public DataPerformance withGenData(List<GenDatum> genData) {
         this.genData = genData;
         return this;
     }
@@ -99,7 +99,7 @@ public class Datum {
         this.totalProductionMwh = totalProductionMwh;
     }
 
-    public Datum withTotalProductionMwh(Double totalProductionMwh) {
+    public DataPerformance withTotalProductionMwh(Double totalProductionMwh) {
         this.totalProductionMwh = totalProductionMwh;
         return this;
     }
@@ -114,7 +114,7 @@ public class Datum {
         this.totalACProductionMwh = totalACProductionMwh;
     }
 
-    public Datum withTotalACProductionMwh(Double totalACProductionMwh) {
+    public DataPerformance withTotalACProductionMwh(Double totalACProductionMwh) {
         this.totalACProductionMwh = totalACProductionMwh;
         return this;
     }
@@ -129,7 +129,7 @@ public class Datum {
         this.totalIrradiationKwhM2 = totalIrradiationKwhM2;
     }
 
-    public Datum withTotalIrradiationKwhM2(Double totalIrradiationKwhM2) {
+    public DataPerformance withTotalIrradiationKwhM2(Double totalIrradiationKwhM2) {
         this.totalIrradiationKwhM2 = totalIrradiationKwhM2;
         return this;
     }
@@ -144,7 +144,7 @@ public class Datum {
         this.performanceRatio = performanceRatio;
     }
 
-    public Datum withPerformanceRatio(Double performanceRatio) {
+    public DataPerformance withPerformanceRatio(Double performanceRatio) {
         this.performanceRatio = performanceRatio;
         return this;
     }
@@ -159,7 +159,7 @@ public class Datum {
         this.timeBasedAvailability = timeBasedAvailability;
     }
 
-    public Datum withTimeBasedAvailability(Double timeBasedAvailability) {
+    public DataPerformance withTimeBasedAvailability(Double timeBasedAvailability) {
         this.timeBasedAvailability = timeBasedAvailability;
         return this;
     }
@@ -174,7 +174,7 @@ public class Datum {
         this.additionalProperties.put(name, value);
     }
 
-    public Datum withAdditionalProperty(String name, Object value) {
+    public DataPerformance withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }
