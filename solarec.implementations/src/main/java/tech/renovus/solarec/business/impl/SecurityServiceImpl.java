@@ -230,7 +230,7 @@ public class SecurityServiceImpl implements SecurityService {
 		
         Map<String, Object> variables = new HashMap<>();
         variables.put("user", usrVo.getUsrName());
-        variables.put("email", usrVo.getUsrName());
+        variables.put("email", usrVo.getUsrEmail());
         variables.put("link", url.toString());
         
         String emailContent			= this.translationService.forTemplate(locale, "email_password_reset.html", variables);
@@ -275,7 +275,7 @@ public class SecurityServiceImpl implements SecurityService {
 					
 			        Map<String, Object> variables = new HashMap<>();
 			        variables.put("user", usrVo.getUsrName());
-			        variables.put("email", usrVo.getUsrName());
+			        variables.put("email", usrVo.getUsrEmail());
 			        
 			        String subject = this.translationService.forLabel(userData.getLocale(), "email.password-changed.subject");
 			        String emailContent			= this.translationService.forTemplate(userData.getLocale(), "email_password_reset_done.html", variables);
