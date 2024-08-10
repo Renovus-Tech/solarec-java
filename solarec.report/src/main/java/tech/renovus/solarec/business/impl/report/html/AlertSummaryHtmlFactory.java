@@ -15,6 +15,8 @@ import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.custom.chart.climate.Climate;
+import tech.renovus.solarec.vo.custom.chart.climate.ClimateData;
+import tech.renovus.solarec.vo.custom.chart.climate.ClimateGenData;
 import tech.renovus.solarec.vo.custom.chart.overview.Datum;
 import tech.renovus.solarec.vo.custom.chart.overview.Overview;
 import tech.renovus.solarec.vo.custom.chart.performanceIndex.DataPerformance;
@@ -46,31 +48,49 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 	private String createHtml(PerformanceIndex performance) {
 		StringBuilder html = new StringBuilder();
 		
-		DefaultCategoryDataset categoryDataset	= new DefaultCategoryDataset();
+		DefaultCategoryDataset ratioDataSet			= new DefaultCategoryDataset();
+		DefaultCategoryDataset productionDataSet	= new DefaultCategoryDataset();
+		DefaultCategoryDataset irradianceDataSet	= new DefaultCategoryDataset();
 		
 		for (DataPerformance data : performance.getData()) {
 			String fromDate = data.getFrom();
 			if (fromDate.indexOf(' ') != -1) fromDate = fromDate.substring(0, fromDate.indexOf(' '));
 			for (GenDatum genData : data.getGenData()) {
-				categoryDataset.addValue(genData.getPerformanceRatio(), genData.getCode(), fromDate);
+				ratioDataSet.addValue(genData.getPerformanceRatio(), genData.getCode(), fromDate);
+				productionDataSet.addValue(genData.getProductionMwh(), genData.getCode(), fromDate);
 			}
+			
+			irradianceDataSet.addValue(data.getTotalIrradiationKwhM2(), "Irradiance", fromDate);
 		}
 		
-        String title							= "Performance Ratio";
-        String categoryAxisLabel				= "";
-        String valueAxisLabel					= "Performance Ratio";
-
         try {
 	        html
+	        	.append("<h2>Performance Ratio</h2>")
 	        	.append("<div class='image'><img src='")
 		        .append(this.generateLineChart(
-		        		categoryDataset, 
+		        		ratioDataSet, 
 		        		new ChartOptions()
-		        			.withTitle(title) 
-		        			.withTitle(categoryAxisLabel) 
-		        			.withTitle(valueAxisLabel)
+		        			.withTitle("") 
+		        			.withCategoryAxisLabel("") 
+		        			.withValueAxisLabel("%")
 		        	))
-		       .append("'></div>");
+		       .append("'></div>")
+		       .append("<h2>Production and Irradiation</h2>")
+		       .append("<div class='image'><img src='")
+		        .append(this.generateLineChart(
+		        		productionDataSet,
+		        		irradianceDataSet,
+		        		new ChartOptions()
+		        			.withTitle("") 
+		        			.withCategoryAxisLabel("") 
+		        			.withValueAxisLabel("MWh"),
+	        			new ChartOptions()
+		        			.withTitle("") 
+		        			.withCategoryAxisLabel("") 
+		        			.withValueAxisLabel("Kwh/m2")
+		        	))
+		       .append("'></div>")
+		      ;
         } catch (IOException e) {
 			html.append("<div class='error'><p>Error found: " + e.getLocalizedMessage() + "</p><small>" + StringUtil.toString(e, true) + "</small></div>");
 		}
@@ -81,7 +101,41 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 	private String createHtml(Climate climate) {
 		StringBuilder html = new StringBuilder();
 		
+		DefaultCategoryDataset productionDataSet	= new DefaultCategoryDataset();
+		DefaultCategoryDataset irradiationDataSet	= new DefaultCategoryDataset();
 		
+		for (ClimateData data : climate.getData()) {
+			String fromDate = data.getFrom();
+			if (fromDate.indexOf(' ') != -1) fromDate = fromDate.substring(0, fromDate.indexOf(' '));
+			
+			for (ClimateGenData genData : data.getGenData()) {
+				productionDataSet.addValue(genData.getProductionMwh(), genData.getCode(), fromDate);
+			}
+			
+			irradiationDataSet.addValue(data.getTotalIrradiationKwhM2(), "Irradiation", fromDate);
+			
+		}
+		
+        try {
+	        html
+	        	.append("<h2>Trends</h2>")
+	        	.append("<div class='image'><img src='")
+		        .append(this.generateLineChart(
+		        		productionDataSet, 
+		        		irradiationDataSet, 
+		        		new ChartOptions()
+			        		.withTitle("") 
+		        			.withCategoryAxisLabel("") 
+		        			.withValueAxisLabel("MWh"),
+		        		new ChartOptions()
+			        		.withTitle("") 
+		        			.withCategoryAxisLabel("") 
+		        			.withValueAxisLabel("Kwh/m2")
+		        	))
+		       .append("'></div>");
+        } catch (IOException e) {
+			html.append("<div class='error'><p>Error found: " + e.getLocalizedMessage() + "</p><small>" + StringUtil.toString(e, true) + "</small></div>");
+		}
 		
 		return html.toString();
 	}

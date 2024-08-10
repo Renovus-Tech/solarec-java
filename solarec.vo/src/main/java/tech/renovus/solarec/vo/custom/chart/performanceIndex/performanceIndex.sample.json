@@ -1,0 +1,32 @@
+{
+    "chart": {
+        "from": "2024/01/01 00:00:00",
+        "to": "2024/04/23 23:59:59",
+        "resultCode": 200,
+        "resultText": "",
+        "groupBy": null
+    },
+    "data": [
+        {
+            "from": "2024/01/01 00:00:00",
+            "to": "2024/04/23 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 26.415,
+                    "acProductionMwh": 26.415,
+                    "irradiationKwhM2": 611.0,
+                    "performanceRatio": 86.5,
+                    "timeBasedAvailability": 0.9
+                }
+            ],
+            "totalProductionMwh": 26.415,
+            "totalACProductionMwh": 26.415,
+            "totalIrradiationKwhM2": 611.0,
+            "performanceRatio": 86.5,
+            "timeBasedAvailability": 0.9
+        }
+    ]
+}

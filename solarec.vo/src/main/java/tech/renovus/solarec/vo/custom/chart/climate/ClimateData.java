@@ -15,14 +15,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({ "from", "to", "genData", "totalProductionMwh", "totalACProductionMwh", "totalIrradiationKwhM2",
 		"avgAmbientTemp", "avgModuleTemp" })
 @Generated("jsonschema2pojo")
-public class Datum {
+public class ClimateData {
 
 	@JsonProperty("from")
 	private String from;
 	@JsonProperty("to")
 	private String to;
 	@JsonProperty("genData")
-	private List<GenDatum> genData;
+	private List<ClimateGenData> genData;
 	@JsonProperty("totalProductionMwh")
 	private Double totalProductionMwh;
 	@JsonProperty("totalACProductionMwh")
@@ -46,7 +46,7 @@ public class Datum {
 		this.from = from;
 	}
 
-	public Datum withFrom(String from) {
+	public ClimateData withFrom(String from) {
 		this.from = from;
 		return this;
 	}
@@ -61,22 +61,22 @@ public class Datum {
 		this.to = to;
 	}
 
-	public Datum withTo(String to) {
+	public ClimateData withTo(String to) {
 		this.to = to;
 		return this;
 	}
 
 	@JsonProperty("genData")
-	public List<GenDatum> getGenData() {
+	public List<ClimateGenData> getGenData() {
 		return genData;
 	}
 
 	@JsonProperty("genData")
-	public void setGenData(List<GenDatum> genData) {
+	public void setGenData(List<ClimateGenData> genData) {
 		this.genData = genData;
 	}
 
-	public Datum withGenData(List<GenDatum> genData) {
+	public ClimateData withGenData(List<ClimateGenData> genData) {
 		this.genData = genData;
 		return this;
 	}
@@ -91,7 +91,7 @@ public class Datum {
 		this.totalProductionMwh = totalProductionMwh;
 	}
 
-	public Datum withTotalProductionMwh(Double totalProductionMwh) {
+	public ClimateData withTotalProductionMwh(Double totalProductionMwh) {
 		this.totalProductionMwh = totalProductionMwh;
 		return this;
 	}
@@ -106,7 +106,7 @@ public class Datum {
 		this.totalACProductionMwh = totalACProductionMwh;
 	}
 
-	public Datum withTotalACProductionMwh(Double totalACProductionMwh) {
+	public ClimateData withTotalACProductionMwh(Double totalACProductionMwh) {
 		this.totalACProductionMwh = totalACProductionMwh;
 		return this;
 	}
@@ -121,7 +121,7 @@ public class Datum {
 		this.totalIrradiationKwhM2 = totalIrradiationKwhM2;
 	}
 
-	public Datum withTotalIrradiationKwhM2(Double totalIrradiationKwhM2) {
+	public ClimateData withTotalIrradiationKwhM2(Double totalIrradiationKwhM2) {
 		this.totalIrradiationKwhM2 = totalIrradiationKwhM2;
 		return this;
 	}
@@ -136,7 +136,7 @@ public class Datum {
 		this.avgAmbientTemp = avgAmbientTemp;
 	}
 
-	public Datum withAvgAmbientTemp(Double avgAmbientTemp) {
+	public ClimateData withAvgAmbientTemp(Double avgAmbientTemp) {
 		this.avgAmbientTemp = avgAmbientTemp;
 		return this;
 	}
@@ -151,7 +151,7 @@ public class Datum {
 		this.avgModuleTemp = avgModuleTemp;
 	}
 
-	public Datum withAvgModuleTemp(Double avgModuleTemp) {
+	public ClimateData withAvgModuleTemp(Double avgModuleTemp) {
 		this.avgModuleTemp = avgModuleTemp;
 		return this;
 	}
@@ -166,7 +166,7 @@ public class Datum {
 		this.additionalProperties.put(name, value);
 	}
 
-	public Datum withAdditionalProperty(String name, Object value) {
+	public ClimateData withAdditionalProperty(String name, Object value) {
 		this.additionalProperties.put(name, value);
 		return this;
 	}

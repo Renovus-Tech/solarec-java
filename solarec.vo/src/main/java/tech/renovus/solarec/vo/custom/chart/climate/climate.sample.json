@@ -1,0 +1,2177 @@
+{
+    "chart": {
+        "from": "2024/01/01 00:00:00",
+        "to": "2024/04/23 23:59:59",
+        "resultCode": 200,
+        "resultText": "",
+        "groupBy": "day"
+    },
+    "data": [
+        {
+            "from": "2024/01/01 00:00:00",
+            "to": "2024/01/01 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.1,
+                    "acProductionMwh": 0.1,
+                    "irradiationKwhM2": 3.53
+                }
+            ],
+            "totalProductionMwh": 0.1,
+            "totalACProductionMwh": 0.1,
+            "totalIrradiationKwhM2": 3.53,
+            "avgAmbientTemp": 23.333,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/02 00:00:00",
+            "to": "2024/01/02 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.347,
+                    "acProductionMwh": 0.347,
+                    "irradiationKwhM2": 7.495
+                }
+            ],
+            "totalProductionMwh": 0.347,
+            "totalACProductionMwh": 0.347,
+            "totalIrradiationKwhM2": 7.495,
+            "avgAmbientTemp": 25.458,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/03 00:00:00",
+            "to": "2024/01/03 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.332,
+                    "acProductionMwh": 0.332,
+                    "irradiationKwhM2": 8.177
+                }
+            ],
+            "totalProductionMwh": 0.332,
+            "totalACProductionMwh": 0.332,
+            "totalIrradiationKwhM2": 8.177,
+            "avgAmbientTemp": 27.5,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/04 00:00:00",
+            "to": "2024/01/04 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.142,
+                    "acProductionMwh": 0.142,
+                    "irradiationKwhM2": 6.098
+                }
+            ],
+            "totalProductionMwh": 0.142,
+            "totalACProductionMwh": 0.142,
+            "totalIrradiationKwhM2": 6.098,
+            "avgAmbientTemp": 26.25,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/05 00:00:00",
+            "to": "2024/01/05 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.357,
+                    "acProductionMwh": 0.357,
+                    "irradiationKwhM2": 8.849
+                }
+            ],
+            "totalProductionMwh": 0.357,
+            "totalACProductionMwh": 0.357,
+            "totalIrradiationKwhM2": 8.849,
+            "avgAmbientTemp": 20.0,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/06 00:00:00",
+            "to": "2024/01/06 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.372,
+                    "acProductionMwh": 0.372,
+                    "irradiationKwhM2": 8.737
+                }
+            ],
+            "totalProductionMwh": 0.371,
+            "totalACProductionMwh": 0.371,
+            "totalIrradiationKwhM2": 8.737,
+            "avgAmbientTemp": 19.958,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/07 00:00:00",
+            "to": "2024/01/07 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.322,
+                    "acProductionMwh": 0.322,
+                    "irradiationKwhM2": 8.122
+                }
+            ],
+            "totalProductionMwh": 0.323,
+            "totalACProductionMwh": 0.323,
+            "totalIrradiationKwhM2": 8.122,
+            "avgAmbientTemp": 20.833,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/08 00:00:00",
+            "to": "2024/01/08 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.357,
+                    "acProductionMwh": 0.357,
+                    "irradiationKwhM2": 8.338
+                }
+            ],
+            "totalProductionMwh": 0.357,
+            "totalACProductionMwh": 0.357,
+            "totalIrradiationKwhM2": 8.338,
+            "avgAmbientTemp": 22.667,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/09 00:00:00",
+            "to": "2024/01/09 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.36,
+                    "acProductionMwh": 0.36,
+                    "irradiationKwhM2": 8.661
+                }
+            ],
+            "totalProductionMwh": 0.36,
+            "totalACProductionMwh": 0.36,
+            "totalIrradiationKwhM2": 8.661,
+            "avgAmbientTemp": 23.667,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/10 00:00:00",
+            "to": "2024/01/10 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.351,
+                    "acProductionMwh": 0.351,
+                    "irradiationKwhM2": 8.657
+                }
+            ],
+            "totalProductionMwh": 0.351,
+            "totalACProductionMwh": 0.351,
+            "totalIrradiationKwhM2": 8.657,
+            "avgAmbientTemp": 23.958,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/11 00:00:00",
+            "to": "2024/01/11 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.324,
+                    "acProductionMwh": 0.324,
+                    "irradiationKwhM2": 8.604
+                }
+            ],
+            "totalProductionMwh": 0.324,
+            "totalACProductionMwh": 0.324,
+            "totalIrradiationKwhM2": 8.604,
+            "avgAmbientTemp": 27.125,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/12 00:00:00",
+            "to": "2024/01/12 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.36,
+                    "acProductionMwh": 0.36,
+                    "irradiationKwhM2": 8.544
+                }
+            ],
+            "totalProductionMwh": 0.359,
+            "totalACProductionMwh": 0.359,
+            "totalIrradiationKwhM2": 8.544,
+            "avgAmbientTemp": 22.625,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/13 00:00:00",
+            "to": "2024/01/13 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.322,
+                    "acProductionMwh": 0.322,
+                    "irradiationKwhM2": 8.739
+                }
+            ],
+            "totalProductionMwh": 0.323,
+            "totalACProductionMwh": 0.323,
+            "totalIrradiationKwhM2": 8.739,
+            "avgAmbientTemp": 23.333,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/14 00:00:00",
+            "to": "2024/01/14 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.301,
+                    "acProductionMwh": 0.301,
+                    "irradiationKwhM2": 8.571
+                }
+            ],
+            "totalProductionMwh": 0.301,
+            "totalACProductionMwh": 0.301,
+            "totalIrradiationKwhM2": 8.571,
+            "avgAmbientTemp": 29.292,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/15 00:00:00",
+            "to": "2024/01/15 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.197,
+                    "acProductionMwh": 0.197,
+                    "irradiationKwhM2": 5.265
+                }
+            ],
+            "totalProductionMwh": 0.197,
+            "totalACProductionMwh": 0.197,
+            "totalIrradiationKwhM2": 5.265,
+            "avgAmbientTemp": 30.792,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/16 00:00:00",
+            "to": "2024/01/16 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.178,
+                    "acProductionMwh": 0.178,
+                    "irradiationKwhM2": 3.317
+                }
+            ],
+            "totalProductionMwh": 0.178,
+            "totalACProductionMwh": 0.178,
+            "totalIrradiationKwhM2": 3.317,
+            "avgAmbientTemp": 28.333,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/17 00:00:00",
+            "to": "2024/01/17 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.138,
+                    "acProductionMwh": 0.138,
+                    "irradiationKwhM2": 3.002
+                }
+            ],
+            "totalProductionMwh": 0.139,
+            "totalACProductionMwh": 0.139,
+            "totalIrradiationKwhM2": 3.002,
+            "avgAmbientTemp": 22.917,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/18 00:00:00",
+            "to": "2024/01/18 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.076,
+                    "acProductionMwh": 0.076,
+                    "irradiationKwhM2": 2.634
+                }
+            ],
+            "totalProductionMwh": 0.076,
+            "totalACProductionMwh": 0.076,
+            "totalIrradiationKwhM2": 2.634,
+            "avgAmbientTemp": 22.375,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/19 00:00:00",
+            "to": "2024/01/19 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.154,
+                    "acProductionMwh": 0.154,
+                    "irradiationKwhM2": 5.707
+                }
+            ],
+            "totalProductionMwh": 0.154,
+            "totalACProductionMwh": 0.154,
+            "totalIrradiationKwhM2": 5.707,
+            "avgAmbientTemp": 22.917,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/20 00:00:00",
+            "to": "2024/01/20 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.182,
+                    "acProductionMwh": 0.182,
+                    "irradiationKwhM2": 4.64
+                }
+            ],
+            "totalProductionMwh": 0.182,
+            "totalACProductionMwh": 0.182,
+            "totalIrradiationKwhM2": 4.64,
+            "avgAmbientTemp": 24.958,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/21 00:00:00",
+            "to": "2024/01/21 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.186,
+                    "acProductionMwh": 0.186,
+                    "irradiationKwhM2": 7.309
+                }
+            ],
+            "totalProductionMwh": 0.185,
+            "totalACProductionMwh": 0.185,
+            "totalIrradiationKwhM2": 7.309,
+            "avgAmbientTemp": 28.292,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/22 00:00:00",
+            "to": "2024/01/22 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.162,
+                    "acProductionMwh": 0.162,
+                    "irradiationKwhM2": 4.294
+                }
+            ],
+            "totalProductionMwh": 0.162,
+            "totalACProductionMwh": 0.162,
+            "totalIrradiationKwhM2": 4.294,
+            "avgAmbientTemp": 27.583,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/23 00:00:00",
+            "to": "2024/01/23 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.13,
+                    "acProductionMwh": 0.13,
+                    "irradiationKwhM2": 2.593
+                }
+            ],
+            "totalProductionMwh": 0.131,
+            "totalACProductionMwh": 0.131,
+            "totalIrradiationKwhM2": 2.593,
+            "avgAmbientTemp": 24.375,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/24 00:00:00",
+            "to": "2024/01/24 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.264,
+                    "acProductionMwh": 0.264,
+                    "irradiationKwhM2": 7.197
+                }
+            ],
+            "totalProductionMwh": 0.265,
+            "totalACProductionMwh": 0.265,
+            "totalIrradiationKwhM2": 7.197,
+            "avgAmbientTemp": 24.0,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/25 00:00:00",
+            "to": "2024/01/25 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.204,
+                    "acProductionMwh": 0.204,
+                    "irradiationKwhM2": 2.583
+                }
+            ],
+            "totalProductionMwh": 0.204,
+            "totalACProductionMwh": 0.204,
+            "totalIrradiationKwhM2": 2.583,
+            "avgAmbientTemp": 25.083,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/26 00:00:00",
+            "to": "2024/01/26 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.145,
+                    "acProductionMwh": 0.145,
+                    "irradiationKwhM2": 1.455
+                }
+            ],
+            "totalProductionMwh": 0.145,
+            "totalACProductionMwh": 0.145,
+            "totalIrradiationKwhM2": 1.455,
+            "avgAmbientTemp": 23.042,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/27 00:00:00",
+            "to": "2024/01/27 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.245,
+                    "acProductionMwh": 0.245,
+                    "irradiationKwhM2": 5.749
+                }
+            ],
+            "totalProductionMwh": 0.245,
+            "totalACProductionMwh": 0.245,
+            "totalIrradiationKwhM2": 5.749,
+            "avgAmbientTemp": 18.625,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/28 00:00:00",
+            "to": "2024/01/28 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.278,
+                    "acProductionMwh": 0.278,
+                    "irradiationKwhM2": 7.629
+                }
+            ],
+            "totalProductionMwh": 0.278,
+            "totalACProductionMwh": 0.278,
+            "totalIrradiationKwhM2": 7.629,
+            "avgAmbientTemp": 19.042,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/29 00:00:00",
+            "to": "2024/01/29 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.304,
+                    "acProductionMwh": 0.304,
+                    "irradiationKwhM2": 7.821
+                }
+            ],
+            "totalProductionMwh": 0.304,
+            "totalACProductionMwh": 0.304,
+            "totalIrradiationKwhM2": 7.821,
+            "avgAmbientTemp": 20.417,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/30 00:00:00",
+            "to": "2024/01/30 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.326,
+                    "acProductionMwh": 0.326,
+                    "irradiationKwhM2": 8.071
+                }
+            ],
+            "totalProductionMwh": 0.326,
+            "totalACProductionMwh": 0.326,
+            "totalIrradiationKwhM2": 8.071,
+            "avgAmbientTemp": 22.083,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/01/31 00:00:00",
+            "to": "2024/01/31 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.312,
+                    "acProductionMwh": 0.312,
+                    "irradiationKwhM2": 6.426
+                }
+            ],
+            "totalProductionMwh": 0.312,
+            "totalACProductionMwh": 0.312,
+            "totalIrradiationKwhM2": 6.426,
+            "avgAmbientTemp": 19.333,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/01 00:00:00",
+            "to": "2024/02/01 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.327,
+                    "acProductionMwh": 0.327,
+                    "irradiationKwhM2": 8.253
+                }
+            ],
+            "totalProductionMwh": 0.327,
+            "totalACProductionMwh": 0.327,
+            "totalIrradiationKwhM2": 8.253,
+            "avgAmbientTemp": 19.375,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/02 00:00:00",
+            "to": "2024/02/02 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.319,
+                    "acProductionMwh": 0.319,
+                    "irradiationKwhM2": 8.083
+                }
+            ],
+            "totalProductionMwh": 0.319,
+            "totalACProductionMwh": 0.319,
+            "totalIrradiationKwhM2": 8.083,
+            "avgAmbientTemp": 23.625,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/03 00:00:00",
+            "to": "2024/02/03 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.128,
+                    "acProductionMwh": 0.128,
+                    "irradiationKwhM2": 6.906
+                }
+            ],
+            "totalProductionMwh": 0.128,
+            "totalACProductionMwh": 0.128,
+            "totalIrradiationKwhM2": 6.906,
+            "avgAmbientTemp": 23.75,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/04 00:00:00",
+            "to": "2024/02/04 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.173,
+                    "acProductionMwh": 0.173,
+                    "irradiationKwhM2": 4.412
+                }
+            ],
+            "totalProductionMwh": 0.173,
+            "totalACProductionMwh": 0.173,
+            "totalIrradiationKwhM2": 4.412,
+            "avgAmbientTemp": 22.458,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/05 00:00:00",
+            "to": "2024/02/05 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.198,
+                    "acProductionMwh": 0.198,
+                    "irradiationKwhM2": 2.774
+                }
+            ],
+            "totalProductionMwh": 0.198,
+            "totalACProductionMwh": 0.198,
+            "totalIrradiationKwhM2": 2.774,
+            "avgAmbientTemp": 20.458,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/06 00:00:00",
+            "to": "2024/02/06 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.221,
+                    "acProductionMwh": 0.221,
+                    "irradiationKwhM2": 7.501
+                }
+            ],
+            "totalProductionMwh": 0.221,
+            "totalACProductionMwh": 0.221,
+            "totalIrradiationKwhM2": 7.501,
+            "avgAmbientTemp": 18.542,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/07 00:00:00",
+            "to": "2024/02/07 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.241,
+                    "acProductionMwh": 0.241,
+                    "irradiationKwhM2": 6.747
+                }
+            ],
+            "totalProductionMwh": 0.241,
+            "totalACProductionMwh": 0.241,
+            "totalIrradiationKwhM2": 6.747,
+            "avgAmbientTemp": 19.125,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/08 00:00:00",
+            "to": "2024/02/08 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.287,
+                    "acProductionMwh": 0.287,
+                    "irradiationKwhM2": 5.928
+                }
+            ],
+            "totalProductionMwh": 0.287,
+            "totalACProductionMwh": 0.287,
+            "totalIrradiationKwhM2": 5.928,
+            "avgAmbientTemp": 18.833,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/09 00:00:00",
+            "to": "2024/02/09 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.304,
+                    "acProductionMwh": 0.304,
+                    "irradiationKwhM2": 7.598
+                }
+            ],
+            "totalProductionMwh": 0.304,
+            "totalACProductionMwh": 0.304,
+            "totalIrradiationKwhM2": 7.598,
+            "avgAmbientTemp": 18.542,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/10 00:00:00",
+            "to": "2024/02/10 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.32,
+                    "acProductionMwh": 0.32,
+                    "irradiationKwhM2": 7.685
+                }
+            ],
+            "totalProductionMwh": 0.32,
+            "totalACProductionMwh": 0.32,
+            "totalIrradiationKwhM2": 7.685,
+            "avgAmbientTemp": 21.875,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/11 00:00:00",
+            "to": "2024/02/11 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.276,
+                    "acProductionMwh": 0.276,
+                    "irradiationKwhM2": 7.019
+                }
+            ],
+            "totalProductionMwh": 0.276,
+            "totalACProductionMwh": 0.276,
+            "totalIrradiationKwhM2": 7.019,
+            "avgAmbientTemp": 22.625,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/12 00:00:00",
+            "to": "2024/02/12 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.029,
+                    "acProductionMwh": 0.029,
+                    "irradiationKwhM2": 1.465
+                }
+            ],
+            "totalProductionMwh": 0.029,
+            "totalACProductionMwh": 0.029,
+            "totalIrradiationKwhM2": 1.465,
+            "avgAmbientTemp": 19.167,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/13 00:00:00",
+            "to": "2024/02/13 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.271,
+                    "acProductionMwh": 0.271,
+                    "irradiationKwhM2": 7.549
+                }
+            ],
+            "totalProductionMwh": 0.271,
+            "totalACProductionMwh": 0.271,
+            "totalIrradiationKwhM2": 7.549,
+            "avgAmbientTemp": 18.667,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/14 00:00:00",
+            "to": "2024/02/14 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.321,
+                    "acProductionMwh": 0.321,
+                    "irradiationKwhM2": 7.726
+                }
+            ],
+            "totalProductionMwh": 0.321,
+            "totalACProductionMwh": 0.321,
+            "totalIrradiationKwhM2": 7.726,
+            "avgAmbientTemp": 20.5,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/15 00:00:00",
+            "to": "2024/02/15 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.308,
+                    "acProductionMwh": 0.308,
+                    "irradiationKwhM2": 7.622
+                }
+            ],
+            "totalProductionMwh": 0.308,
+            "totalACProductionMwh": 0.308,
+            "totalIrradiationKwhM2": 7.622,
+            "avgAmbientTemp": 23.042,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/16 00:00:00",
+            "to": "2024/02/16 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.307,
+                    "acProductionMwh": 0.307,
+                    "irradiationKwhM2": 7.465
+                }
+            ],
+            "totalProductionMwh": 0.307,
+            "totalACProductionMwh": 0.307,
+            "totalIrradiationKwhM2": 7.465,
+            "avgAmbientTemp": 24.375,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/17 00:00:00",
+            "to": "2024/02/17 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.186,
+                    "acProductionMwh": 0.186,
+                    "irradiationKwhM2": 4.664
+                }
+            ],
+            "totalProductionMwh": 0.186,
+            "totalACProductionMwh": 0.186,
+            "totalIrradiationKwhM2": 4.664,
+            "avgAmbientTemp": 19.625,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/18 00:00:00",
+            "to": "2024/02/18 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.316,
+                    "acProductionMwh": 0.316,
+                    "irradiationKwhM2": 6.773
+                }
+            ],
+            "totalProductionMwh": 0.316,
+            "totalACProductionMwh": 0.316,
+            "totalIrradiationKwhM2": 6.773,
+            "avgAmbientTemp": 20.125,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/19 00:00:00",
+            "to": "2024/02/19 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.308,
+                    "acProductionMwh": 0.308,
+                    "irradiationKwhM2": 6.716
+                }
+            ],
+            "totalProductionMwh": 0.307,
+            "totalACProductionMwh": 0.307,
+            "totalIrradiationKwhM2": 6.716,
+            "avgAmbientTemp": 20.458,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/20 00:00:00",
+            "to": "2024/02/20 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.197,
+                    "acProductionMwh": 0.197,
+                    "irradiationKwhM2": 4.054
+                }
+            ],
+            "totalProductionMwh": 0.197,
+            "totalACProductionMwh": 0.197,
+            "totalIrradiationKwhM2": 4.054,
+            "avgAmbientTemp": 22.167,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/21 00:00:00",
+            "to": "2024/02/21 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.205,
+                    "acProductionMwh": 0.205,
+                    "irradiationKwhM2": 2.011
+                }
+            ],
+            "totalProductionMwh": 0.205,
+            "totalACProductionMwh": 0.205,
+            "totalIrradiationKwhM2": 2.011,
+            "avgAmbientTemp": 21.125,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/22 00:00:00",
+            "to": "2024/02/22 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.268,
+                    "acProductionMwh": 0.268,
+                    "irradiationKwhM2": 4.611
+                }
+            ],
+            "totalProductionMwh": 0.268,
+            "totalACProductionMwh": 0.268,
+            "totalIrradiationKwhM2": 4.611,
+            "avgAmbientTemp": 19.833,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/23 00:00:00",
+            "to": "2024/02/23 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.241,
+                    "acProductionMwh": 0.241,
+                    "irradiationKwhM2": 6.776
+                }
+            ],
+            "totalProductionMwh": 0.241,
+            "totalACProductionMwh": 0.241,
+            "totalIrradiationKwhM2": 6.776,
+            "avgAmbientTemp": 20.083,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/24 00:00:00",
+            "to": "2024/02/24 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.094,
+                    "acProductionMwh": 0.094,
+                    "irradiationKwhM2": 3.215
+                }
+            ],
+            "totalProductionMwh": 0.094,
+            "totalACProductionMwh": 0.094,
+            "totalIrradiationKwhM2": 3.215,
+            "avgAmbientTemp": 20.958,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/25 00:00:00",
+            "to": "2024/02/25 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.315,
+                    "acProductionMwh": 0.315,
+                    "irradiationKwhM2": 7.22
+                }
+            ],
+            "totalProductionMwh": 0.315,
+            "totalACProductionMwh": 0.315,
+            "totalIrradiationKwhM2": 7.22,
+            "avgAmbientTemp": 22.875,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/26 00:00:00",
+            "to": "2024/02/26 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.183,
+                    "acProductionMwh": 0.183,
+                    "irradiationKwhM2": 5.061
+                }
+            ],
+            "totalProductionMwh": 0.183,
+            "totalACProductionMwh": 0.183,
+            "totalIrradiationKwhM2": 5.061,
+            "avgAmbientTemp": 24.0,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/27 00:00:00",
+            "to": "2024/02/27 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.074,
+                    "acProductionMwh": 0.074,
+                    "irradiationKwhM2": 1.372
+                }
+            ],
+            "totalProductionMwh": 0.074,
+            "totalACProductionMwh": 0.074,
+            "totalIrradiationKwhM2": 1.372,
+            "avgAmbientTemp": 23.667,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/28 00:00:00",
+            "to": "2024/02/28 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.233,
+                    "acProductionMwh": 0.233,
+                    "irradiationKwhM2": 4.113
+                }
+            ],
+            "totalProductionMwh": 0.233,
+            "totalACProductionMwh": 0.233,
+            "totalIrradiationKwhM2": 4.113,
+            "avgAmbientTemp": 22.208,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/02/29 00:00:00",
+            "to": "2024/02/29 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.318,
+                    "acProductionMwh": 0.318,
+                    "irradiationKwhM2": 7.116
+                }
+            ],
+            "totalProductionMwh": 0.318,
+            "totalACProductionMwh": 0.318,
+            "totalIrradiationKwhM2": 7.116,
+            "avgAmbientTemp": 19.833,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/01 00:00:00",
+            "to": "2024/03/01 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.308,
+                    "acProductionMwh": 0.308,
+                    "irradiationKwhM2": 6.906
+                }
+            ],
+            "totalProductionMwh": 0.308,
+            "totalACProductionMwh": 0.308,
+            "totalIrradiationKwhM2": 6.906,
+            "avgAmbientTemp": 20.75,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/02 00:00:00",
+            "to": "2024/03/02 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.306,
+                    "acProductionMwh": 0.306,
+                    "irradiationKwhM2": 6.946
+                }
+            ],
+            "totalProductionMwh": 0.306,
+            "totalACProductionMwh": 0.306,
+            "totalIrradiationKwhM2": 6.946,
+            "avgAmbientTemp": 19.75,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/03 00:00:00",
+            "to": "2024/03/03 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.218,
+                    "acProductionMwh": 0.218,
+                    "irradiationKwhM2": 6.736
+                }
+            ],
+            "totalProductionMwh": 0.218,
+            "totalACProductionMwh": 0.218,
+            "totalIrradiationKwhM2": 6.736,
+            "avgAmbientTemp": 25.333,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/04 00:00:00",
+            "to": "2024/03/04 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.102,
+                    "acProductionMwh": 0.102,
+                    "irradiationKwhM2": 3.319
+                }
+            ],
+            "totalProductionMwh": 0.102,
+            "totalACProductionMwh": 0.102,
+            "totalIrradiationKwhM2": 3.319,
+            "avgAmbientTemp": 24.458,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/05 00:00:00",
+            "to": "2024/03/05 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.229,
+                    "acProductionMwh": 0.229,
+                    "irradiationKwhM2": 2.926
+                }
+            ],
+            "totalProductionMwh": 0.229,
+            "totalACProductionMwh": 0.229,
+            "totalIrradiationKwhM2": 2.926,
+            "avgAmbientTemp": 23.167,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/06 00:00:00",
+            "to": "2024/03/06 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.168,
+                    "acProductionMwh": 0.168,
+                    "irradiationKwhM2": 4.87
+                }
+            ],
+            "totalProductionMwh": 0.168,
+            "totalACProductionMwh": 0.168,
+            "totalIrradiationKwhM2": 4.87,
+            "avgAmbientTemp": 22.25,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/07 00:00:00",
+            "to": "2024/03/07 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.31,
+                    "acProductionMwh": 0.31,
+                    "irradiationKwhM2": 6.757
+                }
+            ],
+            "totalProductionMwh": 0.31,
+            "totalACProductionMwh": 0.31,
+            "totalIrradiationKwhM2": 6.757,
+            "avgAmbientTemp": 19.625,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/08 00:00:00",
+            "to": "2024/03/08 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.092,
+                    "acProductionMwh": 0.092,
+                    "irradiationKwhM2": 2.959
+                }
+            ],
+            "totalProductionMwh": 0.092,
+            "totalACProductionMwh": 0.092,
+            "totalIrradiationKwhM2": 2.959,
+            "avgAmbientTemp": 19.333,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/09 00:00:00",
+            "to": "2024/03/09 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.175,
+                    "acProductionMwh": 0.175,
+                    "irradiationKwhM2": 2.553
+                }
+            ],
+            "totalProductionMwh": 0.175,
+            "totalACProductionMwh": 0.175,
+            "totalIrradiationKwhM2": 2.553,
+            "avgAmbientTemp": 19.875,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/10 00:00:00",
+            "to": "2024/03/10 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.278,
+                    "acProductionMwh": 0.278,
+                    "irradiationKwhM2": 6.297
+                }
+            ],
+            "totalProductionMwh": 0.278,
+            "totalACProductionMwh": 0.278,
+            "totalIrradiationKwhM2": 6.297,
+            "avgAmbientTemp": 17.833,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/11 00:00:00",
+            "to": "2024/03/11 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.304,
+                    "acProductionMwh": 0.304,
+                    "irradiationKwhM2": 3.52
+                }
+            ],
+            "totalProductionMwh": 0.304,
+            "totalACProductionMwh": 0.304,
+            "totalIrradiationKwhM2": 3.52,
+            "avgAmbientTemp": 16.792,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/12 00:00:00",
+            "to": "2024/03/12 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.305,
+                    "acProductionMwh": 0.305,
+                    "irradiationKwhM2": 6.428
+                }
+            ],
+            "totalProductionMwh": 0.305,
+            "totalACProductionMwh": 0.305,
+            "totalIrradiationKwhM2": 6.428,
+            "avgAmbientTemp": 15.875,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/13 00:00:00",
+            "to": "2024/03/13 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.302,
+                    "acProductionMwh": 0.302,
+                    "irradiationKwhM2": 6.461
+                }
+            ],
+            "totalProductionMwh": 0.302,
+            "totalACProductionMwh": 0.302,
+            "totalIrradiationKwhM2": 6.461,
+            "avgAmbientTemp": 17.5,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/14 00:00:00",
+            "to": "2024/03/14 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.249,
+                    "acProductionMwh": 0.249,
+                    "irradiationKwhM2": 5.976
+                }
+            ],
+            "totalProductionMwh": 0.249,
+            "totalACProductionMwh": 0.249,
+            "totalIrradiationKwhM2": 5.976,
+            "avgAmbientTemp": 20.083,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/15 00:00:00",
+            "to": "2024/03/15 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.289,
+                    "acProductionMwh": 0.289,
+                    "irradiationKwhM2": 6.135
+                }
+            ],
+            "totalProductionMwh": 0.289,
+            "totalACProductionMwh": 0.289,
+            "totalIrradiationKwhM2": 6.135,
+            "avgAmbientTemp": 21.75,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/16 00:00:00",
+            "to": "2024/03/16 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.21,
+                    "acProductionMwh": 0.21,
+                    "irradiationKwhM2": 5.113
+                }
+            ],
+            "totalProductionMwh": 0.21,
+            "totalACProductionMwh": 0.21,
+            "totalIrradiationKwhM2": 5.113,
+            "avgAmbientTemp": 23.75,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/17 00:00:00",
+            "to": "2024/03/17 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.06,
+                    "acProductionMwh": 0.06,
+                    "irradiationKwhM2": 1.112
+                }
+            ],
+            "totalProductionMwh": 0.06,
+            "totalACProductionMwh": 0.06,
+            "totalIrradiationKwhM2": 1.112,
+            "avgAmbientTemp": 17.167,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/18 00:00:00",
+            "to": "2024/03/18 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.278,
+                    "acProductionMwh": 0.278,
+                    "irradiationKwhM2": 5.692
+                }
+            ],
+            "totalProductionMwh": 0.278,
+            "totalACProductionMwh": 0.278,
+            "totalIrradiationKwhM2": 5.692,
+            "avgAmbientTemp": 15.167,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/19 00:00:00",
+            "to": "2024/03/19 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.296,
+                    "acProductionMwh": 0.296,
+                    "irradiationKwhM2": 6.087
+                }
+            ],
+            "totalProductionMwh": 0.296,
+            "totalACProductionMwh": 0.296,
+            "totalIrradiationKwhM2": 6.087,
+            "avgAmbientTemp": 14.458,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/20 00:00:00",
+            "to": "2024/03/20 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.226,
+                    "acProductionMwh": 0.226,
+                    "irradiationKwhM2": 6.029
+                }
+            ],
+            "totalProductionMwh": 0.226,
+            "totalACProductionMwh": 0.226,
+            "totalIrradiationKwhM2": 6.029,
+            "avgAmbientTemp": 16.375,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/21 00:00:00",
+            "to": "2024/03/21 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.125,
+                    "acProductionMwh": 0.125,
+                    "irradiationKwhM2": 2.061
+                }
+            ],
+            "totalProductionMwh": 0.125,
+            "totalACProductionMwh": 0.125,
+            "totalIrradiationKwhM2": 2.061,
+            "avgAmbientTemp": 19.0,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/22 00:00:00",
+            "to": "2024/03/22 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.182,
+                    "acProductionMwh": 0.182,
+                    "irradiationKwhM2": 2.806
+                }
+            ],
+            "totalProductionMwh": 0.182,
+            "totalACProductionMwh": 0.182,
+            "totalIrradiationKwhM2": 2.806,
+            "avgAmbientTemp": 21.583,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/23 00:00:00",
+            "to": "2024/03/23 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.161,
+                    "acProductionMwh": 0.161,
+                    "irradiationKwhM2": 3.958
+                }
+            ],
+            "totalProductionMwh": 0.161,
+            "totalACProductionMwh": 0.161,
+            "totalIrradiationKwhM2": 3.958,
+            "avgAmbientTemp": 18.833,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/24 00:00:00",
+            "to": "2024/03/24 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.101,
+                    "acProductionMwh": 0.101,
+                    "irradiationKwhM2": 3.015
+                }
+            ],
+            "totalProductionMwh": 0.101,
+            "totalACProductionMwh": 0.101,
+            "totalIrradiationKwhM2": 3.015,
+            "avgAmbientTemp": 14.083,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/25 00:00:00",
+            "to": "2024/03/25 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.087,
+                    "acProductionMwh": 0.087,
+                    "irradiationKwhM2": 2.305
+                }
+            ],
+            "totalProductionMwh": 0.087,
+            "totalACProductionMwh": 0.087,
+            "totalIrradiationKwhM2": 2.305,
+            "avgAmbientTemp": 17.125,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/26 00:00:00",
+            "to": "2024/03/26 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.28,
+                    "acProductionMwh": 0.28,
+                    "irradiationKwhM2": 5.564
+                }
+            ],
+            "totalProductionMwh": 0.28,
+            "totalACProductionMwh": 0.28,
+            "totalIrradiationKwhM2": 5.564,
+            "avgAmbientTemp": 18.583,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/27 00:00:00",
+            "to": "2024/03/27 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.283,
+                    "acProductionMwh": 0.283,
+                    "irradiationKwhM2": 5.735
+                }
+            ],
+            "totalProductionMwh": 0.283,
+            "totalACProductionMwh": 0.283,
+            "totalIrradiationKwhM2": 5.735,
+            "avgAmbientTemp": 19.0,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/28 00:00:00",
+            "to": "2024/03/28 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.253,
+                    "acProductionMwh": 0.253,
+                    "irradiationKwhM2": 5.115
+                }
+            ],
+            "totalProductionMwh": 0.253,
+            "totalACProductionMwh": 0.253,
+            "totalIrradiationKwhM2": 5.115,
+            "avgAmbientTemp": 20.125,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/29 00:00:00",
+            "to": "2024/03/29 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.163,
+                    "acProductionMwh": 0.163,
+                    "irradiationKwhM2": 4.82
+                }
+            ],
+            "totalProductionMwh": 0.163,
+            "totalACProductionMwh": 0.163,
+            "totalIrradiationKwhM2": 4.82,
+            "avgAmbientTemp": 13.417,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/30 00:00:00",
+            "to": "2024/03/30 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.215,
+                    "acProductionMwh": 0.215,
+                    "irradiationKwhM2": 4.178
+                }
+            ],
+            "totalProductionMwh": 0.215,
+            "totalACProductionMwh": 0.215,
+            "totalIrradiationKwhM2": 4.178,
+            "avgAmbientTemp": 13.75,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/03/31 00:00:00",
+            "to": "2024/03/31 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.179,
+                    "acProductionMwh": 0.179,
+                    "irradiationKwhM2": 4.804
+                }
+            ],
+            "totalProductionMwh": 0.179,
+            "totalACProductionMwh": 0.179,
+            "totalIrradiationKwhM2": 4.804,
+            "avgAmbientTemp": 14.292,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/01 00:00:00",
+            "to": "2024/04/01 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.331,
+                    "acProductionMwh": 0.331,
+                    "irradiationKwhM2": 5.484
+                }
+            ],
+            "totalProductionMwh": 0.331,
+            "totalACProductionMwh": 0.331,
+            "totalIrradiationKwhM2": 5.484,
+            "avgAmbientTemp": 13.708,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/02 00:00:00",
+            "to": "2024/04/02 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.174,
+                    "acProductionMwh": 0.174,
+                    "irradiationKwhM2": 4.609
+                }
+            ],
+            "totalProductionMwh": 0.174,
+            "totalACProductionMwh": 0.174,
+            "totalIrradiationKwhM2": 4.609,
+            "avgAmbientTemp": 18.25,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/03 00:00:00",
+            "to": "2024/04/03 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.291,
+                    "acProductionMwh": 0.291,
+                    "irradiationKwhM2": 5.497
+                }
+            ],
+            "totalProductionMwh": 0.291,
+            "totalACProductionMwh": 0.291,
+            "totalIrradiationKwhM2": 5.497,
+            "avgAmbientTemp": 15.792,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/04 00:00:00",
+            "to": "2024/04/04 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.282,
+                    "acProductionMwh": 0.282,
+                    "irradiationKwhM2": 5.398
+                }
+            ],
+            "totalProductionMwh": 0.282,
+            "totalACProductionMwh": 0.282,
+            "totalIrradiationKwhM2": 5.398,
+            "avgAmbientTemp": 15.042,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/05 00:00:00",
+            "to": "2024/04/05 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.271,
+                    "acProductionMwh": 0.271,
+                    "irradiationKwhM2": 4.818
+                }
+            ],
+            "totalProductionMwh": 0.271,
+            "totalACProductionMwh": 0.271,
+            "totalIrradiationKwhM2": 4.818,
+            "avgAmbientTemp": 19.25,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/06 00:00:00",
+            "to": "2024/04/06 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.147,
+                    "acProductionMwh": 0.147,
+                    "irradiationKwhM2": 4.821
+                }
+            ],
+            "totalProductionMwh": 0.147,
+            "totalACProductionMwh": 0.147,
+            "totalIrradiationKwhM2": 4.821,
+            "avgAmbientTemp": 19.208,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/07 00:00:00",
+            "to": "2024/04/07 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.225,
+                    "acProductionMwh": 0.225,
+                    "irradiationKwhM2": 5.079
+                }
+            ],
+            "totalProductionMwh": 0.225,
+            "totalACProductionMwh": 0.225,
+            "totalIrradiationKwhM2": 5.079,
+            "avgAmbientTemp": 17.833,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/08 00:00:00",
+            "to": "2024/04/08 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.165,
+                    "acProductionMwh": 0.165,
+                    "irradiationKwhM2": 3.867
+                }
+            ],
+            "totalProductionMwh": 0.165,
+            "totalACProductionMwh": 0.165,
+            "totalIrradiationKwhM2": 3.867,
+            "avgAmbientTemp": 18.542,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/09 00:00:00",
+            "to": "2024/04/09 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.256,
+                    "acProductionMwh": 0.256,
+                    "irradiationKwhM2": 4.7
+                }
+            ],
+            "totalProductionMwh": 0.256,
+            "totalACProductionMwh": 0.256,
+            "totalIrradiationKwhM2": 4.7,
+            "avgAmbientTemp": 20.25,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/10 00:00:00",
+            "to": "2024/04/10 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.136,
+                    "acProductionMwh": 0.136,
+                    "irradiationKwhM2": 1.712
+                }
+            ],
+            "totalProductionMwh": 0.136,
+            "totalACProductionMwh": 0.136,
+            "totalIrradiationKwhM2": 1.712,
+            "avgAmbientTemp": 19.875,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/11 00:00:00",
+            "to": "2024/04/11 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.271,
+                    "acProductionMwh": 0.271,
+                    "irradiationKwhM2": 5.02
+                }
+            ],
+            "totalProductionMwh": 0.271,
+            "totalACProductionMwh": 0.271,
+            "totalIrradiationKwhM2": 5.02,
+            "avgAmbientTemp": 17.208,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/12 00:00:00",
+            "to": "2024/04/12 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.23,
+                    "acProductionMwh": 0.23,
+                    "irradiationKwhM2": 4.003
+                }
+            ],
+            "totalProductionMwh": 0.23,
+            "totalACProductionMwh": 0.23,
+            "totalIrradiationKwhM2": 4.003,
+            "avgAmbientTemp": 14.333,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/13 00:00:00",
+            "to": "2024/04/13 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.259,
+                    "acProductionMwh": 0.259,
+                    "irradiationKwhM2": 4.664
+                }
+            ],
+            "totalProductionMwh": 0.259,
+            "totalACProductionMwh": 0.259,
+            "totalIrradiationKwhM2": 4.664,
+            "avgAmbientTemp": 11.875,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/14 00:00:00",
+            "to": "2024/04/14 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.218,
+                    "acProductionMwh": 0.218,
+                    "irradiationKwhM2": 4.601
+                }
+            ],
+            "totalProductionMwh": 0.218,
+            "totalACProductionMwh": 0.218,
+            "totalIrradiationKwhM2": 4.601,
+            "avgAmbientTemp": 14.917,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/15 00:00:00",
+            "to": "2024/04/15 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.186,
+                    "acProductionMwh": 0.186,
+                    "irradiationKwhM2": 4.102
+                }
+            ],
+            "totalProductionMwh": 0.186,
+            "totalACProductionMwh": 0.186,
+            "totalIrradiationKwhM2": 4.102,
+            "avgAmbientTemp": 14.917,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/16 00:00:00",
+            "to": "2024/04/16 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.149,
+                    "acProductionMwh": 0.149,
+                    "irradiationKwhM2": 3.941
+                }
+            ],
+            "totalProductionMwh": 0.149,
+            "totalACProductionMwh": 0.149,
+            "totalIrradiationKwhM2": 3.941,
+            "avgAmbientTemp": 16.042,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/17 00:00:00",
+            "to": "2024/04/17 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.156,
+                    "acProductionMwh": 0.156,
+                    "irradiationKwhM2": 2.985
+                }
+            ],
+            "totalProductionMwh": 0.155,
+            "totalACProductionMwh": 0.155,
+            "totalIrradiationKwhM2": 2.985,
+            "avgAmbientTemp": 17.333,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/18 00:00:00",
+            "to": "2024/04/18 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.216,
+                    "acProductionMwh": 0.216,
+                    "irradiationKwhM2": 4.257
+                }
+            ],
+            "totalProductionMwh": 0.215,
+            "totalACProductionMwh": 0.215,
+            "totalIrradiationKwhM2": 4.257,
+            "avgAmbientTemp": 17.792,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/19 00:00:00",
+            "to": "2024/04/19 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.21,
+                    "acProductionMwh": 0.21,
+                    "irradiationKwhM2": 4.329
+                }
+            ],
+            "totalProductionMwh": 0.21,
+            "totalACProductionMwh": 0.21,
+            "totalIrradiationKwhM2": 4.329,
+            "avgAmbientTemp": 19.458,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/20 00:00:00",
+            "to": "2024/04/20 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.212,
+                    "acProductionMwh": 0.212,
+                    "irradiationKwhM2": 4.586
+                }
+            ],
+            "totalProductionMwh": 0.211,
+            "totalACProductionMwh": 0.211,
+            "totalIrradiationKwhM2": 4.586,
+            "avgAmbientTemp": 16.292,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/21 00:00:00",
+            "to": "2024/04/21 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.043,
+                    "acProductionMwh": 0.043,
+                    "irradiationKwhM2": 1.161
+                }
+            ],
+            "totalProductionMwh": 0.043,
+            "totalACProductionMwh": 0.043,
+            "totalIrradiationKwhM2": 1.161,
+            "avgAmbientTemp": 13.167,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/22 00:00:00",
+            "to": "2024/04/22 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.231,
+                    "acProductionMwh": 0.231,
+                    "irradiationKwhM2": 4.5
+                }
+            ],
+            "totalProductionMwh": 0.231,
+            "totalACProductionMwh": 0.231,
+            "totalIrradiationKwhM2": 4.5,
+            "avgAmbientTemp": 12.542,
+            "avgModuleTemp": 0.0
+        },
+        {
+            "from": "2024/04/23 00:00:00",
+            "to": "2024/04/23 23:59:59",
+            "genData": [
+                {
+                    "id": 1,
+                    "name": "Inverter #1",
+                    "code": "1",
+                    "productionMwh": 0.225,
+                    "acProductionMwh": 0.225,
+                    "irradiationKwhM2": 4.471
+                }
+            ],
+            "totalProductionMwh": 0.225,
+            "totalACProductionMwh": 0.225,
+            "totalIrradiationKwhM2": 4.471,
+            "avgAmbientTemp": 15.292,
+            "avgModuleTemp": 0.0
+        }
+    ]
+}

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "id", "name", "code", "productionMwh", "acProductionMwh", "irradiationKwhM2" })
 @Generated("jsonschema2pojo")
-public class GenDatum {
+public class ClimateGenData {
 
 	@JsonProperty("id")
 	private Integer id;
@@ -40,7 +40,7 @@ public class GenDatum {
 		this.id = id;
 	}
 
-	public GenDatum withId(Integer id) {
+	public ClimateGenData withId(Integer id) {
 		this.id = id;
 		return this;
 	}
@@ -55,7 +55,7 @@ public class GenDatum {
 		this.name = name;
 	}
 
-	public GenDatum withName(String name) {
+	public ClimateGenData withName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -70,7 +70,7 @@ public class GenDatum {
 		this.code = code;
 	}
 
-	public GenDatum withCode(String code) {
+	public ClimateGenData withCode(String code) {
 		this.code = code;
 		return this;
 	}
@@ -85,7 +85,7 @@ public class GenDatum {
 		this.productionMwh = productionMwh;
 	}
 
-	public GenDatum withProductionMwh(Double productionMwh) {
+	public ClimateGenData withProductionMwh(Double productionMwh) {
 		this.productionMwh = productionMwh;
 		return this;
 	}
@@ -100,7 +100,7 @@ public class GenDatum {
 		this.acProductionMwh = acProductionMwh;
 	}
 
-	public GenDatum withAcProductionMwh(Double acProductionMwh) {
+	public ClimateGenData withAcProductionMwh(Double acProductionMwh) {
 		this.acProductionMwh = acProductionMwh;
 		return this;
 	}
@@ -115,7 +115,7 @@ public class GenDatum {
 		this.irradiationKwhM2 = irradiationKwhM2;
 	}
 
-	public GenDatum withIrradiationKwhM2(Double irradiationKwhM2) {
+	public ClimateGenData withIrradiationKwhM2(Double irradiationKwhM2) {
 		this.irradiationKwhM2 = irradiationKwhM2;
 		return this;
 	}
@@ -130,7 +130,7 @@ public class GenDatum {
 		this.additionalProperties.put(name, value);
 	}
 
-	public GenDatum withAdditionalProperty(String name, Object value) {
+	public ClimateGenData withAdditionalProperty(String name, Object value) {
 		this.additionalProperties.put(name, value);
 		return this;
 	}

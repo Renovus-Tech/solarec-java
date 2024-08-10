@@ -1,0 +1,28 @@
+{
+    "chart": {
+        "from": "2024/08/02 00:00:00",
+        "to": "2024/08/03 23:59:59",
+        "resultCode": 200,
+        "resultText": ""
+    },
+    "data": [
+        {
+            "id": [
+                8
+            ],
+            "name": [
+                "UY-2-1"
+            ],
+            "code": [
+                "UY-2-1"
+            ],
+            "productionMwh": 0.0,
+            "irradiationKwhM2": 4330.6,
+            "avgAmbientTemp": 21.2,
+            "avgModuleTemp": 0.0,
+            "timeBasedAvailability": 99.5,
+            "specificYield": 0.0,
+            "performanceRatio": 0.0
+        }
+    ]
+}

@@ -36,6 +36,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itextpdf.layout.renderer.LineRenderer;
+
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.SolarService;
@@ -383,6 +385,34 @@ public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtm
 		this.setColors(plot, render, dataset.getRowCount(), options.getForceColor());
         
         return this.generatePNG(chart);
+	}
+	
+	protected String generateLineChart(DefaultCategoryDataset lineDataSet, DefaultCategoryDataset lineDataSet2, ChartOptions lineOptions, ChartOptions lineOptions2) throws IOException {
+		JFreeChart chart				= this.createLineChart(lineDataSet, lineOptions);
+		LegendTitle legend				= chart.getLegend();
+		CategoryPlot plot				= (CategoryPlot) chart.getPlot();
+		CategoryItemRenderer lineRender = plot.getRenderer();
+		ValueAxis lineValueRange		= plot.getRangeAxis();
+		
+		if (lineOptions2 != null) {
+			NumberAxis barValueRange = new NumberAxis(lineOptions2.getValueAxisLabel());
+			plot.setRangeAxis(1, barValueRange);
+			this.setRange(barValueRange, lineOptions2);
+		}
+		
+		LineAndShapeRenderer lineRender2 = new LineAndShapeRenderer();
+		plot.setDataset(1, lineDataSet2);
+		plot.setRenderer(1, lineRender2);
+		
+		this.setRange(lineValueRange, lineOptions);
+		
+	    this.setDomainAxis(plot);
+	    this.setTexts(chart, legend, lineRender, null);
+	    this.setColors(plot, lineRender, lineDataSet.getRowCount(), COLOR_6);
+	    
+	    this.setColors(plot, lineRender2, lineDataSet2.getRowCount());
+	
+	    return this.generatePNG(chart);
 	}
 	
 	protected final String generateXYLineChart(XYDataset dataset, ChartOptions options)	throws IOException {

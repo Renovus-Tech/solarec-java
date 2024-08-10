@@ -23,7 +23,7 @@ public class Climate extends BaseError {
 	@JsonProperty("chart")
 	private Chart chart;
 	@JsonProperty("data")
-	private List<Datum> data;
+	private List<ClimateData> data;
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -43,16 +43,16 @@ public class Climate extends BaseError {
 	}
 
 	@JsonProperty("data")
-	public List<Datum> getData() {
+	public List<ClimateData> getData() {
 		return data;
 	}
 
 	@JsonProperty("data")
-	public void setData(List<Datum> data) {
+	public void setData(List<ClimateData> data) {
 		this.data = data;
 	}
 
-	public Climate withData(List<Datum> data) {
+	public Climate withData(List<ClimateData> data) {
 		this.data = data;
 		return this;
 	}

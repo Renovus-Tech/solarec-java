@@ -44,4 +44,7 @@ public class GenDataVo extends DbGenDataVo implements IData {
 	public void aggregate() {
 		this.setDataValue(Double.valueOf(this.amount == 0 ? 0 : this.value / this.amount));
 	}
+	public void sum() {
+		this.setDataValue(Double.valueOf(this.value));
+	}
 }
