@@ -1,4 +1,4 @@
-package tech.renovus.solarec.certificate.common;
+package tech.renovus.solarec.certificate;
 
 import tech.renovus.solarec.vo.db.data.ClientVo;
 

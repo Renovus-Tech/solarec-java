@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import tech.renovus.solarec.certificate.common.CertificateService;
+import tech.renovus.solarec.certificate.CertificateService;
 import tech.renovus.solarec.certificate.surentis.api.Client;
 import tech.renovus.solarec.certificate.surentis.api.Location;
 import tech.renovus.solarec.certificate.surentis.api.Mode;
