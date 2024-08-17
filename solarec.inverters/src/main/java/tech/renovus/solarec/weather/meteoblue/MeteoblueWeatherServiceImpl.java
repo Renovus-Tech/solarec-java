@@ -568,7 +568,7 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 				
 				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_AMBIENT_TEMPERATURE,	data.getData1h().getTemperature().get(i), dataDate, result);
 //				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_MODULE_TEMPERATURE,	(Double) null, dataDate, result);
-				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_IRRADIATION,			data.getData1h().getGhiInstant().get(i), dataDate, result);
+				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_IRRADIATION,			data.getData1h().getGhiInstant().get(i) == null ? null : Double.valueOf(data.getData1h().getGhiInstant().get(i).doubleValue() / 1000), dataDate, result);
 				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_TOTAL_CLOUD_COVER,	data.getData1h().getTotalcloudcover().get(i), dataDate, result);
 				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_PRECIPITATION,		data.getData1h().getPrecipitation().get(i), dataDate, result);
 			}
