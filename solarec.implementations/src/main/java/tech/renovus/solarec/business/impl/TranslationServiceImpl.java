@@ -23,6 +23,7 @@ public class TranslationServiceImpl implements TranslationService {
 	private static final String PREFIX_ALERT			= "alert.";
 	private static final String PREFIX_SETTING			= "setting.";
 	private static final String PREFIX_SETTING_CATEGORY	= "setting.category.";
+	private static final String PREFIX_EMAIL_TEMPLATE	= "email_template.";
 	
 	//--- Private properties --------------------
 	@Autowired private TemplateEngine templateEngine;
@@ -47,6 +48,6 @@ public class TranslationServiceImpl implements TranslationService {
 		if (CollectionUtil.notEmpty(variables)) {
 			variables.entrySet().forEach(entry -> context.setVariable(entry.getKey(), entry.getValue()));
 		}
-		return this.templateEngine.process(templateName, context);
+		return this.templateEngine.process(this.forLabel(locale, PREFIX_EMAIL_TEMPLATE + templateName), context);
 	}
 }

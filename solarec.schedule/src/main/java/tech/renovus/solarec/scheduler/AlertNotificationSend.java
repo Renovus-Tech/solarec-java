@@ -67,7 +67,7 @@ public class AlertNotificationSend {
 			        Map<String, Object> variables = new HashMap<>();
 			        variables.put("alertContent", this.parserService.parseAlert(alertVo, locale));
 			        
-			        String emailContent			= this.tranaslationService.forTemplate(locale, "email_alert.html", variables);
+			        String emailContent			= this.tranaslationService.forTemplate(locale, "alert_generated", variables);
 				
 			        CliLocUsrAlertVo sendResult = new CliLocUsrAlertVo(alertVo.getCliId(), alertVo.getLocId(), usrVo.getUsrId(), alertVo.getCliLocAlertId());
 					sendResult.setSyncType(BaseDbVo.SYNC_INSERT);
@@ -112,7 +112,7 @@ public class AlertNotificationSend {
 			        Map<String, Object> variables = new HashMap<>();
 			        variables.put("alertContent", this.parserService.parseAlert(alertVo, locale));
 			        
-			        String emailContent			= this.tranaslationService.forTemplate(locale, "email_alert.html", variables);
+			        String emailContent			= this.tranaslationService.forTemplate(locale, "alert_generated", variables);
 					
 			        CliGenUsrAlertVo sendResult = new CliGenUsrAlertVo(alertVo.getCliId(), alertVo.getGenId(), usrVo.getUsrId(), alertVo.getCliGenAlertId());
 					sendResult.setSyncType(BaseDbVo.SYNC_INSERT);

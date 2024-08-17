@@ -120,7 +120,7 @@ public class ReportServiceImpl implements ReportService {
 	        		request.getLocName()
 	        	));
 	        
-	        String emailContent			= this.translationService.forTemplate(locale, "email_report", variables);
+	        String emailContent			= this.translationService.forTemplate(locale, "report_generated", variables);
 	        
 			Collection<EmailFile> files = new ArrayList<>(1);
 			if (report.isGenerated()) {

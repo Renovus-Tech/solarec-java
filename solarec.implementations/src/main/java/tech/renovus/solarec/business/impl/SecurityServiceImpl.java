@@ -233,7 +233,7 @@ public class SecurityServiceImpl implements SecurityService {
         variables.put("email", usrVo.getUsrEmail());
         variables.put("link", url.toString());
         
-        String emailContent			= this.translationService.forTemplate(locale, "email_password_reset.html", variables);
+        String emailContent			= this.translationService.forTemplate(locale, "email_password_reset", variables);
 		
 		this.emailService.sendSimpleHtmlMessage(usrVo.getUsrEmail(), subject, emailContent);
 	}
@@ -278,7 +278,7 @@ public class SecurityServiceImpl implements SecurityService {
 			        variables.put("email", usrVo.getUsrEmail());
 			        
 			        String subject = this.translationService.forLabel(userData.getLocale(), "email.password-changed.subject");
-			        String emailContent			= this.translationService.forTemplate(userData.getLocale(), "email_password_reset_done.html", variables);
+			        String emailContent			= this.translationService.forTemplate(userData.getLocale(), "email_password_reset_done", variables);
 
 					this.emailService.sendSimpleHtmlMessage(usrVo.getUsrEmail(), subject, emailContent);
 				}
