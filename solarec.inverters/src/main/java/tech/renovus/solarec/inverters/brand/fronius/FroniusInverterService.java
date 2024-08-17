@@ -1,5 +1,7 @@
 package tech.renovus.solarec.inverters.brand.fronius;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.fronius.api.InfoReleaseResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.aggregated.specific.AggregatedSpecificDate;
@@ -29,6 +32,9 @@ import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
+import tech.renovus.solarec.util.FileUtil;
+import tech.renovus.solarec.util.JsonUtil;
+import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.custom.chart.alerts.AlertTrigger;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
@@ -52,12 +58,13 @@ import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
  * AccessKeyValue: 47c076bc-23e5-4949-37a6-4bcfcf8d21d6
  * 
  * Data required from client: key_id and key_value
- * Data required from inverter: pv_sustems_id
+ * Data required from inverter: pv_systems_id
  */
 public class FroniusInverterService implements InverterService {
 
 	//-- Private constants ----------------------
 	private static final String LOG_PREFIX	= "[Fronius] ";
+	private static final double ADJUSTMENT_MULTIPLIER = 4;
 	
 	//--- Protected constants -------------------
 	protected static final String URL_PRD											= "https://api.solarweb.com/swqapi";
@@ -83,9 +90,12 @@ public class FroniusInverterService implements InverterService {
 	protected static final String PARAM_GEN_LAST_DATE_RETRIEVE						= "fronius.generator.last_retrieve";
 	
 	protected static final String PARAM_DATA_DEMO									= "fronius.data_demo";
+
+	//--- Resources -----------------------------
+	@Autowired WeatherService weatherService;
+	@Autowired RenovusSolarecConfiguration configuration;
 	
 	//--- Private properties --------------------
-	@Autowired WeatherService weatherService;
 	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");	
 	private ClientVo cliVo;
 	private boolean continueWithStats = true;
@@ -121,7 +131,7 @@ public class FroniusInverterService implements InverterService {
 						genData.setGenId(generator.getGenId());
 						genData.setDataDate(dataDate);
 						genData.setDataTypeId(DataTypeVo.TYPE_SOLAR_INVERTER_AC_POWER);
-						genData.setDataValue(aChannel.getValue() == null ? null : Double.valueOf(aChannel.getValue().intValue() / (double) 1000 ));
+						genData.setDataValue(aChannel.getValue() == null ? null : Double.valueOf((aChannel.getValue().intValue() * ADJUSTMENT_MULTIPLIER )/ (double) 1000 )); //Values in WH
 						
 						result.add(genData);
 					}
@@ -141,7 +151,7 @@ public class FroniusInverterService implements InverterService {
 		dataValues.forEach(
                 data -> {
                 	cal.setTime(data.getDataDate());
-            		cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) % 15);
+            		cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) / 15 * 15);
             		Date simpleDate = cal.getTime();
                 	
                 	result.computeIfAbsent(simpleDate, x -> new GenDataVo(data.getCliId(), data.getGenId(), x, data.getDataTypeId()));
@@ -149,7 +159,7 @@ public class FroniusInverterService implements InverterService {
                 }
         );
 		
-		result.values().forEach(x -> x.aggregate());
+		result.values().forEach(x -> x.sum());
 		
 		return new ArrayList<>(result.values());
 	}
@@ -164,7 +174,7 @@ public class FroniusInverterService implements InverterService {
 		return url;
 	}
 	
-	private void retrieveData(InverterData inverterData, LocationVo location, StationVo station, GeneratorVo generator, Date dateFrom, Date to) throws WeatherServiceException {
+	private void retrieveData(InverterData inverterData, LocationVo location, StationVo station, GeneratorVo generator, Date dateFrom, Date to) throws IOException, WeatherServiceException {
 		String accessKeyId		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_ACCESS_KEY_ID);
 		String accessKeyValue	= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_ACCESS_KEY_VALUE);
 		String pvSystemsId		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_GEN_PV_SYSTEM_ID);
@@ -173,6 +183,11 @@ public class FroniusInverterService implements InverterService {
 		InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_PARAMETER_DATE_TIME), DateUtil.formatDateTime(to, DateUtil.FMT_PARAMETER_DATE_TIME));
 		
 		HistoryDataResponse data = this.getPvSystemsHistData(betaMode, accessKeyId, accessKeyValue, pvSystemsId, dateFrom, to);
+		
+		File jsonFile = new File(this.configuration.getPathLog() + File.separator + "Fronius", StringUtil.join("_", this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE_TIME))+ ".json");
+		File parent = jsonFile.getParentFile();
+		if (! parent.exists()) parent.mkdirs();
+		FileUtil.saveToFile(JsonUtil.toStringPretty(data), jsonFile);
 		
 		if (data == null || data.hasError()) {
 			this.continueWithStats = false;
@@ -275,7 +290,7 @@ public class FroniusInverterService implements InverterService {
 						
 						try {
 							this.retrieveData(inverterData, location, station, generator, dateFrom, to);
-						} catch (WeatherServiceException e) {
+						} catch (IOException | WeatherServiceException e) {
 							throw new InveterServiceException(e);
 						}
 					}
