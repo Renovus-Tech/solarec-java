@@ -64,3 +64,10 @@ solarec.electricmaps.key = vZlGDaShfLe3V
 surentis.url = 
 suerntis.system_id = 
 surentis.test_mode = 
+
+#IrecBr
+irecbr.url = 
+irecbr.user = 
+irecbr.password = 
+irecbr.id.source = 
+irecbr.id.technology = 

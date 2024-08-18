@@ -1,12 +1,16 @@
 package tech.renovus.solarec.certificate.irec.br;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import tech.renovus.solarec.certificate.CertificateService;
 import tech.renovus.solarec.certificate.irec.br.api.business.BusinessRequest;
@@ -24,16 +28,26 @@ import tech.renovus.solarec.certificate.irec.br.api.source.SourceResponse;
 import tech.renovus.solarec.certificate.irec.br.api.technology.TechnologyRequest;
 import tech.renovus.solarec.certificate.irec.br.api.technology.TechnologyResponse;
 import tech.renovus.solarec.connection.JsonCaller;
+import tech.renovus.solarec.db.data.dao.interfaces.GenDataDao;
+import tech.renovus.solarec.db.data.dao.interfaces.UsersDao;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.vo.db.data.DataTypeVo;
+import tech.renovus.solarec.vo.db.data.GenDataVo;
+import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.UsersVo;
 
+/**
+ * Site: https://site.institutototum.com.br/totum-services/i-rece/
+ * API documentation: https://api.sisgasrec.institutototum.com.br/docs/#/Participant/post_participants
+ * URL prod: https://api.sisgasrec.institutototum.com.br/api/v1
+ * URL test:
+ */
 @Service
 @ConditionalOnProperty(name = "solarec.service.certificate.provider", havingValue = "irrecbr")
 public class IrecBrCertificateService implements CertificateService {
 
 	//--- Endpoints -----------------------------
-	private static final String URL_PROD				= "https://api.sisgasrec.institutototum.com.br/api/v1";
-	private static final String URL_TEST				= "";
-	
 	private static final String ENDPOINT_LOGIN			= "/auth/login";
 	private static final String ENDPOINT_REGISTRANTS	= "/registrants";
 	private static final String ENDPOINT_SOURCES		= "/sources";
@@ -42,22 +56,74 @@ public class IrecBrCertificateService implements CertificateService {
 	private static final String ENDPOINT_PARTICIPANTS	= "/participants";
 	private static final String ENDPOINT_RECS			= "/recs";
 	
-	//--- Private methods -----------------------
-	private String getUrl(boolean forTest, String endpoint) {
-		return (forTest ? URL_TEST : URL_PROD) + endpoint;
-	}
+	//--- Resouces ------------------------------
+	@Autowired IrecBrConfiguration configuration;
+	@Autowired UsersDao usersDao;
+	@Autowired GenDataDao genDataDao;
 	
+	//--- Private methods -----------------------
 	private Map<String, String> generateHeaders(String authorizationKey) {
 		Map<String, String> result = new HashMap<>();
 		result.put("Authorization", authorizationKey);
 		return result;
 	}
 	
+	private String getAuthorizationCode(LoginResponse loginResponse) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	//--- Implemented methods -------------------
 	@Override
-	public void register(ClientVo client) throws CertificateServiceException {
-		// TODO Auto-generated method stub
+	public void register(ClientVo cliVo) throws CertificateServiceException {
+		LoginResponse loginResponse	= this.login(this.configuration.getUser(), this.configuration.getPassword());
+		String authorizationKey		= this.getAuthorizationCode(loginResponse);
 
+		UsersVo usrVo = this.usersDao.findBy(cliVo.getCliName());
+		
+		try {
+			RegistrantResponse registrantResponse = this.createRegistrant(
+				authorizationKey,
+				null, //socialName,
+				usrVo.getUsrEmail(),
+				usrVo.getUsrPassword(),
+				null, //iRec,
+				null, //cnpj,
+				usrVo.getUsrComments(),
+				null, //expirationDay,
+				null, //priceIrec,
+				null //priceRecBrazil
+			);
+			
+			BusinessResponse businessResponse = this.createBusiness(
+				authorizationKey,
+				cliVo.getCliNameLegal(),
+				null, //ceg,
+				null, //aneel,
+				null, //cnpj,
+				Integer.valueOf(0), //isCarbonCredit,
+				null, //comercialOperationAt,
+				registrantResponse.getId(),
+				this.configuration.getIdSource(),
+				this.configuration.getIdTechnology(),
+				null //address
+			);
+			
+			for (LocationVo locVo : cliVo.getLocations()) {
+				ParticipantResponse participantResponse = this.createParticipant(
+					authorizationKey,
+					locVo.getLocName(),
+					null //irec
+				);
+				
+				locVo.setLocCertProvData(JsonUtil.toStringPretty(participantResponse));
+			}
+			
+			usrVo.setUsrCertProvData(JsonUtil.toStringPretty(registrantResponse));
+			cliVo.setCliCertProvData(JsonUtil.toStringPretty(businessResponse));
+		} catch (JsonProcessingException e) {
+			throw new CertificateServiceException(e);
+		}
 	}
 
 	@Override
@@ -67,8 +133,39 @@ public class IrecBrCertificateService implements CertificateService {
 	}
 
 	@Override
-	public void registerGeneration(ClientVo client) throws CertificateServiceException {
-		// TODO Auto-generated method stub
+	public void registerGeneration(ClientVo cliVo) throws CertificateServiceException {
+		LoginResponse loginResponse	= this.login(this.configuration.getUser(), this.configuration.getPassword());
+		String authorizationKey		= this.getAuthorizationCode(loginResponse);
+		Date now					= new Date();
+		
+		try {
+			BusinessResponse businessResponse = JsonUtil.toObject(cliVo.getCliCertProvData(), BusinessResponse.class);
+			
+			for (LocationVo locVo : cliVo.getLocations()) {
+				ParticipantResponse participantResponse = JsonUtil.toObject(locVo.getLocCertProvData(), ParticipantResponse.class);
+				
+				Collection<GenDataVo> genData = this.genDataDao.getAllWithoutCertProvData(locVo.getCliId(), locVo.getLocId(), DataTypeVo.TYPE_SOLAR_INVERTER_AC_POWER);
+				
+				double amount = genData.stream().mapToDouble(x -> x.getDataValue()).sum();
+				
+				RecResponse recResponse = this.createRec(
+					authorizationKey,
+					null, //recId,
+					businessResponse.getId(),
+					now,
+					Double.valueOf(amount),
+					participantResponse.getId(),
+					Integer.valueOf(0), //nationalStats,
+					Integer.valueOf(0) 				//publicConsumption
+				);
+				
+				String recResponseJson = JsonUtil.toStringPretty(recResponse);
+				
+				genData.forEach(x -> x.setGenDataCertProvData(recResponseJson));
+			}
+		} catch (JsonProcessingException e) {
+			throw new CertificateServiceException(e);
+		}
 
 	}
 
@@ -79,9 +176,9 @@ public class IrecBrCertificateService implements CertificateService {
 	}
 
 	//--- API methods ---------------------------
-	public LoginResponse login(boolean forTest, String email, String password) {
+	public LoginResponse login(String email, String password) {
 		return JsonCaller.post(
-				this.getUrl(forTest, ENDPOINT_LOGIN), 
+				this.configuration.getUrl() + ENDPOINT_LOGIN, 
 				new LoginRequest()
 					.withEmail(email)
 					.withPassword(password),
@@ -89,7 +186,6 @@ public class IrecBrCertificateService implements CertificateService {
 	}
 	
 	public RegistrantResponse createRegistrant(
-		boolean forTest,
 		String authorizationKey,
 		String socialName,
 		String email,
@@ -102,7 +198,7 @@ public class IrecBrCertificateService implements CertificateService {
 		String priceRecBrazil
 	) {
 		return JsonCaller.post(
-			this.getUrl(forTest,  ENDPOINT_REGISTRANTS), 
+			this.configuration.getUrl() +  ENDPOINT_REGISTRANTS, 
 			this.generateHeaders(authorizationKey),
 			new RegistrantRequest()
 				.withSocialName(socialName)
@@ -120,14 +216,13 @@ public class IrecBrCertificateService implements CertificateService {
 	}
 	
 	public SourceResponse createSource(
-		boolean forTest,
 		String authorizationKey,
 		String name,
 		Integer variation,
 		Integer efficency
 	) {
 		return JsonCaller.post(
-			this.getUrl(forTest,  ENDPOINT_SOURCES), 
+			this.configuration.getUrl() +  ENDPOINT_SOURCES, 
 			this.generateHeaders(authorizationKey),
 			new SourceRequest()
 				.withName(name)
@@ -138,12 +233,11 @@ public class IrecBrCertificateService implements CertificateService {
 	}
 
 	public TechnologyResponse createTechnology(
-		boolean forTest,
 		String authorizationKey,
 		String name
 	) {
 		return JsonCaller.post(
-			this.getUrl(forTest,  ENDPOINT_TECHNOLOGIES), 
+			this.configuration.getUrl() +  ENDPOINT_TECHNOLOGIES, 
 			this.generateHeaders(authorizationKey),
 			new TechnologyRequest()
 				.withName(name)
@@ -152,7 +246,6 @@ public class IrecBrCertificateService implements CertificateService {
 	}
 	
 	public BusinessResponse createBusiness(
-		boolean forTest,
 		String authorizationKey,
 		String socialName,
 		String ceg,
@@ -168,7 +261,7 @@ public class IrecBrCertificateService implements CertificateService {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		return JsonCaller.post(
-			this.getUrl(forTest,  ENDPOINT_BUSINESS), 
+			this.configuration.getUrl() +  ENDPOINT_BUSINESS, 
 			this.generateHeaders(authorizationKey),
 			new BusinessRequest()
 				.withSocialName(socialName)
@@ -186,13 +279,12 @@ public class IrecBrCertificateService implements CertificateService {
 	}
 	
 	public ParticipantResponse createParticipant(
-		boolean forTest,
 		String authorizationKey,
 		String name,
 		String irec
 	) {
 		return JsonCaller.post(
-			this.getUrl(forTest,  ENDPOINT_PARTICIPANTS), 
+			this.configuration.getUrl() +  ENDPOINT_PARTICIPANTS, 
 			this.generateHeaders(authorizationKey),
 			new ParticipantRequest()
 				.withName(name)
@@ -202,7 +294,6 @@ public class IrecBrCertificateService implements CertificateService {
 	}
 	
 	public RecResponse createRec(
-		boolean forTest,
 		String authorizationKey,
 		String recId,
 		String bssinessId,
@@ -215,7 +306,7 @@ public class IrecBrCertificateService implements CertificateService {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		return JsonCaller.post(
-			this.getUrl(forTest,  ENDPOINT_RECS), 
+			this.configuration.getUrl() +  ENDPOINT_RECS,
 			this.generateHeaders(authorizationKey),
 			new RecRequest()
 				.withRecId(recId)
