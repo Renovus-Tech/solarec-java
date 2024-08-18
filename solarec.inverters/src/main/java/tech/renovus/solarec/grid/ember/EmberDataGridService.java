@@ -87,9 +87,12 @@ public class EmberDataGridService implements DataGridService {
 							data.setDataValue(hourGco2);
 							data.setDataDate(cal.getTime());
 		
-							result.add(data);
-							
-							cal.add(Calendar.HOUR_OF_DAY, 1);
+							if (ctrVo.getCtrDataDateMax() == null || cal.getTime().after(ctrVo.getCtrDataDateMax())) {
+								
+								result.add(data);
+								
+								cal.add(Calendar.HOUR_OF_DAY, 1);
+							}
 						}
 						
 						cal.add(Calendar.DAY_OF_YEAR, 1);
