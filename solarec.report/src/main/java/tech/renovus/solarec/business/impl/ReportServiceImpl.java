@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeSet;
@@ -14,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -51,6 +51,7 @@ public class ReportServiceImpl implements ReportService {
 
 	//--- Properties ----------------------------
 	@Autowired ApplicationEventPublisher eventPublisher;
+	@Autowired MessageSource messageSource;
 	@Autowired TranslationService translationService;
 	
 	@Autowired RenovusSolarecConfiguration configuration;

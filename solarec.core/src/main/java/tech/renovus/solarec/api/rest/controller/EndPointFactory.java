@@ -9,6 +9,7 @@ public class EndPointFactory {
 	public static final String REST_API_BACKGROUND									= REST_API + "/background";
 	public static final String REST_API_CHART										= REST_API + "/chart";
 	public static final String REST_API_WEATHER										= REST_API + "/weather";
+	public static final String REST_API_REPORT										= REST_API + "/report";
 
 	public static final String REST_SECURITY_AUTHENTICATE							= REST_API_SECURITY + "/authenticate";
 	public static final String REST_SECURITY_AUTHENTICATE_RESET						= REST_API_SECURITY + "/authenticate/reset";
@@ -42,6 +43,9 @@ public class EndPointFactory {
 	public static final String REST_CHART_REVENUE_SALES								= REST_API_CHART + "/revenue/sales";
 	
 	public static final String REST_API_WEATHER_HISTORY								= REST_API_WEATHER + "/history";
+	
+	public static final String REST_API_REPORT_CONFIGURE							= REST_API_REPORT + "/configure";
+	public static final String REST_API_REPORT_GENERATE								= REST_API_REPORT + "/generate";
 	
 	//--- Solar public constants ----------------
 	public static final String REST_API_SOLAR										= REST_API + "/solar";

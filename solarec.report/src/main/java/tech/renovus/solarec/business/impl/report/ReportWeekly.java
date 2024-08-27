@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.impl.report.html.AlertSummaryHtmlFactory;
 import tech.renovus.solarec.business.impl.report.html.ProductionAndClimateHtmlFactory;
 import tech.renovus.solarec.business.impl.report.html.basic.IReportHtml;
-import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.report.ReportRequest;
