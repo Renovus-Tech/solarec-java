@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -41,6 +42,7 @@ import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.StaDataVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
 import tech.renovus.solarec.weather.WeatherService;
 import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
@@ -92,8 +94,8 @@ public class FroniusInverterService implements InverterService {
 	protected static final String PARAM_DATA_DEMO									= "fronius.data_demo";
 
 	//--- Resources -----------------------------
-	@Autowired WeatherService weatherService;
 	@Autowired RenovusSolarecConfiguration configuration;
+	@Autowired WeatherService weatherService;
 	
 	//--- Private properties --------------------
 	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");	
@@ -112,7 +114,18 @@ public class FroniusInverterService implements InverterService {
 		return result;
 	}
 	
-	private List<GenDataVo> process(GeneratorVo generator, HistoryDataResponse data, Date fromDate) throws ParseException {
+	private Date adjustGmt(Date aDate, String gmt) {
+		if (StringUtil.isEmpty(gmt)) return aDate;
+		String[] parts = StringUtil.split(gmt, ":");
+		if (parts == null || parts.length != 2) return aDate;
+		int hours = Integer.parseInt(parts[0]);
+		int minutes = Integer.parseInt(parts[1]);
+		
+		if (hours < 0) minutes *= -1;
+		return DateUtil.addUnit(aDate, Calendar.MINUTE, (hours * 60) + minutes);
+	}
+	
+	private List<GenDataVo> process(GeneratorVo generator, HistoryDataResponse data, Date fromDate, String gmt) throws ParseException {
 		List<GenDataVo> result = new ArrayList<>();
 		
 		if (data != null && CollectionUtil.notEmpty(data.getData())) {
@@ -123,7 +136,7 @@ public class FroniusInverterService implements InverterService {
 						if (! "EnergyProductionTotal".equals(aChannel.getChannelName())) continue;
 						
 						Date dataDate = this.formatDate.parse(aData.getLogDateTime());
-						
+						dataDate = this.adjustGmt(dataDate, gmt);
 						if (dataDate.before(fromDate)) continue;
 						
 						GenDataVo genData = new GenDataVo();
@@ -220,7 +233,10 @@ public class FroniusInverterService implements InverterService {
 		}
 		
 		try {
-			List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
+			String gmtToUse = location.getLocGmt();
+			if (StringUtil.isEmpty(gmtToUse)) gmtToUse = this.cliVo.getCliGmt();
+			
+			List<GenDataVo> generatorData = this.process(generator, data, dateFrom, gmtToUse);
 			generatorData = this.aggregate(generatorData);
 			
 			if (CollectionUtil.notEmpty(generatorData)) {
@@ -230,7 +246,7 @@ public class FroniusInverterService implements InverterService {
 				
 				InvertersUtil.setParameter(generator, PARAM_GEN_LAST_DATE_RETRIEVE, Long.toString(lastDate.getTime()));
 				
-				CollectionUtil.addAll(inverterData.getStationData(), this.weatherService.retrieveWeatherData(location, station, dateFrom, lastDate));
+				CollectionUtil.addAll(inverterData.getStationData(), this.retrieveWeatherData(location, station, dateFrom, lastDate, gmtToUse));
 				
 				Calendar cal = GregorianCalendar.getInstance();
 				cal.setTime(lastDate);
@@ -245,6 +261,14 @@ public class FroniusInverterService implements InverterService {
 			LoggerService.inverterLogger().error(LOG_PREFIX + "Error parsing data: " + e.getLocalizedMessage(), e);
 			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(-1));
 		}
+	}
+
+	private Collection<StaDataVo> retrieveWeatherData(LocationVo location, StationVo station, Date dateFrom, Date lastDate, String gmt) throws WeatherServiceException {
+		Collection<StaDataVo> result = this.weatherService.retrieveWeatherData(location, station, dateFrom, lastDate);
+		
+		if (CollectionUtil.notEmpty(result)) result.forEach(data -> data.setDataDate(this.adjustGmt(data.getDataDate(), gmt)));
+		
+		return result;
 	}
 	
 	//--- Implemented methods -------------------
