@@ -70,7 +70,7 @@ public class AlertNotificationSendTest {
 		
 		when(this.cliGenAlertDao.retrieveForEmailAlert()).thenReturn(genAlerts);
 		when(this.cliLocAlertDao.retrieveForEmailAlert()).thenReturn(locAlerts);
-		when(this.userDao.findAllForAlertEmailNotification(Integer.valueOf(1), Integer.valueOf(2), UsersVo.FLAG_RECEIVE_ALERT_GENERATOR_NBY_EMAIL)).thenReturn(users);
+		when(this.userDao.findAllForAlertEmailNotification(Integer.valueOf(1), Integer.valueOf(2), UsersVo.FLAG_RECEIVE_ALERT_GENERATORN_BY_EMAIL)).thenReturn(users);
 	}
 	
 	@Test 

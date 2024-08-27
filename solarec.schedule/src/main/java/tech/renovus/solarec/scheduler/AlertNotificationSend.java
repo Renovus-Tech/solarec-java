@@ -56,7 +56,7 @@ public class AlertNotificationSend {
 			Map<Integer, Collection<UsersVo>> sendNotificationsTo = new HashMap<>();
 			
 			for (CliLocAlertVo alertVo : toSend) {
-				Collection<UsersVo> notify					= sendNotificationsTo.computeIfAbsent(alertVo.getLocId(), locId -> this.userDao.findAllForAlertEmailNotification(alertVo.getCliId(), alertVo.getLocId(), UsersVo.FLAG_RECEIVE_ALERT_GENERATOR_NBY_EMAIL));
+				Collection<UsersVo> notify					= sendNotificationsTo.computeIfAbsent(alertVo.getLocId(), locId -> this.userDao.findAllForAlertEmailNotification(alertVo.getCliId(), alertVo.getLocId(), UsersVo.FLAG_RECEIVE_ALERT_GENERATORN_BY_EMAIL));
 				Collection<CliLocUsrAlertVo> sendResults	= new ArrayList<>();
 						
 				for (UsersVo usrVo : notify) {
@@ -101,7 +101,7 @@ public class AlertNotificationSend {
 			Map<Integer, Collection<UsersVo>> sendNotificationsTo = new HashMap<>();
 			
 			for (CliGenAlertVo alertVo : toSend) {
-				Collection<UsersVo> notify					= sendNotificationsTo.computeIfAbsent(alertVo.getLocId(), locId -> this.userDao.findAllForAlertEmailNotification(alertVo.getCliId(), alertVo.getLocId(), UsersVo.FLAG_RECEIVE_ALERT_GENERATOR_NBY_EMAIL));
+				Collection<UsersVo> notify					= sendNotificationsTo.computeIfAbsent(alertVo.getLocId(), locId -> this.userDao.findAllForAlertEmailNotification(alertVo.getCliId(), alertVo.getLocId(), UsersVo.FLAG_RECEIVE_ALERT_GENERATORN_BY_EMAIL));
 				Collection<CliGenUsrAlertVo> sendResults	= new ArrayList<>();
 						
 				for (UsersVo usrVo : notify) {
