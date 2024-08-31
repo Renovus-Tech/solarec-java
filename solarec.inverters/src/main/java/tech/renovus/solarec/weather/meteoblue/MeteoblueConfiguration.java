@@ -8,6 +8,7 @@ public class MeteoblueConfiguration {
 	
 	//--- API configuration ---------------------
 	@Value("${solarec.meteoblue.key}")					private String key;
+	@Value("${solarec.meteoblue.max_day_past:7}")		private Integer maxDaysPast;
 
 	//--- Getters methods -----------------------
 	public String getKey() {
@@ -16,6 +17,14 @@ public class MeteoblueConfiguration {
 
 	public void setKey(String meteoblueKey) {
 		this.key = meteoblueKey;
+	}
+
+	public Integer getMaxDaysPast() {
+		return maxDaysPast;
+	}
+
+	public void setMaxDaysPast(Integer maxDaysPast) {
+		this.maxDaysPast = maxDaysPast;
 	}
 	
 }

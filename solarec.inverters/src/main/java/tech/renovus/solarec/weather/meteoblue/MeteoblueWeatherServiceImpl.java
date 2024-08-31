@@ -538,8 +538,22 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 	@Override public Collection<StaDataVo> retrieveWeatherData(LocationVo locVo, StationVo station, Date dateFrom, Date dateTo) throws WeatherServiceException {
 		LoggerService.weatherLogger().info("[Meteoblue] Start data retrieve from " + DATE_FORMATTER.format(dateFrom) + " from " + DATE_FORMATTER.format(dateTo) + " for coords: " + locVo.getLocCoordLat() + " - " + locVo.getLocCoordLng());
 		
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, this.config.getMaxDaysPast().intValue());
+		cal.set(Calendar.HOUR,0);
+		cal.set(Calendar.MINUTE,0);
+		cal.set(Calendar.SECOND,0);
+		cal.set(Calendar.MILLISECOND,0);
+		cal.set(Calendar.AM_PM,Calendar.AM);
+
+		Date minDate = cal.getTime();
+		
+		boolean periodInRange = dateTo.after(minDate);
+		
+		LoggerService.weatherLogger().warn("[Meteoblue] Period out of range in past (" + this.config.getMaxDaysPast() + ").");
+		
 		Map<String, String> params		= this.getParams(locVo, dateFrom, dateTo, false);
-		WeatherData data				= JsonCaller.get(URL_SOLAR, params, WeatherData.class);
+		WeatherData data				= periodInRange ? JsonCaller.get(URL_SOLAR, params, WeatherData.class) : null;
 		int startIndex					= 0;
 		int endIndex					= -1;
 		Collection<StaDataVo> result	= new ArrayList<>();
@@ -548,6 +562,7 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 			LoggerService.weatherLogger().info("[Meteoblue] No data");
 			return result;
 		}
+		
 		LoggerService.weatherLogger().info("[Meteoblue] Amount of data: " + CollectionUtil.size(data.getData1h().getTime()));
 		
 		try {
