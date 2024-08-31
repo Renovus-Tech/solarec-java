@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.List;
 
@@ -38,27 +39,47 @@ public class EmailServiceImpl implements EmailService {
 	
 	// --- Overridden methods --------------------
 	@Override
-	public void sendSimpleMessage(String to, String subject, String text) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom(this.config.getMailSendFrom());
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(text);
-		emailSender.send(message);
-	}
-	
-	@Override
-	public void sendSimpleHtmlMessage(String to, String subject, String html) {
+	public void sendSimpleMessage(String to, String subject, String text) throws CoreException {
 		try {
 			MimeMessage message = emailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
-			helper.setFrom(this.config.getMailSendFrom());
+			helper.setFrom(this.config.getMailSendFromUser(), this.config.getMailSendFrom());
+			helper.setTo(to);
+			helper.setSubject(subject);
+			helper.setText(text, false);
+			emailSender.send(message);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			throw new CoreException(e);
+		}
+	}
+	
+	@Override
+	public void sendSimpleHtmlMessage(String to, String subject, String html) throws CoreException {
+		try {
+			MimeMessage message = emailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+			helper.setFrom(this.config.getMailSendFromUser(), this.config.getMailSendFrom());
 			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(html, true);
 			emailSender.send(message);
-		} catch (MessagingException ex) {
-			/* */
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			throw new CoreException(e);
+		}
+	}
+	
+	@Override
+	public void sendSimpleHtmlMessage(List<String> to, String subject, String html) throws CoreException {
+		try {
+			MimeMessage message = emailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+			helper.setFrom(this.config.getMailSendFromUser(), this.config.getMailSendFrom());
+			for (String anEmail : to) helper.addTo(anEmail);
+			helper.setSubject(subject);
+			helper.setText(html, true);
+			emailSender.send(message);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			throw new CoreException(e);
 		}
 	}
 
@@ -68,7 +89,7 @@ public class EmailServiceImpl implements EmailService {
 			MimeMessage message = emailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 	
-			helper.setFrom(this.config.getMailSendFrom());
+			helper.setFrom(this.config.getMailSendFromUser(), this.config.getMailSendFrom());
 			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(text, asHtml);
@@ -77,7 +98,7 @@ public class EmailServiceImpl implements EmailService {
 			helper.addAttachment(fileName, file);
 	
 			emailSender.send(message);
-		} catch (MessagingException e) {
+		} catch (MessagingException | UnsupportedEncodingException e) {
 			throw new CoreException(e);
 		}
 	}
@@ -88,7 +109,7 @@ public class EmailServiceImpl implements EmailService {
 			MimeMessage message = emailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			
-			helper.setFrom(this.config.getMailSendFrom());
+			helper.setFrom(this.config.getMailSendFromUser(), this.config.getMailSendFrom());
 			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(text, asHtml);
@@ -111,7 +132,7 @@ public class EmailServiceImpl implements EmailService {
 			MimeMessage message = emailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 	
-			helper.setFrom(this.config.getMailSendFrom());
+			helper.setFrom(this.config.getMailSendFromUser(), this.config.getMailSendFrom());
 			if (CollectionUtil.notEmpty(emails)) {
 				helper.setTo(emails.toArray(new String[0]));
 			}
@@ -129,7 +150,7 @@ public class EmailServiceImpl implements EmailService {
 			}
 	
 			emailSender.send(message);
-		} catch (MessagingException e) {
+		} catch (MessagingException | UnsupportedEncodingException e) {
 			throw new CoreException(e);
 		}
 	}

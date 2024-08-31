@@ -32,6 +32,8 @@ import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.SettingsDao;
 import tech.renovus.solarec.db.data.dao.interfaces.UsersDao;
 import tech.renovus.solarec.db.data.dao.interfaces.UsrSettingDao;
+import tech.renovus.solarec.exceptions.CoreException;
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
@@ -235,7 +237,11 @@ public class SecurityServiceImpl implements SecurityService {
         
         String emailContent			= this.translationService.forTemplate(locale, "email_password_reset", variables);
 		
-		this.emailService.sendSimpleHtmlMessage(usrVo.getUsrEmail(), subject, emailContent);
+        try {
+        	this.emailService.sendSimpleHtmlMessage(usrVo.getUsrEmail(), subject, emailContent);
+        } catch (CoreException e) {
+			LoggerService.rootLogger().error("Error found: " + e.getLocalizedMessage() + "\r\n" + StringUtil.toString(e));
+		}
 	}
 
 	@Override public PasswordReset doPassworReset(PasswordReset passwordReset, UserData userData) {
@@ -280,7 +286,11 @@ public class SecurityServiceImpl implements SecurityService {
 			        String subject = this.translationService.forLabel(userData.getLocale(), "email.password-changed.subject");
 			        String emailContent			= this.translationService.forTemplate(userData.getLocale(), "email_password_reset_done", variables);
 
-					this.emailService.sendSimpleHtmlMessage(usrVo.getUsrEmail(), subject, emailContent);
+			        try {
+			        	this.emailService.sendSimpleHtmlMessage(usrVo.getUsrEmail(), subject, emailContent);
+			        } catch (CoreException e) {
+						LoggerService.rootLogger().error("Error found: " + e.getLocalizedMessage() + "\r\n" + StringUtil.toString(e));
+					}
 				}
 			}
 		}

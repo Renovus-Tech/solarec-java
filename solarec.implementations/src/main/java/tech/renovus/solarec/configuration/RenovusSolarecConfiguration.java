@@ -8,9 +8,10 @@ public class RenovusSolarecConfiguration {
 	
 	//--- Site configuration --------------------
 	@Value("${tech.renovus.solarec.site.url}")						private String siteUrl;
-	
+	@Value("${tech.renovus.solarec.site.locale:EN}")				private String siteLocale;
 	
 	//--- Mail configuration --------------------
+	@Value("${spring.mail.username}")								private String mailSendFromUser;
 	@Value("${tech.renovus.solarec.mail.send_from:Solarec}")		private String mailSendFrom;
 	@Value("${tech.renovus.solarec.mail.on_error.send_to}")			private String onErrorSendEmailTo;
 	
@@ -78,5 +79,14 @@ public class RenovusSolarecConfiguration {
 	}
 	public String getChartEmissionsUrl() {
 		return chartEmissionsUrl;
+	}
+	public String getMailSendFromUser() {
+		return mailSendFromUser;
+	}
+	public String getSiteLocale() {
+		return siteLocale;
+	}
+	public void setSiteLocale(String siteLocale) {
+		this.siteLocale = siteLocale;
 	}
 }

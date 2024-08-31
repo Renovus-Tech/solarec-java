@@ -9,8 +9,9 @@ import tech.renovus.solarec.exceptions.CoreException;
 
 public interface EmailService {
 
-	void sendSimpleMessage(String to, String subject, String text);
-	void sendSimpleHtmlMessage(String to, String subject, String text);
+	void sendSimpleMessage(String to, String subject, String text) throws CoreException;
+	void sendSimpleHtmlMessage(String to, String subject, String text) throws CoreException;
+	void sendSimpleHtmlMessage(List<String> to, String subject, String text) throws CoreException;
 
 	void sendMessageWithAttachment(String to, String subject, String text, String fileName, String pathToAttachment, boolean asHtml) throws CoreException;
 	void sendMessageWithAttachment(String to, String subject, String text, String fileName, InputStream streamSource, boolean asHtml) throws CoreException;
