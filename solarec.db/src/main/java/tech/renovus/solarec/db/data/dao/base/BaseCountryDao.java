@@ -14,10 +14,10 @@ public abstract class BaseCountryDao <T extends CountryVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM country";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM country WHERE ctr_id_auto = :ctr_id_auto";
-	protected String SQL_INSERT					= "INSERT INTO country (ctr_data_date_max, ctr_data_date_min, ctr_code_3, ctr_code_2, ctr_name, ctr_name_show) VALUES (:ctr_data_date_max, :ctr_data_date_min, :ctr_code_3, :ctr_code_2, :ctr_name, :ctr_name_show)";
-	protected String SQL_UPDATE					= "UPDATE country SET ctr_data_date_max = :ctr_data_date_max, ctr_data_date_min = :ctr_data_date_min, ctr_code_3 = :ctr_code_3, ctr_code_2 = :ctr_code_2, ctr_name = :ctr_name, ctr_name_show = :ctr_name_show WHERE ctr_id_auto = :ctr_id_auto";
+	protected String SQL_INSERT					= "INSERT INTO country (ctr_data_date_max, ctr_data_date_min, ctr_code_2, ctr_code_3, ctr_code_phone, ctr_name, ctr_name_show) VALUES (:ctr_data_date_max, :ctr_data_date_min, :ctr_code_2, :ctr_code_3, :ctr_code_phone, :ctr_name, :ctr_name_show)";
+	protected String SQL_UPDATE					= "UPDATE country SET ctr_data_date_max = :ctr_data_date_max, ctr_data_date_min = :ctr_data_date_min, ctr_code_2 = :ctr_code_2, ctr_code_3 = :ctr_code_3, ctr_code_phone = :ctr_code_phone, ctr_name = :ctr_name, ctr_name_show = :ctr_name_show WHERE ctr_id_auto = :ctr_id_auto";
 	protected String SQL_DELETE					= "DELETE FROM country WHERE ctr_id_auto = :ctr_id_auto";
-	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (ctr_id_auto) DO UPDATE SET ctr_data_date_max = EXCLUDED.ctr_data_date_max, ctr_data_date_min = EXCLUDED.ctr_data_date_min, ctr_code_3 = EXCLUDED.ctr_code_3, ctr_code_2 = EXCLUDED.ctr_code_2, ctr_name = EXCLUDED.ctr_name, ctr_name_show = EXCLUDED.ctr_name_show";
+	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (ctr_id_auto) DO UPDATE SET ctr_data_date_max = EXCLUDED.ctr_data_date_max, ctr_data_date_min = EXCLUDED.ctr_data_date_min, ctr_code_2 = EXCLUDED.ctr_code_2, ctr_code_3 = EXCLUDED.ctr_code_3, ctr_code_phone = EXCLUDED.ctr_code_phone, ctr_name = EXCLUDED.ctr_name, ctr_name_show = EXCLUDED.ctr_name_show";
 
 	protected String[] AUTO_INCREMENT_COLUMNS	= new String[] {"ctr_id_auto"};
 
@@ -32,11 +32,12 @@ public abstract class BaseCountryDao <T extends CountryVo > {
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue(CountryVo.COLUMN_CTR_ID, vo.getCtrId())
 			.addValue(CountryVo.COLUMN_CTR_DATA_DATE_MAX, vo.getCtrDataDateMax())
 			.addValue(CountryVo.COLUMN_CTR_DATA_DATE_MIN, vo.getCtrDataDateMin())
-			.addValue(CountryVo.COLUMN_CTR_CODE_3, vo.getCtrCode3())
+			.addValue(CountryVo.COLUMN_CTR_ID, vo.getCtrId())
 			.addValue(CountryVo.COLUMN_CTR_CODE_2, vo.getCtrCode2())
+			.addValue(CountryVo.COLUMN_CTR_CODE_3, vo.getCtrCode3())
+			.addValue(CountryVo.COLUMN_CTR_CODE_PHONE, vo.getCtrCodePhone())
 			.addValue(CountryVo.COLUMN_CTR_NAME, vo.getCtrName())
 			.addValue(CountryVo.COLUMN_CTR_NAME_SHOW, vo.getCtrNameShow());
 	}
@@ -45,8 +46,9 @@ public abstract class BaseCountryDao <T extends CountryVo > {
 		return new MapSqlParameterSource()
 			.addValue(CountryVo.COLUMN_CTR_DATA_DATE_MAX, vo.getCtrDataDateMax())
 			.addValue(CountryVo.COLUMN_CTR_DATA_DATE_MIN, vo.getCtrDataDateMin())
-			.addValue(CountryVo.COLUMN_CTR_CODE_3, vo.getCtrCode3())
 			.addValue(CountryVo.COLUMN_CTR_CODE_2, vo.getCtrCode2())
+			.addValue(CountryVo.COLUMN_CTR_CODE_3, vo.getCtrCode3())
+			.addValue(CountryVo.COLUMN_CTR_CODE_PHONE, vo.getCtrCodePhone())
 			.addValue(CountryVo.COLUMN_CTR_NAME, vo.getCtrName())
 			.addValue(CountryVo.COLUMN_CTR_NAME_SHOW, vo.getCtrNameShow())
 			.addValue(CountryVo.COLUMN_CTR_ID, vo.getCtrId());

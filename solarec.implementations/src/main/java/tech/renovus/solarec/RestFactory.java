@@ -243,6 +243,7 @@ public class RestFactory {
 		result.setName(vo.getCtrName());
 		result.setIso2(vo.getCtrCode2());
 		result.setIso3(vo.getCtrCode3());
+		result.setPhone(vo.getCtrCodePhone());
 		
 		return result;
 	}

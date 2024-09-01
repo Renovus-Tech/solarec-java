@@ -6,25 +6,28 @@ import tech.renovus.solarec.util.db.BaseDbVo;
 public class BaseCountryVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
-	public static final String COLUMN_CTR_ID = "ctr_id_auto";
 	public static final String COLUMN_CTR_DATA_DATE_MAX = "ctr_data_date_max";
 	public static final String COLUMN_CTR_DATA_DATE_MIN = "ctr_data_date_min";
-	public static final String COLUMN_CTR_CODE_3 = "ctr_code_3";
+	public static final String COLUMN_CTR_ID = "ctr_id_auto";
 	public static final String COLUMN_CTR_CODE_2 = "ctr_code_2";
+	public static final String COLUMN_CTR_CODE_3 = "ctr_code_3";
+	public static final String COLUMN_CTR_CODE_PHONE = "ctr_code_phone";
 	public static final String COLUMN_CTR_NAME = "ctr_name";
 	public static final String COLUMN_CTR_NAME_SHOW = "ctr_name_show";
 
-	public static final int LENGTH_COLUMN_CTR_CODE_3 =  3;
 	public static final int LENGTH_COLUMN_CTR_CODE_2 =  2;
+	public static final int LENGTH_COLUMN_CTR_CODE_3 =  3;
+	public static final int LENGTH_COLUMN_CTR_CODE_PHONE =  10;
 	public static final int LENGTH_COLUMN_CTR_NAME =  120;
 	public static final int LENGTH_COLUMN_CTR_NAME_SHOW =  120;
 
 	//--- Private properties --------------------
-	private Integer ctrId;
 	private java.util.Date ctrDataDateMax;
 	private java.util.Date ctrDataDateMin;
-	private String ctrCode3;
+	private Integer ctrId;
 	private String ctrCode2;
+	private String ctrCode3;
+	private String ctrCodePhone;
 	private String ctrName;
 	private String ctrNameShow;
 
@@ -67,10 +70,13 @@ public class BaseCountryVo extends BaseDbVo {
 		if (!ClassUtil.equals(this.ctrDataDateMin,aObj.ctrDataDateMin)) {
 			return false;
 		}
+		if (!ClassUtil.equals(this.ctrCode2,aObj.ctrCode2)) {
+			return false;
+		}
 		if (!ClassUtil.equals(this.ctrCode3,aObj.ctrCode3)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.ctrCode2,aObj.ctrCode2)) {
+		if (!ClassUtil.equals(this.ctrCodePhone,aObj.ctrCodePhone)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.ctrName,aObj.ctrName)) {
@@ -95,13 +101,6 @@ public class BaseCountryVo extends BaseDbVo {
 	}
 
 	//--- Getters and Setters -------------------
-	public Integer getCtrId() {
-		return this.ctrId;
-	}
-	public void setCtrId(Integer ctrId) {
-		this.ctrId = ctrId;
-	}
-
 	public java.util.Date getCtrDataDateMax() {
 		return this.ctrDataDateMax;
 	}
@@ -116,11 +115,11 @@ public class BaseCountryVo extends BaseDbVo {
 		this.ctrDataDateMin = ctrDataDateMin;
 	}
 
-	public String getCtrCode3() {
-		return this.ctrCode3;
+	public Integer getCtrId() {
+		return this.ctrId;
 	}
-	public void setCtrCode3(String ctrCode3) {
-		this.ctrCode3 = ctrCode3;
+	public void setCtrId(Integer ctrId) {
+		this.ctrId = ctrId;
 	}
 
 	public String getCtrCode2() {
@@ -128,6 +127,20 @@ public class BaseCountryVo extends BaseDbVo {
 	}
 	public void setCtrCode2(String ctrCode2) {
 		this.ctrCode2 = ctrCode2;
+	}
+
+	public String getCtrCode3() {
+		return this.ctrCode3;
+	}
+	public void setCtrCode3(String ctrCode3) {
+		this.ctrCode3 = ctrCode3;
+	}
+
+	public String getCtrCodePhone() {
+		return this.ctrCodePhone;
+	}
+	public void setCtrCodePhone(String ctrCodePhone) {
+		this.ctrCodePhone = ctrCodePhone;
 	}
 
 	public String getCtrName() {

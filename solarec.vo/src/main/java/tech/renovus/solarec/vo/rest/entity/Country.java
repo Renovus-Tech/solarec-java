@@ -6,6 +6,7 @@ public class Country {
 	private String name;
 	private String iso2;
 	private String iso3;
+	private String phone;
 	
 	//--- Getters and Setters -------------------
 	public String getName() {
@@ -25,5 +26,11 @@ public class Country {
 	}
 	public void setIso3(String iso3) {
 		this.iso3 = iso3;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 }
