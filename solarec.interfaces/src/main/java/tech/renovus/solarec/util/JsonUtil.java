@@ -1,5 +1,7 @@
 package tech.renovus.solarec.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import javax.net.ssl.SSLException;
@@ -150,6 +152,25 @@ public class JsonUtil {
 	
 	public static final String toStringPretty(Object obj) throws JsonProcessingException {
 		return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+	}
+
+	public static final boolean saveToFile(File jsonFile, Object data) {
+		File parent = jsonFile.getParentFile();
+		if (! parent.exists()) parent.mkdirs();
+		try {
+			FileUtil.saveToFile(JsonUtil.toStringPretty(data), jsonFile);
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+	
+	public static final <T> T loadFromFile(File jsonFile, Class<T> aClass) {
+		try {
+			return JsonUtil.toObject(FileUtil.readFile(jsonFile), aClass);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }
