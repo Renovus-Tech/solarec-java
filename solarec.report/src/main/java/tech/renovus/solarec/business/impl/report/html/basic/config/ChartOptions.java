@@ -1,6 +1,7 @@
 package tech.renovus.solarec.business.impl.report.html.basic.config;
 
 import java.awt.Color;
+import java.text.DecimalFormat;
 
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 
@@ -18,6 +19,7 @@ public class ChartOptions {
 	private int plotSplitFactor			= 0;
 	private Color forceColor			= null;
 	private StandardCategoryItemLabelGenerator labelGenerator;
+	private DecimalFormat numberFormat	= null;
 	
 	//--- Builder methods -----------------------
 	public ChartOptions withTitle(String title)							{ this.setTitle(title); return this; }
@@ -31,6 +33,7 @@ public class ChartOptions {
 	public ChartOptions withForceColor(Color forceColor)				{ this.setForceColor(forceColor); return this; }
 	public ChartOptions withPlotSplitFactor(int plotSplitFactor)		{ this.setPlotSplitFactor(plotSplitFactor); return this; }
 	public ChartOptions withLabelGenerator(StandardCategoryItemLabelGenerator labelGenerator) { this.setLabelGenerator(labelGenerator); return this; }
+	public ChartOptions withNumberFormat(DecimalFormat numberFormat)	{ this.setNumberFormat(numberFormat); return this; }
 	
 	//--- Public methods ------------------------
 	public boolean mustSetYMaxMin() {
@@ -115,5 +118,11 @@ public class ChartOptions {
 	}
 	public void setLabelGenerator(StandardCategoryItemLabelGenerator labelGenerator) {
 		this.labelGenerator = labelGenerator;
+	}
+	public DecimalFormat getNumberFormat() {
+		return numberFormat;
+	}
+	public void setNumberFormat(DecimalFormat numberFormat) {
+		this.numberFormat = numberFormat;
 	}
 }

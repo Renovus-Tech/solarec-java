@@ -29,18 +29,20 @@ import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.renderer.category.StackedBarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.chart.ui.TextAnchor;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.itextpdf.layout.renderer.LineRenderer;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.SolarService;
+import tech.renovus.solarec.business.TranslationService;
 import tech.renovus.solarec.business.impl.chart.base.Chart;
 import tech.renovus.solarec.business.impl.report.html.basic.config.ChartOptions;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
@@ -63,6 +65,7 @@ public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtm
 	public static final Color COLOR_5 = new Color(255, 118, 74); //#ff764a
 	public static final Color COLOR_6 = new Color(255, 166, 0); //#ffa600
 	public static final Color COLOR_7 = new Color(156, 235, 1); //#9ceb01
+	public static final Color COLOR_8 = new Color(23, 62, 89); //173e59
 
 	public static final Color COLOR_AVERAGE		= new Color(01, 00, 23); //#010023
 	public static final Color COLOR_OTHER		= new Color(124, 124, 124); //#7c7c7c
@@ -82,6 +85,7 @@ public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtm
 	//--- Resources ----------------------------
 	@Autowired protected RenovusSolarecConfiguration config;
 	@Autowired protected EmailService emailService;
+	@Autowired protected TranslationService translationService;
 
 	@Resource protected SolarService chartService;
 	@Resource protected LocationDao locDao;
@@ -122,16 +126,18 @@ public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtm
 		}
 	}
 	
-	private void setRange(ValueAxis valueRange, ChartOptions options) {
-		valueRange.setAutoRange(true);
-		valueRange.setLabelFont(FONT_AXIS_LABEL);
-		valueRange.setTickLabelFont(FONT_AXIS);
+	private void setRange(ValueAxis axis, ChartOptions options) {
+		axis.setAutoRange(true);
+		axis.setLabelFont(FONT_AXIS_LABEL);
+		axis.setTickLabelFont(FONT_AXIS);
 		if (options.mustSetYMaxMin()) {
-			valueRange.setRange(options.getMinY(), options.getMaxY());
+			if (axis instanceof NumberAxis) ((NumberAxis) axis).setAutoRangeIncludesZero(false);
+			axis.setAutoRange(false);
+			axis.setRange(options.getMinY(), options.getMaxY());
 		}
 		
-		if (valueRange instanceof NumberAxis) {
-			((NumberAxis) valueRange).setNumberFormatOverride(NUMBER_FORMAT);
+		if (axis instanceof NumberAxis) {
+			((NumberAxis) axis).setNumberFormatOverride(options.getNumberFormat() == null ? NUMBER_FORMAT : options.getNumberFormat());
 		}
 	}
 
@@ -233,12 +239,15 @@ public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtm
 		return StringUtil.replace(ClassUtil.equals(resultFrom, resultTo) ? resultFrom : resultFrom + " - " + resultTo, "/" , "-");
 	}
 	
-	public String generatePeriodHtml(ChartFilter filter) {
+	public String generatePeriodHtml(ChartFilter filter, UserData userData) {
 		return new StringBuilder()
 				.append("<div><small>")
-				.append("Previous data period: <strong>")
+				.append(this.translationService.forLabel(userData.getLocale(), "report.result.general.previous_period"))
+				.append(": <strong>")
 				.append(DateUtil.formatDateTime(filter.getFrom(), DateUtil.FMT_PARAMETER_DATE))
-				.append("</strong> to <strong>")
+				.append("</strong> ")
+				.append(this.translationService.forLabel(userData.getLocale(), "report.result.general.previous_period_to"))
+				.append("<strong> ")
 				.append(DateUtil.formatDateTime(filter.getTo(), DateUtil.FMT_PARAMETER_DATE))
 				.append("</strong></small></div>")
 				.toString();
@@ -323,6 +332,7 @@ public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtm
 		if (toLineOptions != null) {
 			NumberAxis lineValueRange = new NumberAxis(toLineOptions.getValueAxisLabel());
 			plot.setRangeAxis(1, lineValueRange);
+			plot.mapDatasetToRangeAxis(1, 1);
 			this.setRange(lineValueRange, toLineOptions);
 		}
 		
@@ -393,24 +403,35 @@ public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtm
 		CategoryPlot plot				= (CategoryPlot) chart.getPlot();
 		CategoryItemRenderer lineRender = plot.getRenderer();
 		ValueAxis lineValueRange		= plot.getRangeAxis();
-		
-		if (lineOptions2 != null) {
-			NumberAxis barValueRange = new NumberAxis(lineOptions2.getValueAxisLabel());
-			plot.setRangeAxis(1, barValueRange);
-			this.setRange(barValueRange, lineOptions2);
-		}
+		this.setRange(lineValueRange, lineOptions);
 		
 		LineAndShapeRenderer lineRender2 = new LineAndShapeRenderer();
 		plot.setDataset(1, lineDataSet2);
 		plot.setRenderer(1, lineRender2);
 		
-		this.setRange(lineValueRange, lineOptions);
+		if (lineOptions2 != null) {
+			NumberAxis valueRange2 = new NumberAxis(lineOptions2.getValueAxisLabel());
+			this.setRange(valueRange2, lineOptions2);
+			plot.setRangeAxis(1, valueRange2);
+			plot.mapDatasetToRangeAxis(1, 1);
+		}
+		
+		if (lineOptions.hasPlotSpliteFactor()) {
+	        CategoryAxis domainAxis = plot.getDomainAxis();
+	        int maxSize = plot.getCategories().size();
+			for (int i = 0; i < maxSize; i++) {
+				if (i % lineOptions.getPlotSplitFactor() != 0) {
+					String catName = (String) plot.getCategories().get(i);
+					domainAxis.setTickLabelPaint(catName, new java.awt.Color(255,255,255));
+					domainAxis.setTickLabelFont(catName, new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 0));
+				}
+			}
+        }
 		
 	    this.setDomainAxis(plot);
 	    this.setTexts(chart, legend, lineRender, null);
 	    this.setColors(plot, lineRender, lineDataSet.getRowCount(), COLOR_6);
-	    
-	    this.setColors(plot, lineRender2, lineDataSet2.getRowCount());
+	    this.setColors(plot, lineRender2, lineDataSet2.getRowCount(), COLOR_8);
 	
 	    return this.generatePNG(chart);
 	}
@@ -426,6 +447,7 @@ public abstract class BasicHtmlFactory <T extends IFilter> implements IReportHtm
 	        NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();            
             domainAxis.setRange(options.getMinX(), options.getMaxX());
             domainAxis.setTickUnit(new NumberTickUnit(options.getPlotSplitFactor()));
+            plot.mapDatasetToRangeAxis(1, 1);
         }
         
 //		this.setRange(valueRange, options);

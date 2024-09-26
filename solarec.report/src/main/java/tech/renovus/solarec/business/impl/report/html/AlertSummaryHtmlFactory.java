@@ -45,27 +45,42 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 	///--- Resources ----------------------------
 	
 	//--- Private methods ------------------------
-	private String createHtml(PerformanceIndex performance) {
+	private String createHtml(PerformanceIndex performance, UserData userData) {
 		StringBuilder html = new StringBuilder();
 		
 		DefaultCategoryDataset ratioDataSet			= new DefaultCategoryDataset();
 		DefaultCategoryDataset productionDataSet	= new DefaultCategoryDataset();
 		DefaultCategoryDataset irradianceDataSet	= new DefaultCategoryDataset();
 		
+		double ratioMinY = -1;
+		double ratioMaxY = -1;
+		
+		double irradianceMaxY = 0;
+		
 		for (DataPerformance data : performance.getData()) {
 			String fromDate = data.getFrom();
 			if (fromDate.indexOf(' ') != -1) fromDate = fromDate.substring(0, fromDate.indexOf(' '));
 			for (GenDatum genData : data.getGenData()) {
+				
+				ratioMinY = ratioMinY == -1 ? genData.getPerformanceRatio() : Math.min(ratioMinY, genData.getPerformanceRatio());
+				ratioMaxY = ratioMaxY == -1 ? genData.getPerformanceRatio() : Math.max(ratioMaxY, genData.getPerformanceRatio());
+				
 				ratioDataSet.addValue(genData.getPerformanceRatio(), genData.getCode(), fromDate);
-				productionDataSet.addValue(genData.getProductionMwh(), genData.getCode(), fromDate);
+				productionDataSet.addValue(genData.getProductionMwh(), "Production: " + genData.getCode(), fromDate);
 			}
 			
 			irradianceDataSet.addValue(data.getTotalIrradiationKwhM2(), "Irradiance", fromDate);
+			irradianceMaxY = Math.min(irradianceMaxY, data.getTotalIrradiationKwhM2());
 		}
+		
+		ratioMinY -= 10;
+		ratioMaxY += 10;
 		
         try {
 	        html
-	        	.append("<h2>Performance Ratio</h2>")
+	        	.append("<h2>")
+	        	.append(this.translationService.forLabel(userData.getLocale(), "report.result.alerts.perf_ratio.title"))
+	        	.append("</h2>")
 	        	.append("<div class='image'><img src='")
 		        .append(this.generateLineChart(
 		        		ratioDataSet, 
@@ -73,21 +88,27 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 		        			.withTitle("") 
 		        			.withCategoryAxisLabel("") 
 		        			.withValueAxisLabel("%")
+		        			.withMinY(Math.max(ratioMinY, 0))
+		        			.withMaxY(ratioMaxY)
 		        	))
 		       .append("'></div>")
-		       .append("<h2>Production and Irradiation</h2>")
+		       .append("<h2>")
+		       .append(this.translationService.forLabel(userData.getLocale(), "report.result.alerts.prod_and_irra.title"))
+		       .append("</h2>")
 		       .append("<div class='image'><img src='")
 		        .append(this.generateLineChart(
-		        		productionDataSet,
 		        		irradianceDataSet,
+		        		productionDataSet,
 		        		new ChartOptions()
 		        			.withTitle("") 
 		        			.withCategoryAxisLabel("") 
-		        			.withValueAxisLabel("MWh"),
+		        			.withValueAxisLabel("Kwh/m2"),
 	        			new ChartOptions()
 		        			.withTitle("") 
 		        			.withCategoryAxisLabel("") 
-		        			.withValueAxisLabel("Kwh/m2")
+		        			.withValueAxisLabel("MWh")
+		        			.withMinY(0)
+		        			.withMaxY(irradianceMaxY)
 		        	))
 		       .append("'></div>")
 		      ;
@@ -98,18 +119,23 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 		return html.toString();
 	}
 	
-	private String createHtml(Climate climate) {
+	private String createHtml(Climate climate, UserData userData) {
 		StringBuilder html = new StringBuilder();
 		
 		DefaultCategoryDataset productionDataSet	= new DefaultCategoryDataset();
 		DefaultCategoryDataset irradiationDataSet	= new DefaultCategoryDataset();
 		
+		double prodMinY = -1;
+		double prodMaxY = -1;
+		
 		for (ClimateData data : climate.getData()) {
 			String fromDate = data.getFrom();
-			if (fromDate.indexOf(' ') != -1) fromDate = fromDate.substring(0, fromDate.indexOf(' '));
 			
 			for (ClimateGenData genData : data.getGenData()) {
-				productionDataSet.addValue(genData.getProductionMwh(), genData.getCode(), fromDate);
+				productionDataSet.addValue(genData.getProductionMwh(), "Production: " + genData.getCode(), fromDate);
+				
+				prodMinY = prodMinY == -1 ? genData.getProductionMwh() : Math.min(genData.getProductionMwh(), prodMinY);
+				prodMaxY = prodMaxY == -1 ? genData.getProductionMwh() : Math.max(genData.getProductionMwh(), prodMaxY);
 			}
 			
 			irradiationDataSet.addValue(data.getTotalIrradiationKwhM2(), "Irradiation", fromDate);
@@ -118,7 +144,9 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 		
         try {
 	        html
-	        	.append("<h2>Trends</h2>")
+	        	.append("<h2>")
+	        	.append(this.translationService.forLabel(userData.getLocale(), "report.result.alerts.trends.title"))
+	        	.append("</h2>")
 	        	.append("<div class='image'><img src='")
 		        .append(this.generateLineChart(
 		        		productionDataSet, 
@@ -126,11 +154,15 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 		        		new ChartOptions()
 			        		.withTitle("") 
 		        			.withCategoryAxisLabel("") 
-		        			.withValueAxisLabel("MWh"),
+		        			.withValueAxisLabel("MWh")
+//		        			.withMinY(prodMinY)
+//		        			.withMaxY(prodMaxY)
+		        			.withPlotSplitFactor(8),
 		        		new ChartOptions()
 			        		.withTitle("") 
 		        			.withCategoryAxisLabel("") 
 		        			.withValueAxisLabel("Kwh/m2")
+		        			.withPlotSplitFactor(8)
 		        	))
 		       .append("'></div>");
         } catch (IOException e) {
@@ -140,7 +172,7 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 		return html.toString();
 	}
 	
-	private String createHtml(Overview overview) {
+	private String createHtml(Overview overview, UserData userData) {
 		
 		StringBuilder html = new StringBuilder();
 		
@@ -163,13 +195,15 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 		performanceRatio /= amount;
 		
 		html
-			.append("Time-based availabliity: <strong>")
+			.append(this.translationService.forLabel(userData.getLocale(), "report.result.alerts.timebased_avail"))
+			.append(": <strong>")
 			.append(timeBasedAvailability)
 			.append(" %")	
 			.append("</strong>")
 			.append("<br><br>")
 		
-			.append("Performance ratio: <strong>")
+			.append(this.translationService.forLabel(userData.getLocale(), "report.result.alerts.perf_ratio"))
+			.append(": <strong>")
 			.append(performanceRatio)
 			.append(" %")	
 			.append("</strong>")
@@ -179,14 +213,17 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 	}
 	
 	//--- Overridden methods ---------------------
-	@Override public String getTitle() { return "Alerts"; }
+	@Override public String getTitle() { return "report.result.alerts.title"; }
 	@Override public String createStyle() { return StringUtil.EMPTY_STRING; }
 	
 	@Override public String createHtml(UserData userData, ChartFilter filter) {
 		StringBuilder html = new StringBuilder();
 		
-		html.append("<div class='section alerts'><h1>" + this.getTitle() + "</h1>");
-		html.append("<div class='content'>");
+		html
+			.append("<div class='section alerts'><h1>")
+			.append(this.translationService.forLabel(userData.getLocale(), this.getTitle()))
+			.append("</h1>")
+			.append("<div class='content'>");
 		
 		filter.setGenerators(null);
 		filter.setStations(null);
@@ -202,7 +239,7 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 			if (error != null) {
 				html.append(error);
 			} else {
-				html.append(this.createHtml(call));
+				html.append(this.createHtml(call, userData));
 			}
 			
 		} catch (JsonProcessingException | CoreException e) {
@@ -210,7 +247,7 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 		}
 		
 		try {
-			filter.setGroupBy(ChartFilter.GROUP_BY_DAY);
+			filter.setGroupBy(ChartFilter.GROUP_BY_HOUR);
 			
 			String result	= (String) this.chartService.runClimate(filter, userData);
 			Climate call	= JsonUtil.toObject(result, Climate.class);
@@ -219,7 +256,7 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 			if (error != null) {
 				html.append(error);
 			} else {
-				html.append(this.createHtml(call));
+				html.append(this.createHtml(call, userData));
 			}
 			
 		} catch (JsonProcessingException | CoreException e) {
@@ -236,7 +273,7 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 			if (error != null) {
 				html.append(error.getMessage());
 			} else {
-				html.append(this.createHtml(call));
+				html.append(this.createHtml(call, userData));
 			}
 			
 		} catch (JsonProcessingException | CoreException e) {
@@ -244,7 +281,7 @@ public class AlertSummaryHtmlFactory extends BasicHtmlFactory<ChartFilter> {
 		}
 			
 		html
-			.append(this.generatePeriodHtml(filter))
+			.append(this.generatePeriodHtml(filter, userData))
 			.append("</div></div>");
 		
 		return html.toString();

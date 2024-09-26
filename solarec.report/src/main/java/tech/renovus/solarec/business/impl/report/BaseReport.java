@@ -17,6 +17,7 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.EmailService;
 import tech.renovus.solarec.business.SolarService;
+import tech.renovus.solarec.business.TranslationService;
 import tech.renovus.solarec.business.impl.report.html.basic.IReportHtml;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
@@ -39,6 +40,7 @@ public abstract class BaseReport {
 	@Autowired LocationDao locationDao;
 	@Autowired RenovusSolarecConfiguration config;
 	@Autowired EmailService emailService;
+	@Autowired TranslationService translationService;
 	
 	@Resource SolarService service;
 
@@ -62,37 +64,35 @@ public abstract class BaseReport {
 		LocationVo locVo	= userData.getLocationVo();
 		StringBuilder html	= new StringBuilder();
 		
-		html.append("<html>");
-		html.append("<head>");
-		html.append("<title>Renovus report for ");
-		html.append(cliVo.getCliName());
-		html.append(" - ");
-		html.append(locVo.getLocName());
-		html.append("</title>");
-		html.append("<style>");
-
-		html.append("html, body, td, th { font: 12px 'Century Gothic', 'Trebuchet MS', Helvetica, sans-serif; }");
-		html.append("h1, h2, h3 { border-bottom: 1px solid black; }");
-		html.append("img { width: 100%; }");
-		html.append(".center { text-align: center; }");
-		html.append(".right { text-align: right; }");
-		html.append(".image { text-align: center; }");
-		html.append(".content { padding-left: 20px; }");
-		html.append("table.inner-col-border { border-spacing: 0; }");
-		html.append("table.inner-col-border th, table.inner-col-border td { padding: 4px 2px; }");
-		html.append("table.inner-col-border th:not(:last-child), table.inner-col-border td:not(:last-child):nth-child(2n+1)  { border-right: 0.5px solid; }");
-		html.append("table { width: 100%; }");
-		html.append("table.overview { width: 75%; }");
-		html.append("th { font-weight: bold; padding: 2px; }");
-		html.append("td { padding: 2px; vertical-align: top; }");
-		html.append("td.title { font-weight: bold; }");
-		html.append("td.value { text-align: right; white-space: nowrap; }");
-		html.append("td.date { text-align: center; }");
-		html.append("table.main tbody tr td { font-weight: bold; font-size: 2em; }");
-		html.append("table.main tbody tr td small { font-size: 0.5em; }");
-		html.append(".toc-row {padding-left: 20px }");
-		html.append(".toc-row a {text-decoration: none; color: black; }");
-		html.append(".toc-row a::after { content: leader('.') target-counter(attr(href), page, decimal); }");
+		html
+		.append("<html>")
+		.append("<head>")
+		.append("<title>")
+		.append(this.translationService.forLabel(userData.getLocale(), "report.title.for", cliVo.getCliName(), locVo.getLocName()))
+		.append("</title>")
+		.append("<style>")
+		.append("html, body, td, th { font: 12px 'Century Gothic', 'Trebuchet MS', Helvetica, sans-serif; }")
+		.append("h1, h2, h3 { border-bottom: 1px solid black; }")
+		.append("img { width: 100%; }")
+		.append(".center { text-align: center; }")
+		.append(".right { text-align: right; }")
+		.append(".image { text-align: center; }")
+		.append(".content { padding-left: 20px; }")
+		.append("table.inner-col-border { border-spacing: 0; }")
+		.append("table.inner-col-border th, table.inner-col-border td { padding: 4px 2px; }")
+		.append("table.inner-col-border th:not(:last-child), table.inner-col-border td:not(:last-child):nth-child(2n+1)  { border-right: 0.5px solid; }")
+		.append("table { width: 100%; }")
+		.append("table.overview { width: 75%; }")
+		.append("th { font-weight: bold; padding: 2px; }")
+		.append("td { padding: 2px; vertical-align: top; }")
+		.append("td.title { font-weight: bold; }")
+		.append("td.value { text-align: right; white-space: nowrap; }")
+		.append("td.date { text-align: center; }")
+		.append("table.main tbody tr td { font-weight: bold; font-size: 2em; }")
+		.append("table.main tbody tr td small { font-size: 0.5em; }")
+		.append(".toc-row {padding-left: 20px }")
+		.append(".toc-row a {text-decoration: none; color: black; }")
+		.append(".toc-row a::after { content: leader('.') target-counter(attr(href), page, decimal); }");
 		
 		factories.stream().forEach(factory -> html.append(factory.createStyle()));
 		
@@ -110,18 +110,20 @@ public abstract class BaseReport {
 		StringBuilder html	= new StringBuilder();
 		Date dateNow		= new Date();
 		
-		html.append("<table class='main'><tbody>");
-		html.append("<tr><td class='center'>");
-		html.append("Renovus report<br><small>");
-		html.append(DateUtil.formatDateTime(dateNow, DateUtil.FMT_PARAMETER_DATE_TIME));
-		html.append("</small>");
-		html.append("</td><td class='center'>");
-		html.append(cliVo.getCliName());
-		html.append("<br>");
-		html.append(locVo.getLocName());
-		html.append("</td></tr>");
-		html.append("</tbody></table>");
-		html.append("</div>");
+		html
+		.append("<table class='main'><tbody>")
+		.append("<tr><td class='center'>")
+		.append(this.translationService.forLabel(userData.getLocale(), "report.title.generic"))
+		.append("<br><small>")
+		.append(DateUtil.formatDateTime(dateNow, DateUtil.FMT_PARAMETER_DATE_TIME))
+		.append("</small>")
+		.append("</td><td class='center'>")
+		.append(cliVo.getCliName())
+		.append("<br>")
+		.append(locVo.getLocName())
+		.append("</td></tr>")
+		.append("</tbody></table>")
+		.append("</div>");
 		
 		return html.toString();
 	}
@@ -135,14 +137,24 @@ public abstract class BaseReport {
 		return html.toString();
 	}
 
-	protected String createHtmlTOC(Collection<IReportHtml<ChartFilter>> factories) {
+	protected String createHtmlTOC(UserData userData, Collection<IReportHtml<ChartFilter>> factories) {
 		StringBuilder html = new StringBuilder();
 		
-		html.append("<div class='toc-container'>");
-		html.append("<h1>Table of content</h1>");
+		html
+			.append("<div class='toc-container'>")
+			.append("<h1>")
+			.append(this.translationService.forLabel(userData.getLocale(), "report.toc.title"))
+			.append("</h1>");
+		
 		for (IReportHtml<?> factory : factories) {
-			html.append("<div class='toc-row'><a href='#" + ClassUtil.getClassName(factory.getClass()) + "'>" + factory.getTitle() + "</a></div>");
+			html
+				.append("<div class='toc-row'><a href='#")
+				.append(ClassUtil.getClassName(factory.getClass()))
+				.append("'>")
+				.append(this.translationService.forLabel(userData.getLocale(), factory.getTitle()))
+				.append("</a></div>");
 		}
+		
 		html.append("</div>");
 		
 		return html.toString();
@@ -152,7 +164,8 @@ public abstract class BaseReport {
 		String fileName = new StringBuilder()
 				.append(DateUtil.formatDateTime(new Date(), DateUtil.FMT_PARAMETER_DATE))
 				.append(StringUtil.SPACE_STRING)
-				.append("RENOVUS Report ")
+				.append(this.translationService.forLabel(userData.getLocale(), "report.title.generic"))
+				.append(StringUtil.SPACE_STRING)
 				.append(prefix)
 				.append(StringUtil.BAR_SPARATOR)
 				.append(userData.getClientVo().getCliName())
@@ -215,7 +228,7 @@ public abstract class BaseReport {
 			) {
 				this.write(writer, this.createHtmlStart(userData, filter.createCopy(), factories));
 				this.write(writer, this.createHtmlHeader(userData, filter.createCopy()));
-				this.write(writer, this.createHtmlTOC(factories));
+				this.write(writer, this.createHtmlTOC(userData, factories));
 				
 				this.write(writer, userData, filter, factories);
 				

@@ -30,7 +30,7 @@ public class ProductionAndClimateHtmlFactory extends BasicHtmlFactory<ChartFilte
 	///--- Resources ----------------------------
 	
 	//--- Private methods ------------------------
-	private Object createHtml(Overview overview) {
+	private Object createHtml(Overview overview, UserData userData) {
 		
 		StringBuilder html = new StringBuilder();
 		
@@ -49,19 +49,22 @@ public class ProductionAndClimateHtmlFactory extends BasicHtmlFactory<ChartFilte
 		}
 		
 		html
-			.append("Production: <strong>")
+			.append(this.translationService.forLabel(userData.getLocale(), "report.result.prod_and_weather.production"))
+			.append(": <strong>")
 			.append(production)
 			.append(" MWh")	
 			.append("</strong>")
 			.append("<br><br>")
-		
-			.append("Irradiation: <strong>")
+
+			.append(this.translationService.forLabel(userData.getLocale(), "report.result.prod_and_weather.irradiation"))
+			.append(": <strong>")
 			.append(irradiation)
 			.append(" Kwh/m2")	
 			.append("</strong>")
 			.append("<br><br>")
 		
-			.append("Average ambient temperature: <strong>")
+			.append(this.translationService.forLabel(userData.getLocale(), "report.result.prod_and_weather.avt_env_temp"))
+			.append(": <strong>")
 			.append(avgAmbientTemp)
 			.append(" °C")
 			.append("</strong>")
@@ -72,14 +75,16 @@ public class ProductionAndClimateHtmlFactory extends BasicHtmlFactory<ChartFilte
 	}
 	
 	//--- Overridden methods ---------------------
-	@Override public String getTitle() { return "Production and climate"; }
+	@Override public String getTitle() { return "report.result.prod_and_weather.title"; }
 	@Override public String createStyle() { return StringUtil.EMPTY_STRING; }
 	
 	@Override public String createHtml(UserData userData, ChartFilter filter) {
 		StringBuilder html = new StringBuilder();
 		
-		html.append("<div class='section alerts'><h1>" + this.getTitle() + "</h1>");
-		html.append("<div class='content'>");
+		html
+			.append("<div class='section alerts'><h1>")
+			.append(this.translationService.forLabel(userData.getLocale(), this.getTitle()))
+			.append("</h1><div class='content'>");
 		
 		filter.setGenerators(null);
 		filter.setStations(null);
@@ -96,13 +101,13 @@ public class ProductionAndClimateHtmlFactory extends BasicHtmlFactory<ChartFilte
 			if (error != null) {
 				html.append(error);
 			} else {
-				html.append(this.createHtml(callResult));
+				html.append(this.createHtml(callResult, userData));
 			}
 			
 		} catch (JsonProcessingException | CoreException e) {
 			html.append(this.generateHtmlError(e));
 		} finally {
-			html.append(this.generatePeriodHtml(filter));
+			html.append(this.generatePeriodHtml(filter, userData));
 		}
 			
 		html.append("</div></div>");
