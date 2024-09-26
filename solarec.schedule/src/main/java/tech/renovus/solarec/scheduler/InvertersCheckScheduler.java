@@ -182,7 +182,7 @@ public class InvertersCheckScheduler {
 						dataVo.setGenId(genVo.getGenId());
 						dataVo.setDataDateAdded(currentDate);
 						dataVo.setDataProId(dataProVo.getDataProId());
-						dataVo.setSyncType(GeneratorVo.SYNC_INSERT);
+						dataVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
 					}
 				}
 				
@@ -192,7 +192,7 @@ public class InvertersCheckScheduler {
 						dataVo.setStaId(staVo.getStaId());
 						dataVo.setDataDateAdded(currentDate);
 						dataVo.setDataProId(dataProVo.getDataProId());
-						dataVo.setSyncType(GeneratorVo.SYNC_INSERT);
+						dataVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
 					}
 				}
 				
@@ -200,7 +200,7 @@ public class InvertersCheckScheduler {
 					for (CliGenAlertVo alertVo : newData.getGeneratorAlerts()) {
 						alertVo.setCliId(genVo.getCliId());
 						alertVo.setGenId(genVo.getGenId());
-						alertVo.setSyncType(GeneratorVo.SYNC_INSERT);
+						alertVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
 					}
 				}
 				
@@ -208,7 +208,7 @@ public class InvertersCheckScheduler {
 					for (CliLocAlertVo alertVo : newData.getLocationAlerts()) {
 						alertVo.setCliId(genVo.getCliId());
 						alertVo.setLocId(genVo.getGenId());
-						alertVo.setSyncType(GeneratorVo.SYNC_INSERT);
+						alertVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
 					}
 				}
 				
@@ -218,12 +218,19 @@ public class InvertersCheckScheduler {
 				cliVo.setChildrensId();
 				
 				genVo.synchronizeForce(GeneratorVo.SYNC_INSERT_UPDATE);
+				staVo.synchronizeForce(GeneratorVo.SYNC_INSERT_UPDATE);
 				locVo.synchronizeForce(GeneratorVo.SYNC_INSERT_UPDATE);
 				cliVo.synchronizeForce(GeneratorVo.SYNC_INSERT_UPDATE);
 				
 				if (CollectionUtil.notEmpty(genVo.getDataDefParameters())) genVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getGenDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
 				if (CollectionUtil.notEmpty(locVo.getDataDefParameters())) locVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getLocDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
 				if (CollectionUtil.notEmpty(cliVo.getDataDefParameters())) cliVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getCliDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
+				
+				LoggerService.inverterLogger().info( "Doing synchronization of data to databaes... ");
+				LoggerService.inverterLogger().info( "\tGenerator data: " + CollectionUtil.size(newData.getGeneratorData()));
+				LoggerService.inverterLogger().info( "\tStation data: " + CollectionUtil.size(newData.getStationData()));
+				LoggerService.inverterLogger().info( "\tLocation alerts: " + CollectionUtil.size(newData.getLocationAlerts()));
+				LoggerService.inverterLogger().info( "\tGenerator alerts: " + CollectionUtil.size(newData.getGeneratorAlerts()));
 				
 				this.genDataDao.synchronize(newData.getGeneratorData());
 				this.staDataDao.synchronize(newData.getStationData());
@@ -346,7 +353,7 @@ public class InvertersCheckScheduler {
 					this.synchronize(dataProVo);
 					this.locationDao.updateDataDateMaxMin();
 					this.generatorDao.updateDataDateMaxMin();
-//					this.stationDao.updateDataDateMaxMin();
+					this.stationDao.updateDataDateMaxMin();
 				}
 				
 				this.processStatsAndAlerts(dataDefVo, dataProVo);

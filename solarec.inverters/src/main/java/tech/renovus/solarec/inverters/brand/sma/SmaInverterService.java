@@ -45,6 +45,7 @@ import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 public class SmaInverterService implements InverterService {
 
 	//--- Private constants ---------------------
+	private static final String LOG_PREFIX				= "[SMA] ";
 	private static final String PROD_URL_AUTH			= "https://auth.smaapis.de";
 	private static final String SANDBOX_URL_AUTH		= "https://sandbox-auth.smaapis.de";
 
@@ -152,7 +153,7 @@ public class SmaInverterService implements InverterService {
 			for (LocationVo location : this.cliVo.getLocations()) {
 				if (CollectionUtil.notEmpty(location.getGenerators())) {
 					if (CollectionUtil.isEmpty(location.getStations())) {
-						LoggerService.inverterLogger().error("Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
+						LoggerService.inverterLogger().error(LOG_PREFIX + "Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
 						continue;
 					}
 					

@@ -47,6 +47,7 @@ public class SofarInverterService implements InverterService {
 
 	
 	//--- Protected properties ------------------
+	private static final String LOG_PREFIX						= "[Sofar] ";
 	private static final String URL_PRD							= "https://api.solarmanpv.com";
 	private static final String URL_BETA						= "http://120.195.219.223:30032";
 	
@@ -81,7 +82,7 @@ public class SofarInverterService implements InverterService {
 		List<GenDataVo> result = new ArrayList<>();
 		
 		if (data != null && CollectionUtil.notEmpty(data.getStationDataItems())) {
-			InvertersUtil.logInfo("Amount of data: {0}", Integer.toString(CollectionUtil.size(data.getStationDataItems())));
+			InvertersUtil.logInfo(LOG_PREFIX + "Amount of data: {0}", Integer.toString(CollectionUtil.size(data.getStationDataItems())));
 			for (StationDataItem aData : data.getStationDataItems()) {
 				String aDate = new StringBuilder()
 						.append(aData.getYear())
@@ -106,7 +107,7 @@ public class SofarInverterService implements InverterService {
 				result.add(genData);
 			}
 		} else {
-			InvertersUtil.logInfo("No data to process");
+			InvertersUtil.logInfo(LOG_PREFIX + "No data to process");
 		}
 		
 		return result;
@@ -151,7 +152,7 @@ public class SofarInverterService implements InverterService {
 			
 			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
 		} catch (ParseException e) {
-			LoggerService.inverterLogger().error("Error parsing data: " + e.getLocalizedMessage(), e);
+			LoggerService.inverterLogger().error(LOG_PREFIX + "Error parsing data: " + e.getLocalizedMessage(), e);
 			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(-1));
 		}
 	}
@@ -174,7 +175,7 @@ public class SofarInverterService implements InverterService {
 		if (CollectionUtil.notEmpty(this.cliVo.getLocations())) {
 			for (LocationVo location : this.cliVo.getLocations()) {
 				if (CollectionUtil.isEmpty(location.getStations())) {
-					LoggerService.inverterLogger().error("Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
+					LoggerService.inverterLogger().error(LOG_PREFIX + "Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
 					continue;
 				}
 				

@@ -87,7 +87,7 @@ public class GrowattInveterService implements InverterService {
 		List<GenDataVo> result = new ArrayList<>();
 		
 		if (data != null && data.getData() != null && CollectionUtil.notEmpty(data.getData().getEnergys())) {
-			InvertersUtil.logInfo("Amount of data: {0}", Integer.toString(CollectionUtil.size(data.getData().getEnergys())));
+			InvertersUtil.logInfo(LOG_PREFIX + "Amount of data: {0}", Integer.toString(CollectionUtil.size(data.getData().getEnergys())));
 			for (Energy aData : data.getData().getEnergys()) {
 				Date dataDate = this.formatDate.parse(aData.getDate());
 				
@@ -105,7 +105,7 @@ public class GrowattInveterService implements InverterService {
 				result.add(genData);
 			}
 		} else {
-			InvertersUtil.logInfo("No data to process");
+			InvertersUtil.logInfo(LOG_PREFIX + "No data to process");
 		}
 		
 		return result;

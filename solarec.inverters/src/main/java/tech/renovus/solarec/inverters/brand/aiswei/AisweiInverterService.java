@@ -49,6 +49,7 @@ import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
 public class AisweiInverterService implements InverterService {
 
 	//--- Private constants ---------------------
+	private static final String LOG_PREFIX	= "[Aiswei] ";
 	private static final String URL_PROD	= "https://api.general.aisweicloud.com";
 	private static final String URL_DEMO	= "http://e710888d3ccb4638a723ff8d03837095-cn-qingdao.aliapi.com/demo/post";
 	
@@ -158,7 +159,7 @@ public class AisweiInverterService implements InverterService {
 		List<GenDataVo> result = new ArrayList<>();
 		
 		if (data != null && CollectionUtil.notEmpty(data.getData())) {
-			InvertersUtil.logInfo("Amount of data: {0}", Integer.toString(CollectionUtil.size(data.getData())));
+			InvertersUtil.logInfo(LOG_PREFIX + "Amount of data: {0}", Integer.toString(CollectionUtil.size(data.getData())));
 			Calendar calendar = GregorianCalendar.getInstance();
 			
 			for (PlantOutputData aData : data.getData()) {
@@ -187,7 +188,7 @@ public class AisweiInverterService implements InverterService {
 				result.add(genData);
 			}
 		} else {
-			InvertersUtil.logInfo("No data to process");
+			InvertersUtil.logInfo(LOG_PREFIX + "No data to process");
 		}
 		
 		return result;
@@ -268,7 +269,7 @@ public class AisweiInverterService implements InverterService {
 			
 			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
 		} catch (ParseException e) {
-			LoggerService.inverterLogger().error("Error parsing data: " + e.getLocalizedMessage(), e);
+			LoggerService.inverterLogger().error(LOG_PREFIX + "Error parsing data: " + e.getLocalizedMessage(), e);
 			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(-1));
 		}
 	}
@@ -291,7 +292,7 @@ public class AisweiInverterService implements InverterService {
 		if (CollectionUtil.notEmpty(this.cliVo.getLocations())) {
 			for (LocationVo location : this.cliVo.getLocations()) {
 				if (CollectionUtil.isEmpty(location.getStations())) {
-					LoggerService.inverterLogger().error("Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
+					LoggerService.inverterLogger().error(LOG_PREFIX + "Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
 					continue;
 				}
 				
