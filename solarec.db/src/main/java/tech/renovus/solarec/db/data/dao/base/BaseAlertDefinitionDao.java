@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.AlertDefinitionRowWrapper;
 import tech.renovus.solarec.vo.db.data.AlertDefinitionVo;
 
-public abstract class BaseAlertDefinitionDao <T extends AlertDefinitionVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseAlertDefinitionDao <T extends AlertDefinitionVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM alert_definition";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM alert_definition WHERE alert_def_id_auto = :alert_def_id_auto";

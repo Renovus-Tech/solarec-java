@@ -3,7 +3,7 @@ package tech.renovus.solarec.vo.db.base;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
-public class BaseDataCategoryVo extends BaseDbVo {
+@javax.annotation.Generated(value = "Renovus") public class BaseDataCategoryVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
 	public static final String COLUMN_DATA_CAT_ID = "data_cat_id_auto";

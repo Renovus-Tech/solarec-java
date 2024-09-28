@@ -20,8 +20,8 @@ public class Alert {
 	
 	//--- With methods --------------------------
 	public Alert withType(Integer type) { this.type = type; return this; }
-	public Alert withFirstView(Boolean firstView) { this.firstView = firstView; return this; }
-	public Alert withFirstView(boolean firstView) { this.firstView = Boolean.valueOf(firstView); return this; }
+	public Alert withFirstView(Boolean firstView) { this.firstView = firstView == null ? false : firstView.booleanValue(); return this; }
+	public Alert withFirstView(boolean firstView) { this.firstView = firstView; return this; }
 	public Alert withMessage(String message) { this.message = message; return this; }
 	public Alert withDate(Date date) { this.date = date; return this; }
 	

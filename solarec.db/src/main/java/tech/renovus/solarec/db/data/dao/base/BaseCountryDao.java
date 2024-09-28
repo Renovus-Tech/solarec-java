@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.CountryRowWrapper;
 import tech.renovus.solarec.vo.db.data.CountryVo;
 
-public abstract class BaseCountryDao <T extends CountryVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseCountryDao <T extends CountryVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM country";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM country WHERE ctr_id_auto = :ctr_id_auto";

@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.GenMetadataRowWrapper;
 import tech.renovus.solarec.vo.db.data.GenMetadataVo;
 
-public abstract class BaseGenMetadataDao <T extends GenMetadataVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseGenMetadataDao <T extends GenMetadataVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM gen_metadata";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_metadata WHERE cli_id = :cli_id AND gen_id = :gen_id AND metadata_code = :metadata_code";

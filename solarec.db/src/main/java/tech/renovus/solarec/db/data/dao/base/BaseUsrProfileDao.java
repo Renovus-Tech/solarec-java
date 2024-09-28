@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.UsrProfileRowWrapper;
 import tech.renovus.solarec.vo.db.data.UsrProfileVo;
 
-public abstract class BaseUsrProfileDao <T extends UsrProfileVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseUsrProfileDao <T extends UsrProfileVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM usr_profile";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM usr_profile WHERE usr_id = :usr_id AND prf_id = :prf_id AND cli_id = :cli_id";

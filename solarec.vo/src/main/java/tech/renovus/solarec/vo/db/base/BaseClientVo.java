@@ -4,43 +4,45 @@ import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.IFlags;
 
-public class BaseClientVo extends BaseDbVo implements IFlags {
+@javax.annotation.Generated(value = "Renovus") public class BaseClientVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
-	public static final String COLUMN_DATA_DEF_ID = "data_def_id";
-	public static final String COLUMN_CLI_DEMO_DATE = "cli_demo_date";
 	public static final String COLUMN_CLI_ID = "cli_id_auto";
-	public static final String COLUMN_CLI_NAME_ADDRESS = "cli_name_address";
+	public static final String COLUMN_CLI_DEMO_DATE = "cli_demo_date";
+	public static final String COLUMN_DATA_DEF_ID = "data_def_id";
+	public static final String COLUMN_CTR_ID = "ctr_id";
 	public static final String COLUMN_CLI_FLAGS = "cli_flags";
 	public static final String COLUMN_CLI_GMT = "cli_gmt";
 	public static final String COLUMN_CLI_SEC_CODE = "cli_sec_code";
 	public static final String COLUMN_CLI_CERT_PROV_DATA = "cli_cert_prov_data";
 	public static final String COLUMN_CLI_NAME = "cli_name";
 	public static final String COLUMN_CLI_NAME_LEGAL = "cli_name_legal";
+	public static final String COLUMN_CLI_NAME_ADDRESS = "cli_name_address";
 
-	public static final int LENGTH_COLUMN_CLI_NAME_ADDRESS =  500;
 	public static final int LENGTH_COLUMN_CLI_FLAGS =  20;
 	public static final int LENGTH_COLUMN_CLI_GMT =  8;
 	public static final int LENGTH_COLUMN_CLI_SEC_CODE =  512;
 	public static final int LENGTH_COLUMN_CLI_CERT_PROV_DATA =  2000;
 	public static final int LENGTH_COLUMN_CLI_NAME =  100;
 	public static final int LENGTH_COLUMN_CLI_NAME_LEGAL =  200;
+	public static final int LENGTH_COLUMN_CLI_NAME_ADDRESS =  500;
 
 	//--- Implemented methods -------------------
 	@Override public String getFlags() { return this.cliFlags; }
 	@Override public void setFlags(String cliFlags) { this.cliFlags = cliFlags; }
 
 	//--- Private properties --------------------
-	private Integer dataDefId;
-	private java.util.Date cliDemoDate;
 	private Integer cliId;
-	private String cliNameAddress;
+	private java.util.Date cliDemoDate;
+	private Integer dataDefId;
+	private Integer ctrId;
 	private String cliFlags;
 	private String cliGmt;
 	private String cliSecCode;
 	private String cliCertProvData;
 	private String cliName;
 	private String cliNameLegal;
+	private String cliNameAddress;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -66,13 +68,13 @@ public class BaseClientVo extends BaseDbVo implements IFlags {
 		if (! this.equals(obj)) return false;
 		
 		BaseClientVo aObj = (BaseClientVo) obj;
-		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.cliDemoDate,aObj.cliDemoDate)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.cliNameAddress,aObj.cliNameAddress)) {
+		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.ctrId,aObj.ctrId)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.cliFlags,aObj.cliFlags)) {
@@ -93,6 +95,9 @@ public class BaseClientVo extends BaseDbVo implements IFlags {
 		if (!ClassUtil.equals(this.cliNameLegal,aObj.cliNameLegal)) {
 			return false;
 		}
+		if (!ClassUtil.equals(this.cliNameAddress,aObj.cliNameAddress)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -109,11 +114,11 @@ public class BaseClientVo extends BaseDbVo implements IFlags {
 	}
 
 	//--- Getters and Setters -------------------
-	public Integer getDataDefId() {
-		return this.dataDefId;
+	public Integer getCliId() {
+		return this.cliId;
 	}
-	public void setDataDefId(Integer dataDefId) {
-		this.dataDefId = dataDefId;
+	public void setCliId(Integer cliId) {
+		this.cliId = cliId;
 	}
 
 	public java.util.Date getCliDemoDate() {
@@ -123,18 +128,18 @@ public class BaseClientVo extends BaseDbVo implements IFlags {
 		this.cliDemoDate = cliDemoDate;
 	}
 
-	public Integer getCliId() {
-		return this.cliId;
+	public Integer getDataDefId() {
+		return this.dataDefId;
 	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
+	public void setDataDefId(Integer dataDefId) {
+		this.dataDefId = dataDefId;
 	}
 
-	public String getCliNameAddress() {
-		return this.cliNameAddress;
+	public Integer getCtrId() {
+		return this.ctrId;
 	}
-	public void setCliNameAddress(String cliNameAddress) {
-		this.cliNameAddress = cliNameAddress;
+	public void setCtrId(Integer ctrId) {
+		this.ctrId = ctrId;
 	}
 
 	public String getCliFlags() {
@@ -177,6 +182,13 @@ public class BaseClientVo extends BaseDbVo implements IFlags {
 	}
 	public void setCliNameLegal(String cliNameLegal) {
 		this.cliNameLegal = cliNameLegal;
+	}
+
+	public String getCliNameAddress() {
+		return this.cliNameAddress;
+	}
+	public void setCliNameAddress(String cliNameAddress) {
+		this.cliNameAddress = cliNameAddress;
 	}
 
 }

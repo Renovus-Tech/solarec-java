@@ -3,7 +3,7 @@ package tech.renovus.solarec.vo.db.base;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
-public class BaseStatTypeVo extends BaseDbVo {
+@javax.annotation.Generated(value = "Renovus") public class BaseStatTypeVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
 	public static final String COLUMN_STAT_TYPE_ID = "stat_type_id";

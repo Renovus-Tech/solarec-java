@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.AlertProcessingRowWrapper;
 import tech.renovus.solarec.vo.db.data.AlertProcessingVo;
 
-public abstract class BaseAlertProcessingDao <T extends AlertProcessingVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseAlertProcessingDao <T extends AlertProcessingVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM alert_processing";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM alert_processing WHERE alert_pro_id_auto = :alert_pro_id_auto";

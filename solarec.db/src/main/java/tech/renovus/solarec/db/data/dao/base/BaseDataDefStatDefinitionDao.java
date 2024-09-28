@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.DataDefStatDefinitionRowWrapper;
 import tech.renovus.solarec.vo.db.data.DataDefStatDefinitionVo;
 
-public abstract class BaseDataDefStatDefinitionDao <T extends DataDefStatDefinitionVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseDataDefStatDefinitionDao <T extends DataDefStatDefinitionVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM data_def_stat_definition";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM data_def_stat_definition WHERE data_def_id = :data_def_id AND stat_def_id = :stat_def_id";

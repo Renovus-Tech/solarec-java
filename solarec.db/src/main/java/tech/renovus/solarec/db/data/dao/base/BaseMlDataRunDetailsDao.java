@@ -11,7 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.MlDataRunDetailsRowWrapper;
 import tech.renovus.solarec.vo.db.data.MlDataRunDetailsVo;
 
-public abstract class BaseMlDataRunDetailsDao {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseMlDataRunDetailsDao {
 
 	//--- Protected constants -------------------
 	protected final String SQL_SELECT_ALL		= "SELECT * FROM ml_data_run_details";

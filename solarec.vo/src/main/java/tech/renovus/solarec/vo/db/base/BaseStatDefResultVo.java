@@ -3,7 +3,7 @@ package tech.renovus.solarec.vo.db.base;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
-public class BaseStatDefResultVo extends BaseDbVo {
+@javax.annotation.Generated(value = "Renovus") public class BaseStatDefResultVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
 	public static final String COLUMN_STAT_DEF_ID = "stat_def_id";

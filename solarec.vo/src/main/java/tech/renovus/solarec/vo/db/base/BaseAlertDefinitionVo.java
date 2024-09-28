@@ -4,7 +4,7 @@ import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.IFlags;
 
-public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
+@javax.annotation.Generated(value = "Renovus") public class BaseAlertDefinitionVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
 	public static final String COLUMN_ALERT_DEF_ID = "alert_def_id_auto";

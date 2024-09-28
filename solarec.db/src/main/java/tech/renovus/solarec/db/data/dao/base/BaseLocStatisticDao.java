@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.LocStatisticRowWrapper;
 import tech.renovus.solarec.vo.db.data.LocStatisticVo;
 
-public abstract class BaseLocStatisticDao <T extends LocStatisticVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseLocStatisticDao <T extends LocStatisticVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM loc_statistic";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_statistic WHERE cli_id = :cli_id AND loc_id = :loc_id AND stat_date = :stat_date AND stat_type_id = :stat_type_id";

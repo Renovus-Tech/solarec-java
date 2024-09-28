@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.FunctionalityRowWrapper;
 import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 
-public abstract class BaseFunctionalityDao <T extends FunctionalityVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseFunctionalityDao <T extends FunctionalityVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM functionality";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM functionality WHERE fnc_id_auto = :fnc_id_auto";

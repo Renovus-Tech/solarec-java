@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.GeneratorRowWrapper;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 
-public abstract class BaseGeneratorDao <T extends GeneratorVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseGeneratorDao <T extends GeneratorVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM generator";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM generator WHERE gen_id_auto = :gen_id_auto AND cli_id = :cli_id";

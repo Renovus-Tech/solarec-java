@@ -27,6 +27,9 @@ import tech.renovus.solarec.vo.rest.entity.Station;
 @RestController
 public class StationsController extends BasicController {
 	
+	//--- Private constants ---------------------
+	private static final String TEXT_ERROR_AT = "Error at: ";
+	
 	//--- Resources -----------------------------
 	@Resource StationService service;
 	@Resource RestFactory restFactory;
@@ -44,7 +47,7 @@ public class StationsController extends BasicController {
 		try {
 			return this.restFactory.convertStations(this.service.findAll(offset, size, name, userData));
 		} catch (CoreException exc) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_STATIONS, exc);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TEXT_ERROR_AT + EndPointFactory.REST_ADMINISTRATION_STATIONS, exc);
 		}
 	}
 	
@@ -55,7 +58,7 @@ public class StationsController extends BasicController {
 		try {
 			return this.restFactory.convert(this.service.findVo(id, userData));
 		} catch (CoreException exc) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_STATIONS, exc);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TEXT_ERROR_AT + EndPointFactory.REST_ADMINISTRATION_STATIONS, exc);
 		}
 	}
 	
@@ -66,7 +69,7 @@ public class StationsController extends BasicController {
 		try {
 			return this.restFactory.convertStations(this.service.findAllForLocation(userData.getLocId(), userData));
 		} catch (CoreException exc) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TEXT_ERROR_AT + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
 		}
 	}
 	

@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.CliDataDefTriggerRowWrapper;
 import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 
-public abstract class BaseCliDataDefTriggerDao <T extends CliDataDefTriggerVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseCliDataDefTriggerDao <T extends CliDataDefTriggerVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM cli_data_def_trigger";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM cli_data_def_trigger WHERE tri_id_auto = :tri_id_auto";

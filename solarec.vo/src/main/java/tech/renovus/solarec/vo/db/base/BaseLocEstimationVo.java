@@ -3,7 +3,7 @@ package tech.renovus.solarec.vo.db.base;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
-public class BaseLocEstimationVo extends BaseDbVo {
+@javax.annotation.Generated(value = "Renovus") public class BaseLocEstimationVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
 	public static final String COLUMN_LOC_EST_12 = "loc_est_12";

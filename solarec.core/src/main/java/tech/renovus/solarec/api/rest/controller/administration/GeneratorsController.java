@@ -33,6 +33,9 @@ import tech.renovus.solarec.vo.rest.entity.Location;
 @RestController
 public class GeneratorsController extends BasicController {
 	
+	//--- Private constants --------------------
+	private static final String TEXT_ERROR_AT = "Error at: ";
+	
 	//--- Resources -----------------------------
 	@Resource GeneratorService service;
 	@Resource RestFactory restFactory;
@@ -50,7 +53,7 @@ public class GeneratorsController extends BasicController {
 		try {
 			return this.restFactory.convertGenerators(this.service.findAll(offset, size, name, userData));
 		} catch (CoreException exc) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TEXT_ERROR_AT + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
 		}
 	}
 	
@@ -61,7 +64,7 @@ public class GeneratorsController extends BasicController {
 		try {
 			return this.restFactory.convert(this.service.findFullVo(id, userData));
 		} catch (CoreException exc) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TEXT_ERROR_AT + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
 		}
 	}
 	
@@ -74,7 +77,7 @@ public class GeneratorsController extends BasicController {
 			CollectionUtil.addAll(generators, this.service.findAllForLocation(userData.getLocId(), userData));
 			return this.restFactory.convertGenerators(generators);
 		} catch (CoreException exc) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error at: " + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TEXT_ERROR_AT + EndPointFactory.REST_ADMINISTRATION_GENERATORS, exc);
 		}
 	}
 	

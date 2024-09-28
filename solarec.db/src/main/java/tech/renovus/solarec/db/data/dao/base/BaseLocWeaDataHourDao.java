@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.LocWeaDataHourRowWrapper;
 import tech.renovus.solarec.vo.db.data.LocWeaDataHourVo;
 
-public abstract class BaseLocWeaDataHourDao <T extends LocWeaDataHourVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseLocWeaDataHourDao <T extends LocWeaDataHourVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM loc_wea_data_hour";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_wea_data_hour WHERE cli_id = :cli_id AND loc_id = :loc_id AND loc_wea_data_id = :loc_wea_data_id AND loc_wea_data_hour = :loc_wea_data_hour";

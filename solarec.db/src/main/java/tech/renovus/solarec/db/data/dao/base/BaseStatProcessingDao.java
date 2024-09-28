@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.StatProcessingRowWrapper;
 import tech.renovus.solarec.vo.db.data.StatProcessingVo;
 
-public abstract class BaseStatProcessingDao <T extends StatProcessingVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseStatProcessingDao <T extends StatProcessingVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM stat_processing";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM stat_processing WHERE stat_pro_id_auto = :stat_pro_id_auto";

@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.RepTypeRowWrapper;
 import tech.renovus.solarec.vo.db.data.RepTypeVo;
 
-public abstract class BaseRepTypeDao <T extends RepTypeVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseRepTypeDao <T extends RepTypeVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM rep_type";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM rep_type WHERE rep_type_id_auto = :rep_type_id_auto";

@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.GenDataDefParameterRowWrapper;
 import tech.renovus.solarec.vo.db.data.GenDataDefParameterVo;
 
-public abstract class BaseGenDataDefParameterDao <T extends GenDataDefParameterVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseGenDataDefParameterDao <T extends GenDataDefParameterVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM gen_data_def_parameter";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_data_def_parameter WHERE cli_id = :cli_id AND gen_id = :gen_id AND data_def_id = :data_def_id AND data_def_par_id = :data_def_par_id";

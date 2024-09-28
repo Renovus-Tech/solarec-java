@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.GenAlarmRowWrapper;
 import tech.renovus.solarec.vo.db.data.GenAlarmVo;
 
-public abstract class BaseGenAlarmDao <T extends GenAlarmVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseGenAlarmDao <T extends GenAlarmVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM gen_alarm";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM gen_alarm WHERE cli_id = :cli_id AND gen_id = :gen_id AND alarm_code = :alarm_code";

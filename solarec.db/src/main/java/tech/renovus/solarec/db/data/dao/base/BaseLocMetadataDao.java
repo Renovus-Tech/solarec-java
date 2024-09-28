@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.LocMetadataRowWrapper;
 import tech.renovus.solarec.vo.db.data.LocMetadataVo;
 
-public abstract class BaseLocMetadataDao <T extends LocMetadataVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseLocMetadataDao <T extends LocMetadataVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM loc_metadata";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM loc_metadata WHERE cli_id = :cli_id AND loc_id = :loc_id AND metadata_name = :metadata_name";

@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.PrfFunctionalityRowWrapper;
 import tech.renovus.solarec.vo.db.data.PrfFunctionalityVo;
 
-public abstract class BasePrfFunctionalityDao <T extends PrfFunctionalityVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BasePrfFunctionalityDao <T extends PrfFunctionalityVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM prf_functionality";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM prf_functionality WHERE prf_id = :prf_id AND fnc_id = :fnc_id";

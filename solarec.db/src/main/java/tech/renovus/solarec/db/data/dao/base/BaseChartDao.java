@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.ChartRowWrapper;
 import tech.renovus.solarec.vo.db.data.ChartVo;
 
-public abstract class BaseChartDao <T extends ChartVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseChartDao <T extends ChartVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM chart";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM chart WHERE chr_id_auto = :chr_id_auto";

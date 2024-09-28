@@ -3,7 +3,7 @@ package tech.renovus.solarec.vo.db.base;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 
-public class BaseMlDataRunDetailsVo extends BaseDbVo {
+@javax.annotation.Generated(value = "Renovus") public class BaseMlDataRunDetailsVo extends BaseDbVo {
 
 	//--- Columns name --------------------------
 	 public static final String COLUMN_RUN_DET_ID = "run_det_id_auto";

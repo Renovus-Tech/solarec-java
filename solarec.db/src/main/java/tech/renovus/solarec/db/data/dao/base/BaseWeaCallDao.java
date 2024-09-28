@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.WeaCallRowWrapper;
 import tech.renovus.solarec.vo.db.data.WeaCallVo;
 
-public abstract class BaseWeaCallDao <T extends WeaCallVo > {
+@javax.annotation.Generated(value = "Renovus") public abstract class BaseWeaCallDao <T extends WeaCallVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM wea_call";
 	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM wea_call WHERE cli_id = :cli_id AND wea_id = :wea_id AND wea_call_id_auto = :wea_call_id_auto";
