@@ -71,3 +71,7 @@ irecbr.user =
 irecbr.password = 
 irecbr.id.source = 
 irecbr.id.technology = 
+
+#Drecs
+drecs.user = 
+drecs.password =  

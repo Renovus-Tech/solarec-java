@@ -11,7 +11,6 @@ import tech.renovus.solarec.certificate.drecs.api.device.Device;
 import tech.renovus.solarec.certificate.drecs.api.device.DeviceResponse;
 import tech.renovus.solarec.certificate.drecs.api.organization.Organization;
 import tech.renovus.solarec.certificate.drecs.api.organization.OrganizationResponse;
-import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.common.InvertersUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
@@ -33,7 +32,7 @@ public class DRecsService implements CertificateService {
 	private static final String PARAM_CLIENT_ID	= "drec.client.id";
 	
 	//--- Protected properties ------------------
-	protected @Autowired RenovusSolarecConfiguration config;
+	protected @Autowired DRecsConfiguration drecsConfig;
 
 	//--- Private methods -----------------------
 	private Organization createOrganizationFrom(ClientVo clientVo) {
@@ -82,8 +81,8 @@ public class DRecsService implements CertificateService {
 	 */
 	private AuthResponse authenticate() {
 		Auth jsonRequest = new Auth()
-				.withUsername(this.config.getDrecsServiceUsername())
-				.withPassword(this.config.getDrecsServicePassword());
+				.withUsername(this.drecsConfig.getUser())
+				.withPassword(this.drecsConfig.getPassword());
 
 		return JsonCaller.post(ENDPOINT_AUTH, jsonRequest, AuthResponse.class);
 	}

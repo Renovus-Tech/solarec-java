@@ -423,7 +423,7 @@ public class ProcessingServiceImpl implements ProcessingService {
 			System.out.println("Save log error" + e.getLocalizedMessage());
 			e.printStackTrace();
 		} finally {
-			if (DataProcessingVo.RESULT_PROCESSING_ERROR == dataProVo.getDataProResult()) {
+			if (DataProcessingVo.RESULT_PROCESSING_ERROR.equals(dataProVo.getDataProResult())) {
 				try {
 					this.emailService.sendMessageWithAttachment(
 							this.config.getOnErrorSendEmailTo(), 

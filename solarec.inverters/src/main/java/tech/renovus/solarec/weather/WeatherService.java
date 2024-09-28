@@ -26,9 +26,9 @@ public interface WeatherService {
 	public static final String UTC_FORMATTER_PATTERN_HH_MM = "yyyy-MM-dd'T'HH:mm";
 	public static final String DATE_HOUR_FORMATTER_PATTERN = "yyyy-MM-dd HH:mm";
 	public static final String DATE_FORMATTER_PATTERN = "yyyy-MM-dd";
-	public static final SimpleDateFormat ISO_FORMATTER = new SimpleDateFormat(ISO_FORMATTER_PATTERN);
-	public static final SimpleDateFormat DATE_HOUR_FORMATTER = new SimpleDateFormat(DATE_HOUR_FORMATTER_PATTERN);
-	public static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(DATE_FORMATTER_PATTERN);
+	public final SimpleDateFormat ISO_FORMATTER = new SimpleDateFormat(ISO_FORMATTER_PATTERN);
+	public final SimpleDateFormat DATE_HOUR_FORMATTER = new SimpleDateFormat(DATE_HOUR_FORMATTER_PATTERN);
+	public final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(DATE_FORMATTER_PATTERN);
 	
 	Collection<StaDataVo> retrieveWeatherData(LocationVo locVo, StationVo station, Date dateFrom, Date dateTo) throws WeatherServiceException;
 
