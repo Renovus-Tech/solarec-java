@@ -11,7 +11,6 @@ import java.util.UUID;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.UserData;
@@ -24,6 +23,7 @@ import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliSettingDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliUserDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
+import tech.renovus.solarec.db.data.dao.interfaces.CountryDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
 import tech.renovus.solarec.db.data.dao.interfaces.FunctionalityDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocSdgDao;
@@ -77,6 +77,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Resource SettingsDao settingsDao;
 	@Resource LocSdgDao locSdgDao;
 	@Resource LocTypeDao locTypeDao;
+	@Resource CountryDao countryDao;
 	
 	//--- Private methods -----------------------
 	private void logout(UserData userData) {
@@ -163,6 +164,7 @@ public class SecurityServiceImpl implements SecurityService {
 		
 		usrVo.setSettings(this.usrSettingDao.findAllFor(usrVo.getUsrId()));
 		cliVo.setSettings(this.cliSettingDao.findAllFor(cliVo.getCliId()));
+		cliVo.setCountryVo(this.countryDao.findVo(cliVo.getCtrId()));
 		
 		this.login(userData, usrVo, cliVo, this.functionalitiesDao.findFor(usrVo.getUsrId(), cliVo.getCliId()));
 		this.setDefaultLocation(userData);

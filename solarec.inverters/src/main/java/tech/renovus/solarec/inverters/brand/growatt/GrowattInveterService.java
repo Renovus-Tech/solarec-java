@@ -113,7 +113,7 @@ public class GrowattInveterService implements InverterService {
 	
 	private List<GenDataVo> split(List<GenDataVo> dataValues) {
 		Calendar cal = Calendar.getInstance();
-		List<GenDataVo> result = new ArrayList<>(Double.valueOf(CollectionUtil.size(dataValues) * AMOUNT_PARTS).intValue());
+		List<GenDataVo> result = new ArrayList<>(CollectionUtil.size(dataValues) * AMOUNT_PARTS);
 		
 		dataValues.forEach(
                 data -> {

@@ -11,8 +11,8 @@ public class IrecBrConfiguration {
 	@Value("${irecbr.user}")			private String user;
 	@Value("${irecbr.password}")		private String password;
 	
-	@Value("${irecbr.id.source")		private String idSource;
-	@Value("${irecbr.id.technology")	private String idTechnology;
+	@Value("${irecbr.id.source}")		private String idSource;
+	@Value("${irecbr.id.technology}")	private String idTechnology;
 	
 
 	//--- Getters methods -----------------------
