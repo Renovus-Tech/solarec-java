@@ -90,7 +90,7 @@ public class SecurityServiceImpl implements SecurityService {
 		userData.setAuthenticationError(SecurityService.AUTHENTICATION_NOT_LOGGED);
 	}
 	
-	private void login(UserData userData, UsersVo usrVo, ClientVo cliVo, Collection<FunctionalityVo> functionalities) {
+	private void login(UserData userData, UsersVo usrVo, ClientVo cliVo, Collection<FunctionalityVo> functionalities, String preferLanguage) {
 		userData.setUserVo(usrVo);
 		userData.setClientVo(cliVo);
 		userData.setFunctionalities(functionalities);
@@ -99,6 +99,8 @@ public class SecurityServiceImpl implements SecurityService {
 		UsrSettingVo settingVo = usrVo.getSetting(SettingsVo.PREFER_LANGUAGE);
 		if (settingVo != null) {
 			userData.setLocale(this.translationService.getLocale(settingVo.getValue()));
+		} else {
+			userData.setLocale(this.translationService.getLocale(preferLanguage));
 		}
 	}
 
@@ -166,7 +168,7 @@ public class SecurityServiceImpl implements SecurityService {
 		cliVo.setSettings(this.cliSettingDao.findAllFor(cliVo.getCliId()));
 		cliVo.setCountryVo(this.countryDao.findVo(cliVo.getCtrId()));
 		
-		this.login(userData, usrVo, cliVo, this.functionalitiesDao.findFor(usrVo.getUsrId(), cliVo.getCliId()));
+		this.login(userData, usrVo, cliVo, this.functionalitiesDao.findFor(usrVo.getUsrId(), cliVo.getCliId()), authentication.getLanguage());
 		this.setDefaultLocation(userData);
 		
 		this.customFlow.beforeSendingToHomepage(userData);

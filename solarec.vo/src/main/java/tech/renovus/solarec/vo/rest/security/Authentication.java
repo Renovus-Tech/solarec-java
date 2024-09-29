@@ -7,6 +7,7 @@ public class Authentication {
 	private String password;
 	private String client;
 	private String location;
+	private String language;
 	
 	//--- Getters and Setters -------------------
 	public String getEmail() {
@@ -32,5 +33,11 @@ public class Authentication {
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }
