@@ -30,10 +30,6 @@ public class RenovusSolarecConfiguration {
 	
 	@Value("${tech.renovus.solarec.python.alertCalculations.url}")	private String alertCalculations;
 	
-	//--- DRecsService configurations -----------
-	@Value("USER")													private String drecsServiceUsername;
-	@Value("PASS")													private String drecsServicePassword;
-	
 	//--- Getters -------------------------------
 	public String getSiteUrl() {
 		return siteUrl;
@@ -64,12 +60,6 @@ public class RenovusSolarecConfiguration {
 	}
 	public String getAlertCalculations() {
 		return alertCalculations;
-	}
-	public String getDrecsServiceUsername() {
-		return drecsServiceUsername;
-	}
-	public String getDrecsServicePassword() {
-		return drecsServicePassword;
 	}
 	public String getChartSolarSalesUrl() {
 		return chartSolarSalesUrl;
