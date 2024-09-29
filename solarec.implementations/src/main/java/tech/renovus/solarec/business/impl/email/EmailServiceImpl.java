@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,7 +16,6 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -33,6 +33,8 @@ import tech.renovus.solarec.util.CollectionUtil;
 @Component
 public class EmailServiceImpl implements EmailService {
 
+	//--- Private 
+	
 	// --- Properties ----------------------------
 	@Autowired private JavaMailSender emailSender;
 	@Autowired private RenovusSolarecConfiguration config;
@@ -42,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
 	public void sendSimpleMessage(String to, String subject, String text) throws CoreException {
 		try {
 			MimeMessage message = emailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+			MimeMessageHelper helper = new MimeMessageHelper(message, StandardCharsets.UTF_8.name());
 			helper.setFrom(this.config.getMailSendFromUser(), this.config.getMailSendFrom());
 			helper.setTo(to);
 			helper.setSubject(subject);
@@ -57,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
 	public void sendSimpleHtmlMessage(String to, String subject, String html) throws CoreException {
 		try {
 			MimeMessage message = emailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+			MimeMessageHelper helper = new MimeMessageHelper(message, StandardCharsets.UTF_8.name());
 			helper.setFrom(this.config.getMailSendFromUser(), this.config.getMailSendFrom());
 			helper.setTo(to);
 			helper.setSubject(subject);
@@ -72,7 +74,7 @@ public class EmailServiceImpl implements EmailService {
 	public void sendSimpleHtmlMessage(List<String> to, String subject, String html) throws CoreException {
 		try {
 			MimeMessage message = emailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+			MimeMessageHelper helper = new MimeMessageHelper(message, StandardCharsets.UTF_8.name());
 			helper.setFrom(this.config.getMailSendFromUser(), this.config.getMailSendFrom());
 			for (String anEmail : to) helper.addTo(anEmail);
 			helper.setSubject(subject);

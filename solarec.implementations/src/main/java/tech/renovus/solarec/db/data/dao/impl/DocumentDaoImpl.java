@@ -15,16 +15,19 @@ import tech.renovus.solarec.db.data.dao.wrapper.DocumentRowWrapper;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.util.StringUtil;
+import tech.renovus.solarec.vo.db.data.DocGeneratorVo;
+import tech.renovus.solarec.vo.db.data.DocLocationVo;
+import tech.renovus.solarec.vo.db.data.DocStationVo;
 import tech.renovus.solarec.vo.db.data.DocumentVo;
 
 @Repository
 public class DocumentDaoImpl extends BaseDocumentDao implements DocumentDao {
 	
 	//--- Private properties --------------------
-	private final static String SQL_SELECT_ALL_FOR_CLIENT		= "SELECT * FROM view_documents_sorted d WHERE cli_id = :cliId ";
-	private final static String SQL_SELECT_ALL_FOR_LOCATION		= "SELECT d.* FROM view_documents_sorted d, doc_location dl WHERE d.cli_id = dl.cli_id AND d.doc_id_auto = dl.doc_id AND dl.cli_id = :cliId AND dl.loc_id = :locId ";
-	private final static String SQL_SELECT_ALL_FOR_GENERATOR	= "SELECT d.* FROM view_documents_sorted d, doc_generator dg WHERE d.cli_id = dg.cli_id AND d.doc_id_auto = dg.doc_id AND dg.cli_id = :cliId AND dg.gen_id = :genId ";
-	private final static String SQL_SELECT_ALL_FOR_STATION		= "SELECT d.* FROM view_documents_sorted d, doc_station ds WHERE d.cli_id = ds.cli_id AND d.doc_id_auto = ds.doc_id AND ds.cli_id = :cliId AND ds.sta_id = :staId ";
+	private final static String SQL_SELECT_ALL_FOR_CLIENT		= "SELECT * FROM view_documents_sorted d WHERE cli_id = :cli_id ";
+	private final static String SQL_SELECT_ALL_FOR_LOCATION		= "SELECT d.* FROM view_documents_sorted d, doc_location dl WHERE d.cli_id = dl.cli_id AND d.doc_id_auto = dl.doc_id AND dl.cli_id = :cli_id AND dl.loc_id = :loc_id ";
+	private final static String SQL_SELECT_ALL_FOR_GENERATOR	= "SELECT d.* FROM view_documents_sorted d, doc_generator dg WHERE d.cli_id = dg.cli_id AND d.doc_id_auto = dg.doc_id AND dg.cli_id = :cli_id AND dg.gen_id = :gen_id ";
+	private final static String SQL_SELECT_ALL_FOR_STATION		= "SELECT d.* FROM view_documents_sorted d, doc_station ds WHERE d.cli_id = ds.cli_id AND d.doc_id_auto = ds.doc_id AND ds.cli_id = :cli_id AND ds.sta_id = :sta_id ";
 	
 	//--- Constructors --------------------------
 	@Autowired public DocumentDaoImpl(NamedParameterJdbcTemplate jdbc) {
@@ -79,21 +82,21 @@ public class DocumentDaoImpl extends BaseDocumentDao implements DocumentDao {
 	
 	//--- Overridden methods --------------------
 	@Override public Collection<DocumentVo> findAll(Integer cliId, String name, String term, Date from, Date to, Boolean isOpen) {
-		MapSqlParameterSource params = new MapSqlParameterSource().addValue("cliId", cliId);
+		MapSqlParameterSource params = new MapSqlParameterSource().addValue(DocumentVo.COLUMN_CLI_ID, cliId);
 		StringBuilder sql = new StringBuilder(SQL_SELECT_ALL_FOR_CLIENT);
 		this.addDateFilters(name, term, from, to, isOpen, params, sql);
 		return this.jdbc.query( sql.toString(), params, DocumentRowWrapper.getInstance() );
 	}
 
 	@Override public Collection<DocumentVo> findAllLocation(Integer cliId, Integer locId, String name, String term, Date from, Date to, Boolean isOpen) {
-		MapSqlParameterSource params = new MapSqlParameterSource().addValue("cliId", cliId).addValue("locId", locId);
+		MapSqlParameterSource params = new MapSqlParameterSource().addValue(DocumentVo.COLUMN_CLI_ID, cliId).addValue(DocLocationVo.COLUMN_LOC_ID, locId);
 		StringBuilder sql = new StringBuilder(SQL_SELECT_ALL_FOR_LOCATION);
 		this.addDateFilters(name, term, from, to, isOpen, params, sql);
 		return this.jdbc.query( sql.toString(), params, DocumentRowWrapper.getInstance() );
 	}
 
 	@Override public Collection<DocumentVo> findAllGenerator(Integer cliId, Integer genId, String name, String term, Date from, Date to, Boolean isOpen) {
-		MapSqlParameterSource params = new MapSqlParameterSource().addValue("cliId", cliId).addValue("genId", genId);
+		MapSqlParameterSource params = new MapSqlParameterSource().addValue(DocumentVo.COLUMN_CLI_ID, cliId).addValue(DocGeneratorVo.COLUMN_GEN_ID, genId);
 		StringBuilder sql = new StringBuilder(SQL_SELECT_ALL_FOR_GENERATOR);
 		this.addDateFilters(name, term, from, to, isOpen, params, sql);
 		return this.jdbc.query( sql.toString(), params, DocumentRowWrapper.getInstance() );
@@ -101,7 +104,7 @@ public class DocumentDaoImpl extends BaseDocumentDao implements DocumentDao {
 	}
 
 	@Override public Collection<DocumentVo> findAllStation(Integer cliId, Integer staId, String name, String term, Date from, Date to, Boolean isOpen) {
-		MapSqlParameterSource params = new MapSqlParameterSource().addValue("cliId", cliId).addValue("staId", staId);
+		MapSqlParameterSource params = new MapSqlParameterSource().addValue(DocumentVo.COLUMN_CLI_ID, cliId).addValue(DocStationVo.COLUMN_STA_ID, staId);
 		StringBuilder sql = new StringBuilder(SQL_SELECT_ALL_FOR_STATION);
 		this.addDateFilters(name, term, from, to, isOpen, params, sql);
 		return this.jdbc.query( sql.toString(), params, DocumentRowWrapper.getInstance() );

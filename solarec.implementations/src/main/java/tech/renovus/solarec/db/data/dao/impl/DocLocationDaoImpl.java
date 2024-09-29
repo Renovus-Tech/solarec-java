@@ -30,23 +30,25 @@ public class DocLocationDaoImpl extends BaseDocLocationDao implements DocLocatio
 	@Override public void deleteAllForLocation(Integer cliId, Integer locId) {
 		this.jdbc.update(SQL_DELETE_ALL_FOR_LOCATION,
 				new MapSqlParameterSource()
-				.addValue("cli_id", cliId)
-				.addValue("loc_id", locId)
+				.addValue(DocLocationVo.COLUMN_CLI_ID, cliId)
+				.addValue(DocLocationVo.COLUMN_LOC_ID, locId)
 			);
 	}
 
 	@Override public void deleteDocument(Integer cliId, Integer docId) {
 		this.jdbc.update(SQL_DELETE_ALL_FOR_DOCUMENT,
 				new MapSqlParameterSource()
-				.addValue("cli_id", cliId)
-				.addValue("doc_id", docId)
+				.addValue(DocLocationVo.COLUMN_CLI_ID, cliId)
+				.addValue(DocLocationVo.COLUMN_DOC_ID, docId)
 			);
 	}
 	
 	@Override public Collection<DocLocationVo> findAllFor(Integer cliId, Collection<Integer> docIds) {
 		if (CollectionUtil.isEmpty(docIds)) return null;
 		
-		MapSqlParameterSource params = new MapSqlParameterSource().addValue("docIds", docIds).addValue("cli_id", cliId);
+		MapSqlParameterSource params = new MapSqlParameterSource()
+				.addValue("docIds", docIds)
+				.addValue(DocLocationVo.COLUMN_CLI_ID, cliId);
 		StringBuilder sql = new StringBuilder(SQL_GEL_ALL_FOR_DOCUMENTS);
 		return this.jdbc.query( sql.toString(), params, FullDocLocationRowWrapper.getInstance() );
 	}

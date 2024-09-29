@@ -30,16 +30,16 @@ public class DocGeneratorDaoImpl extends BaseDocGeneratorDao implements DocGener
 	@Override public void deleteAllForGenerator(Integer cliId, Integer genId) {
 		this.jdbc.update(SQL_DELETE_ALL_FOR_GENERATOR,
 				new MapSqlParameterSource()
-				.addValue("cli_id", cliId)
-				.addValue("gen_id", genId)
+				.addValue(DocGeneratorVo.COLUMN_CLI_ID, cliId)
+				.addValue(DocGeneratorVo.COLUMN_GEN_ID, genId)
 			);
 	}
 
 	@Override public void deleteDocument(Integer cliId, Integer docId) {
 		this.jdbc.update(SQL_DELETE_ALL_FOR_DOCUMENT,
 				new MapSqlParameterSource()
-				.addValue("cli_id", cliId)
-				.addValue("doc_id", docId)
+				.addValue(DocGeneratorVo.COLUMN_CLI_ID, cliId)
+				.addValue(DocGeneratorVo.COLUMN_DOC_ID, docId)
 			);
 		
 	}
@@ -47,7 +47,9 @@ public class DocGeneratorDaoImpl extends BaseDocGeneratorDao implements DocGener
 	@Override public Collection<DocGeneratorVo> findAllFor(Integer cliId, Collection<Integer> docIds) {
 		if (CollectionUtil.isEmpty(docIds)) return null;
 		
-		MapSqlParameterSource params = new MapSqlParameterSource().addValue("docIds", docIds).addValue("cli_id", cliId);
+		MapSqlParameterSource params = new MapSqlParameterSource(
+				).addValue("docIds", docIds)
+				.addValue(DocGeneratorVo.COLUMN_CLI_ID, cliId);
 		StringBuilder sql = new StringBuilder(SQL_GEL_ALL_FOR_DOCUMENTS);
 		return this.jdbc.query( sql.toString(), params, FullDocGeneratorRowWrapper.getInstance() );
 	}

@@ -17,6 +17,7 @@ import tech.renovus.solarec.db.data.dao.wrapper.GenDataRowWrapper;
 import tech.renovus.solarec.db.data.dao.wrapper.custom.GeneratorMaxDataDate;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
+import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.rest.chart.ChartFilter;
 
 @Repository
@@ -40,7 +41,7 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	private final String GET_FOR_CLI_GEN_DATE_PERIOD_CODES				= "select * from gen_data WHERE cli_id = :cli_id AND gen_id = :gen_id AND :data_date_min <= data_date and data_date < :data_date_max AND data_type_id in ";
 	private final String GET_FOR_CLI_LOC_NO_CERT_PROV_DATA				= "select * from gen_data WHERE cli_id = :cli_id AND gen_id in (SELECT gen_id_auto FROM generator g WHERE g.cli_id = :cli_id ADN g.loc_id = :loc_id) AND gen_data_cert_prov_data is null AND data_type_id in ";
 	
-	private final static String SQL_GET_MAX_DATA_DATE_FOR_CLIENT		= "select max(data_date) from gen_data d where d.cli_id = :cliId and data_date <= :genDataDateMax " ;
+	private final static String SQL_GET_MAX_DATA_DATE_FOR_CLIENT		= "select max(data_date) from gen_data d where d.cli_id = :cli_id and data_date <= :data_date " ;
 	
 	//--- Constructors --------------------------
 	@Autowired public GenDataDaoImpl(NamedParameterJdbcTemplate jdbc) {
@@ -65,8 +66,8 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	@Override public void deleteAllForGenerator(Integer cliId, Integer genId) {
 		this.jdbc.update(SQL_DELETE_ALL_FOR_GENERATOR,
 				new MapSqlParameterSource()
-				.addValue("cli_id", cliId)
-				.addValue("gen_id", genId)
+				.addValue(GenDataVo.COLUMN_CLI_ID, cliId)
+				.addValue(GenDataVo.COLUMN_GEN_ID, genId)
 			);
 	}
 
@@ -86,9 +87,9 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 			return this.jdbc.query(
 					sql,
 					new MapSqlParameterSource()
-					.addValue("cli_id", cliId)
-					.addValue("loc_id", locId)
-					.addValue("data_type_id", dataTypeId)
+					.addValue(GenDataVo.COLUMN_CLI_ID, cliId)
+					.addValue(GeneratorVo.COLUMN_LOC_ID, locId)
+					.addValue(GenDataVo.COLUMN_DATA_TYPE_ID, dataTypeId)
 					.addValue("date_from", from)
 					.addValue("date_to", to),
 					GenDataRowWrapper.getInstance()
@@ -114,10 +115,10 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 			return this.jdbc.query(
 					sql,
 					new MapSqlParameterSource()
-					.addValue("cli_id", cliId)
-					.addValue("loc_id", locId)
-					.addValue("data_type_id", dataTypeId)
-					.addValue("data_value", dataValue)
+					.addValue(GenDataVo.COLUMN_CLI_ID, cliId)
+					.addValue(GeneratorVo.COLUMN_LOC_ID, locId)
+					.addValue(GenDataVo.COLUMN_DATA_TYPE_ID, dataTypeId)
+					.addValue(GenDataVo.COLUMN_DATA_VALUE, dataValue)
 					.addValue("date_from", from)
 					.addValue("date_to", to),
 					GenDataRowWrapper.getInstance()
@@ -131,9 +132,9 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 		StringBuilder sql = new StringBuilder();
 		MapSqlParameterSource binding = 
 			new MapSqlParameterSource()
-				.addValue("cli_id", cliId)
-				.addValue("gen_id", genId)
-				.addValue("data_date", genDataDateMax);
+				.addValue(GenDataVo.COLUMN_CLI_ID, cliId)
+				.addValue(GenDataVo.COLUMN_GEN_ID, genId)
+				.addValue(GenDataVo.COLUMN_DATA_DATE, genDataDateMax);
 		
 		sql.append(GET_FOR_CLI_GEN_DATE_CODES);
 		
@@ -162,10 +163,10 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	
 	@Override public Collection<GenDataVo> getGenDataForDatePeriod(Integer cliId, Integer genId, Date genDataDateMin, Date genDataDateMax, int... codes) {
 		MapSqlParameterSource binding = new MapSqlParameterSource()
-											.addValue("cli_id", cliId)
-											.addValue("gen_id", genId)
-											.addValue("data_date_min", genDataDateMin)
-											.addValue("data_date_max", genDataDateMax);
+											.addValue(GenDataVo.COLUMN_CLI_ID, cliId)
+											.addValue(GenDataVo.COLUMN_GEN_ID, genId)
+											.addValue(GeneratorVo.COLUMN_GEN_DATA_DATE_MIN, genDataDateMin)
+											.addValue(GeneratorVo.COLUMN_GEN_DATA_DATE_MAX, genDataDateMax);
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append(GET_FOR_CLI_GEN_DATE_PERIOD_CODES);
@@ -194,8 +195,8 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	@Override
 	public Date getMaxDataDate(Integer cliId, Date currentDate, int... codes) {
 		MapSqlParameterSource binding = new MapSqlParameterSource()
-											.addValue("cliId", cliId)
-											.addValue("genDataDateMax", currentDate);
+											.addValue(GenDataVo.COLUMN_CLI_ID, cliId)
+											.addValue(GenDataVo.COLUMN_DATA_DATE, currentDate);
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append(SQL_GET_MAX_DATA_DATE_FOR_CLIENT);
@@ -227,8 +228,8 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	@Override
 	public Collection<GenDataVo> getAllWithoutCertProvData(Integer cliId, Integer locId, int... codes) {
 		MapSqlParameterSource binding = new MapSqlParameterSource()
-				.addValue("cli_id", cliId)
-				.addValue("loc_id", locId);
+				.addValue(GenDataVo.COLUMN_CLI_ID, cliId)
+				.addValue(GeneratorVo.COLUMN_LOC_ID, locId);
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(GET_FOR_CLI_LOC_NO_CERT_PROV_DATA);

@@ -11,18 +11,19 @@ import org.springframework.stereotype.Repository;
 import tech.renovus.solarec.db.data.dao.base.BaseLocationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.db.data.dao.wrapper.LocationRowWrapper;
+import tech.renovus.solarec.vo.db.data.LocUserVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 
 @Repository
 public class LocationDaoImpl extends BaseLocationDao implements LocationDao {
 
 	//--- Private constants ---------------------
-	private final static String SQL_SELECT_ALL					= "SELECT * FROM location WHERE cli_id = :cliId ORDER BY loc_code";
-	private final static String SQL_SELECT_ALL_BY_TYPE			= "SELECT * FROM location WHERE cli_id = :cliId AND loc_type = :locType ORDER BY loc_code";
-	private final static String SQL_FIND_ALL_FOR_USER			= "SELECT l.* FROM location l, loc_user lu WHERE l.cli_id = lu.cli_id and l.loc_id_auto = lu.loc_id AND lu.cli_id = :cliId AND lu.usr_id = :usrId ORDER BY l.loc_name";
-	private final static String SQL_FIND_ALL_FOR_USER_FOR_TYPE	= "SELECT l.* FROM location l, loc_user lu WHERE l.cli_id = lu.cli_id and l.loc_id_auto = lu.loc_id AND lu.cli_id = :cliId AND lu.usr_id = :usrId AND loc_type = :locType ORDER BY loc_code";
-	private final static String SQL_FIND_ALL_FOR_USER_BY_ACCESS	= "SELECT l.* FROM location l, loc_user lu WHERE l.cli_id = lu.cli_id and l.loc_id_auto = lu.loc_id AND lu.cli_id = :cliId AND lu.usr_id = :usrId ORDER BY lu.cli_user_date_access DESC NULLS LAST";
-	private final static String SQL_FIND_FOR_USER				= "SELECT l.* FROM location l, loc_user lu WHERE l.cli_id = lu.cli_id and l.loc_id_auto = lu.loc_id AND lu.cli_id = :cliId AND lu.loc_id = :locId AND lu.usr_id = :usrId";
+	private final static String SQL_SELECT_ALL					= "SELECT * FROM location WHERE cli_id = :cli_id ORDER BY loc_code";
+	private final static String SQL_SELECT_ALL_BY_TYPE			= "SELECT * FROM location WHERE cli_id = :cli_id AND loc_type = :loc_type ORDER BY loc_code";
+	private final static String SQL_FIND_ALL_FOR_USER			= "SELECT l.* FROM location l, loc_user lu WHERE l.cli_id = lu.cli_id and l.loc_id_auto = lu.loc_id AND lu.cli_id = :cli_id AND lu.usr_id = :usr_id ORDER BY l.loc_name";
+	private final static String SQL_FIND_ALL_FOR_USER_FOR_TYPE	= "SELECT l.* FROM location l, loc_user lu WHERE l.cli_id = lu.cli_id and l.loc_id_auto = lu.loc_id AND lu.cli_id = :cli_id AND lu.usr_id = :usr_id AND loc_type = :loc_type ORDER BY loc_code";
+	private final static String SQL_FIND_ALL_FOR_USER_BY_ACCESS	= "SELECT l.* FROM location l, loc_user lu WHERE l.cli_id = lu.cli_id and l.loc_id_auto = lu.loc_id AND lu.cli_id = :cli_id AND lu.usr_id = :usr_id ORDER BY lu.cli_user_date_access DESC NULLS LAST";
+	private final static String SQL_FIND_FOR_USER				= "SELECT l.* FROM location l, loc_user lu WHERE l.cli_id = lu.cli_id and l.loc_id_auto = lu.loc_id AND lu.cli_id = :cli_id AND lu.loc_id = :loc_id AND lu.usr_id = :usr_id";
 	
 	private final static String SQL_UPDATE_DATA_DATE_MAX 		= "update location set loc_data_date_max = (select max(data_date) from loc_data where loc_data.cli_id = location.cli_id and loc_data.loc_id = location.loc_id_auto)";
 	private final static String SQL_UPDATE_DATA_DATE_MIN 		= "update location set loc_data_date_min = (select min(data_date) from loc_data where loc_data.cli_id = location.cli_id and loc_data.loc_id = location.loc_id_auto)";
@@ -42,7 +43,7 @@ public class LocationDaoImpl extends BaseLocationDao implements LocationDao {
 		return this.jdbc.query(
 				SQL_SELECT_ALL, 
 				new MapSqlParameterSource()
-					.addValue("cliId", cliId), 
+					.addValue(LocationVo.COLUMN_CLI_ID, cliId), 
 				LocationRowWrapper.getInstance()
 			);
 	}
@@ -51,8 +52,8 @@ public class LocationDaoImpl extends BaseLocationDao implements LocationDao {
 		return this.jdbc.query(
 				SQL_SELECT_ALL_BY_TYPE, 
 				new MapSqlParameterSource()
-					.addValue("cliId", cliId) 
-					.addValue("locType", locType), 
+					.addValue(LocationVo.COLUMN_CLI_ID, cliId) 
+					.addValue(LocationVo.COLUMN_LOC_TYPE, locType), 
 				LocationRowWrapper.getInstance()
 			);
 	}
@@ -61,8 +62,8 @@ public class LocationDaoImpl extends BaseLocationDao implements LocationDao {
 		return this.jdbc.query(
 				sortedByAccess ? SQL_FIND_ALL_FOR_USER_BY_ACCESS : SQL_FIND_ALL_FOR_USER, 
 				new MapSqlParameterSource()
-					.addValue("cliId", cliId)
-					.addValue("usrId", usrId),
+					.addValue(LocationVo.COLUMN_CLI_ID, cliId)
+					.addValue(LocUserVo.COLUMN_USR_ID, usrId),
 				LocationRowWrapper.getInstance()
 			);
 	}
@@ -70,9 +71,9 @@ public class LocationDaoImpl extends BaseLocationDao implements LocationDao {
 	@Override public LocationVo findForUser(Integer usrId, Integer cliId, Integer locId) {
 		try {
 			return this.jdbc.queryForObject(SQL_FIND_FOR_USER, new MapSqlParameterSource()
-					.addValue("usrId", usrId) 
-					.addValue("cliId", cliId) 
-					.addValue("locId", locId), 
+					.addValue(LocUserVo.COLUMN_USR_ID, usrId) 
+					.addValue(LocationVo.COLUMN_CLI_ID, cliId) 
+					.addValue(LocUserVo.COLUMN_LOC_ID, locId), 
 					LocationRowWrapper.getInstance());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
@@ -96,9 +97,9 @@ public class LocationDaoImpl extends BaseLocationDao implements LocationDao {
 		return this.jdbc.query(
 			SQL_FIND_ALL_FOR_USER_FOR_TYPE, 
 			new MapSqlParameterSource()
-				.addValue("cliId", cliId)
-				.addValue("usrId", usrId)
-				.addValue("locType", locType),
+				.addValue(LocationVo.COLUMN_CLI_ID, cliId)
+				.addValue(LocUserVo.COLUMN_USR_ID, usrId)
+				.addValue(LocationVo.COLUMN_LOC_TYPE, locType),
 			LocationRowWrapper.getInstance()
 		);
 	}

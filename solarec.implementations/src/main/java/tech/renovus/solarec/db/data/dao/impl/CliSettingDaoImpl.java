@@ -40,7 +40,7 @@ public class CliSettingDaoImpl extends BaseCliSettingDao implements CliSettingDa
 
 	@Override
 	public void deleteAllFor(Integer usrId) {
-		 this.jdbc.update(SQL_DELETE_ALL_FOR_USER, new MapSqlParameterSource().addValue("cli_id", usrId)); 
+		 this.jdbc.update(SQL_DELETE_ALL_FOR_USER, new MapSqlParameterSource().addValue(CliSettingVo.COLUMN_CLI_ID, usrId)); 
 	}  
 
 	@Override
@@ -49,8 +49,8 @@ public class CliSettingDaoImpl extends BaseCliSettingDao implements CliSettingDa
 			return this.jdbc.queryForObject(
 					SQL_SELECT_BY_ID_WITH_SETTING, 
 					new MapSqlParameterSource()
-						.addValue("cli_id", cliId)
-						.addValue("cli_set_name", cliSetName),
+						.addValue(CliSettingVo.COLUMN_CLI_ID, cliId)
+						.addValue(CliSettingVo.COLUMN_CLI_SET_NAME, cliSetName),
 					CliSettingRowWrapper.getInstance());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
