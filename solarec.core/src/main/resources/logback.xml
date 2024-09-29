@@ -70,6 +70,16 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+    <appender name="report_daily_appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}/report/report.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}/report/report.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory> <!-- Keep logs for 7 days -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
     <!-- Loggers -->
     <logger name="email" 		level="all" additivity="true"><appender-ref ref="email_daily_appender"/></logger>
@@ -78,6 +88,7 @@
     <logger name="schedule" 	level="all" additivity="true"><appender-ref ref="schedule_daily_appender"/></logger>
     <logger name="inverter" 	level="all" additivity="true"><appender-ref ref="inverter_daily_appender"/></logger>
     <logger name="certificate" 	level="all" additivity="true"><appender-ref ref="certificate_daily_appender"/></logger>
+    <logger name="report"	 	level="all" additivity="true"><appender-ref ref="report_daily_appender"/></logger>
 
     <!-- Root Logger -->
     <root level="all">
