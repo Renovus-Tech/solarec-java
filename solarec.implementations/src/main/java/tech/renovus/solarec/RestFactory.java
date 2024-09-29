@@ -467,6 +467,7 @@ public class RestFactory {
 		client.setSettings(convertSettings(vo.getSettings(), userData));
 		client.setDemoDate(vo.getCliDemoDate());
 		client.setEnabled(FlagUtil.getFlagValue(vo, ClientVo.FLAG_ENABLED));
+		client.setCountry(this.convert(vo.getCountryVo()));
 		
 		return client;
 	}

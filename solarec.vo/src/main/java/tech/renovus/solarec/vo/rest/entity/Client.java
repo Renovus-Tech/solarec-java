@@ -17,6 +17,7 @@ public class Client {
 	
 	private Integer dataDefinitionId;
 	private DataDefinition dataDefinition;
+	private Country country;
 	
 	private Collection<Setting> settings;
 	
@@ -74,5 +75,11 @@ public class Client {
 	}
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	public Country getCountry() {
+		return country;
+	}
+	public void setCountry(Country country) {
+		this.country = country;
 	}
 }

@@ -11,6 +11,7 @@ import tech.renovus.solarec.vo.db.base.BaseClientVo;
 import tech.renovus.solarec.vo.db.data.CliDataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.CliMetadataVo;
 import tech.renovus.solarec.vo.db.data.CliSettingVo;
+import tech.renovus.solarec.vo.db.data.CountryVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 
@@ -22,6 +23,7 @@ public class DbClientVo extends BaseClientVo implements ISynchronizable<DbClient
 	protected Collection<LocationVo> locations;
 	protected Collection<CliDataDefParameterVo> dataDefParameters;
 	protected Collection<CliMetadataVo> metadata;
+	protected CountryVo countryVo;
 	
 	//--- Constructors --------------------------
 	public DbClientVo() {
@@ -127,5 +129,13 @@ public class DbClientVo extends BaseClientVo implements ISynchronizable<DbClient
 
 	public void setMetadata(Collection<CliMetadataVo> metadata) {
 		this.metadata = metadata;
+	}
+
+	public CountryVo getCountryVo() {
+		return countryVo;
+	}
+
+	public void setCountryVo(CountryVo countryVo) {
+		this.countryVo = countryVo;
 	}
 }
