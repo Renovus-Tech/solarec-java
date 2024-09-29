@@ -26,9 +26,9 @@ public final class FileUtil {
 	public static final String CONTENT_FORCE_DOWNLOAD	= "application/force-download";
 	
 	public static final double FILE_SIZE_1KB_IN_BYTES	= 1024;
-	public static final double FILE_SIZE_1MB_IN_BYTES	= 1024 * 1024;
-	public static final double FILE_SIZE_1GB_IN_BYTES	= 1024 * 1024 * 1024;
-	public static final double FILE_SIZE_1TB_IN_BYTES	= 1024 * 1024 * 1024 * 1024;
+	public static final double FILE_SIZE_1MB_IN_BYTES	= (double) 1024 * 1024;
+	public static final double FILE_SIZE_1GB_IN_BYTES	= (double) 1024 * 1024 * 1024;
+	public static final double FILE_SIZE_1TB_IN_BYTES	= (double) 1024 * 1024 * 1024 * 1024;
 	
 	/** A list of extensions and content that are know. */
 	private static HashMap<String,String> FILE_EXTENSION_CONTENT_TYPE 			= new HashMap<String,String>();

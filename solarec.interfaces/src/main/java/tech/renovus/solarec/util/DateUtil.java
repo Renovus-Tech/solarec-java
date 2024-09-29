@@ -573,7 +573,7 @@ public final class DateUtil {
 		
 		long milliseconds1 = aDate.getTime();
 	    long milliseconds2 = anotherDate.getTime();
-	    double diff = milliseconds2 - milliseconds1;
+	    double diff = milliseconds2 - (double) milliseconds1;
 	    
 	    switch (diffType) {
 	    	case DateUtil.DATE_DIFF_IN_MILISEC: return diff;

@@ -163,7 +163,7 @@ public class SurentisService implements CertificateService {
 	private Record recordGeneration(LocationVo locVo, Date dateStart, Date dateEnd, Double power) throws CertificateServiceException {
 		Record recordToSend = new Record()
 				.withLocationId(locVo.getLocId())
-				.withDataProId(Long.valueOf(System.currentTimeMillis()).intValue())
+				.withDataProId((int) System.currentTimeMillis())
 				.withPower(power)
 				.withDataStartDate(this.dateFormat.format(dateStart))
 				.withDataEndDate(this.dateFormat.format(dateEnd))
