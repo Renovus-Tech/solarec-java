@@ -20,14 +20,14 @@ import tech.renovus.solarec.vo.db.data.StationVo;
 public class StationDaoImpl extends BaseStationDao implements StationDao {
 	
 	//--- Private constants ---------------------
-	private final static String SQL_SELECT_ALL_FOR_CLIENT		= "SELECT * FROM station WHERE cli_id = :cliId ";
-	private final static String SQL_SELECT_ALL_FOR_LOCATION		= "SELECT * FROM station WHERE cli_id = :cliId AND loc_id = :locId";
-	private final static String SQL_FIND_DEFAULT				= "SELECT * FROM station WHERE cli_id = :cliId AND loc_id = :locId AND sta_flags like '1%'";
+	private final static String SQL_SELECT_ALL_FOR_CLIENT			= "SELECT * FROM station WHERE cli_id = :cli_id ";
+	private final static String SQL_SELECT_ALL_FOR_LOCATION			= "SELECT * FROM station WHERE cli_id = :cli_id AND loc_id = :loc_id";
+	private final static String SQL_FIND_DEFAULT					= "SELECT * FROM station WHERE cli_id = :cli_id AND loc_id = :loc_id AND sta_flags like '1%'";
 
-	private final static String SQL_UPDATE_DATA_DATE_MAX 		= "update station set sta_data_date_max = (select max(data_date) from sta_data where sta_data.cli_id = station.cli_id and sta_data.sta_id = station.sta_id_auto)";
-	private final static String SQL_UPDATE_DATA_DATE_MIN 		= "update station set sta_data_date_min = (select min(data_date) from sta_data where sta_data.cli_id = station.cli_id and sta_data.sta_id = station.sta_id_auto)";
+	private final static String SQL_UPDATE_DATA_DATE_MAX 			= "update station set sta_data_date_max = (select max(data_date) from sta_data where sta_data.cli_id = station.cli_id and sta_data.sta_id = station.sta_id_auto)";
+	private final static String SQL_UPDATE_DATA_DATE_MIN 			= "update station set sta_data_date_min = (select min(data_date) from sta_data where sta_data.cli_id = station.cli_id and sta_data.sta_id = station.sta_id_auto)";
 	
-	private final static String SQL_GET_MAX_DATA_DATE_FOR_CLIENT			= "SELECT max(sta_data_date_max) FROM station WHERE cli_id = :cliId AND sta_data_date_max <= :staDataDateMax" ;
+	private final static String SQL_GET_MAX_DATA_DATE_FOR_CLIENT	= "SELECT max(sta_data_date_max) FROM station WHERE cli_id = :cli_id AND sta_data_date_max <= :sta_data_date_max" ;
 
 	//--- Constructors --------------------------
 	@Autowired public StationDaoImpl(NamedParameterJdbcTemplate jdbc) {
@@ -39,7 +39,7 @@ public class StationDaoImpl extends BaseStationDao implements StationDao {
 		return this.jdbc.query(
 				SQL_SELECT_ALL_FOR_CLIENT, 
 				new MapSqlParameterSource()
-					.addValue("cliId", cliId),
+					.addValue(StationVo.COLUMN_CLI_ID, cliId),
 				StationRowWrapper.getInstance()
 			);
 	}
@@ -48,8 +48,8 @@ public class StationDaoImpl extends BaseStationDao implements StationDao {
 		return this.jdbc.query(
 				SQL_SELECT_ALL_FOR_LOCATION, 
 				new MapSqlParameterSource()
-				.addValue("cliId", cliId)
-				.addValue("locId", locId),
+				.addValue(StationVo.COLUMN_CLI_ID, cliId)
+				.addValue(StationVo.COLUMN_LOC_ID, locId),
 				StationRowWrapper.getInstance()
 			);
 	}
@@ -59,8 +59,8 @@ public class StationDaoImpl extends BaseStationDao implements StationDao {
 			return this.jdbc.queryForObject(
 					SQL_FIND_DEFAULT, 
 					new MapSqlParameterSource()
-						.addValue("cliId", cliId)
-						.addValue("locId", locId),
+						.addValue(StationVo.COLUMN_CLI_ID, cliId)
+						.addValue(StationVo.COLUMN_LOC_ID, locId),
 					StationRowWrapper.getInstance()
 				);
 		} catch (EmptyResultDataAccessException e) {
@@ -78,8 +78,8 @@ public class StationDaoImpl extends BaseStationDao implements StationDao {
 			return this.jdbc.queryForObject(
 					SQL_GET_MAX_DATA_DATE_FOR_CLIENT, 
 					new MapSqlParameterSource()
-					.addValue("cliId", cliId)
-					.addValue("staDataDateMax", beforeDate), 
+					.addValue(StationVo.COLUMN_CLI_ID, cliId)
+					.addValue(StationVo.COLUMN_STA_DATA_DATE_MAX, beforeDate), 
 					GeneratorMaxDataDate.getInstance()
 					);
 		} catch (EmptyResultDataAccessException e) {

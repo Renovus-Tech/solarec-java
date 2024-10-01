@@ -11,7 +11,6 @@ import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.ParserService;
 import tech.renovus.solarec.business.SolarService;
 import tech.renovus.solarec.business.impl.base.BaseServiceImpl;
-import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliGenAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliLocAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
@@ -28,8 +27,6 @@ import tech.renovus.solarec.vo.rest.entity.Alert;
 public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 
 	//--- Resources -----------------------------
-	@Autowired RenovusSolarecConfiguration config;
-	
 	@Autowired ParserService parserService;
 	
 	@Autowired GeneratorDao generatorDao;

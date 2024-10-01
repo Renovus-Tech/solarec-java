@@ -24,6 +24,9 @@ import tech.renovus.solarec.vo.rest.chart.ChartFilter;
 public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 	
 	//--- Private properties --------------------
+	private static final String CODE_VARIABLE	= ":code_";
+	private static final String CODE_VALUE		= "code_";
+	
 	private final String SQL_DELETE_ALL_FOR_GENERATOR					= "DELETE FROM gen_data WHERE cli_id = :cli_id AND gen_id = :gen_id";
 	
 	private final String SQL_AVG_VALUE_FOR_CLIENT_LOCATION_GENERATORS					= "select gd.cli_id, gd.gen_id, cast(null as timestamp) as data_date, gd.data_type_id, cast(null as int) as data_pro_id, avg(gd.data_value) as data_value, cast(null as timestamp) as data_date_added from generator g left join gen_data gd on g.cli_id = gd.cli_id and g.gen_id_auto = gd.gen_id where g.cli_id = :cli_id and g.loc_id = :loc_id and gd.data_type_id = :data_type_id and :date_from <= gd.data_date and gd.data_date < :date_to group by gd.cli_id, gd.gen_id, gd.data_type_id";
@@ -144,8 +147,8 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 				if (i > 0) {
 					sql.append(", ");
 				}
-				sql.append(":code_" + i);
-				binding.addValue("code_" + i, Integer.valueOf(codes[i]));
+				sql.append(CODE_VARIABLE).append(i);
+				binding.addValue(CODE_VALUE + i, Integer.valueOf(codes[i]));
 			}
 			sql.append(")");
 		}
@@ -176,8 +179,8 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 			if (i > 0) {
 				sql.append(", ");
 			}
-			sql.append(":code_" + i);
-			binding.addValue("code_" + i, Integer.valueOf(codes[i]));
+			sql.append(CODE_VARIABLE).append(i);
+			binding.addValue(CODE_VALUE + i, Integer.valueOf(codes[i]));
 		}
 		sql.append(")");
 		
@@ -207,8 +210,8 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 				if (i > 0) {
 					sql.append(", ");
 				}
-				sql.append(":code_" + i);
-				binding.addValue("code_" + i, Integer.valueOf(codes[i]));
+				sql.append(CODE_VARIABLE).append(i);
+				binding.addValue(CODE_VALUE + i, Integer.valueOf(codes[i]));
 			}
 			sql.append(")");
 		}
@@ -239,8 +242,8 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 			if (i > 0) {
 				sql.append(", ");
 			}
-			sql.append(":code_" + i);
-			binding.addValue("code_" + i, Integer.valueOf(codes[i]));
+			sql.append(CODE_VARIABLE).append(i);
+			binding.addValue(CODE_VALUE + i, Integer.valueOf(codes[i]));
 		}
 		sql.append(")");
 

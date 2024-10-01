@@ -116,30 +116,32 @@ public class DRecsService implements CertificateService {
 	 * Doc: https://api.drecs.org/swagger/#/meter-reads/ReadsController_newstoreRead
 	 */
 	private void uploadHistoryData() {
+		/** Coding halt, check https://github.com/Renovus-Tech/solarec-java/issues/11 **/
 	}
 
 	/**
 	 * Doc: https://api.drecs.org/swagger/#/meter-reads/ReadsController_storeReads
 	 */
 	private void uploadMeterData() {
+		/** Coding halt, check https://github.com/Renovus-Tech/solarec-java/issues/11 **/
 	}
 
 	
 	private void checkCertificateStatus() {
-		
+		/** Coding halt, check https://github.com/Renovus-Tech/solarec-java/issues/11 **/
 	}
 	
 	private void generateCertificate() {
-		
+		/** Coding halt, check https://github.com/Renovus-Tech/solarec-java/issues/11 **/
 	}
 	
 	private void sellCertificate() {
-		
+		/** Coding halt, check https://github.com/Renovus-Tech/solarec-java/issues/11 **/
 	}
 	
 	//--- Implemented methods -------------------
-	@Override public void register(ClientVo client) {}
-	@Override public void updateRegistration(ClientVo client) {}
-	@Override public void registerGeneration(ClientVo client) {}
-	@Override public void generateCertificate(ClientVo client) {}
+	@Override public void register(ClientVo client) {/** Coding halt, check https://github.com/Renovus-Tech/solarec-java/issues/11 **/}
+	@Override public void updateRegistration(ClientVo client) {/** Coding halt, check https://github.com/Renovus-Tech/solarec-java/issues/11 **/}
+	@Override public void registerGeneration(ClientVo client) {/** Coding halt, check https://github.com/Renovus-Tech/solarec-java/issues/11 **/}
+	@Override public void generateCertificate(ClientVo client) {/** Coding halt, check https://github.com/Renovus-Tech/solarec-java/issues/11 **/}
 }

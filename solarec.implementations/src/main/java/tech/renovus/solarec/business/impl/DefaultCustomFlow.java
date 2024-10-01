@@ -18,10 +18,12 @@ public class DefaultCustomFlow implements CustomFlowInterface {
 
 	@Override
 	public void beforeSendingToHomepage(UserData userData) {
+		/** Form dependency usage, create custom class for custom flow **/
 	}
 
 	@Override
 	public void beforeLogOut(UserData userData) {
+		/** Form dependency usage, create custom class for custom flow **/
 	}
 
 }

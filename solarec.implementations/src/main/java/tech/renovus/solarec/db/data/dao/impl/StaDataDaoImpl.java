@@ -22,7 +22,10 @@ import tech.renovus.solarec.vo.db.data.StaDataVo;
 public class StaDataDaoImpl extends BaseStaDataDao implements StaDataDao {
 	
 	//--- Private properties --------------------
-	private final String SQL_DELETE_ALL_FOR_STATION			= "DELETE FROM sta_data WHERE cli_id = :cli_id AND sta_id = :sta_id";
+	private static final String CODE_VARIABLE	= ":code_";
+	private static final String CODE_VALUE		= "code_";
+
+	private final String SQL_DELETE_ALL_FOR_STATION						= "DELETE FROM sta_data WHERE cli_id = :cli_id AND sta_id = :sta_id";
 	private final String GET_FOR_CLI_STA_DATE_CODES						= "select * from sta_data g WHERE cli_id = :cli_id AND sta_id = :sta_id AND data_date = :data_date ";
 	private final String GET_FOR_CLI_STA_DATE_PERIOD_CODES				= "select * from sta_data WHERE cli_id = :cli_id AND sta_id = :sta_id AND :data_date_min <= data_date and data_date < :data_date_max AND data_type_id in ";
 	private final static String SQL_GET_MAX_DATA_DATE_FOR_CLIENT		= "select max(data_date) from sta_data d where d.cli_id = :cliId and data_date <= :staDataDateMax " ;
@@ -46,8 +49,8 @@ public class StaDataDaoImpl extends BaseStaDataDao implements StaDataDao {
 	@Override public void deleteAllForStation(Integer cliId, Integer staId) {
 		this.jdbc.update(SQL_DELETE_ALL_FOR_STATION,
 				new MapSqlParameterSource()
-				.addValue("cli_id", cliId)
-				.addValue("sta_id", staId)
+				.addValue(StaDataVo.COLUMN_CLI_ID, cliId)
+				.addValue(StaDataVo.COLUMN_STA_ID, staId)
 			);
 	}
 	
@@ -64,8 +67,8 @@ public class StaDataDaoImpl extends BaseStaDataDao implements StaDataDao {
 			sql.append(" AND data_type_id in (");
 			for (int i = 0; i < codes.length; i++) {
 				if (i > 0) sql.append(", ");
-				sql.append(":code_" + i);
-				binding.addValue("code_" + i, Integer.valueOf(codes[i]));
+				sql.append(CODE_VARIABLE + i);
+				binding.addValue(CODE_VALUE + i, Integer.valueOf(codes[i]));
 			}
 			sql.append(")");
 		}
@@ -85,9 +88,9 @@ public class StaDataDaoImpl extends BaseStaDataDao implements StaDataDao {
 		StringBuilder sql = new StringBuilder();
 		MapSqlParameterSource binding = 
 			new MapSqlParameterSource()
-				.addValue("cli_id", cliId)
-				.addValue("sta_id", staId)
-				.addValue("data_date", staDataDateMax);
+				.addValue(StaDataVo.COLUMN_CLI_ID, cliId)
+				.addValue(StaDataVo.COLUMN_STA_ID, staId)
+				.addValue(StaDataVo.COLUMN_DATA_DATE, staDataDateMax);
 		
 		sql.append(GET_FOR_CLI_STA_DATE_CODES);
 		
@@ -95,8 +98,8 @@ public class StaDataDaoImpl extends BaseStaDataDao implements StaDataDao {
 			sql.append(" AND data_type_id in (");
 			for (int i = 0; i < codes.length; i++) { 
 				if (i > 0) sql.append(", ");
-				sql.append(":code_" + i);
-				binding.addValue("code_" + i, Integer.valueOf(codes[i]));
+				sql.append(CODE_VARIABLE + i);
+				binding.addValue(CODE_VALUE + i, Integer.valueOf(codes[i]));
 			}
 			sql.append(")");
 		}
@@ -115,8 +118,8 @@ public class StaDataDaoImpl extends BaseStaDataDao implements StaDataDao {
 	@Override public Collection<StaDataVo> getStaDataForDatePeriod(Integer cliId, Integer staId, Date staDataDateMin, Date staDataDateMax, int... codes) {
 		MapSqlParameterSource binding = 
 				new MapSqlParameterSource()
-				.addValue("cli_id", cliId)
-				.addValue("sta_id", staId)
+				.addValue(StaDataVo.COLUMN_CLI_ID, cliId)
+				.addValue(StaDataVo.COLUMN_STA_ID, staId)
 				.addValue("data_date_min", staDataDateMin)
 				.addValue("data_date_max", staDataDateMax);
 		
@@ -126,8 +129,8 @@ public class StaDataDaoImpl extends BaseStaDataDao implements StaDataDao {
 		sql.append("(");
 		for (int i = 0; i < codes.length; i++) { 
 			if (i > 0) sql.append(", ");
-			sql.append(":code_" + i);
-			binding.addValue("code_" + i, Integer.valueOf(codes[i]));
+			sql.append(CODE_VARIABLE + i);
+			binding.addValue(CODE_VALUE + i, Integer.valueOf(codes[i]));
 		}
 		sql.append(")");
 		
