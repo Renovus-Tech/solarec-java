@@ -1,5 +1,6 @@
 package tech.renovus.solarec.weather.openmeteo;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,15 +14,18 @@ import java.util.TimeZone;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.db.data.dao.interfaces.LocDataWeatherDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
@@ -41,11 +45,13 @@ import tech.renovus.solarec.weather.openmeteo.api.WeatherData;
 public class OpenMeteoWeatherServiceImpl implements WeatherService {
 
 	//--- Private constants --------------------
-	private static final String URL_SOLAR	= "https://api.open-meteo.com/v1/forecast";
+	private static final String URL_SOLAR				= "https://api.open-meteo.com/v1/forecast";
+	private static final String URL_SOLAR_HISTORICAL	= "https://historical-forecast-api.open-meteo.com/v1/forecast";
 	
 	//--- Resources -----------------------------
 	@Resource LocationDao locDao;
 	@Resource LocDataWeatherDao locDataWeatherDao;
+	@Autowired RenovusSolarecConfiguration configuration;
 	
 	public OpenMeteoWeatherServiceImpl() { /* required for fast testing */ }
 	
@@ -56,8 +62,8 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 		result.put("longitude", StringUtil.toString(vo.getLocCoordLng(), StringUtil.EMPTY_STRING));
 		result.put("hourly", "temperature_2m,direct_radiation,cloud_cover,precipitation");
 		
-		result.put("startdate", DATE_FORMATTER.format(dateFrom));
-		result.put("enddate", DATE_FORMATTER.format(dateEnd));
+		result.put("start_date", DATE_FORMATTER.format(dateFrom));
+		result.put("end_date", DATE_FORMATTER.format(dateEnd));
 		
 		if (StringUtil.notEmpty(vo.getLocGmt())) {
 			String timeZone = vo.getLocGmt();
@@ -107,12 +113,18 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 	//--- Overridden methods --------------------
 	@Override public Collection<StaDataVo> retrieveWeatherData(LocationVo locVo, StationVo station, Date dateFrom, Date dateTo) throws WeatherServiceException {
 		LoggerService.weatherLogger().info("[OpenMeteo] Start data retrieve from " + DATE_FORMATTER.format(dateFrom) + " from " + DATE_FORMATTER.format(dateTo) + " for coords: " + locVo.getLocCoordLat() + " - " + locVo.getLocCoordLng());
+
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.add(Calendar.MONTH, -1);
+		
+		boolean forHistorical			= dateFrom.before(cal.getTime());
+		String urlToUse					= forHistorical ? URL_SOLAR_HISTORICAL : URL_SOLAR;
 		
 		Map<String, String> params		= this.getParams(locVo, dateFrom, dateTo, false);
-		WeatherData data				= JsonCaller.get(URL_SOLAR, params, WeatherData.class);
-		int startIndex					= 0;
-		int endIndex					= -1;
+		WeatherData data				= JsonCaller.get(urlToUse, params, WeatherData.class);
 		Collection<StaDataVo> result	= new ArrayList<>();
+		
+		JsonUtil.saveToFile(new File(this.configuration.getPathLog() + File.separator + "Openmeteo", StringUtil.join("_", DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE_TIME), DateUtil.formatDateTime(dateTo, DateUtil.FMT_DATE_TIME))+ ".json"), data);
 		
 		if (data == null || data.getHourly() == null || CollectionUtil.isEmpty(data.getHourly().getTime())) {
 			LoggerService.weatherLogger().info("[OpenMeteo] No data");
@@ -122,10 +134,12 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 		
 		try {
 			SimpleDateFormat dateTime = new SimpleDateFormat(UTC_FORMATTER_PATTERN_HH_MM);
-			int index = 0;
+			int startIndex		= -1;
+			int endIndex		= data.getHourly().getTime().size();
+			int index			= 0;
 			for (String time : data.getHourly().getTime()) {
 				Date date = dateTime.parse(time);
-				if (startIndex == -1 && dateFrom.after(date)) {
+				if (startIndex == -1 && date.after(dateFrom)) {
 					startIndex = index;
 				}
 				if (date.before(dateTo)) {
@@ -134,14 +148,24 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 				index ++;
 			}
 			
-			for (int i = startIndex; i <= endIndex; i++) {
-				Date dataDate = WeatherService.DATE_HOUR_FORMATTER.parse(data.getHourly().getTime().get(i));
+			if (startIndex > -1) {
+				LoggerService.weatherLogger().info("[OpenMeteo] Amount of data: " + CollectionUtil.size(data.getHourly().getTime()));
 				
-				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_AMBIENT_TEMPERATURE,	data.getHourly().getTemperature2m().get(i), dataDate, result);
-//				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_MODULE_TEMPERATURE,	(Double) null, dataDate, result);
-				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_IRRADIATION,			data.getHourly().getDirectRadiation().get(i), dataDate, result);
-				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_TOTAL_CLOUD_COVER,	data.getHourly().getCloudCover().get(i), dataDate, result);
-				this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_PRECIPITATION,		data.getHourly().getPrecipitation().get(i), dataDate, result);
+				if (endIndex == data.getHourly().getTime().size()) endIndex = data.getHourly().getTime().size() - 1;
+				
+				LoggerService.weatherLogger().info("[OpenMeteo] Amount of data to retrieve: " + (endIndex - startIndex + 1));
+				LoggerService.weatherLogger().info("[OpenMeteo] First date: " + data.getHourly().getTime().get(startIndex));
+				LoggerService.weatherLogger().info("[OpenMeteo] Last date: " + data.getHourly().getTime().get(endIndex));
+
+				for (int i = startIndex; i <= endIndex; i++) {
+					Date dataDate = dateTime.parse(data.getHourly().getTime().get(i));
+					
+					this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_AMBIENT_TEMPERATURE,	data.getHourly().getTemperature2m().get(i), dataDate, result);
+//					this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_MODULE_TEMPERATURE,	(Double) null, dataDate, result);
+					this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_IRRADIATION,			data.getHourly().getDirectRadiation().get(i), dataDate, result);
+					this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_TOTAL_CLOUD_COVER,	data.getHourly().getCloudCover().get(i), dataDate, result);
+					this.createData(station, DataTypeVo.TYPE_SOLAR_STATION_PRECIPITATION,		data.getHourly().getPrecipitation().get(i), dataDate, result);
+				}
 			}
 		} catch (ParseException e) {
 			throw new WeatherServiceException(e);
