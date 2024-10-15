@@ -3,6 +3,7 @@ package tech.renovus.solarec.vo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
@@ -16,35 +17,78 @@ import org.junit.Test;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.ISynchronizable;
 
 public class BasicVoTester {
 
-	@Test public void fastTestVo()			throws Exception { this.testPackage("tech.renovus.solarec.vo.db.data"); }
-	@Test public void fastTestBackground()	throws Exception { this.testPackage("tech.renovus.solarec.vo.rest.background"); }
-	@Test public void fastTestChart()		throws Exception { this.testPackage("tech.renovus.solarec.vo.rest.chart"); }
-	@Test public void fastTestEntity()		throws Exception { this.testPackage("tech.renovus.solarec.vo.rest.entity"); }
-	@Test public void fastTestHistory()		throws Exception { this.testPackage("tech.renovus.solarec.vo.rest.history"); }
-	@Test public void fastTestSecurity()	throws Exception { this.testPackage("tech.renovus.solarec.vo.rest.security"); }
-	@Test public void fastTestWeather()		throws Exception { this.testPackage("tech.renovus.solarec.vo.rest.weather"); }
-	@Test public void fastTestCustom()		throws Exception { this.testPackage("tech.renovus.solarec.vo.custom.chart"); }
+	@Test public void fastTestVo()			throws Exception { this.testPackage(false, "tech.renovus.solarec.vo.db.data"); }
+	@Test public void fastTestBackground()	throws Exception { this.testPackage(false, "tech.renovus.solarec.vo.rest.background"); }
+	@Test public void fastTestChart()		throws Exception { this.testPackage(true, "tech.renovus.solarec.vo.rest.chart"); }
+	@Test public void fastTestEntity()		throws Exception { this.testPackage(true, "tech.renovus.solarec.vo.rest.entity"); }
+	@Test public void fastTestHistory()		throws Exception { this.testPackage(true, "tech.renovus.solarec.vo.rest.history"); }
+	@Test public void fastTestSecurity()	throws Exception { this.testPackage(true, "tech.renovus.solarec.vo.rest.security"); }
+	@Test public void fastTestWeather()		throws Exception { this.testPackage(true, "tech.renovus.solarec.vo.rest.weather"); }
+	@Test public void fastTestCustom()		throws Exception { this.testPackage(true, "tech.renovus.solarec.vo.custom.chart"); }
 	
-	private void testPackage(String packageName) throws Exception {
+	private void testPackage(boolean isRest, String packageName) throws Exception {
 		try (
-				ScanResult scanResult = 
-					new ClassGraph()
-						.acceptPackages(packageName)
-						.scan();
-			) {
-				for (ClassInfo classInfo : scanResult.getAllClasses()) {
-					Class<?> clazz = Class.forName(classInfo.getName());
-					System.out.println("Testing: " + clazz.getCanonicalName());
-					testGettersSetters(clazz);
+			ScanResult scanResult = 
+				new ClassGraph()
+					.acceptPackages(packageName)
+					.scan();
+		) {
+			for (ClassInfo classInfo : scanResult.getAllClasses()) {
+				Class<?> clazz = Class.forName(classInfo.getName());
+				System.out.println("Testing: " + clazz.getCanonicalName());
+				this.testGettersSetters(clazz);
+				if (isRest) {
+					this.testWithParameters(clazz);
 				}
 			}
+		}
 	}
 
+	private void testWithParameters(Class<?> clazz) throws Exception {
+		if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
+			return;
+		}
+		
+		Method[] methods = clazz.getDeclaredMethods();
+		
+		Method getAdditionalProperties = null;
+		Method setAdditionalProperty = null;
+		Method withAdditionalProperty = null;
+		
+		for (Method method : methods) {
+			if ("getAdditionalProperties".equals(method.getName())) {
+				getAdditionalProperties = method;
+			} else if ("setAdditionalProperty".equals(method.getName())) {
+				setAdditionalProperty = method;
+			} else if ("withAdditionalProperty".equals(method.getName())) {
+				withAdditionalProperty = method;
+			}
+		}
+
+		Object obj					= clazz.getConstructor().newInstance();
+		
+		if (setAdditionalProperty != null) {
+			setAdditionalProperty.invoke(obj, "prop", "value");
+		}
+		if (withAdditionalProperty != null) {
+			Object objWith = withAdditionalProperty.invoke(obj, "prop2", "value2");
+			assertNotNull(objWith);
+		}
+		if (getAdditionalProperties != null) {
+			Object objReturn = getAdditionalProperties.invoke(obj);
+			assertNotNull(objReturn);
+			assertEquals(2, CollectionUtil.size((Map<?,?>) objReturn));
+			assertEquals("value", ((Map<String,String>) objReturn).get("prop"));
+			assertEquals("value2", ((Map<String,String>) objReturn).get("prop2"));
+		}
+	}
+	
 	private void testGettersSetters(Class<?> clazz) throws Exception {
 		if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
 			return;

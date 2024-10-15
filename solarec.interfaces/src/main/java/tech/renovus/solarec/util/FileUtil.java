@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.SyncFailedException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -137,48 +136,6 @@ public final class FileUtil {
 	}
 	
 	/**
-	 * Saves the content of the <code>InputStream</code> to the <b>fileName</b> located at <b>filePath</b>. If
-	 * the <b>fileName</b> has no extension, then the extension <b>.txt</b> will be added. All the invalid characters
-	 * at the <b>fileName</b>. At the beginning of the <b>fileName</b> the current time in milliseconds will be added. 
-	 * 
-	 * <p>If the <b>filePath</b> doesn't exist then it will be created.</p>
-	 * 
-	 * @param input			The values to save
-	 * @param fileName		The file name
-	 * @param filePath		The file location
-	 * @return
-	 * @throws IOException
-	 */
-	public static String saveToFile(InputStream input, String fileName, String filePath) throws IOException {
-		// adding extension
-		if (fileName.lastIndexOf(".") == -1) fileName = fileName + ".txt";
-		
-		// remove invalid characters
-		fileName = fileName.replaceAll("[\\p{Punct}&&[^._-]]", "");
-		// add current time
-		
-		fileName = System.currentTimeMillis() + fileName;
-		
-		File destFile = new File(filePath, fileName);
-		File path = destFile.getParentFile();
-		if (! path.exists()) path.mkdirs();
-		
-		try (
-			FileOutputStream fos = new FileOutputStream(destFile);
-		) {
-			byte[] buffer = new byte[1024 * 1024];
-			int len = input.read(buffer);
-			while (len != -1) {
-				fos.write(buffer, 0, len);
-				len = input.read(buffer);
-			}
-			fos.flush();
-		}
-
-		return destFile.getAbsolutePath();
-	}
-	
-	/**
 	 * Reads the file located at <b>pathFile</b> and returns its. If the <b>pathFile</b> does not exist or
 	 * is not a file then <code>StringUtil.EMPTY_STRING</code> is return.
 	 * 
@@ -205,8 +162,12 @@ public final class FileUtil {
 	 * @see #readFile(String)
 	 */
 	public static String readFile(File aFile) throws IOException {
-		if (! aFile.exists()) return StringUtil.EMPTY_STRING;
-		if (! aFile.isFile()) return StringUtil.EMPTY_STRING;
+		if (! aFile.exists()) {
+			return StringUtil.EMPTY_STRING;
+		}
+		if (! aFile.isFile()) {
+			return StringUtil.EMPTY_STRING;
+		}
 
 		FileReader r = null;
 		try {
@@ -251,8 +212,12 @@ public final class FileUtil {
 	 * @see #readFile(String)
 	 */
 	public static byte[] readFileAsByte(File aFile) throws IOException {
-		if (! aFile.exists()) return null;
-		if (! aFile.isFile()) return null;
+		if (! aFile.exists()) {
+			return null;
+		}
+		if (! aFile.isFile()) {
+			return null;
+		}
 
 		try (
 			FileInputStream fis = new FileInputStream(aFile);
@@ -296,8 +261,12 @@ public final class FileUtil {
 			aFile.createNewFile();
 		}
 		
-		if (! aFile.exists()) return;
-		if (! aFile.isFile()) return;
+		if (! aFile.exists()) {
+			return;
+		}
+		if (! aFile.isFile()) {
+			return;
+		}
 		
 		FileWriter o = null;
 		try {
@@ -322,7 +291,9 @@ public final class FileUtil {
 	 * @see #getExtension(String)
 	 */
 	public static String getExtensionNoDot(String file) {
-		if (file.lastIndexOf(".") == -1) return StringUtil.EMPTY_STRING;
+		if (file.lastIndexOf(".") == -1) {
+			return StringUtil.EMPTY_STRING;
+		}
 		return file.substring(file.lastIndexOf(".") + 1).toLowerCase();
 	}
 	
@@ -337,7 +308,9 @@ public final class FileUtil {
 	 * @see #getExtensionNoDot(String)
 	 */
 	public static String getExtension(String file) {
-		if (file.lastIndexOf(".") == -1) return StringUtil.EMPTY_STRING;
+		if (file == null || file.lastIndexOf(".") == -1) {
+			return StringUtil.EMPTY_STRING;
+		}
 		return file.substring(file.lastIndexOf(".")).toLowerCase();
 	}
 	
@@ -350,7 +323,9 @@ public final class FileUtil {
 	 * @return		The file name without extension
 	 */
 	public static String getFileName(String file) {
-		if (file.lastIndexOf(".") == -1) return file;
+		if (file.lastIndexOf(".") == -1) {
+			return file;
+		}
 		return file.substring(0, file.lastIndexOf("."));
 	}
 	
@@ -366,7 +341,7 @@ public final class FileUtil {
 	public static String getContentType(String file) {
 		String extension = FileUtil.getExtension(file);
 		if (FileUtil.FILE_EXTENSION_CONTENT_TYPE.containsKey(extension)) {
-			return (String) FileUtil.FILE_EXTENSION_CONTENT_TYPE.get(extension);
+			return FileUtil.FILE_EXTENSION_CONTENT_TYPE.get(extension);
 		}
 		
 		return FileUtil.DEFAULT_CONTENT;
@@ -428,71 +403,10 @@ public final class FileUtil {
 	 * @see #move(File, File)
 	 */
 	public static void replace(File sourceFile, File destFile) throws IOException {
-		if (destFile.exists() && !destFile.delete()) throw new IOException("Can't delete file " + destFile.getAbsolutePath());
-		FileUtil.copy(sourceFile, destFile);
-	}
-	
-	/**
-	 * Moves the content of <b>sourceFile</b> to <b>destFile</b>. Before doing the copy, the file <b>destFile</b> is deleted. Ones
-	 * the copy is finished, the <b>sourceFile</b> is deleted.
-	 * 
-	 * @param sourceFile	The content to copy from
-	 * @param destFile		The content to replace
-	 * @throws IOException	If an error occurs while coping or deleting
-	 * 
-	 * @see #copy(File, File)
-	 * @see #replace(File, File)
-	 * @see #moveFiles(File, File)
-	 * @see #moveFiles(String, String)
-	 */
-	public static void move(File sourceFile, File destFile) throws IOException {
-		if (destFile.exists() && !destFile.delete()) throw new IOException("Can't delete file " + destFile.getAbsolutePath());
-		FileUtil.copy(sourceFile, destFile);
-		sourceFile.delete();
-	}
-	
-	/**
-	 * Moves all the files from <b>fromPath</b> to <b>toPath</b>. All sub-folders will me moved to.
-	 * 
-	 * @param fromPath		Source of files
-	 * @param toPath		Destination of files
-	 * @throws IOException	If an error occurs while moving the files
-	 * 
-	 * @see #move(File, File)
-	 * @see #moveFiles(File, File)
-	 */
-	public static void moveFiles(String fromPath, String toPath) throws IOException {
-		FileUtil.moveFiles(new File(fromPath), new File(toPath));
-	}
-	
-	/**
-	 * Moves all the files from <b>fromPath</b> to <b>toPath</b>. All sub-folders will me moved to.
-	 * 
-	 * @param fromPath		Source of files
-	 * @param toPath		Destination of files
-	 * @throws IOException	If an error occurs while moving the files
-	 * 
-	 * @see #move(File, File)
-	 * @see #moveFiles(String, String)
-	 */
-	public static void moveFiles(File fromPath, File toPath) throws IOException {
-		if (fromPath == null) return;
-		if (toPath == null) return;
-		
-		FileUtil.createPath(toPath);
-		
-		File[] files = fromPath.listFiles();
-		
-		if (files != null) {
-			for (File aFile : files) {
-				File moveTo = new File(toPath, aFile.getName());
-				if (aFile.isFile()) {
-					FileUtil.move(aFile, moveTo);
-				} else {
-					FileUtil.moveFiles(aFile, moveTo);
-				}
-			}
+		if (destFile.exists() && !destFile.delete()) {
+			throw new IOException("Can't delete file " + destFile.getAbsolutePath());
 		}
+		FileUtil.copy(sourceFile, destFile);
 	}
 	
 	/**
@@ -638,7 +552,9 @@ public final class FileUtil {
 	 * @return <code>true</code> if the file exists in the path, <code>false</code> otherwise.
 	 */
 	public static boolean exists(String filePath) {
-		if (StringUtil.isEmpty(filePath)) return false;
+		if (StringUtil.isEmpty(filePath)) {
+			return false;
+		}
 		return FileUtil.exists(new File(filePath));
 	}
 	
@@ -649,7 +565,9 @@ public final class FileUtil {
 	 * @return <code>true</code> if the file exists, <code>false</code> otherwise.
 	 */
 	public static boolean exists(File file) {
-		if (file == null) return false;
+		if (file == null) {
+			return false;
+		}
 		return file.exists();
 	}
 	
@@ -660,7 +578,9 @@ public final class FileUtil {
 	 * @return <code>true</code> if the file exists and can be read, <code>false</code> otherwise.
 	 */
 	public static boolean existsAndCanRead(File file) {
-		if (file == null) return false;
+		if (file == null) {
+			return false;
+		}
 		return file.exists() && file.canRead();
 	}
 	
@@ -671,35 +591,9 @@ public final class FileUtil {
 	 * @return <code>true</code> if the file doesn't exists or can't be read, <code>false</code> otherwise.
 	 */
 	public static boolean notExistsOrCantRead(File file) {
-		if (file == null) return false;
+		if (file == null) {
+			return false;
+		}
 		return ! file.exists() || ! file.canRead();
-	}
-	
-	/**
-	 * Checks if the file doesn't exits.
-	 * 
-	 * @param file The <code>File</code> to check
-	 * @return <code>true</code> if the file doesn't exists, <code>false</code> otherwise.
-	 */
-	public static boolean notExists(String filePath) { return ! FileUtil.exists(filePath); }
-	
-	/**
-	 * Checks if the file doesn't exits.
-	 * 
-	 * @param file The <code>File</code> to check
-	 * @return <code>true</code> if the file doesn't exists, <code>false</code> otherwise.
-	 */
-	public static boolean notExists(File file) { return ! FileUtil.exists(file); }
-
-	/**
-	 * Converts a <b>path</b> into a web path, changing all the <b>\</b> for <b>/</b>. If the <b>path</b> doen't 
-	 * have any <b>\</b> then is return directly.
-	 * 
-	 * @param path	The path that must be converted
-	 * @return		The new path, without the <b>\</b>
-	 */
-	public static String changeToWebpath(String path) {
-		if (path.indexOf("\\") == -1) return path;
-		return StringUtil.replace(path, "\\", "/");
 	}
 }

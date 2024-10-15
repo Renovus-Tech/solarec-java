@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import tech.renovus.solarec.util.interfaces.IFilter;
-
 
 /**
  * The <code>CollectionUtil</code> class contains useful methods to work with <code>Collection</code> and retrieve 
@@ -58,9 +56,13 @@ public final class CollectionUtil {
 	 * @see #subCollection(ArrayList, Integer, Integer)
 	 */
 	public static <T extends Object> Collection<T> subCollection(Collection<T> col, Integer start, Integer count) {
-		if (col instanceof ArrayList) return CollectionUtil.subCollection((ArrayList<T>) col, start, count);
+		if (col instanceof ArrayList) {
+			return CollectionUtil.subCollection((ArrayList<T>) col, start, count);
+		}
 		
-		if (start == null) start = Integer.valueOf(1);
+		if (start == null) {
+			start = Integer.valueOf(0);
+		}
 		
 		if (col == null || col.size()  <  start.intValue()) {
 			return new ArrayList<T>();
@@ -91,9 +93,14 @@ public final class CollectionUtil {
 	 * @param size	The size of the subcollections.
 	 * @return		A <code>Collection</code> of <code>Collection</code>.
 	 */
-	public static <T extends Object> Collection<Collection<T>> subCollections(Collection<T> col, int size) {int colSize = CollectionUtil.size(col);
-		if (size <= 0) size = colSize;
-		if (size <= 0) size = 1;
+	public static <T extends Object> Collection<Collection<T>> subCollections(Collection<T> col, int size) {
+		int colSize = CollectionUtil.size(col);
+		if (size <= 0) {
+			size = colSize;
+		}
+		if (size <= 0) {
+			size = 1;
+		}
 		
 		Collection<Collection<T>> result = new ArrayList<Collection<T>>(colSize / size);
 		Collection<T> subResult = null;
@@ -131,7 +138,9 @@ public final class CollectionUtil {
 	 * @see #subCollection(Collection, Integer, Integer)
 	 */
 	public static <T extends Object> ArrayList<T> subCollection(ArrayList<T> arr, Integer start, Integer count) {
-		if (start == null) start = Integer.valueOf(1);
+		if (start == null) {
+			start = Integer.valueOf(1);
+		}
 		
 		if (arr == null || arr.size()  <  start.intValue()) {
 			return new ArrayList<T>();
@@ -189,7 +198,9 @@ public final class CollectionUtil {
 		boolean result = true;
 		
 		if (cols != null) {
-			for (int i = 0; i < cols.length && result; i++) result = CollectionUtil.notEmpty(cols[i]);
+			for (int i = 0; i < cols.length && result; i++) {
+				result = CollectionUtil.notEmpty(cols[i]);
+			}
 		}
 		
 		return result;
@@ -208,7 +219,9 @@ public final class CollectionUtil {
 		boolean result = true;
 		
 		if (cols != null) {
-			for (int i = 0; i < cols.length && result; i++) result = CollectionUtil.isEmpty(cols[i]);
+			for (int i = 0; i < cols.length && result; i++) {
+				result = CollectionUtil.isEmpty(cols[i]);
+			}
 		}
 		
 		return result;
@@ -289,7 +302,9 @@ public final class CollectionUtil {
 	 * @param value		The value to add
 	 */
 	public static <K extends Object, V extends Object>void addValueAvoidNullAdd(HashMap<K,V> values, K key, V value) {
-		if (value != null) values.put(key, value);
+		if (value != null) {
+			values.put(key, value);
+		}
 	}
 	
 	/**
@@ -306,7 +321,9 @@ public final class CollectionUtil {
 		if (values != null) {
 			for (Iterator<T> it = values.iterator(); it.hasNext() && result == null;) {
 				result = it.next();
-				if (result != null && !result.equals(key)) result = null;
+				if (result != null && !result.equals(key)) {
+					result = null;
+				}
 			}
 		}
 		return result;
@@ -339,7 +356,9 @@ public final class CollectionUtil {
 	 * @return			The value in <b>values</b> that is at <b>key1</b>
 	 */
 	public static <T extends Object, Y extends Object> Y getValue(HashMap<T,Y> values, T key1) {
-		if (values != null) return values.get(key1);
+		if (values != null) {
+			return values.get(key1);
+		}
 		return null;
 	}
 	
@@ -395,7 +414,9 @@ public final class CollectionUtil {
 	 * @param from	The elements to add
 	 */
 	public static <T extends Object> void addAll(Collection<T> to, Collection<T> from) {
-		if (to != null && CollectionUtil.notEmpty(from)) to.addAll(from);
+		if (to != null && CollectionUtil.notEmpty(from)) {
+			to.addAll(from);
+		}
 	}
 	
 	/**
@@ -404,7 +425,9 @@ public final class CollectionUtil {
 	 * @param col	The <code>Collection</code> to empty
 	 */
 	public static void clear(Collection<?> col) {
-		if (col != null) col.clear();
+		if (col != null) {
+			col.clear();
+		}
 	}
 
 	/**
@@ -429,255 +452,19 @@ public final class CollectionUtil {
 	}
 	
 	public static String[] remove(String[] values, Collection<Integer> positions) {
-		if (CollectionUtil.isEmpty(positions)) return values;
+		if (CollectionUtil.isEmpty(positions)) {
+			return values;
+		}
 		
 		String[] result = new String[values.length - CollectionUtil.size(positions)];
 
 		int resultPosition = result.length - 1;
 		for (int i = values.length - 1; i >= 0; i--) {
-			if (! positions.contains(Integer.valueOf(i))) result[resultPosition--] = values[i];
-		}
-		
-		return result;
-	}
-	
-	public static Object[] remove(Object[] values, Collection<Integer> positions) {
-		if (CollectionUtil.isEmpty(positions)) return values;
-		
-		Object[] result = new Object[values.length - CollectionUtil.size(positions)];
-
-		int position = 0;
-		for (int pos = 0; pos < values.length; pos ++) {
-			if (! positions.contains(Integer.valueOf(pos))) {
-				result[position++] = values[pos];
+			if (! positions.contains(Integer.valueOf(i))) {
+				result[resultPosition--] = values[i];
 			}
 		}
 		
 		return result;
-	}
-
-	public static <T extends Object> Collection<T> remove(Collection<T> values, Collection<Integer> positions) {
-		if (CollectionUtil.isEmpty(positions)) return values;
-		
-		Collection<T> result = new ArrayList<T>();
-
-		int position = 0;
-		for (T value : values) {
-			if (! positions.contains(Integer.valueOf(position ++))) {
-				result.add(value);
-			}
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Returns a <code>Collection</code> with all the elements of <b>values</b> that are a <code>Class</code> of <b>aClass</b>
-	 * 
-	 * @param <T>
-	 * @param values
-	 * @param aClass
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Object> Collection<T> toCollection(Collection<?> values, Class<T> aClass) {
-		Collection<T> result = new ArrayList<T>(CollectionUtil.size(values));
-		
-		if (CollectionUtil.notEmpty(values)) {
-			for (Object obj : values) {
-				if (aClass.equals(obj.getClass())) result.add((T) obj);
-			}
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Returns an <code>ArrayList</code> with all the elements of <b>values</b> that are a <code>Class</code> of <b>aClass</b>
-	 * 
-	 * @param <T>
-	 * @param values
-	 * @param aClass
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Object> ArrayList<T> toArrayList(Collection<?> values, Class<T> aClass) {
-		ArrayList<T> result = new ArrayList<T>(CollectionUtil.size(values));
-		
-		if (CollectionUtil.notEmpty(values)) {
-			for (Object obj : values) {
-				if (aClass.equals(obj.getClass())) result.add((T) obj);
-			}
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Returns a <code>Collection</code> of a specific class. If <b>values</b> contains elements that are not of class
-	 * <b>aClass</b>, the iteration will generate a <code>ClassCastException</code>. See metho <code>.toCollection</code>.
-	 * 
-	 * @param <T>
-	 * @param values
-	 * @param aClass
-	 * @return
-	 * 
-	 * @see #toCollection(Collection, Class)
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Object> Collection<T> convertToCollection(Collection<Object> values, Class<T> aClass) {
-		Collection<T> result = new ArrayList<T>(CollectionUtil.size(values));
-		
-		if (CollectionUtil.notEmpty(values)) {
-			for (Object obj : values) {
-				result.add((T) obj);
-			}
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Returns an <code>ArrayList</code> of a specific class. If <b>values</b> contains elements that are not of class
-	 * <b>aClass</b>, the iteration will generate a <code>ClassCastException</code>. See method <code>.toCollection</code>.
-	 * 
-	 * @param <T>
-	 * @param values
-	 * @param aClass
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Object> ArrayList<T> convertToArrayList(ArrayList<Object> values, Class<T> aClass) {
-		ArrayList<T> result = new ArrayList<T>(CollectionUtil.size(values));
-		
-		if (CollectionUtil.notEmpty(values)) {
-			for (Object obj : values) {
-				result.add((T) obj);
-			}
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Returns an <code>ArrayList</code> of a specific class. If <b>values</b> contains elements that are not of class
-	 * <b>aClass</b>, the iteration will generate a <code>ClassCastException</code>. See method <code>.toCollection</code>.
-	 * 
-	 * @param <T>
-	 * @param values
-	 * @param aClass
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Object> ArrayList<T> convertToArrayList(Collection<Object> values, Class<T> aClass) {
-		ArrayList<T> result = new ArrayList<T>(CollectionUtil.size(values));
-		
-		if (CollectionUtil.notEmpty(values)) {
-			for (Object obj : values) {
-				result.add((T) obj);
-			}
-		}
-		
-		return result;
-	}
-
-	/**
-	 * Filters a <code>Collection</code> of values using the <code>IFilter.evaluate()</code> to determinate if a value
-	 * must be in the result. If the call of the method <code>IFilter.evaluate()</code> evaluates in <code>true</code>.
-	 * 
-	 * @param <T> The <code>Object</code> that can be filter.
-	 * @param values	The values to analyze
-	 * @param filter	The <code>IFilter</code> that has the logic to filter the values.
-	 * @return			A <code>Collection</code> will all the values that evaluated in <code>true</code>
-	 * 
-	 * @see #filter(ArrayList, IFilter)
-	 * @see tech.renovus.solarec.util.interfaces.IFilter
-	 */
-	public static <T extends Object> Collection<T> filter(Collection<T> values, IFilter<T> filter) {
-		Collection<T> result = new ArrayList<T>();
-		
-		if (CollectionUtil.notEmpty(values)) {
-			for (T value : values) {
-				if (filter.evaluate(value)) result.add(value);
-			}
-		}
-		
-		return result;
-	}
-
-	/**
-	 * Filters a <code>ArrayList</code> of values using the <code>IFilter.evaluate()</code> to determinate if a value
-	 * must be in the result. If the call of the method <code>IFilter.evaluate()</code> evaluates in <code>true</code>.
-	 * 
-	 * @param <T> The <code>Object</code> that can be filter.
-	 * @param values	The values to analyze
-	 * @param filter	The <code>IFilter</code> that has the logic to filter the values.
-	 * @return			An <code>ArrayList</code> will all the values that evaluated in <code>true</code>
-	 * 
-	 * @see #filter(Collection, IFilter)
-	 * @see tech.renovus.solarec.util.interfaces.IFilter
-	 */
-	public static <T extends Object> ArrayList<T> filter(ArrayList<T> values, IFilter<T> filter) {
-		ArrayList<T> result = new ArrayList<T>();
-		
-		if (CollectionUtil.notEmpty(values)) {
-			for (T value : values) {
-				if (filter.evaluate(value)) result.add(value);
-			}
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Returns the element at the position <b>index</b> of the <code>Collection</code>. If the <code>Collection</code>
-	 * if empty or has less items than <b>index</b>, then <code>null</code> is return.
-	 * 
-	 * @param col	The <code>Collection</code> where to search for the element
-	 * @param index	The position of the element
-	 * @return		The element at the position
-	 * 
-	 * @see #isEmpty(Collection)
-	 * @see #size(Collection)
-	 * @see #getAt(ArrayList, int)
-	 */
-	public static <T extends Object> T getAt(Collection<T> col, int index) {
-		if (index < 0) return null;
-		if (CollectionUtil.isEmpty(col)) return null;
-		if (CollectionUtil.size(col) <= index) return null;
-		
-		if (col instanceof ArrayList) return CollectionUtil.getAt((ArrayList<T>) col, index);
-		
-		Iterator<T> iterator = col.iterator();
-		T result = null;
-		while (index >= 0) {
-			result = iterator.next();
-			index--;
-		}
-		return result;
-	}
-	
-	/**
-	 * Returns the element at the position <b>index</b> of the <code>ArrayList</code>. If the <code>Collection</code>
-	 * if empty or has less items than <b>index</b>, then <code>null</code> is return.
-	 * 
-	 * @param array	The <code>ArrayList</code> where to search for the element
-	 * @param index	The position of the element
-	 * @return		The element at the position
-	 * 
-	 * @see #isEmpty(Collection)
-	 * @see #size(Collection)
-	 * @see #getAt(Collection, int)
-	 */
-	public static <T extends Object> T getAt(ArrayList<T> array, int index) {
-		if (index < 0) return null;
-		if (CollectionUtil.isEmpty(array)) return null;
-		if (CollectionUtil.size(array) <= index) return null;
-		return array.get(index);
-	}
-	
-	public static <T extends Object> boolean contains(Collection<T> col, T object) {
-		if (CollectionUtil.isEmpty(col)) return false;
-		return col.contains(object);
 	}
 }

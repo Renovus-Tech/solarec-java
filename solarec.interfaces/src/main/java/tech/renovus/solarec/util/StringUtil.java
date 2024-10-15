@@ -7,7 +7,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 public class StringUtil {
@@ -248,7 +247,9 @@ public class StringUtil {
 	
 	//--- Utils methods -------------------------
 	public static String replace(String source, String iniStr, String finStr) {
-		if (source == null) return null;
+		if (source == null) {
+			return null;
+		}
 
 		int x = 0;
 		int y = 0;
@@ -311,9 +312,13 @@ public class StringUtil {
 	}
 	
 	public static boolean isEmpty(String... str) {
-		if (str == null) return true;
+		if (str == null) {
+			return true;
+		}
 		for (String value : str) {
-			if (value == null || value.length() == 0) return true;
+			if (value == null || value.length() == 0) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -331,7 +336,9 @@ public class StringUtil {
 	}
 	
 	public static String toString(Object value, String defValue) {
-		if (value != null) return value instanceof String ? (String) value : value.toString();
+		if (value != null) {
+			return value instanceof String ? (String) value : value.toString();
+		}
 		return defValue;
 	}
 
@@ -341,7 +348,9 @@ public class StringUtil {
 	
 	public static Integer toInteger(String value, Integer ifError) {
 		try {
-			if (StringUtil.isEmpty(value)) return ifError;
+			if (StringUtil.isEmpty(value)) {
+				return ifError;
+			}
 			return Integer.valueOf(value);
 		} catch (NumberFormatException e) {
 			return ifError;
@@ -349,9 +358,11 @@ public class StringUtil {
 	}
 	
 	public static int firstNumberPosition(String str) {
-		if (str != null) for (int i = 0; i < str.length(); i++) {
-			if (StringUtil.NUMBERS.indexOf(str.charAt(i)) != -1) {
-				return i;
+		if (str != null) {
+			for (int i = 0; i < str.length(); i++) {
+				if (StringUtil.NUMBERS.indexOf(str.charAt(i)) != -1) {
+					return i;
+				}
 			}
 		}
 		
@@ -359,9 +370,11 @@ public class StringUtil {
 	}
 	
 	public static int lastNumberPosition(String str) {
-		if (str != null) for (int i = (str.length() - 1); i >= 0; i--) {
-			if (StringUtil.NUMBERS.indexOf(str.charAt(i)) == -1) {
-				return i+1;
+		if (str != null) {
+			for (int i = (str.length() - 1); i >= 0; i--) {
+				if (StringUtil.NUMBERS.indexOf(str.charAt(i)) != -1) {
+					return i;
+				}
 			}
 		}
 		
@@ -377,7 +390,9 @@ public class StringUtil {
 	}
 	
 	public static String toXml(String str, boolean replaceHtmlAcents) {
-		if (replaceHtmlAcents) str = StringUtil.replaceHtmlAcents(str);
+		if (replaceHtmlAcents) {
+			str = StringUtil.replaceHtmlAcents(str);
+		}
 		
 		if (str != null) {
 			String auxStr = str;
@@ -392,7 +407,9 @@ public class StringUtil {
 	}
 
 	public static String fromXml(String str, boolean replaceHtmlAcents) {
-		if (replaceHtmlAcents) str = StringUtil.replaceHtmlAcents(str);
+		if (replaceHtmlAcents) {
+			str = StringUtil.replaceHtmlAcents(str);
+		}
 		
 		if (str != null) {
 			String auxStr = str;
@@ -462,36 +479,25 @@ public class StringUtil {
 	}
 
 	public static String[] clone(String[] values) {
-		if (values == null) return null;
+		if (values == null) {
+			return null;
+		}
 		
 		String[] result = new String[values.length];
 		int i = 0;
-		for (String value : values) result[i++] = value;
-		
-		return result;
-	}
-
-	public static String creteVoName(String tableName) {
-		if (tableName != null) {
-			String[] partes = tableName.split("_");
-			StringBuffer buffer = new StringBuffer();
-	
-			for (int i = 0; i < partes.length; i++) {
-				char[] chars = partes[i].toCharArray();
-				buffer.append(String.valueOf(chars[0]).toUpperCase());
-				buffer.append(String.valueOf(chars, 1, chars.length - 1));
-			}
-			
-			return buffer.toString();
+		for (String value : values) {
+			result[i++] = value;
 		}
 		
-		return null;
+		return result;
 	}
 
 	public static String join(String separator, Object... values) {
 		StringBuffer buffer = new StringBuffer();
 		for(Object value : values) {
-			if (buffer.length() > 0 && separator != null) buffer.append(separator);
+			if (buffer.length() > 0 && separator != null) {
+				buffer.append(separator);
+			}
 			buffer.append(value);
 		}
 		return buffer.toString();
@@ -501,7 +507,9 @@ public class StringUtil {
 		StringBuffer buffer = new StringBuffer();
 		for(Object value : values) {
 			if (value != null) {
-				if (buffer.length() > 0 && separator != null) buffer.append(separator);
+				if (buffer.length() > 0 && separator != null) {
+					buffer.append(separator);
+				}
 				buffer.append(value);
 			}
 		}
@@ -513,7 +521,9 @@ public class StringUtil {
 			StringBuffer buffer = new StringBuffer();
 			for (int i = 0; i < data.length; i++) {
 				if (data[i] != null) {
-					if (buffer.length() > 0) buffer.append(joinStr);
+					if (buffer.length() > 0) {
+						buffer.append(joinStr);
+					}
 					buffer.append(data[i].toString());
 				}
 			}
@@ -527,7 +537,9 @@ public class StringUtil {
 		StringBuffer buffer = new StringBuffer();
 		if (values != null) {
 			for(Object value : values) {
-				if (buffer.length() > 0 && separator != null) buffer.append(separator);
+				if (buffer.length() > 0 && separator != null) {
+					buffer.append(separator);
+				}
 				buffer.append(value);
 			}
 		}
@@ -558,7 +570,9 @@ public class StringUtil {
 
 			String[] result = new String[arraux.size()];
 			int i = 0;
-			for (Object obj : arraux) result[i++] = (String) obj;
+			for (Object obj : arraux) {
+				result[i++] = (String) obj;
+			}
 			
 			return result;
 		}
@@ -568,15 +582,18 @@ public class StringUtil {
 		int origLen = str.length();
 		int splitNum = origLen / maxLenght;
 
-		if (origLen % maxLenght > 0) splitNum += 1;
+		if (origLen % maxLenght > 0) {
+			splitNum += 1;
+		}
 
 		String[] splits = new String[splitNum];
 
 		for (int i = 0; i < splitNum; i++) {
 			int startPos = i * maxLenght;
 			int endPos = startPos + maxLenght;
-			if (endPos > origLen)
+			if (endPos > origLen) {
 				endPos = origLen;
+			}
 
 			String substr = str.substring(startPos, endPos);
 
@@ -598,107 +615,31 @@ public class StringUtil {
 	}
 	
 	public static Collection<String> toCollection(String[] values) {
-		if (values == null) return null;
+		if (values == null) {
+			return null;
+		}
 		
 		Collection<String> result = new ArrayList<String>(values.length);
 		
-		for(String value : values) result.add(value);
-		
-		return result;
-	}
-
-	public static boolean endsWidth(String text, String[] values) {
-		if (text != null && values != null && values.length > 0) {
-			for (int i = 0; i < values.length; i++) {
-				if (text.endsWith(values[i])) {
-					return true;
-				}
-			}
+		for(String value : values) {
+			result.add(value);
 		}
 		
-		return false;
-	}
-
-	public static String removeUnknownChars(String text) {
-		StringBuffer buffer = new StringBuffer(text);
-		text = text.toLowerCase();
-		
-		int i = 0;
-		int removed = 0;
-		
-		while (i < text.length()) {
-			if (StringUtil.KNOW_STRINGS.indexOf(text.charAt(i)) == -1) {
-				int toRemove = i - removed++;
-				buffer.delete(toRemove, toRemove + 1);
-			}
-			i++;
-		}
-		
-		return buffer.toString();
-	}
-	
-	/**
-	 * For the command "test command param1:value1 value12 param2:value3 value4" returns a HashMap of:
-	 * null - test command
-	 * param1 - value1 value2
-	 * param2 - value3 value4
-	 * 
-	 * @param value
-	 * @param separator
-	 * @return
-	 */
-	public static HashMap<String,String> decompileCommand(String value, String separator, Collection<String> validCommands, String validStart) {
-		HashMap<String,String> result = new HashMap<String,String>();
-
-		if (StringUtil.notEmpty(value)) {
-			String[] values = StringUtil.split(value, separator, true);
-			if (values.length == 1) {
-				result.put(null,value);
-			} else { //Tengo al menos un par�metro
-				String command = null;
-				for (int i = 0; i < values.length; i++) {
-					String nextCommand = null;
-					
-					if (command == null) {
-						nextCommand = values[i];
-						if (nextCommand.lastIndexOf(' ') != -1) result.put(null, nextCommand.substring(0,nextCommand.lastIndexOf(' ')).trim());
-						nextCommand = nextCommand.substring(nextCommand.lastIndexOf(' ') + 1);
-					} else if ((i + 1) < (values.length)) {//El valor tiene el inicio del siguiente par�metro
-						value = values[i];
-						nextCommand = value.substring(value.lastIndexOf(' ') + 1);
-						value = value.substring(0,value.lastIndexOf(' ')).trim();
-					} else { //Este es el valor
-						value = values[i].trim();
-					}
-					
-					if (command != null) {
-						if (validCommands.contains(command) || (validStart != null && command.startsWith(validStart))) {
-							result.put(command, value);
-						} else {
-							if (result.containsKey(null)) {
-								result.put(null, result.get(null) + StringUtil.SPACE_STRING + command + StringUtil.SPACE_STRING + value);
-							} else {
-								result.put(null,command + StringUtil.SPACE_STRING + value);
-							}
-							command = null;
-						}
-					}
-					
-					if (nextCommand != null) nextCommand = nextCommand.trim();
-					command = nextCommand;
-				}
-			}
-		}
-
 		return result;
 	}
 
 	public static String append(String str1, String str2, String appender) {
 		StringBuffer buffer = new StringBuffer();
 		
-		if (StringUtil.notEmpty(str1)) buffer.append(str1);
-		if (StringUtil.notEmpty(str1) && StringUtil.notEmpty(str2)) buffer.append(appender);
-		if (StringUtil.notEmpty(str2)) buffer.append(str2); 
+		if (StringUtil.notEmpty(str1)) {
+			buffer.append(str1);
+		}
+		if (StringUtil.notEmpty(str1) && StringUtil.notEmpty(str2)) {
+			buffer.append(appender);
+		}
+		if (StringUtil.notEmpty(str2)) {
+			buffer.append(str2);
+		} 
 		
 		return buffer.toString();
 	}
@@ -716,16 +657,24 @@ public class StringUtil {
 	}
 	
 	public static String get(String[] values, int position, String defValue) {
-		if (values == null) return defValue;
-		if (values.length <= position) return defValue;
+		if (values == null) {
+			return defValue;
+		}
+		if (values.length <= position) {
+			return defValue;
+		}
 		
 		return values[position];
 	}
 	
 	public static int positionOf(String[] values, String value) {
-		if (values == null || values.length == 0) return -1;
+		if (values == null || values.length == 0) {
+			return -1;
+		}
 		for (int i = 0; i < values.length; i++) {
-			if (ClassUtil.equals(values[i], value)) return i;
+			if (ClassUtil.equals(values[i], value)) {
+				return i;
+			}
 		}
 		
 		return -1;
@@ -760,7 +709,9 @@ public class StringUtil {
 		
 		if (CollectionUtil.notEmpty(values)) {
 			for (String aValue : values) {
-				if (aValue != null) aValue = aValue.toUpperCase();
+				if (aValue != null) {
+					aValue = aValue.toUpperCase();
+				}
 				result.add(aValue);
 			}
 		}
@@ -771,7 +722,9 @@ public class StringUtil {
 	public static void toUpperCase(String[] values) {
 		if (values != null) {
 			for (int i = 0; i < values.length; i++) {
-				if (values[i] == null) continue;
+				if (values[i] == null) {
+					continue;
+				}
 				values[i] = values[i].toUpperCase();
 			}
 		}
@@ -780,43 +733,14 @@ public class StringUtil {
 	public static String sizeLimite(String text, int size, boolean addThreeDots) {
 		if (StringUtil.notEmpty(text) && text.length() > size) {
 			text = text.substring(0, size);
-			if (addThreeDots) text += StringUtil.THREE_DOTS;
+			if (addThreeDots) {
+				text += StringUtil.THREE_DOTS;
+			}
 		}
 		
 		return text;
 	}
 
-	public static String formatCreditCard(String number) {
-		if (StringUtil.isEmpty(number)) return number;
-		
-		if (number.length() > 4) {
-			StringBuffer result = new StringBuffer();
-			for (int i = 0; i < number.length() - 4; i++) result.append('x');
-			result.append(number.substring(number.length() - 4));
-			return result.toString();
-		}
-		
-		return number;
-	}
-	
-	public static String formatCreditCardLast4(String number) {
-		if (StringUtil.isEmpty(number)) return number;
-		
-		if (number.length() > 4) {
-			StringBuffer result = new StringBuffer();
-			int length = number.length() - 4;
-			if (length > 2) {
-				result.append("...");
-				length = 2;
-			}
-			for (int i = 0; i < length; i++) result.append('x');
-			result.append(number.substring(number.length() - 4));
-			return result.toString();
-		}
-		
-		return number;
-	}
-	
 	/* http://programacion.jias.es/2012/09/comprobar-la-codificacion-de-una-entrada-convertir-de-utf-8-iso-8859-1/ */
 	public static String reencodeUtf8ToIso88591(String uft8) throws Exception {
 		Charset utf8charset = Charset.forName("UTF-8");

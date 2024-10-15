@@ -29,7 +29,7 @@ public class LocationVo extends DbLocationVo implements IDataContainer, Comparab
 	}
 
 	public LocationVo(Integer cliId, Integer locId) {
-		this.setPk(cliId, locId);
+		super(cliId, locId);
 	}
 
 	//--- Overridden methods --------------------

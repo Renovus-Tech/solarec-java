@@ -74,7 +74,7 @@ public class AlertNotificationSendTest {
 	}
 	
 	@Test 
-	public void testTranslation() {
+	public void testScheduler() {
 		this.service.send();
 		
 		verify(this.cliLocAlertDao).updateFlags(this.cliLocAlertVo);
