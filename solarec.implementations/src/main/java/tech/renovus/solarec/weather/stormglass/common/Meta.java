@@ -1,5 +1,5 @@
 
-package tech.renovus.solarec.weather.stormglass.solar;
+package tech.renovus.solarec.weather.stormglass.common;
 
 import java.util.List;
 import javax.annotation.Generated;
