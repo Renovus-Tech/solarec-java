@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.CliDataDefParameterVo;
 
-public class CliDataDefParameterRowWrapper implements RowMapper<CliDataDefParameterVo> {
+@javax.annotation.Generated(value = "Renovus") public class CliDataDefParameterRowWrapper implements RowMapper<CliDataDefParameterVo> {
 
 	//--- Constructors --------------------------
 	protected CliDataDefParameterRowWrapper() {}

@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.PrfFunctionalityVo;
 
-public class PrfFunctionalityRowWrapper implements RowMapper<PrfFunctionalityVo> {
+@javax.annotation.Generated(value = "Renovus") public class PrfFunctionalityRowWrapper implements RowMapper<PrfFunctionalityVo> {
 
 	//--- Constructors --------------------------
 	private PrfFunctionalityRowWrapper() {}

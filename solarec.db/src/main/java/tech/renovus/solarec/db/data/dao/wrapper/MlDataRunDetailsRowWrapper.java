@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.MlDataRunDetailsVo;
 
-public class MlDataRunDetailsRowWrapper implements RowMapper<MlDataRunDetailsVo> {
+@javax.annotation.Generated(value = "Renovus") public class MlDataRunDetailsRowWrapper implements RowMapper<MlDataRunDetailsVo> {
 
 	//--- Constructors --------------------------
 	private MlDataRunDetailsRowWrapper() {}

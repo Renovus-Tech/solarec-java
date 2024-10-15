@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 
-public class GeneratorRowWrapper implements RowMapper<GeneratorVo> {
+@javax.annotation.Generated(value = "Renovus") public class GeneratorRowWrapper implements RowMapper<GeneratorVo> {
 
 	//--- Constructors --------------------------
 	private GeneratorRowWrapper() {}

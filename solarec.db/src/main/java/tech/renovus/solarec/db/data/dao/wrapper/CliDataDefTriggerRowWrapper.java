@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 
-public class CliDataDefTriggerRowWrapper implements RowMapper<CliDataDefTriggerVo> {
+@javax.annotation.Generated(value = "Renovus") public class CliDataDefTriggerRowWrapper implements RowMapper<CliDataDefTriggerVo> {
 
 	//--- Constructors --------------------------
 	private CliDataDefTriggerRowWrapper() {}

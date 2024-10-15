@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.StaDataVo;
 
-public class StaDataRowWrapper implements RowMapper<StaDataVo> {
+@javax.annotation.Generated(value = "Renovus") public class StaDataRowWrapper implements RowMapper<StaDataVo> {
 
 	//--- Constructors --------------------------
 	private StaDataRowWrapper() {}

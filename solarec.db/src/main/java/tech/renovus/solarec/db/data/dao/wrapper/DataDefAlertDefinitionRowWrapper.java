@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.DataDefAlertDefinitionVo;
 
-public class DataDefAlertDefinitionRowWrapper implements RowMapper<DataDefAlertDefinitionVo> {
+@javax.annotation.Generated(value = "Renovus") public class DataDefAlertDefinitionRowWrapper implements RowMapper<DataDefAlertDefinitionVo> {
 
 	//--- Constructors --------------------------
 	private DataDefAlertDefinitionRowWrapper() {}

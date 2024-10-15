@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.WeaDefinitionVo;
 
-public class WeaDefinitionRowWrapper implements RowMapper<WeaDefinitionVo> {
+@javax.annotation.Generated(value = "Renovus") public class WeaDefinitionRowWrapper implements RowMapper<WeaDefinitionVo> {
 
 	//--- Constructors --------------------------
 	private WeaDefinitionRowWrapper() {}

@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.CliGenAlertVo;
 
-public class CliGenAlertRowWrapper implements RowMapper<CliGenAlertVo> {
+@javax.annotation.Generated(value = "Renovus") public class CliGenAlertRowWrapper implements RowMapper<CliGenAlertVo> {
 
 	//--- Constructors --------------------------
 	protected CliGenAlertRowWrapper() {}

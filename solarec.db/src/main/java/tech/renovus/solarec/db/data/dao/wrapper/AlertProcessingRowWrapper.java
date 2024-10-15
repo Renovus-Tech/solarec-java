@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.AlertProcessingVo;
 
-public class AlertProcessingRowWrapper implements RowMapper<AlertProcessingVo> {
+@javax.annotation.Generated(value = "Renovus") public class AlertProcessingRowWrapper implements RowMapper<AlertProcessingVo> {
 
 	//--- Constructors --------------------------
 	private AlertProcessingRowWrapper() {}

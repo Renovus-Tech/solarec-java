@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.GenAlarmVo;
 
-public class GenAlarmRowWrapper implements RowMapper<GenAlarmVo> {
+@javax.annotation.Generated(value = "Renovus") public class GenAlarmRowWrapper implements RowMapper<GenAlarmVo> {
 
 	//--- Constructors --------------------------
 	private GenAlarmRowWrapper() {}

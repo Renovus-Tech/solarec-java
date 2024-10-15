@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.RepTypeVo;
 
-public class RepTypeRowWrapper implements RowMapper<RepTypeVo> {
+@javax.annotation.Generated(value = "Renovus") public class RepTypeRowWrapper implements RowMapper<RepTypeVo> {
 
 	//--- Constructors --------------------------
 	private RepTypeRowWrapper() {}

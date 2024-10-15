@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.LocDataVo;
 
-public class LocDataRowWrapper implements RowMapper<LocDataVo> {
+@javax.annotation.Generated(value = "Renovus") public class LocDataRowWrapper implements RowMapper<LocDataVo> {
 
 	//--- Constructors --------------------------
 	private LocDataRowWrapper() {}

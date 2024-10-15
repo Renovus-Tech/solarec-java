@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.DocumentVo;
 
-public class DocumentRowWrapper implements RowMapper<DocumentVo> {
+@javax.annotation.Generated(value = "Renovus") public class DocumentRowWrapper implements RowMapper<DocumentVo> {
 
 	//--- Constructors --------------------------
 	private DocumentRowWrapper() {}

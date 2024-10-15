@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.ChartVo;
 
-public class ChartRowWrapper implements RowMapper<ChartVo> {
+@javax.annotation.Generated(value = "Renovus") public class ChartRowWrapper implements RowMapper<ChartVo> {
 
 	//--- Constructors --------------------------
 	private ChartRowWrapper() {}

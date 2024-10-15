@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.GenNeighbourVo;
 
-public class GenNeighbourRowWrapper implements RowMapper<GenNeighbourVo> {
+@javax.annotation.Generated(value = "Renovus") public class GenNeighbourRowWrapper implements RowMapper<GenNeighbourVo> {
 
 	//--- Constructors --------------------------
 	private GenNeighbourRowWrapper() {}

@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import tech.renovus.solarec.vo.db.data.GenMetadataVo;
 
-public class GenMetadataRowWrapper implements RowMapper<GenMetadataVo> {
+@javax.annotation.Generated(value = "Renovus") public class GenMetadataRowWrapper implements RowMapper<GenMetadataVo> {
 
 	//--- Constructors --------------------------
 	private GenMetadataRowWrapper() {}
