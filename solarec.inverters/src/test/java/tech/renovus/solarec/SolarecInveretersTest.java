@@ -17,7 +17,7 @@ import tech.renovus.solarec.inverters.brand.solarEdge.SolarEdgeInverterServiceTe
 import tech.renovus.solarec.inverters.common.InverterServiceTest;
 import tech.renovus.solarec.inverters.common.InvertersUtilTest;
 import tech.renovus.solarec.weather.WeatherServiceTest;
-import tech.renovus.solarec.weather.tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceTest;
+import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImplTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
@@ -37,7 +37,7 @@ import tech.renovus.solarec.weather.tech.renovus.solarec.weather.meteoblue.Meteo
 	EmberDataGridServiceTest.class,
 	DataGridServiceTest.class,
 	
-	MeteoblueWeatherServiceTest.class,
+	MeteoblueWeatherServiceImplTest.class,
 	WeatherServiceTest.class,
 })
 
