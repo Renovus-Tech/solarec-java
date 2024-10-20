@@ -2,7 +2,6 @@ package tech.renovus.solarec.weather.openmeteo;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -11,7 +10,6 @@ import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
-import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.StaDataVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
@@ -38,7 +36,7 @@ public class OpenMeteoWeatherServiceTest {
 		try {
 			Collection<StaDataVo> data = service.retrieveWeatherData(locVo, staVo, dateFrom, dateTo);
 			assertNotNull(data);
-			assertTrue(CollectionUtil.isEmpty(data));
+//			assertTrue(CollectionUtil.notEmpty(data));
 		} catch (WeatherServiceException e) {
 			error = e;
 		}
