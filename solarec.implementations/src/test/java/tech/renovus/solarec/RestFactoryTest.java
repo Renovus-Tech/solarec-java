@@ -11,8 +11,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import tech.renovus.solarec.RestFactory;
-import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.SecurityService;
 import tech.renovus.solarec.interfaces.ISetting;
 import tech.renovus.solarec.util.CollectionUtil;
@@ -21,16 +19,24 @@ import tech.renovus.solarec.vo.db.data.CliSettingVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.CountryVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
+import tech.renovus.solarec.vo.db.data.DataProcessingVo;
+import tech.renovus.solarec.vo.db.data.DocGeneratorVo;
+import tech.renovus.solarec.vo.db.data.DocLocationVo;
+import tech.renovus.solarec.vo.db.data.DocStationVo;
+import tech.renovus.solarec.vo.db.data.DocTypeVo;
+import tech.renovus.solarec.vo.db.data.DocumentVo;
 import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 import tech.renovus.solarec.vo.db.data.GenPowerVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocSdgVo;
 import tech.renovus.solarec.vo.db.data.LocTypeVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.RepTypeVo;
 import tech.renovus.solarec.vo.db.data.SdgVo;
 import tech.renovus.solarec.vo.db.data.SettingsVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
 import tech.renovus.solarec.vo.db.data.UsersVo;
+import tech.renovus.solarec.vo.db.data.WeaDefinitionVo;
 import tech.renovus.solarec.vo.rest.entity.Client;
 import tech.renovus.solarec.vo.rest.entity.Country;
 import tech.renovus.solarec.vo.rest.entity.DataDefinition;
@@ -38,6 +44,7 @@ import tech.renovus.solarec.vo.rest.entity.Functionality;
 import tech.renovus.solarec.vo.rest.entity.Generator;
 import tech.renovus.solarec.vo.rest.entity.Location;
 import tech.renovus.solarec.vo.rest.entity.Setting;
+import tech.renovus.solarec.vo.rest.entity.Station;
 import tech.renovus.solarec.vo.rest.entity.User;
 
 public class RestFactoryTest {
@@ -70,7 +77,7 @@ public class RestFactoryTest {
 		FlagUtil.setFlagValue(result, LocationVo.FLAG_CONNECTED_TO_GRID			, true);
 		FlagUtil.setFlagValue(result, LocationVo.FLAG_ENABLED					, true);
 
-		result.add(this.creteGenerator());
+		result.add(this.createGenerator());
 		result.add(this.createStation());
 		result.add(this.createLocSdg());
 		
@@ -128,7 +135,7 @@ public class RestFactoryTest {
 		return result;
 	}
 
-	private GeneratorVo creteGenerator() {
+	private GeneratorVo createGenerator() {
 		GeneratorVo result = new GeneratorVo();
 		
 		result.setCliId(Integer.valueOf(-2313));
@@ -192,6 +199,123 @@ public class RestFactoryTest {
 		result.setPwrAirDensity(Double.valueOf(22));
 		result.setGenPower(Double.valueOf(44));
 		
+		return result;
+	}
+	
+	private DataProcessingVo createDataProcessingVo() {
+		DataProcessingVo result = new DataProcessingVo();
+		
+		result.setDataProId(Integer.valueOf(22));
+		result.setDataDefId(Integer.valueOf(23));
+		result.setCliId(Integer.valueOf(24));
+		result.setLocId(Integer.valueOf(25));
+		result.setTriId(Integer.valueOf(26));
+		result.setDataProResult(Integer.valueOf(27));
+		result.setGenId(Integer.valueOf(28));
+		result.setDataProDateStart(new Date());
+		result.setDataProDateEnd(new Date());
+		result.setDataProFileName("test file");
+		result.setDataProFileLog("test log");
+		
+		return result;
+	}
+	
+	private DocTypeVo createDocTypeVo() {
+		DocTypeVo result = new DocTypeVo();
+		
+		result.setDocTypeId(Integer.valueOf(12));
+		result.setDocTypeName("Name");
+		result.setDocTypeTitle("Title");
+		result.setDocTypeFlags("000110");
+		
+		return result;
+	}
+	
+	private DocumentVo createDocumentVo() {
+		DocumentVo result = new DocumentVo();
+		
+		result.setCliId(Integer.valueOf(44));
+		result.setDocId(Integer.valueOf(45));
+		result.setDocTypeId(Integer.valueOf(46));
+		result.setDocDateAdded(new Date());
+		result.setDocDateFrom(new Date());
+		result.setDocDateTo(new Date());
+		result.setDocFileSize(Double.valueOf(121.22));
+		result.setDocFlags("001100");
+		result.setDocName("Name");
+		result.setDocObservations("Observations");
+		result.setDocFile("file path.txt");
+		result.setDocFileName("file name.text");
+		result.setDocFileContent("the content");
+
+		DocGeneratorVo docGenVo = new DocGeneratorVo();
+		docGenVo.setGeneratorVo(this.createGenerator());
+		docGenVo.setCliId(result.getCliId());
+		docGenVo.setDocId(result.getDocId());
+		docGenVo.setGenId(docGenVo.getGeneratorVo().getGenId());
+		
+		DocLocationVo docLocVo = new DocLocationVo();
+		docLocVo.setLocationVo(this.createLocationSampleVo());
+		docLocVo.setCliId(result.getCliId());
+		docLocVo.setDocId(result.getDocId());
+		docLocVo.setLocId(docLocVo.getLocationVo().getLocId());
+
+		DocStationVo docStaVo = new DocStationVo();
+		docStaVo.setStationVo(this.createStation());
+		docStaVo.setCliId(result.getCliId());
+		docStaVo.setDocId(result.getDocId());
+		docStaVo.setStaId(docStaVo.getStationVo().getStaId());
+		
+		result.add(docGenVo);
+		result.add(docStaVo);
+		result.add(docLocVo);
+		
+		return result;
+	}
+	
+	private WeaDefinitionVo createWeaDefinitionVo() {
+		WeaDefinitionVo result = new WeaDefinitionVo();
+		
+		result.setCliId(Integer.valueOf(55));
+		result.setWeaId(Integer.valueOf(56));
+		result.setWeaCoordLng(Double.valueOf(-33.3332));
+		result.setWeaCoordLat(Double.valueOf(-55.232));
+		result.setWeaCheckType(Integer.valueOf(1));
+		result.setWeaCheckFrequency(Integer.valueOf(15));
+		result.setWeaName("Name");
+		result.setWeaDescription("Description");
+		result.setWeaFlags("001110");
+		
+		return result;
+	}
+	
+	private RepTypeVo createRepTypeVo() {
+		RepTypeVo result = new RepTypeVo();
+		
+		result.setRepTypeId(Integer.valueOf(77));
+		result.setRepOrder(Integer.valueOf(7));
+		result.setRepTypeName("Name");
+		result.setRepTypeTitle("Title");
+		result.setRepFlags("011000");
+		result.setRepExecutable("executable.class");
+		
+		return result;
+	}
+	
+	private CountryVo createCountryVo() {
+		CountryVo result = new CountryVo();
+		
+		result.setCtrCoordLng(Double.valueOf(-33.255));
+		result.setCtrDataDateMax(new Date());
+		result.setCtrDataDateMin(new Date());
+		result.setCtrCoordLat(Double.valueOf(-56.232));
+		result.setCtrId(Integer.valueOf(88));
+		result.setCtrCodePhone("+111");
+		result.setCtrName("Name");
+		result.setCtrNameShow("To show");
+		result.setCtrCode2("22");
+		result.setCtrCode3("222");
+
 		return result;
 	}
 	
@@ -300,6 +424,27 @@ public class RestFactoryTest {
 		assertTrue(CollectionUtil.isEmpty(factory.convertWeatherDefinitions(null)));
 		assertTrue(CollectionUtil.isEmpty(factory.convertRestPowerCurve(null)));
 		assertTrue(CollectionUtil.isEmpty(factory.convertReportTypes(null)));
+		assertTrue(CollectionUtil.isEmpty(factory.convertCountries(null)));
+
+		assertTrue(CollectionUtil.notEmpty(factory.convertProcessings(Arrays.asList(this.createDataProcessingVo()))));
+		assertTrue(CollectionUtil.notEmpty(factory.convertDataDefinitions(Arrays.asList(this.createDataDefinitionVo()))));
+		assertTrue(CollectionUtil.notEmpty(factory.convertLocations(Arrays.asList(this.createLocationSampleVo()))));
+		assertTrue(CollectionUtil.notEmpty(factory.convertStations(Arrays.asList(this.createStation()))));
+		assertTrue(CollectionUtil.notEmpty(factory.convertGenerators(Arrays.asList(this.createGenerator()))));
+		assertTrue(CollectionUtil.notEmpty(factory.convertFunctionalities(Arrays.asList(this.createFunctionality()))));
+		assertTrue(CollectionUtil.notEmpty(factory.convertClients(Arrays.asList(this.createClientVo()), null)));
+		assertTrue(CollectionUtil.notEmpty(factory.convertDocTypes(Arrays.asList(this.createDocTypeVo()))));
+		assertTrue(CollectionUtil.notEmpty(factory.convertDocuments(Arrays.asList(this.createDocumentVo()))));
+		assertTrue(CollectionUtil.notEmpty(factory.convertWeatherDefinitions(Arrays.asList(this.createWeaDefinitionVo()))));
+		assertTrue(CollectionUtil.notEmpty(factory.convertReportTypes(Arrays.asList(this.createRepTypeVo()))));
+		assertTrue(CollectionUtil.notEmpty(factory.convertCountries(Arrays.asList(this.createCountryVo()))));
+	}
+	
+	@Test
+	public void testVos() {
+		RestFactory factory =  new RestFactory();
+		
+		factory.convert(this.createDocumentVo());
 	}
 	
 	@Test
@@ -462,5 +607,36 @@ public class RestFactoryTest {
 		assertNotNull(user.getErrorCode());
 		assertEquals(userData.getAuthenticationError(), user.getErrorCode().intValue());
 		assertEquals("Not authenticated, bad combination of email, password and client.", user.getError());
+	}
+
+	@Test
+	public void testFromJson() {
+		RestFactory factory =  new RestFactory();
+
+		LocationVo locVo = this.createLocationSampleVo();
+		Location loc = factory.convert(locVo);
+		LocationVo locRest = factory.convert(loc);
+		assertEquals(locVo.getLocName(), locRest.getLocName());
+		assertEquals(locVo.getLocAddress(), locRest.getLocAddress());
+		assertEquals(locVo.getLocOutputCapacity(), locRest.getLocOutputCapacity());
+		assertEquals(locVo.getDataDefId(), locRest.getDataDefId());
+		
+		GeneratorVo genVo = this.createGenerator();
+		Generator gen = factory.convert(genVo);
+		GeneratorVo genRest = factory.convert(gen);
+		assertEquals(genVo.getGenId(), genRest.getGenId());
+		assertEquals(genVo.getGenName(), genRest.getGenName());
+		assertEquals(genVo.getGenCode(), genRest.getGenCode());
+		assertEquals(genVo.getGenBrand(), genRest.getGenBrand());
+		assertEquals(genVo.getGenModel(), genRest.getGenModel());
+
+		StationVo staVo = this.createStation();
+		Station sta = factory.convert(staVo);
+		StationVo staRest = factory.convert(sta);
+		assertEquals(staVo.getStaId(), staRest.getStaId());
+		assertEquals(staVo.getStaName(), staRest.getStaName());
+		assertEquals(staVo.getStaCode(), staRest.getStaCode());
+		assertEquals(staVo.getStaDescription(), staRest.getStaDescription());
+		
 	}
 }

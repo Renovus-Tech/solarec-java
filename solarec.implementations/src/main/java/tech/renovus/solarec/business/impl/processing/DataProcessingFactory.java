@@ -1,5 +1,7 @@
 package tech.renovus.solarec.business.impl.processing;
 
+import java.lang.reflect.InvocationTargetException;
+
 import tech.renovus.solarec.business.impl.processing.base.AbstractDataProcessing;
 import tech.renovus.solarec.exceptions.CoreException;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
@@ -14,8 +16,8 @@ public class DataProcessingFactory {
 	//--- Private methods -----------------------
 	private AbstractDataProcessing get(Class<? extends AbstractDataProcessing> aClass) throws CoreException {
 		try {
-			return aClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+			return aClass.getConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new CoreException(e);
 		}
 	}

@@ -42,7 +42,9 @@ public class BaseServiceImpl {
 
 	//--- Util methods --------------------------
 	public ChartFilter validate(ChartFilter filter, UserData userData) {
-		if (filter == null) filter = new ChartFilter();
+		if (filter == null) {
+			filter = new ChartFilter();
+		}
 		
 		Date dateToUser = this.calculateDateToUser(userData);
 		
@@ -50,11 +52,19 @@ public class BaseServiceImpl {
 		currentDate = DateUtil.clearTime(currentDate);
 
 		filter.setClient(userData.getCliId());
-		if (filter.getLocation() != null && this.locDao.findForUser(userData.getCliId(), filter.getClient(), filter.getLocation()) == null) filter.setLocation(null); 
+		if (filter.getLocation() != null && this.locDao.findForUser(userData.getCliId(), filter.getClient(), filter.getLocation()) == null) {
+			filter.setLocation(null);
+		} 
 		
-		if (filter.getTo() == null) filter.setTo(currentDate);
-		if (StringUtil.isEmpty(filter.getPeriod()) && filter.getFrom() == null) filter.setPeriod(ChartFilter.PERIOD_12_WEEKS);
-		if (StringUtil.isEmpty(filter.getGroupBy())) filter.setGroupBy(ChartFilter.GROUP_BY_WEEK);
+		if (filter.getTo() == null) {
+			filter.setTo(currentDate);
+		}
+		if (StringUtil.isEmpty(filter.getPeriod()) && filter.getFrom() == null) {
+			filter.setPeriod(ChartFilter.PERIOD_12_WEEKS);
+		}
+		if (StringUtil.isEmpty(filter.getGroupBy())) {
+			filter.setGroupBy(ChartFilter.GROUP_BY_WEEK);
+		}
 		
 		if (StringUtil.notEmpty(filter.getPeriod())) {
 			filter.setTo(currentDate);
@@ -107,8 +117,11 @@ public class BaseServiceImpl {
 					aCalendar = Calendar.getInstance();
 					aCalendar.setTime(currentDate);
 					
-					if (filter.getFrom() != null) aCalendar.setTime(filter.getFrom());
-					else if (filter.getTo() != null) aCalendar.setTime(filter.getTo());
+					if (filter.getFrom() != null) {
+						aCalendar.setTime(filter.getFrom());
+					} else if (filter.getTo() != null) {
+						aCalendar.setTime(filter.getTo());
+					}
 					
 					filter.setFrom(aCalendar.getTime());
 					
@@ -122,8 +135,11 @@ public class BaseServiceImpl {
 					aCalendar = Calendar.getInstance();
 					aCalendar.setTime(currentDate);
 					
-					if (filter.getFrom() != null) aCalendar.setTime(filter.getFrom());
-					else if (filter.getTo() != null) aCalendar.setTime(filter.getTo());
+					if (filter.getFrom() != null) {
+						aCalendar.setTime(filter.getFrom());
+					} else if (filter.getTo() != null) {
+						aCalendar.setTime(filter.getTo());
+					}
 					
 					aCalendar.add(Calendar.WEEK_OF_YEAR, -3);
 					filter.setFrom(aCalendar.getTime());
@@ -138,8 +154,11 @@ public class BaseServiceImpl {
 					aCalendar = Calendar.getInstance();
 					aCalendar.setTime(currentDate);
 					
-					if (filter.getFrom() != null) aCalendar.setTime(filter.getFrom());
-					else if (filter.getTo() != null) aCalendar.setTime(filter.getTo());
+					if (filter.getFrom() != null) {
+						aCalendar.setTime(filter.getFrom());
+					} else if (filter.getTo() != null) {
+						aCalendar.setTime(filter.getTo());
+					}
 					
 					aCalendar.set(Calendar.DAY_OF_MONTH, 1);
 					filter.setFrom(aCalendar.getTime());
@@ -158,8 +177,11 @@ public class BaseServiceImpl {
 					aCalendar = Calendar.getInstance();
 					aCalendar.setTime(currentDate);
 					
-					if (filter.getFrom() != null) aCalendar.setTime(filter.getFrom());
-					else if (filter.getTo() != null) aCalendar.setTime(filter.getTo());
+					if (filter.getFrom() != null) {
+						aCalendar.setTime(filter.getFrom());
+					} else if (filter.getTo() != null) {
+						aCalendar.setTime(filter.getTo());
+					}
 					
 					aCalendar.set(Calendar.DAY_OF_MONTH, 1);
 					aCalendar.add(Calendar.MONTH, 1);
@@ -180,8 +202,11 @@ public class BaseServiceImpl {
 					aCalendar = Calendar.getInstance();
 					aCalendar.setTime(currentDate);
 					
-					if (filter.getFrom() != null) aCalendar.setTime(filter.getFrom());
-					else if (filter.getTo() != null) aCalendar.setTime(filter.getTo());
+					if (filter.getFrom() != null) {
+						aCalendar.setTime(filter.getFrom());
+					} else if (filter.getTo() != null) {
+						aCalendar.setTime(filter.getTo());
+					}
 					
 					aCalendar.set(Calendar.DAY_OF_MONTH, 1);
 					aCalendar.add(Calendar.MONTH, 1);
@@ -201,6 +226,12 @@ public class BaseServiceImpl {
 				case ChartFilter.PERIOD_CURRENT_WEEK:
 					aCalendar = Calendar.getInstance();
 					aCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+					aCalendar.set(Calendar.HOUR,0);
+					aCalendar.set(Calendar.MINUTE,0);
+					aCalendar.set(Calendar.SECOND,0);
+					aCalendar.set(Calendar.MILLISECOND,0);
+					aCalendar.set(Calendar.AM_PM,Calendar.AM);
+
 					filter.setFrom(aCalendar.getTime());
 					break;
 				
@@ -209,27 +240,41 @@ public class BaseServiceImpl {
 		} else if (filter.getTo() != null) {
 			Date maxToDate = DateUtil.clearTime(new Date());
 			Date toDate = DateUtil.clearTime(filter.getTo());
-			if (toDate.equals(maxToDate) || toDate.after(maxToDate)) filter.setTo(maxToDate);
+			if (toDate.equals(maxToDate) || toDate.after(maxToDate)) {
+				filter.setTo(maxToDate);
+			}
 		}
 		
-		if (filter.getLocation() == null) filter.setLocation(userData.getLocId());
+		if (filter.getLocation() == null) {
+			filter.setLocation(userData.getLocId());
+		}
 		
 		return filter;
 	}
 
 	public Date calculateDateToUser(UserData userData) {
-		Date dateToUser = null;
+		Date dateToUse = null;
 
-		if (userData.getLocationVo() != null) dateToUser = userData.getLocationVo().getLocDemoDate();
-		if (dateToUser == null && userData.getClientVo() != null) dateToUser = userData.getClientVo().getCliDemoDate();
-		if (dateToUser == null) dateToUser = new Date();
-		return dateToUser;
+		if (userData.getLocationVo() != null) {
+			dateToUse = userData.getLocationVo().getLocDemoDate();
+		}
+		if (dateToUse == null && userData.getClientVo() != null) {
+			dateToUse = userData.getClientVo().getCliDemoDate();
+		}
+		if (dateToUse == null) {
+			dateToUse = new Date();
+		}
+		return dateToUse;
 	}
 
 	public Object execute(String statDefName, ChartFilter filter, UserData userData) throws CoreException {
 		StatDefinitionVo vo	= this.staDefDao.findVo(statDefName);
-		if (vo == null) return this.factory.generateChartResultErrorAsString(null, "can't find the requested chart information.", filter);
-		if (vo.getStatDefExecutable() == null) return this.factory.generateChartResultErrorAsString(vo.getStatDefName(), "Chart has an invalid executable", filter);
+		if (vo == null) {
+			return this.factory.generateChartResultErrorAsString(null, "can't find the requested chart information.", filter);
+		}
+		if (vo.getStatDefExecutable() == null) {
+			return this.factory.generateChartResultErrorAsString(vo.getStatDefName(), "Chart has an invalid executable", filter);
+		}
 		
 		AbstractChart chart	= this.factory.get(vo);
 		chart.prepareForExecution(vo, filter, userData, this.config);

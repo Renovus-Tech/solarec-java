@@ -1,5 +1,7 @@
 package tech.renovus.solarec.business.impl.alert;
 
+import java.lang.reflect.InvocationTargetException;
+
 import tech.renovus.solarec.business.impl.alert.base.AbstractAlertProcessing;
 import tech.renovus.solarec.exceptions.CoreException;
 
@@ -13,16 +15,13 @@ public class AlertProcessingFactory {
 	//--- Private methods -----------------------
 	private AbstractAlertProcessing get(Class<? extends AbstractAlertProcessing> aClass) throws CoreException {
 		try {
-			return aClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+			return aClass.getConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new CoreException(e);
 		}
 	}
-//	
-//	//--- Factory methods -----------------------
-//	public AbstractAlertProcessing getSampleProcessing() throws CoreException { return null; /* this.get(SampleAlert.class); */ }
-//	
-//	public AbstractAlertProcessing get(AlertDefinitionVo vo) throws CoreException { return this.get(vo.getAlertDefExecutable()); }
+
+	//	//--- Factory methods -----------------------
 	public AbstractAlertProcessing get(String className) throws CoreException {
 		try {
 			return this.get((Class<? extends AbstractAlertProcessing>) Class.forName(className));

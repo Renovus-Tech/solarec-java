@@ -1,5 +1,7 @@
 package tech.renovus.solarec.business.impl.calculation;
 
+import java.lang.reflect.InvocationTargetException;
+
 import tech.renovus.solarec.business.impl.calculation.base.AbstractDataCalculation;
 import tech.renovus.solarec.exceptions.CoreException;
 import tech.renovus.solarec.vo.db.data.StatDefinitionVo;
@@ -14,8 +16,8 @@ public class DataCalculationFactory {
 	//--- Private methods -----------------------
 	private AbstractDataCalculation get(Class<? extends AbstractDataCalculation> aClass) throws CoreException {
 		try {
-			return aClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+			return aClass.getConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new CoreException(e);
 		}
 	}
