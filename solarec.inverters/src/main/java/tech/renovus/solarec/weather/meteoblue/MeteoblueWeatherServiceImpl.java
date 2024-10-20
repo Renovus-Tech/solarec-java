@@ -11,15 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import tech.renovus.solarec.connection.JsonCaller;
-import tech.renovus.solarec.db.data.dao.interfaces.LocDataWeatherDao;
-import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
@@ -464,8 +460,6 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 	
 	//--- Resources -----------------------------
 	@Autowired MeteoblueConfiguration config;
-	@Resource LocationDao locDao;
-	@Resource LocDataWeatherDao locDataWeatherDao;
 	
 	public MeteoblueWeatherServiceImpl() {}
 	
@@ -552,8 +546,7 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 		
 		LoggerService.weatherLogger().warn("[Meteoblue] Period out of range in past (" + this.config.getMaxDaysPast() + ").");
 		
-		Map<String, String> params		= this.getParams(locVo, dateFrom, dateTo, false);
-		WeatherData data				= periodInRange ? JsonCaller.get(URL_SOLAR, params, WeatherData.class) : null;
+		WeatherData data 				= this.retrieveData(locVo, dateFrom, dateTo, periodInRange);
 		int startIndex					= 0;
 		int endIndex					= -1;
 		Collection<StaDataVo> result	= new ArrayList<>();
@@ -593,5 +586,19 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 		
 		return result;
 		
+	}
+
+	public WeatherData retrieveData(LocationVo locVo, Date dateFrom, Date dateTo, boolean periodInRange) {
+		Map<String, String> params		= this.getParams(locVo, dateFrom, dateTo, false);
+		WeatherData data				= periodInRange ? JsonCaller.get(URL_SOLAR, params, WeatherData.class) : null;
+		return data;
+	}
+
+	public MeteoblueConfiguration getConfig() {
+		return config;
+	}
+
+	public void setConfig(MeteoblueConfiguration config) {
+		this.config = config;
 	}
 }

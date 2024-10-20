@@ -1,6 +1,5 @@
 package tech.renovus.solarec.weather.openmeteo;
 
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,20 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.connection.JsonCaller;
-import tech.renovus.solarec.db.data.dao.interfaces.LocDataWeatherDao;
-import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
-import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
@@ -49,10 +41,6 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 	private static final String URL_SOLAR_HISTORICAL	= "https://historical-forecast-api.open-meteo.com/v1/forecast";
 	
 	//--- Resources -----------------------------
-	@Resource LocationDao locDao;
-	@Resource LocDataWeatherDao locDataWeatherDao;
-	@Autowired RenovusSolarecConfiguration configuration;
-	
 	public OpenMeteoWeatherServiceImpl() { /* required for fast testing */ }
 	
 	//--- Private methods -----------------------
@@ -124,12 +112,11 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 		WeatherData data				= JsonCaller.get(urlToUse, params, WeatherData.class);
 		Collection<StaDataVo> result	= new ArrayList<>();
 		
-		JsonUtil.saveToFile(new File(this.configuration.getPathLog() + File.separator + "Openmeteo", StringUtil.join("_", DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE_TIME), DateUtil.formatDateTime(dateTo, DateUtil.FMT_DATE_TIME))+ ".json"), data);
-		
 		if (data == null || data.getHourly() == null || CollectionUtil.isEmpty(data.getHourly().getTime())) {
 			LoggerService.weatherLogger().info("[OpenMeteo] No data");
 			return result;
 		}
+		
 		LoggerService.weatherLogger().info("[OpenMeteo] Amount of data: " + CollectionUtil.size(data.getHourly().getTime()));
 		
 		try {
@@ -151,7 +138,9 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 			if (startIndex > -1) {
 				LoggerService.weatherLogger().info("[OpenMeteo] Amount of data: " + CollectionUtil.size(data.getHourly().getTime()));
 				
-				if (endIndex == data.getHourly().getTime().size()) endIndex = data.getHourly().getTime().size() - 1;
+				if (endIndex == data.getHourly().getTime().size()) {
+					endIndex = data.getHourly().getTime().size() - 1;
+				}
 				
 				LoggerService.weatherLogger().info("[OpenMeteo] Amount of data to retrieve: " + (endIndex - startIndex + 1));
 				LoggerService.weatherLogger().info("[OpenMeteo] First date: " + data.getHourly().getTime().get(startIndex));
