@@ -29,7 +29,9 @@ public class ChartFactory {
 	private AbstractChart get(Class<? extends AbstractChart> aClass) throws CoreException {
 		try {
 			AbstractChart anObject = aClass.getConstructor().newInstance();
-			this.autowireCapableBeanFactory.autowireBean(anObject);
+			if (this.autowireCapableBeanFactory != null) {
+				this.autowireCapableBeanFactory.autowireBean(anObject);
+			}
 			return anObject;
 		} catch (NoSuchMethodException | InstantiationException| IllegalAccessException| IllegalArgumentException| InvocationTargetException e) {
 			throw new CoreException(e);
@@ -51,7 +53,9 @@ public class ChartFactory {
 	}
 	
 	public final String generateChartResultErrorAsString(String chartName, String error, boolean noData, ChartFilter charFilter) {
-		if (chartName == null) chartName = "n/a";
+		if (chartName == null) {
+			chartName = "n/a";
+		}
 		ChartResult result = new ChartResult();
 		
 		result.setChart(new Chart(chartName));

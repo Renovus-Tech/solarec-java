@@ -25,6 +25,7 @@ import tech.renovus.solarec.db.data.dao.interfaces.StaAlertDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StationDao;
 import tech.renovus.solarec.exceptions.CoreException;
 import tech.renovus.solarec.exceptions.ProcessingException;
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.StringUtil;
@@ -68,51 +69,63 @@ public class AlertServiceImpl implements AlertService {
 	private void saveAlert(AlertProcessingVo alertProVo, ClientVo cliVo) {
 		this.clientDao.update(cliVo);
 		
-		if (CollectionUtil.notEmpty(cliVo.getLocations())) for (LocationVo locVo : cliVo.getLocations()) {
-			locVo.setCliId(cliVo.getCliId());
-			
-			this.saveData(alertProVo, locVo);
+		if (CollectionUtil.notEmpty(cliVo.getLocations())) {
+			for (LocationVo locVo : cliVo.getLocations()) {
+				locVo.setCliId(cliVo.getCliId());
+				
+				this.saveData(alertProVo, locVo);
+			}
 		}
 	}
 	
 	private void setProcessingData(AlertProcessingVo alertProVo, Collection<? extends IAlert> alerts) {
-		if (CollectionUtil.notEmpty(alerts)) for (IAlert vo : alerts) {
-			vo.setAlertProId(alertProVo.getAlertProId());
-			vo.setAlertDateAdded(alertProVo.getAlertProDateStart());
+		if (CollectionUtil.notEmpty(alerts)) {
+			for (IAlert vo : alerts) {
+				vo.setAlertProId(alertProVo.getAlertProId());
+				vo.setAlertDateAdded(alertProVo.getAlertProDateStart());
+			}
 		}
 	}
 	
 	private void saveData(AlertProcessingVo alertProVo, LocationVo locVo) {
-		if (locVo.getLocId() == null) this.locationDao.insert(locVo);
+		if (locVo.getLocId() == null) {
+			this.locationDao.insert(locVo);
+		}
 		
 		locVo.setChildrensId();
 		
 		long start = System.currentTimeMillis();
-		System.out.println("Saving alerts " + locVo.getLocName() + "...");
+		LoggerService.systemLogger().info("Saving alerts " + locVo.getLocName() + "...");
 		
 		this.setProcessingData(alertProVo, locVo.getAlerts());
 		this.locAlertDao.insert(locVo.getAlerts());
 		
-		if (CollectionUtil.notEmpty(locVo.getGenerators())) for (GeneratorVo genVo : locVo.getGenerators()) {
-			genVo.setCliId(locVo.getCliId());
-			genVo.setLocId(locVo.getLocId());
-			
-			this.saveData(alertProVo, genVo);
+		if (CollectionUtil.notEmpty(locVo.getGenerators())) {
+			for (GeneratorVo genVo : locVo.getGenerators()) {
+				genVo.setCliId(locVo.getCliId());
+				genVo.setLocId(locVo.getLocId());
+				
+				this.saveData(alertProVo, genVo);
+			}
 		}
 		
-		if (CollectionUtil.notEmpty(locVo.getStations())) for (StationVo staVo : locVo.getStations()) {
-			staVo.setCliId(locVo.getCliId());
-			staVo.setLocId(locVo.getLocId());
-			
-			this.saveData(alertProVo, staVo);
+		if (CollectionUtil.notEmpty(locVo.getStations())) {
+			for (StationVo staVo : locVo.getStations()) {
+				staVo.setCliId(locVo.getCliId());
+				staVo.setLocId(locVo.getLocId());
+				
+				this.saveData(alertProVo, staVo);
+			}
 		}
 		
 		long end = System.currentTimeMillis();
-		System.out.println("Alerts saved in: " + DateUtil.formatDateTime(new Date(end - start), DateUtil.FMT_TIME_FULL));
+		LoggerService.systemLogger().info("Alerts saved in: " + DateUtil.formatDateTime(new Date(end - start), DateUtil.FMT_TIME_FULL));
 	}
 	
 	private void saveData(AlertProcessingVo alertProVo, GeneratorVo genVo) {
-		if (genVo.getGenId() == null) this.generatorDao.insert(genVo);
+		if (genVo.getGenId() == null) {
+			this.generatorDao.insert(genVo);
+		}
 		
 		genVo.setChildrensId();
 		
@@ -122,7 +135,9 @@ public class AlertServiceImpl implements AlertService {
 	}
 	
 	private void saveData(AlertProcessingVo alertProVo, StationVo staVo) {
-		if (staVo.getStaId() == null) this.stationDao.insert(staVo);
+		if (staVo.getStaId() == null) {
+			this.stationDao.insert(staVo);
+		}
 		
 		staVo.setChildrensId();
 		
@@ -151,7 +166,7 @@ public class AlertServiceImpl implements AlertService {
 			} finally {
 				long end = System.currentTimeMillis();
 				processingLog.append(alert.getLog());
-				System.out.println("Processing of alert ended in: " + DateUtil.formatDateTime(new Date(end - start), DateUtil.FMT_TIME_FULL));
+				LoggerService.systemLogger().info("Processing of alert ended in: " + DateUtil.formatDateTime(new Date(end - start), DateUtil.FMT_TIME_FULL));
 			}
 			cliVoWithAlert = alert.generateAlertToSave();
 			
@@ -169,19 +184,22 @@ public class AlertServiceImpl implements AlertService {
 		
 		this.alertProcessingDao.insert(alertProVo);
 		
-		File logFile	= new File(this.config.getPathLog(), "alert_processing_" + alertProVo.getAlertProId() + ".log");
-		
-		alertProVo.setAlertProFileLog(logFile.getName());
-		
-		try {
-			this.saveToFile(logFile, processingLog.toString());
-		} catch (CoreException e) {
-			System.out.println("Save log error" + e.getLocalizedMessage());
-			e.printStackTrace();
+		if (this.config != null && StringUtil.notEmpty(this.config.getPathLog())) {
+			File logFile	= new File(this.config.getPathLog(), "alert_processing_" + alertProVo.getAlertProId() + ".log");
+			
+			alertProVo.setAlertProFileLog(logFile.getName());
+			
+			try {
+				this.saveToFile(logFile, processingLog.toString());
+			} catch (CoreException e) {
+				LoggerService.systemLogger().error("Save log error: " + e.getLocalizedMessage(), e);
+			}
 		}
 		
 		try {
-			if (cliVoWithAlert != null) this.saveAlert(alertProVo, cliVoWithAlert);
+			if (cliVoWithAlert != null) {
+				this.saveAlert(alertProVo, cliVoWithAlert);
+			}
 		} finally {
 			alertProVo.setAlertProDateEnd(new Date());
 			this.alertProcessingDao.update(alertProVo);

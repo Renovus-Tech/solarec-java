@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import tech.renovus.solarec.exceptions.ProcessingException;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.JsonUtil;
+import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
 import tech.renovus.solarec.vo.db.data.StatDefinitionVo;
 import tech.renovus.solarec.vo.db.data.StatProcessingVo;
@@ -62,7 +63,9 @@ public abstract class AbstractDataCalculation {
 	}
 	
 	protected JsonNode retrieveInformation(String url, Object data) throws JsonProcessingException {
-		if (data == null) data = new Object();
+		if (data == null) {
+			data = new Object();
+		}
 		
 		Map<String, Object> params = new HashMap<>(1);
 		params.put("param_json", JsonUtil.toString(data));
@@ -72,7 +75,9 @@ public abstract class AbstractDataCalculation {
 	}
 	
 	protected JsonNode retrieveInformationAsPost(String url, Object data) throws JsonProcessingException {
-		if (data == null) data = new Object();
+		if (data == null) {
+			data = new Object();
+		}
 		
 		String response			= JsonUtil.post(url, data);
 		return JsonUtil.toNode(response);
@@ -85,5 +90,5 @@ public abstract class AbstractDataCalculation {
 		this.statProVo		= statProVo;
 	}
 
-	public String getLog() { return this.log.toString(); }
+	public String getLog() { return this.log == null ? StringUtil.EMPTY_STRING : this.log.toString(); }
 }

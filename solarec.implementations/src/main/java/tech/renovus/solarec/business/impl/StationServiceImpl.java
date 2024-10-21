@@ -30,8 +30,8 @@ public class StationServiceImpl implements StationService {
 		return this.stationDao.findAll(userData.getCliId());
 	}
 	
-	@Override public StationVo findVo(Integer locId, UserData userData) throws CoreException {
-		return this.stationDao.findVo(userData.getCliId(), locId);
+	@Override public StationVo findVo(Integer staId, UserData userData) throws CoreException {
+		return this.stationDao.findVo(userData.getCliId(), staId);
 	}
 	
 	@Override public void create(StationVo vo, UserData userData) {
@@ -57,7 +57,9 @@ public class StationServiceImpl implements StationService {
 	@Override @Transactional public void delete(StationVo vo, UserData userData) {
 		StationVo dbVo = this.stationDao.findVo(userData.getCliId(), vo.getStaId());
 		
-		if (dbVo == null) return;
+		if (dbVo == null) {
+			return;
+		}
 		
 		this.docStationDao.deleteAllForStation(dbVo.getCliId(), vo.getStaId());
 		this.staStatisticDao.deleteAllForStation(dbVo.getCliId(), vo.getStaId());

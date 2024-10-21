@@ -4,6 +4,7 @@ import java.util.Date;
 
 import tech.renovus.solarec.exceptions.ProcessingException;
 import tech.renovus.solarec.util.DateUtil;
+import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
 
@@ -50,5 +51,5 @@ public abstract class AbstractAlertProcessing {
 		this.logInfo("Ended at: " + DateUtil.formatDateTime(new Date(), DateUtil.FMT_MILITAR));
 	}
 	//--- Public methods ------------------------
-	public String getLog() { return this.log.toString(); }
+	public String getLog() { return this.log == null ? StringUtil.EMPTY_STRING : this.log.toString(); }
 }

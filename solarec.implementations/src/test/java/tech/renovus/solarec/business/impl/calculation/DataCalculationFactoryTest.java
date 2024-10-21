@@ -1,39 +1,36 @@
 package tech.renovus.solarec.business.impl.calculation;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import tech.renovus.solarec.business.impl.calculation.base.AbstractDataCalculation;
-import tech.renovus.solarec.business.impl.processing.DataProcessingFactory;
-import tech.renovus.solarec.exceptions.ProcessingException;
-import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
+import tech.renovus.solarec.exceptions.CoreException;
+import tech.renovus.solarec.vo.db.data.StatDefinitionVo;
+import testing.tech.renovus.solarec.DataCalculationTest;
 
 public class DataCalculationFactoryTest {
 
-	public static class TestClass extends AbstractDataCalculation {
-		@Override public void calculate() throws ProcessingException { }
-	}
-	
 	@Test
 	public void test() {
-		DataProcessingFactory instance = DataProcessingFactory.getInstance();
+		DataCalculationFactory instance = DataCalculationFactory.getInstance();
 		assertNotNull(instance);
 		
-		DataDefinitionVo vo = new DataDefinitionVo();
-		vo.setDataDefExecutable(TestClass.class.getCanonicalName());
+		StatDefinitionVo vo = new StatDefinitionVo();
+		vo.setStatDefExecutable(DataCalculationTest.class.getCanonicalName());
 		
-		//Need to fix classloader locations for inner test class
-//		Exception exception = null;
-//		try {
-//			AbstractDataProcessing result = instance.get(vo);
-//			assertNotNull(result);
-//			assertTrue(result instanceof TestClass);
-//		} catch (CoreException e) {
-//			exception = e;
-//			e.printStackTrace();
-//		}
-//		
-//		assertNull(exception);
+		Exception exception = null;
+		try {
+			AbstractDataCalculation result = instance.get(vo);
+			assertNotNull(result);
+			assertTrue(result instanceof AbstractDataCalculation);
+		} catch (CoreException e) {
+			exception = e;
+			e.printStackTrace();
+		}
+		
+		assertNull(exception);
 	}
 }

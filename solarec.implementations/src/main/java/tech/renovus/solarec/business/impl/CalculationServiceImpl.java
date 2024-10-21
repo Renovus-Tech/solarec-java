@@ -19,6 +19,7 @@ import tech.renovus.solarec.business.impl.calculation.base.AbstractDataCalculati
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.StatProcessingDao;
 import tech.renovus.solarec.exceptions.CoreException;
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
@@ -29,8 +30,8 @@ import tech.renovus.solarec.vo.db.data.StatProcessingVo;
 public class CalculationServiceImpl implements CalculationService {
 
 	//--- Resources -----------------------------
-	@Resource StatProcessingDao statProDao;
 	@Resource RenovusSolarecConfiguration config;
+	@Resource StatProcessingDao statProDao;
 	@Autowired AutowireCapableBeanFactory autowireCapableBeanFactory;
 	
 	//--- Private methods -----------------------
@@ -64,7 +65,9 @@ public class CalculationServiceImpl implements CalculationService {
 		try {
 			
 			AbstractDataCalculation calculation = DataCalculationFactory.getInstance().get(statDefVo);
-			this.autowireCapableBeanFactory.autowireBean(calculation);
+			if (this.autowireCapableBeanFactory != null) {
+				this.autowireCapableBeanFactory.autowireBean(calculation);
+			}
 			calculation.prepareFor(statDefVo, dataProVo, result);
 			calculation.calculate();
 			processingLog = calculation.getLog();
@@ -80,15 +83,16 @@ public class CalculationServiceImpl implements CalculationService {
 			result.setStatProDateEnd(new Date());
 		}
 		
-		File logFile	= new File(this.config.getPathLog(), DateUtil.formatDateTime(new Date(), DateUtil.FMT_DATE) + File.separator + "stat_processing_" + result.getStatProId() + ".log");
-		logFile.getParentFile().mkdirs();
-		result.setStatProFileLog(logFile.getName());
-		
-		try {
-			this.saveToFile(logFile, processingLog);
-		} catch (CoreException e) {
-			System.out.println("Save log error" + e.getLocalizedMessage());
-			e.printStackTrace();
+		if (this.config != null && StringUtil.notEmpty(this.config.getPathLog())) {
+			File logFile	= new File(this.config.getPathLog(), DateUtil.formatDateTime(new Date(), DateUtil.FMT_DATE) + File.separator + "stat_processing_" + result.getStatProId() + ".log");
+			logFile.getParentFile().mkdirs();
+			result.setStatProFileLog(logFile.getName());
+			
+			try {
+				this.saveToFile(logFile, processingLog);
+			} catch (CoreException e) {
+				LoggerService.systemLogger().error("Save log error" + e.getLocalizedMessage(), e);
+			}
 		}
 		
 		this.statProDao.update(result);

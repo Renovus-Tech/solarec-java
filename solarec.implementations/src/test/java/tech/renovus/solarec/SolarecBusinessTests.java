@@ -4,7 +4,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import tech.renovus.solarec.business.ParserServiceImplTest;
 import tech.renovus.solarec.business.TranslationServiceTest;
+import tech.renovus.solarec.business.impl.AlertServiceImplTest;
+import tech.renovus.solarec.business.impl.CalculationServiceImplTest;
+import tech.renovus.solarec.business.impl.ClientServiceImplTest;
+import tech.renovus.solarec.business.impl.DataDefinitionServiceImplTest;
+import tech.renovus.solarec.business.impl.SolarServiceImplTest;
+import tech.renovus.solarec.business.impl.StationServiceImplTest;
 import tech.renovus.solarec.business.impl.alert.AlertProcessingFactoryTest;
 import tech.renovus.solarec.business.impl.alert.base.AbstractAlertProcessingTest;
 import tech.renovus.solarec.business.impl.base.BaseServiceImplTest;
@@ -26,7 +33,16 @@ import tech.renovus.solarec.business.impl.processing.base.AbstractDataProcessing
 	ChartFactoryTest.class,
 	AlertProcessingFactoryTest.class,
 	DataProcessingFactoryTest.class,
-	DataCalculationFactoryTest.class
+	DataCalculationFactoryTest.class,
+	
+	AlertServiceImplTest.class,
+	ParserServiceImplTest.class,
+	CalculationServiceImplTest.class,
+	ClientServiceImplTest.class,
+	DataDefinitionServiceImplTest.class,
+	StationServiceImplTest.class,
+	SolarServiceImplTest.class
+	
 })
 
 public class SolarecBusinessTests {
