@@ -10,6 +10,9 @@ import tech.renovus.solarec.business.impl.AlertServiceImplTest;
 import tech.renovus.solarec.business.impl.CalculationServiceImplTest;
 import tech.renovus.solarec.business.impl.ClientServiceImplTest;
 import tech.renovus.solarec.business.impl.DataDefinitionServiceImplTest;
+import tech.renovus.solarec.business.impl.GeneratorServiceImplTest;
+import tech.renovus.solarec.business.impl.LocationServiceImplTest;
+import tech.renovus.solarec.business.impl.SecurityServiceImplTest;
 import tech.renovus.solarec.business.impl.SolarServiceImplTest;
 import tech.renovus.solarec.business.impl.StationServiceImplTest;
 import tech.renovus.solarec.business.impl.alert.AlertProcessingFactoryTest;
@@ -41,8 +44,11 @@ import tech.renovus.solarec.business.impl.processing.base.AbstractDataProcessing
 	ClientServiceImplTest.class,
 	DataDefinitionServiceImplTest.class,
 	StationServiceImplTest.class,
-	SolarServiceImplTest.class
-	
+	SolarServiceImplTest.class,
+	LocationServiceImplTest.class,
+	GeneratorServiceImplTest.class,
+	SecurityServiceImplTest.class,
+	SecurityServiceImplTest.class
 })
 
 public class SolarecBusinessTests {
