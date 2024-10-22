@@ -58,6 +58,7 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 	private String genCode;
 
 	//--- Public methods ------------------------
+	@Override
 	public boolean validData() {
 		if (this.genId == null) {
 			return false;
@@ -70,8 +71,12 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 
 	//--- Overridden methods --------------------
 	@Override public boolean equals(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof BaseGeneratorVo)) return false;
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof BaseGeneratorVo)) {
+			return false;
+		}
 		
 		BaseGeneratorVo aObj = (BaseGeneratorVo) obj;
 		if (!ClassUtil.equals(this.genId,aObj.genId)) {
@@ -85,13 +90,19 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 
 	@Override public int hashCode() {
 		int hashCode = 1;
-		if (this.genId != null) hashCode += this.genId.hashCode();
-		if (this.cliId != null) hashCode += this.cliId.hashCode();
+		if (this.genId != null) {
+			hashCode += this.genId.hashCode();
+		}
+		if (this.cliId != null) {
+			hashCode += this.cliId.hashCode();
+		}
 		return hashCode;
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (! this.equals(obj)) return false;
+		if (! this.equals(obj)) {
+			return false;
+		}
 		
 		BaseGeneratorVo aObj = (BaseGeneratorVo) obj;
 		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
@@ -142,16 +153,16 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 		return true;
 	}
 
-	public void setPk(Integer genId, Integer cliId) {
-		this.genId = genId;
+	public void setPk(Integer cliId, Integer genId) {
 		this.cliId = cliId;
+		this.genId = genId;
 	}
 
 	public void setPk(BaseGeneratorVo aVo) {
 		if(aVo == null) { 
 			this.setPk(null, null);
 		} else {
-			this.setPk(aVo.genId, aVo.cliId);
+			this.setPk(aVo.cliId, aVo.genId);
 		}
 	}
 
