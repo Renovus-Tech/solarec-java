@@ -40,10 +40,10 @@ public class FroniusInverterServiceTest {
 		FroniusInverterServiceTest.betaMode			= BooleanUtils.isTrue(System.getProperty("fronius_fronius_beta"));
 		FroniusInverterServiceTest.accessKeyId		= System.getProperty("fronius_access_key_id");
 		FroniusInverterServiceTest.accessKeyValue	= System.getProperty("fronius_access_key_value");
-		
+
 		boolean allDataRequired = FroniusInverterServiceTest.accessKeyId != null && FroniusInverterServiceTest.accessKeyValue != null;
 		
-		Assume.assumeTrue("Skipping tests because test data is missing. Added the following system.properties to execute tests: fimer_user, fronius_access_key_id, fronius_access_key_value", allDataRequired);
+		Assume.assumeTrue("Skipping tests because test data is missing. Added the following system.properties to execute tests: fronius_fronius_beta, fronius_access_key_id, fronius_access_key_value", allDataRequired);
 		
 		FroniusInverterServiceTest.client = new ClientVo();
 		FroniusInverterServiceTest.client.add(TestingUtil.createParameter(FroniusInverterService.PARAM_BETA_MODE, BooleanUtils.toString(FroniusInverterServiceTest.betaMode)));

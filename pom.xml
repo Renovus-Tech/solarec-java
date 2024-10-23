@@ -36,35 +36,42 @@
 	</modules>
 	
 	<build>
-	<plugins>
-		<plugin>
-			<groupId>org.jacoco</groupId>
-			<artifactId>jacoco-maven-plugin</artifactId>
-			<version>0.8.11</version>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.11</version>
 				<executions>
 					<execution>
-						<id>prepare-agent</id>
+						<id>jacoco-report-aggregate</id>
+						<phase>verify</phase>
 						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-						<phase>process-test-classes</phase>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
+							<goal>report-aggregate</goal>
 						</goals>
 						<configuration>
-							<includes>
-								<include>/solarec*/**/*.class</include>
-							</includes>
-							<file>target/jacoco.exec</file>
-							<outputDirectory>target/jacoco-report</outputDirectory>
+							<formats>
+								<format>HTML</format>
+							</formats>
 						</configuration>
 					</execution>
 				</executions>
-		</plugin>
-	</plugins>
-</build>
+			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.11</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>report-aggregate</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

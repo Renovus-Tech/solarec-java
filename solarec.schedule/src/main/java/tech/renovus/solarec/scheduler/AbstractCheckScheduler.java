@@ -5,11 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
-import tech.renovus.solarec.business.ProcessingService;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliDataDefTriggerDao;
 import tech.renovus.solarec.util.DateUtil;
@@ -24,8 +21,6 @@ public abstract class AbstractCheckScheduler {
 	@Autowired protected RenovusSolarecConfiguration config;
 	@Autowired protected CliDataDefTriggerDao triggerDao;
 	
-	@Resource protected ProcessingService processingService;
-
 	//--- Protected methods ---------------------
 	protected void log(StringBuilder log, CliDataDefTriggerVo triggerVo) {
 		StringBuilder info = new StringBuilder();

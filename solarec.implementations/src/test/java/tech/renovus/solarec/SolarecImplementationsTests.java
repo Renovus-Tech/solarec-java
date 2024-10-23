@@ -51,6 +51,6 @@ import tech.renovus.solarec.business.impl.processing.base.AbstractDataProcessing
 	SecurityServiceImplTest.class
 })
 
-public class SolarecBusinessTests {
+public class SolarecImplementationsTests {
 
 }

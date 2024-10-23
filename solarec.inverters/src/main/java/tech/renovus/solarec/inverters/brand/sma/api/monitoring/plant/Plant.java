@@ -106,11 +106,13 @@ public class Plant {
 	}
 
 	@Override public boolean equals(Object obj) {
-		if (! (obj instanceof Plant)) return false;
+		if (! (obj instanceof Plant)) {
+			return false;
+		}
 		return ClassUtil.equals(this.plantId, ((Plant) obj).plantId);
 	}
 	
 	@Override public int hashCode() {
-		return this.plantId.hashCode();
+		return this.plantId == null ? -1 : this.plantId.hashCode();
 	}
 }

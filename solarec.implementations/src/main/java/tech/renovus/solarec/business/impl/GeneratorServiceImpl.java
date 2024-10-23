@@ -46,8 +46,8 @@ public class GeneratorServiceImpl implements GeneratorService {
 		return this.dao.findAll(userData.getCliId());
 	}
 	
-	@Override public GeneratorVo findFullVo(Integer locId, UserData userData) throws CoreException {
-		GeneratorVo vo = this.dao.findVo(userData.getCliId(), locId);
+	@Override public GeneratorVo findFullVo(Integer genId, UserData userData) throws CoreException {
+		GeneratorVo vo = this.dao.findVo(userData.getCliId(), genId);
 		
 		if (vo != null) {
 			vo.setPowerCurve(this.genPowerDao.getAllFor(vo.getCliId(), vo.getGenId()));
@@ -96,7 +96,9 @@ public class GeneratorServiceImpl implements GeneratorService {
 	@Override @Transactional public void delete(GeneratorVo vo, UserData userData) {
 		GeneratorVo dbVo = this.dao.findVo(userData.getCliId(), vo.getGenId());
 		
-		if (dbVo == null) return;
+		if (dbVo == null) {
+			return;
+		}
 		
 		this.docGeneratorDao.deleteAllForGenerator(dbVo.getCliId(), vo.getGenId());
 		this.genStatisticDao.deleteAllForGenerator(dbVo.getCliId(), vo.getGenId());
@@ -149,14 +151,22 @@ public class GeneratorServiceImpl implements GeneratorService {
 					for (Generator gen : location.getGenerators()) {
 						if (CollectionUtil.notEmpty(gen.getNeighbors())) {
 							GeneratorVo genVo = map.get(gen.getId());
-							if (genVo == null) continue;
+							if (genVo == null) {
+								continue;
+							}
 							
 							for (Integer genId : gen.getNeighbors()) {
-								if (! map.containsKey(genId)) continue;
-								if (ClassUtil.equals(genId, genVo.getGenId())) continue;
+								if (! map.containsKey(genId)) {
+									continue;
+								}
+								if (ClassUtil.equals(genId, genVo.getGenId())) {
+									continue;
+								}
 								genVo.add(new GenNeighbourVo(genVo, genId, CollectionUtil.size(genVo.getNeighbours())));
 								
-								if (CollectionUtil.size(genVo.getNeighbours()) == 2) break;
+								if (CollectionUtil.size(genVo.getNeighbours()) == 2) {
+									break;
+								}
 							}
 							
 							this.genNeighbourDao.deleteAllFor(genVo.getCliId(), genVo.getGenId());

@@ -11,6 +11,7 @@ import tech.renovus.solarec.grid.ember.EmberDataGridServiceTest;
 import tech.renovus.solarec.inverters.brand.aiswei.AisweiInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.fimer.FimerInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.fronius.FroniusInverterServiceTest;
+import tech.renovus.solarec.inverters.brand.growatt.GrowattInveterServiceTest;
 import tech.renovus.solarec.inverters.brand.sma.SmaInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.sofar.SofarInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.solarEdge.SolarEdgeInverterServiceTest;
@@ -27,6 +28,7 @@ import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImplTest;
 	SmaInverterServiceTest.class,
 	SofarInverterServiceTest.class,
 	SolarEdgeInverterServiceTest.class,
+	GrowattInveterServiceTest.class,
 	
 	InverterServiceTest.class,
 	InvertersUtilTest.class,
@@ -39,6 +41,7 @@ import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImplTest;
 	
 	MeteoblueWeatherServiceImplTest.class,
 	WeatherServiceTest.class,
+	BasicPojoTester.class
 })
 
 public class SolarecInveretersTest {
