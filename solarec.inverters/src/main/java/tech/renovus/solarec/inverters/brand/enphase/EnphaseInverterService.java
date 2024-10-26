@@ -13,10 +13,10 @@ import java.util.Map;
 
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.enphase.api.TokenResponse;
+import tech.renovus.solarec.inverters.brand.enphase.api.data.Interval;
+import tech.renovus.solarec.inverters.brand.enphase.api.data.InverterDataResponse;
 import tech.renovus.solarec.inverters.brand.enphase.api.devices.DevicesResponse;
 import tech.renovus.solarec.inverters.brand.enphase.api.systems.SystemsResponse;
-import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.energy.timeseries.Result;
-import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.energy.timeseries.TelemetryDataEnergyTimeseriesResponse;
 import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.inverters.common.InvertersUtil;
 import tech.renovus.solarec.logger.LoggerService;
@@ -54,19 +54,27 @@ public class EnphaseInverterService implements InverterService {
 	private static final String ENDPOINT_AUTH	= "/oauth/authorize?response_type=code&client_id=${client_id}&redirect_uri=https://api.enphaseenergy.com/oauth/redirect_uri";
 	private static final String ENDPOINT_TOKEN	= "/oauth/token?grant_type=authorization_code&redirect_uri=https://api.enphaseenergy.com/oauth/redirect_uri&code=${code}";
 	
-	private static final String ENDPOINT_SYSTEMS		= "/api/v4/systems";
-	private static final String ENDPOINT_SYSTEM_DEVICES	= "/api/v4/systems/${system_id}/devices";
+	private static final String ENDPOINT_SYSTEMS						= "/api/v4/systems";
+	private static final String ENDPOINT_SYSTEM_DEVICES					= "/api/v4/systems/${system_id}/devices";
+	private static final String ENDPOINT_SYSTEM_DEVICE_MICROS_DATA		= "/api/v4/systems/{system_id}/devices/micros/{serial_no}/telemetry?start_at={start_at}&granularity={granularity}";
+	private static final String ENDPOINT_SYSTEM_DEVICE_ACBS_DATA		= "/api/v4/systems/{system_id}/devices/acbs/{serial_no}/telemetry?start_at={start_at}&granularity={granularity}";
+	private static final String ENDPOINT_SYSTEM_DEVICE_ENCHARGES_DATA	= "/api/v4/systems/{system_id}/devices/encharges/{serial_no}/telemetry?start_at={start_at}&granularity={granularity}";
+	
+	public static final String GRANULARITY_5_MINS	= "5mins";
+	public static final String GRANULARITY_15_MINS	= "15mins";
+	public static final String GRANULARITY_DAY		= "day";
+	public static final String GRANULARITY_WEEK		= "week";
 	
 	//---- Public constants ---------------------
 	public static final String PARAM_CLIENT_ID					= "enphase.client_id";
 	public static final String PARAM_CLIENT_SECRET				= "enphase.client_secret";
 	public static final String PARAM_API_KEY					= "enphase.api_key";
+	public static final String PARAM_SYSTEM_ID					= "enphase.system_id";
 	public static final String PARAM_GENERATOR_DEVICE_ID		= "enphase.generator.device_id";
-	public static final String PARAM_GENERATOR_TIME_ZONE		= "enphase.generator.time_zone";
 	public static final String PARAM_GENERATOR_LAST_RETRIEVE	= "enphase.generator.last_retrieve";
 	
 	//--- Private properties --------------------
-	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyyMMdd");
+	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyy-MM-dd");
 	private ClientVo cliVo;
 	private TokenResponse authentication;
 	
@@ -81,32 +89,58 @@ public class EnphaseInverterService implements InverterService {
 	}
 	
 	private boolean isAuthenticated() {
-		String authenticationKey = authentication == null ? null : authentication.getAccessToken();
+		String authenticationKey = this.authentication == null ? null : this.authentication.getAccessToken();
 		return StringUtil.notEmpty(authenticationKey);
 	}
 	
-	private List<GenDataVo> process(GeneratorVo generator, TelemetryDataEnergyTimeseriesResponse data, Date dateFrom) {
+	private List<GenDataVo> process(GeneratorVo generator, InverterDataResponse data, Date dateFrom) {
 		List<GenDataVo> result = new ArrayList<>();
 		
-		if (data != null && CollectionUtil.notEmpty(data.getResult())) {
-			for (Result aData : data.getResult()) {
-				Date dataDate = new Date(aData.getStart().intValue() * 1000);
-				if (dataDate.before(dateFrom)) {
-					continue;
+		if (data != null && CollectionUtil.notEmpty(data.getIntervals())) {
+			Calendar cal = GregorianCalendar.getInstance();
+			
+			for (Interval aData : data.getIntervals()) {
+				cal.setTimeInMillis(aData.getEndAt());
+				cal.add(Calendar.MINUTE, -5);
+				GenDataVo genData = new GenDataVo();
+				
+				double value = 0;
+				if (aData.getPowr() != null) {
+					value = aData.getPowr() / (double) 1000;
 				}
 				
-				GenDataVo genData = new GenDataVo();
 				genData.setCliId(generator.getCliId());
 				genData.setGenId(generator.getGenId());
-				genData.setDataDate(dataDate);
+				genData.setDataDate(cal.getTime());
 				genData.setDataTypeId(DataTypeVo.TYPE_SOLAR_INVERTER_AC_POWER);
-				genData.setDataValue(aData.getValue());
+				genData.setDataValue(value);
 				
 				result.add(genData);
 			}
 		}
 		
 		return result;
+	}
+	
+	
+	private List<GenDataVo> aggregate(List<GenDataVo> dataValues) {
+		Calendar cal = Calendar.getInstance();
+		
+		Map<Date, GenDataVo> result = new HashMap<>(CollectionUtil.size(dataValues) / 4);
+		dataValues.forEach(
+                data -> {
+                	cal.setTime(data.getDataDate());
+            		cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) / 15 * 15);
+            		Date simpleDate = cal.getTime();
+                	
+                	result.computeIfAbsent(simpleDate, x -> new GenDataVo(data.getCliId(), data.getGenId(), x, data.getDataTypeId()));
+                	result.get(simpleDate).add(data.getDataValue());
+                }
+        );
+		
+		result.values().forEach(x -> x.sum());
+		
+		return new ArrayList<>(result.values());
 	}
 	
 	//--- Overridden methods --------------------
@@ -138,23 +172,32 @@ public class EnphaseInverterService implements InverterService {
 					StationVo station = location.getStations().iterator().next();
 					
 					for (GeneratorVo generator : location.getGenerators()) {
-						String code = this.authorize(
-								InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_CLIENT_ID),
+						
+						String clientId		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_CLIENT_ID);
+						String clietnSecret = InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_CLIENT_SECRET);
+						String apiKey		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_API_KEY);
+						String systemId		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_SYSTEM_ID);
+						
+						String authCode = this.authorize(
+								clientId,
 								InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_API_KEY)
 							);
 						this.authentication = this.getToken(
-								InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_CLIENT_ID),
-								InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_CLIENT_SECRET),
-								code
+								clientId,
+								clietnSecret,
+								authCode
 							);
 						
 						boolean authenticated = this.isAuthenticated();
 
 						LoggerService.inverterLogger().info("[{}] Authentication ok: {} ", t, authenticated);
 						if (authenticated) {
-							String timeZone = InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_GENERATOR_TIME_ZONE);
+							String timeZone = location.getLocGmt();
+							if (StringUtil.isEmpty(timeZone)) {
+								timeZone = this.cliVo.getCliGmt();
+							}
 
-							int deviceId			= Integer.parseInt(InvertersUtil.getParameter(generator, PARAM_GENERATOR_DEVICE_ID));
+							String serialNo			= InvertersUtil.getParameter(generator, PARAM_GENERATOR_DEVICE_ID);
 							String getLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE);
 							Date dateFrom 			= InvertersUtil.calculateDateFrom(getLastRetrieve);
 							
@@ -166,16 +209,18 @@ public class EnphaseInverterService implements InverterService {
 	
 							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE), DateUtil.formatDateTime(dateTo, DateUtil.FMT_DATE));
 							
-							TelemetryDataEnergyTimeseriesResponse data = null;
-//							TelemetryDataEnergyTimeseriesResponse data = this.getTelemetryDataPowerTimeseries(
-//									this.authentication.getAccessToken(), 
-//									deviceId, 
-//									dateFrom, 
-//									dateTo, 
-//									timeZone
-//								);
-//							
+							InverterDataResponse data = this.retrieveData(
+									ENDPOINT_SYSTEM_DEVICE_ACBS_DATA, 
+									this.authentication.getAccessToken(), 
+									apiKey, 
+									systemId, 
+									serialNo, 
+									dateTo, 
+									GRANULARITY_DAY
+								);
+							
 							List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
+							generatorData = this.aggregate(generatorData);
 							
 							if (CollectionUtil.notEmpty(generatorData)) {
 								CollectionUtil.addAll(result.getGeneratorData(), generatorData);
@@ -241,6 +286,22 @@ public class EnphaseInverterService implements InverterService {
 				this.getHeaders(authCode, apiKey),
 				null,
 				DevicesResponse.class
+			);
+	}
+	
+	public InverterDataResponse retrieveData(String fromEndPoint, String authCode, String apiKey, String systemId, String serialNo, Date date, String granularity) {
+		String url = URL_PROD + fromEndPoint;
+		url = StringUtil.replace(url, "{system_id}", systemId);
+		url = StringUtil.replace(url, "{serial_no}", serialNo);
+		url = StringUtil.replace(url, "{start_at}", this.formatDate.format(date));
+		url = StringUtil.replace(url, "{start_at}", this.formatDate.format(date));
+		url = StringUtil.replace(url, "{granularity}", granularity);
+		
+		return JsonCaller.get(
+				url,
+				this.getHeaders(authCode, apiKey),
+				null,
+				InverterDataResponse.class
 			);
 	}
 }
