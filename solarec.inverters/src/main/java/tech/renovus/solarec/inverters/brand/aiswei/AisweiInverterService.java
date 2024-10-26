@@ -165,7 +165,9 @@ public class AisweiInverterService implements InverterService {
 			for (PlantOutputData aData : data.getData()) {
 				Date dataTime = this.formatPeriodTime.parse(aData.getTime());
 				
-				if (dataTime.before(fromDate)) continue;
+				if (dataTime.before(fromDate)) {
+					continue;
+				}
 				
 				calendar.setTime(dataTime);
 				int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -195,7 +197,7 @@ public class AisweiInverterService implements InverterService {
 	}
 	
 	private List<GenDataVo> aggregate(List<GenDataVo> dataValues) {
-		//data is for 20 minutes period, we need for 15 minutes period. Aggregate and for each hour and calcualte
+		//data is for 20 minutes period, we need for 15 minutes period. Aggregate and for each hour and calculate
 		
 		Calendar cal = Calendar.getInstance();
 		
@@ -215,7 +217,7 @@ public class AisweiInverterService implements InverterService {
 		
 		values.values().forEach(aDate -> {
 			aDate.values().forEach(aData -> {
-				double value = aData.getDataValue() == null ? 0 : aData.getDataValue().doubleValue() / (double) 4;
+				double value = aData.getDataValue() == null ? 0 : aData.getDataValue().doubleValue() / 4;
 				
 				cal.setTime(aData.getDataDate());
 				
@@ -263,7 +265,9 @@ public class AisweiInverterService implements InverterService {
 				cal.setTime(lastDate);
 				cal.add(Calendar.MINUTE, 15); //we need next 15 min due to aggregation
 				
-				if (! cal.getTime().equals(dateFrom) && cal.getTime().before(to)) this.retrieveData(inverterData, location, station, generator, cal.getTime(), to);
+				if (! cal.getTime().equals(dateFrom) && cal.getTime().before(to)) {
+					this.retrieveData(inverterData, location, station, generator, cal.getTime(), to);
+				}
 				
 			}
 			

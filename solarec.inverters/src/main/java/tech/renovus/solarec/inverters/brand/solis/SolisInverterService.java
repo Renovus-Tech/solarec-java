@@ -50,6 +50,7 @@ import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
 
 /**
  * Documentation: https://drive.google.com/file/d/1NpSK5Dc4ricvTQsMUXoAMafrRnh7GgoS/view
+ * https://ginlong-product.oss-cn-shanghai.aliyuncs.com/templet/Authorization.java
  */
 public class SolisInverterService implements InverterService {
 
