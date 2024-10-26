@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "success", "code", "msg" })
+@JsonPropertyOrder({ "success", "code", "msg", "data" })
 @Generated("jsonschema2pojo")
-public class ErrorResponse {
+public abstract class DataResponse<T extends Object> {
 
 	@JsonProperty("success")
 	private Boolean success;
@@ -23,6 +23,8 @@ public class ErrorResponse {
 	private String code;
 	@JsonProperty("msg")
 	private String msg;
+	@JsonProperty("data")
+	private T data;
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -36,9 +38,9 @@ public class ErrorResponse {
 		this.success = success;
 	}
 
-	public ErrorResponse withSuccess(Boolean success) {
+	public DataResponse<T> withSuccess(Boolean success) {
 		this.success = success;
-		return this;
+		return this.getSelf();
 	}
 
 	@JsonProperty("code")
@@ -51,9 +53,9 @@ public class ErrorResponse {
 		this.code = code;
 	}
 
-	public ErrorResponse withCode(String code) {
+	public DataResponse<T> withCode(String code) {
 		this.code = code;
-		return this;
+		return this.getSelf();
 	}
 
 	@JsonProperty("msg")
@@ -66,9 +68,9 @@ public class ErrorResponse {
 		this.msg = msg;
 	}
 
-	public ErrorResponse withMsg(String msg) {
+	public DataResponse<T> withMsg(String msg) {
 		this.msg = msg;
-		return this;
+		return this.getSelf();
 	}
 
 	@JsonAnyGetter
@@ -81,9 +83,25 @@ public class ErrorResponse {
 		this.additionalProperties.put(name, value);
 	}
 
-	public ErrorResponse withAdditionalProperty(String name, Object value) {
+	public DataResponse<T> withAdditionalProperty(String name, Object value) {
 		this.additionalProperties.put(name, value);
-		return this;
+		return this.getSelf();
 	}
 
+	@JsonProperty("msg")
+	public T getData() {
+		return data;
+	}
+
+	@JsonProperty("msg")
+	public void setData(T data) {
+		this.data = data;
+	}
+
+	public DataResponse<T> withMsg(T data) {
+		this.data = data;
+		return this.getSelf();
+	}
+	
+	public abstract DataResponse<T> getSelf();
 }

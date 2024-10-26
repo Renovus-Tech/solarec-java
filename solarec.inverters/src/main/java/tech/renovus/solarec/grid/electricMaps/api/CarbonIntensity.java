@@ -1,9 +1,10 @@
-
 package tech.renovus.solarec.grid.electricMaps.api;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
