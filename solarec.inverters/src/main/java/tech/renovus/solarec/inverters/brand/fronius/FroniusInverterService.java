@@ -1,6 +1,5 @@
 package tech.renovus.solarec.inverters.brand.fronius;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,11 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.fronius.api.InfoReleaseResponse;
-import tech.renovus.solarec.inverters.brand.fronius.api.aggregated.specific.AggregatedSpecificDate;
 import tech.renovus.solarec.inverters.brand.fronius.api.history.data.Channel;
 import tech.renovus.solarec.inverters.brand.fronius.api.history.data.Datum;
 import tech.renovus.solarec.inverters.brand.fronius.api.history.data.HistoryDataResponse;
-import tech.renovus.solarec.inverters.brand.fronius.api.history.device.DeviceHistoryDataResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.metadata.DeviceListResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.metadata.PvSystemsListResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.user.InfoUserResponse;
@@ -33,8 +30,6 @@ import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
-import tech.renovus.solarec.util.FileUtil;
-import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.custom.chart.alerts.AlertTrigger;
 import tech.renovus.solarec.vo.db.data.ClientVo;
@@ -69,34 +64,35 @@ public class FroniusInverterService implements InverterService {
 	private static final double ADJUSTMENT_MULTIPLIER = 4;
 	
 	//--- Protected constants -------------------
-	protected static final String URL_PRD											= "https://api.solarweb.com/swqapi";
-	protected static final String URL_BETA											= "https://swqapi-beta.solarweb.com";
+	public static final String URL_PRD												= "https://api.solarweb.com/swqapi";
+	public static final String URL_BETA												= "https://swqapi-beta.solarweb.com";
 
-	protected static final String ENDPOINT_INFO_RELEASE								= "/info/release";
-	protected static final String ENDPOINT_INFO_USER								= "/info/user";
-	protected static final String ENDPOINT_PV_SYSTEMS_LIST							= "/pvsystems-list";
-	protected static final String ENDPOINT_PV_SYSTEM_DEVICE_LIST					= "/pvsystems/{pvSystemId}/devices-list";
+	public static final String ENDPOINT_INFO_RELEASE								= "/info/release";
+	public static final String ENDPOINT_INFO_USER									= "/info/user";
+	public static final String ENDPOINT_PV_SYSTEMS_LIST								= "/pvsystems-list";
+	public static final String ENDPOINT_PV_SYSTEM_DEVICE_LIST						= "/pvsystems/{pvSystemId}/devices-list";
 	
-	protected static final String ENDPOINT_PV_SYSTEMS_HISTORY_DATA					= "/pvsystems/{pvSystemId}/histdata";
-	protected static final String ENDPOINT_PV_SYSTEMS_DEVICE_HISTORY_DATA			= "/pvsystems/{pvSystemId}/devices/{deviceId}/histdata";
-	protected static final String ENDPOINT_PV_SYSTEM_AGGREGATED_DATA_SPECIFIC_DATE	= "/pvsystems/{pvSystemId}/aggdata/years/{year}/months/{month}/days/{day}";
+	public static final String ENDPOINT_PV_SYSTEMS_HISTORY_DATA						= "/pvsystems/{pvSystemId}/histdata";
+	public static final String ENDPOINT_PV_SYSTEMS_DEVICE_HISTORY_DATA				= "/pvsystems/{pvSystemId}/devices/{deviceId}/histdata";
+	public static final String ENDPOINT_PV_SYSTEM_AGGREGATED_DATA_SPECIFIC_DATE		= "/pvsystems/{pvSystemId}/aggdata/years/{year}/months/{month}/days/{day}";
 	
-	protected static final String PV_SYSTEMS_HIST_DATA_LIMIT						= "288";
+	public static final String PV_SYSTEMS_HIST_DATA_LIMIT							= "288";
 	
 	public static final String PARAM_BETA_MODE										= "fronius.beta";
 	public static final String PARAM_ACCESS_KEY_ID									= "fronius.client.key_id";
 	public static final String PARAM_ACCESS_KEY_VALUE								= "fronius.client.key_value";
-	protected static final String PARAM_CLI_LAST_DATE_RETRIEVE						= "fronius.client.last_retrieve";
-	protected static final String PARAM_LOC_LAST_DATE_RETRIEVE						= "fronius.location.last_retrieve";
-	protected static final String PARAM_GEN_PV_SYSTEM_ID							= "fronius.generator.pv_systems_id";
-	protected static final String PARAM_GEN_LAST_DATE_RETRIEVE						= "fronius.generator.last_retrieve";
+	public static final String PARAM_CLI_LAST_DATE_RETRIEVE							= "fronius.client.last_retrieve";
+	public static final String PARAM_LOC_LAST_DATE_RETRIEVE							= "fronius.location.last_retrieve";
+	public static final String PARAM_GEN_PV_SYSTEM_ID								= "fronius.generator.pv_systems_id";
+	public static final String PARAM_GEN_LAST_DATE_RETRIEVE							= "fronius.generator.last_retrieve";
 	
 	protected static final String PARAM_DATA_DEMO									= "fronius.data_demo";
 
 	//--- Resources -----------------------------
-	@Autowired RenovusSolarecConfiguration configuration;
-	@Autowired WeatherService weatherService;
-	
+	private @Autowired RenovusSolarecConfiguration configuration;
+	private @Autowired WeatherService weatherService;
+	private @Autowired JsonCaller jsonCaller;
+
 	//--- Private properties --------------------
 	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");	
 	private ClientVo cliVo;
@@ -115,13 +111,19 @@ public class FroniusInverterService implements InverterService {
 	}
 	
 	private Date adjustGmt(Date aDate, String gmt) {
-		if (StringUtil.isEmpty(gmt)) return aDate;
+		if (StringUtil.isEmpty(gmt)) {
+			return aDate;
+		}
 		String[] parts = StringUtil.split(gmt, ":");
-		if (parts == null || parts.length != 2) return aDate;
+		if (parts == null || parts.length != 2) {
+			return aDate;
+		}
 		int hours = Integer.parseInt(parts[0]);
 		int minutes = Integer.parseInt(parts[1]);
 		
-		if (hours < 0) minutes *= -1;
+		if (hours < 0) {
+			minutes *= -1;
+		}
 		return DateUtil.addUnit(aDate, Calendar.MINUTE, (hours * 60) + minutes);
 	}
 	
@@ -133,18 +135,22 @@ public class FroniusInverterService implements InverterService {
 			for (Datum aData : data.getData()) {
 				if (CollectionUtil.notEmpty(aData.getChannels())) {
 					for (Channel aChannel : aData.getChannels()) {
-						if (! "EnergyProductionTotal".equals(aChannel.getChannelName())) continue;
+						if (! "EnergyProductionTotal".equals(aChannel.getChannelName())) {
+							continue;
+						}
 						
 						Date dataDate = this.formatDate.parse(aData.getLogDateTime());
 						dataDate = this.adjustGmt(dataDate, gmt);
-						if (dataDate.before(fromDate)) continue;
+						if (dataDate.before(fromDate)) {
+							continue;
+						}
 						
 						GenDataVo genData = new GenDataVo();
 						genData.setCliId(generator.getCliId());
 						genData.setGenId(generator.getGenId());
 						genData.setDataDate(dataDate);
 						genData.setDataTypeId(DataTypeVo.TYPE_SOLAR_INVERTER_AC_POWER);
-						genData.setDataValue(aChannel.getValue() == null ? null : Double.valueOf((aChannel.getValue().intValue() * ADJUSTMENT_MULTIPLIER )/ (double) 1000 )); //Values in WH
+						genData.setDataValue(aChannel.getValue() == null ? null : Double.valueOf((aChannel.getValue().intValue() * ADJUSTMENT_MULTIPLIER )/ 1000 )); //Values in WH
 						
 						result.add(genData);
 					}
@@ -197,11 +203,6 @@ public class FroniusInverterService implements InverterService {
 		
 		HistoryDataResponse data = this.getPvSystemsHistData(betaMode, accessKeyId, accessKeyValue, pvSystemsId, dateFrom, to);
 		
-		File jsonFile = new File(this.configuration.getPathLog() + File.separator + "Fronius", StringUtil.join("_", this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE_TIME))+ ".json");
-		File parent = jsonFile.getParentFile();
-		if (! parent.exists()) parent.mkdirs();
-		FileUtil.saveToFile(JsonUtil.toStringPretty(data), jsonFile);
-		
 		if (data == null || data.hasError()) {
 			this.continueWithStats = false;
 			String errorMessage = data == null ? "No data response from server." : "Error parsing data: " + data.getResponseError() + " - " + data.getResponseMessage();
@@ -234,7 +235,9 @@ public class FroniusInverterService implements InverterService {
 		
 		try {
 			String gmtToUse = location.getLocGmt();
-			if (StringUtil.isEmpty(gmtToUse)) gmtToUse = this.cliVo.getCliGmt();
+			if (StringUtil.isEmpty(gmtToUse)) {
+				gmtToUse = this.cliVo.getCliGmt();
+			}
 			
 			List<GenDataVo> generatorData = this.process(generator, data, dateFrom, gmtToUse);
 			generatorData = this.aggregate(generatorData);
@@ -252,7 +255,9 @@ public class FroniusInverterService implements InverterService {
 				cal.setTime(lastDate);
 				cal.add(Calendar.MINUTE, 15); //we need next 15 min due to aggregation
 				
-				if (! cal.getTime().equals(dateFrom) && cal.getTime().before(to)) this.retrieveData(inverterData, location, station, generator, cal.getTime(), to);
+				if (! cal.getTime().equals(dateFrom) && cal.getTime().before(to)) {
+					this.retrieveData(inverterData, location, station, generator, cal.getTime(), to);
+				}
 				
 			}
 			
@@ -266,7 +271,9 @@ public class FroniusInverterService implements InverterService {
 	private Collection<StaDataVo> retrieveWeatherData(LocationVo location, StationVo station, Date dateFrom, Date lastDate, String gmt) throws WeatherServiceException {
 		Collection<StaDataVo> result = this.weatherService.retrieveWeatherData(location, station, dateFrom, lastDate);
 		
-		if (CollectionUtil.notEmpty(result)) result.forEach(data -> data.setDataDate(this.adjustGmt(data.getDataDate(), gmt)));
+		if (CollectionUtil.notEmpty(result)) {
+			result.forEach(data -> data.setDataDate(this.adjustGmt(data.getDataDate(), gmt)));
+		}
 		
 		return result;
 	}
@@ -327,7 +334,7 @@ public class FroniusInverterService implements InverterService {
 
 	//--- Public methods ------------------------
 	public InfoReleaseResponse getInfoRelease(boolean betaMode, String accessKeyId, String accessKeyValue) {
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				this.getUrl(betaMode) + ENDPOINT_INFO_RELEASE,
 				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
 				null,
@@ -335,7 +342,7 @@ public class FroniusInverterService implements InverterService {
 	}
 	
 	public InfoUserResponse getInfoUser(boolean betaMode, String accessKeyId, String accessKeyValue) {
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				this.getUrl(betaMode) + ENDPOINT_INFO_USER,
 				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
 				null,
@@ -343,7 +350,7 @@ public class FroniusInverterService implements InverterService {
 	}
 	
 	public PvSystemsListResponse getPvSystemsList(boolean betaMode, String accessKeyId, String accessKeyValue) {
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				this.getUrl(betaMode) + ENDPOINT_PV_SYSTEMS_LIST,
 				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
 				null,
@@ -352,7 +359,7 @@ public class FroniusInverterService implements InverterService {
 	}
 
 	public DeviceListResponse getPvSystemDevicesList(boolean betaMode, String accessKeyId, String accessKeyValue, String pvSystemsId) {
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				this.generateUrl(betaMode, ENDPOINT_PV_SYSTEM_DEVICE_LIST, "\\{pvSystemId\\}", pvSystemsId),
 				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
 				null,
@@ -360,19 +367,19 @@ public class FroniusInverterService implements InverterService {
 			);
 	}
 	
-	public AggregatedSpecificDate getPvSystemsAggredatedDataSpecificDate(boolean betaMode, String accessKeyId, String accessKeyValue, String pvSystemsId, int year, int month, int day) {
-		return JsonCaller.get(
-			this.generateUrl(betaMode, ENDPOINT_PV_SYSTEM_AGGREGATED_DATA_SPECIFIC_DATE, 
-					"\\{pvSystemId\\}", pvSystemsId ,
-					"\\{year\\}", Integer.toString(year), 
-					"\\{month\\}", Integer.toString(month), 
-					"\\{day\\}", Integer.toString(day) 
-				),
-			this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
-			null,
-			AggregatedSpecificDate.class
-		);
-	}
+//	public AggregatedSpecificDate getPvSystemsAggredatedDataSpecificDate(boolean betaMode, String accessKeyId, String accessKeyValue, String pvSystemsId, int year, int month, int day) {
+//		return this.jsonCaller.get(
+//			this.generateUrl(betaMode, ENDPOINT_PV_SYSTEM_AGGREGATED_DATA_SPECIFIC_DATE, 
+//					"\\{pvSystemId\\}", pvSystemsId ,
+//					"\\{year\\}", Integer.toString(year), 
+//					"\\{month\\}", Integer.toString(month), 
+//					"\\{day\\}", Integer.toString(day) 
+//				),
+//			this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
+//			null,
+//			AggregatedSpecificDate.class
+//		);
+//	}
 	
 	public HistoryDataResponse getPvSystemsHistData(boolean betaMode, String accessKeyId, String accessKeyValue, String pvSystemsId, Date from, Date to) {
 		Map<String, String> params = new HashMap<>(2);
@@ -380,7 +387,7 @@ public class FroniusInverterService implements InverterService {
 		params.put("to", this.formatDate.format(to));
 		params.put("limit", PV_SYSTEMS_HIST_DATA_LIMIT);
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				this.generateUrl(betaMode, ENDPOINT_PV_SYSTEMS_HISTORY_DATA, "\\{pvSystemId\\}", pvSystemsId ),
 				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
 				params,
@@ -388,17 +395,29 @@ public class FroniusInverterService implements InverterService {
 			);
 	}
 	
-	public DeviceHistoryDataResponse getPvSystemsDeviceHistData(boolean betaMode, String accessKeyId, String accessKeyValue, String pvSystemsId, String deviceId, Date from, Date to) {
-		Map<String, String> params = new HashMap<>(2);
-		params.put("from", this.formatDate.format(from));
-		params.put("to", this.formatDate.format(to));
-		params.put("limit", PV_SYSTEMS_HIST_DATA_LIMIT);
-		
-		return JsonCaller.get(
-				this.generateUrl(betaMode, ENDPOINT_PV_SYSTEMS_DEVICE_HISTORY_DATA, "\\{pvSystemId\\}", pvSystemsId, "\\{deviceId\\}", deviceId ),
-				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
-				params,
-				DeviceHistoryDataResponse.class
-			);
+//	public DeviceHistoryDataResponse getPvSystemsDeviceHistData(boolean betaMode, String accessKeyId, String accessKeyValue, String pvSystemsId, String deviceId, Date from, Date to) {
+//		Map<String, String> params = new HashMap<>(2);
+//		params.put("from", this.formatDate.format(from));
+//		params.put("to", this.formatDate.format(to));
+//		params.put("limit", PV_SYSTEMS_HIST_DATA_LIMIT);
+//		
+//		return this.jsonCaller.get(
+//				this.generateUrl(betaMode, ENDPOINT_PV_SYSTEMS_DEVICE_HISTORY_DATA, "\\{pvSystemId\\}", pvSystemsId, "\\{deviceId\\}", deviceId ),
+//				this.getAuthenticationHeaders(accessKeyId, accessKeyValue),
+//				params,
+//				DeviceHistoryDataResponse.class
+//			);
+//	}
+
+	public void setConfiguration(RenovusSolarecConfiguration configuration) {
+		this.configuration = configuration;
+	}
+
+	public void setWeatherService(WeatherService weatherService) {
+		this.weatherService = weatherService;
+	}
+
+	public void setJsonCaller(JsonCaller jsonCaller) {
+		this.jsonCaller = jsonCaller;
 	}
 }

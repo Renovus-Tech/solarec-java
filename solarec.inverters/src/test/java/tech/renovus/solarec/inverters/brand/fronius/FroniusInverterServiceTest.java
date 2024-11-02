@@ -1,97 +1,98 @@
 package tech.renovus.solarec.inverters.brand.fronius;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.junit.Assume;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import tech.renovus.solarec.inverters.brand.TestingUtil;
+import tech.renovus.solarec.connection.JsonCaller;
+import tech.renovus.solarec.inverters.brand.BaseInveterTest;
 import tech.renovus.solarec.inverters.brand.fronius.api.InfoReleaseResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.history.data.HistoryDataResponse;
+import tech.renovus.solarec.inverters.brand.fronius.api.metadata.DeviceListResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.metadata.PvSystemsListResponse;
 import tech.renovus.solarec.inverters.brand.fronius.api.user.InfoUserResponse;
-import tech.renovus.solarec.inverters.common.InverterService.InverterData;
+import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.inverters.common.InverterService.InveterServiceException;
-import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.FileUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.weather.WeatherService;
 
-public class FroniusInverterServiceTest {
+@RunWith(MockitoJUnitRunner.class)
+public class FroniusInverterServiceTest extends BaseInveterTest {
 
 	//--- Private properties --------------------
-	private static boolean betaMode;
-	private static String accessKeyId;
-	private static String accessKeyValue;
+	@Mock private JsonCaller jsonCaller;
+	@Mock private WeatherService weatherService;
 	
-	private static FroniusInverterService service = null;
-	private static ClientVo client;
-	
-	//--- Init methods --------------------------
-	@BeforeClass
-	public static void setVariables() {
-		FroniusInverterServiceTest.betaMode			= BooleanUtils.isTrue(System.getProperty("fronius_fronius_beta"));
-		FroniusInverterServiceTest.accessKeyId		= System.getProperty("fronius_access_key_id");
-		FroniusInverterServiceTest.accessKeyValue	= System.getProperty("fronius_access_key_value");
-
-		boolean allDataRequired = FroniusInverterServiceTest.accessKeyId != null && FroniusInverterServiceTest.accessKeyValue != null;
-		
-		Assume.assumeTrue("Skipping tests because test data is missing. Added the following system.properties to execute tests: fronius_fronius_beta, fronius_access_key_id, fronius_access_key_value", allDataRequired);
-		
-		FroniusInverterServiceTest.client = new ClientVo();
-		FroniusInverterServiceTest.client.add(TestingUtil.createParameter(FroniusInverterService.PARAM_BETA_MODE, BooleanUtils.toString(FroniusInverterServiceTest.betaMode)));
-		FroniusInverterServiceTest.client.add(TestingUtil.createParameter(FroniusInverterService.PARAM_ACCESS_KEY_ID, FroniusInverterServiceTest.accessKeyId));
-		FroniusInverterServiceTest.client.add(TestingUtil.createParameter(FroniusInverterService.PARAM_ACCESS_KEY_VALUE, FroniusInverterServiceTest.accessKeyValue));
-		
-		FroniusInverterServiceTest.service = new FroniusInverterService();
-	}
+	@InjectMocks private FroniusInverterService service = new FroniusInverterService();
 	
 	//--- Test methods --------------------------
 	@Test
-	public void testPrivateProperties() {
-		/**
-		 * If test fails, make sure that you run the testing with the following system.properties:
-		 *   - fronius_access_key_id
-		 *   - fronius_access_key_value
-		 *   
-		 * Example of execution: -D<param_1>=<value_1> -D<param_2=<value_2> -D<param_n>=<value_n>
-		 */
-		assertNotNull(FroniusInverterServiceTest.accessKeyId);
-		assertNotNull(FroniusInverterServiceTest.accessKeyValue);
-	}
-	
-	@Test
-	public void testCallApi() {
-		Exception error = null;
+	public void testCallApi() throws IOException {
+		Boolean betaMode			= false;
+		String accessKeyId		= "not-a-real-key-id";
+		String accessKeyValue	= "not-a-real-key-value";
+
+		Path classPath			= this.getClassLocation(this.getClass());
 		
-		InfoReleaseResponse infoReleaseResponse = service.getInfoRelease(FroniusInverterServiceTest.betaMode, FroniusInverterServiceTest.accessKeyId, FroniusInverterServiceTest.accessKeyValue);
+		InfoReleaseResponse infoReleaseResponseMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/fronius/sample-info-release.json")), InfoReleaseResponse.class);
+		InfoUserResponse infoUserResponseMock		= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/fronius/sample-info-user.json")), InfoUserResponse.class);
+		PvSystemsListResponse pvSystemListMock		= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/fronius/sample-pvsystem-list.json")), PvSystemsListResponse.class);
+		HistoryDataResponse pvSystemHistoryDataMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/fronius/sample-pvsystem-history-data.json")), HistoryDataResponse.class);
+		DeviceListResponse pvSystemDevicesListMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/fronius/sample-pvsystem-device-list.json")), DeviceListResponse.class);
+		
+		when(this.jsonCaller.get(eq(FroniusInverterService.URL_PRD + FroniusInverterService.ENDPOINT_INFO_RELEASE), any(), any(), any())).thenReturn(infoReleaseResponseMock);
+		when(this.jsonCaller.get(eq(FroniusInverterService.URL_PRD + FroniusInverterService.ENDPOINT_INFO_USER), any(), any(), any())).thenReturn(infoUserResponseMock);
+		when(this.jsonCaller.get(eq(FroniusInverterService.URL_PRD + FroniusInverterService.ENDPOINT_PV_SYSTEMS_LIST), any(), any(), any())).thenReturn(pvSystemListMock);
+		
+		InfoReleaseResponse infoReleaseResponse = this.service.getInfoRelease(betaMode, accessKeyId, accessKeyValue);
 		assertNotNull(infoReleaseResponse);
 		assertFalse(infoReleaseResponse.hasError());
 		assertNotNull(infoReleaseResponse.getReleaseVersion());
 		assertNotNull(infoReleaseResponse.getReleaseDate());
 
-		InfoUserResponse infoUserResponse = service.getInfoUser(FroniusInverterServiceTest.betaMode, FroniusInverterServiceTest.accessKeyId, FroniusInverterServiceTest.accessKeyValue);
+		InfoUserResponse infoUserResponse = this.service.getInfoUser(betaMode, accessKeyId, accessKeyValue);
 		assertNotNull(infoUserResponse);
 		assertFalse(infoUserResponse.hasError());
 		assertNotNull(infoUserResponse.getName());
-		assertEquals(infoUserResponse.getName().getFirstName(), "Api");
-		assertEquals(infoUserResponse.getName().getLastName(), "Demo");
+		assertEquals(infoUserResponse.getName().getFirstName(), "John");
+		assertEquals(infoUserResponse.getName().getLastName(), "Doe");
 
-		PvSystemsListResponse pvSystemListResponse = service.getPvSystemsList(FroniusInverterServiceTest.betaMode, FroniusInverterServiceTest.accessKeyId, FroniusInverterServiceTest.accessKeyValue);
+		PvSystemsListResponse pvSystemListResponse = this.service.getPvSystemsList(betaMode, accessKeyId, accessKeyValue);
 		assertNotNull(pvSystemListResponse);
 		assertFalse(pvSystemListResponse.hasError());
 		assertNotNull(pvSystemListResponse.getPvSystemIds());
 		assertTrue(CollectionUtil.notEmpty(pvSystemListResponse.getPvSystemIds()));
-		assertFalse(pvSystemListResponse.hasError());
 
 		String pvSystemsId = pvSystemListResponse.getPvSystemIds().iterator().next();
+		when(this.jsonCaller.get(eq(FroniusInverterService.URL_PRD + "/pvsystems/" + pvSystemsId + "/histdata"), any(), any(), any())).thenReturn(pvSystemHistoryDataMock);
+		when(this.jsonCaller.get(eq(FroniusInverterService.URL_PRD + "/pvsystems/" + pvSystemsId + "/devices-list"), any(), any(), any())).thenReturn(pvSystemDevicesListMock);
+		
+		DeviceListResponse devicesList = this.service.getPvSystemDevicesList(betaMode, accessKeyId, accessKeyValue, pvSystemsId);
+		assertNotNull(devicesList);
+		assertFalse(devicesList.hasError());
+		assertNotNull(devicesList.getDeviceIds());
+		assertTrue(CollectionUtil.notEmpty(devicesList.getDeviceIds()));
 		
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_YEAR, -1);
@@ -112,25 +113,50 @@ public class FroniusInverterServiceTest {
 		
 		Date to = cal.getTime();
 
-		HistoryDataResponse data = service.getPvSystemsHistData(FroniusInverterServiceTest.betaMode, FroniusInverterServiceTest.accessKeyId, FroniusInverterServiceTest.accessKeyValue, pvSystemsId, from, to);
+		HistoryDataResponse data = this.service.getPvSystemsHistData(betaMode, accessKeyId, accessKeyValue, pvSystemsId, from, to);
 		assertNotNull(data);
-		assertEquals(data.getPvSystemId(), pvSystemsId);
+		assertEquals(pvSystemsId, data.getPvSystemId());
 		assertNotNull(data.getData());
 		assertTrue(CollectionUtil.notEmpty(data.getData()));
-		
-		try {
-			service.prepareFor(client);
-			InverterData apiData = service.retrieveData();
-			
-			assertNotNull(apiData);
-			assertNotNull(apiData.getGeneratorData());
-			assertNotNull(apiData.getStationData());
-			assertTrue(CollectionUtil.notEmpty(apiData.getGeneratorData()));
-			assertTrue(CollectionUtil.notEmpty(apiData.getStationData()));
-		} catch (InveterServiceException e) {
-			error = e;
-		}
-		
-		assertNull(error);
 	}
+	
+	//--- Overridden methods --------------------
+	@Override
+	public InverterService getService() { return this.service; }
+	
+	@Override
+	public ClientVo createClient() {
+		return this.buildClientWith(
+			Arrays.asList(
+				this.createClientParameter(FroniusInverterService.PARAM_BETA_MODE, "false"),
+				this.createClientParameter(FroniusInverterService.PARAM_ACCESS_KEY_ID, "not-a-real-key-id"),
+				this.createClientParameter(FroniusInverterService.PARAM_ACCESS_KEY_VALUE, "not-a-real-key-value")
+			),
+			null,
+			Arrays.asList(
+				this.createGeneratorParameter(FroniusInverterService.PARAM_GEN_PV_SYSTEM_ID, "34232"),
+				this.createGeneratorParameter(FroniusInverterService.PARAM_GEN_LAST_DATE_RETRIEVE, "-1160481920")
+			)
+		);
+	}
+	
+	@Override public void prepareMock() throws InveterServiceException {
+		Path classPath								= this.getClassLocation(this.getClass());
+		try {
+			HistoryDataResponse pvSystemHistoryDataMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/fronius/sample-pvsystem-history-data.json")), HistoryDataResponse.class);
+			
+			String pvSystemsId = "34232";
+			when(this.jsonCaller.get(eq(FroniusInverterService.URL_PRD + "/pvsystems/" + pvSystemsId + "/histdata"), any(), any(), any())).thenReturn(pvSystemHistoryDataMock);
+
+		} catch (IOException e) {
+			throw new InveterServiceException(e);
+		}
+	}
+	
+	@Override
+	public void postDataRetrieveTest() {
+		assertTrue(this.service.continueWithStats());
+		assertNull(this.service.getReasonWhyCantRetrieve());
+	}
+	
 }
