@@ -25,6 +25,9 @@ public class JsonCallerTest {
 	private static final String ENDPOIT_POST	= "http://postman-echo.com/post";
 	private static final String ENDPOIT_GET		= "http://postman-echo.com/get";
 	
+	//--- Private properties --------------------
+	private JsonCaller caller = new JsonCaller();
+	
 	//--- Private methods -----------------------
 	private void assertParameters(Map<String, String> params, OnlyProperties response) {
 		for (Map.Entry<String, String > entry : params.entrySet()) {
@@ -56,19 +59,19 @@ public class JsonCallerTest {
 	///--- Test post methods --------------------
 	@Test public void statusCode() {
 		Integer code = Integer.valueOf("501");
-		PostResponse responseGet = JsonCaller.get(ENDPOIT_STATUS + code.toString(), null, PostResponse.class);
+		PostResponse responseGet = this.caller.get(ENDPOIT_STATUS + code.toString(), null, PostResponse.class);
 		assertNotNull(responseGet.getAdditionalProperties());
 		assertNotNull(responseGet.getAdditionalProperties().get("status"));
 		assertEquals(code, responseGet.getAdditionalProperties().get("status"));
 
-		PostResponse responsePost = JsonCaller.post(ENDPOIT_STATUS + code, null, PostResponse.class);
+		PostResponse responsePost = this.caller.post(ENDPOIT_STATUS + code, null, PostResponse.class);
 		assertNull(responsePost);
 	}
 	
 	@Test public void postTest1() {
 		TestRequest request = TestRequest.random();
 		
-		PostResponse response = JsonCaller.post(ENDPOIT_POST, request, PostResponse.class);
+		PostResponse response = this.caller.post(ENDPOIT_POST, request, PostResponse.class);
 		assertEquals(ENDPOIT_POST, response.getUrl());
 		assertTestRequest(request, response);
 	}
@@ -80,7 +83,7 @@ public class JsonCallerTest {
 		headers.put("header1", "value1");
 		headers.put("header2", "value2");
 		
-		PostResponse response = JsonCaller.post(ENDPOIT_POST, headers, request, PostResponse.class);
+		PostResponse response = this.caller.post(ENDPOIT_POST, headers, request, PostResponse.class);
 		assertEquals(ENDPOIT_POST, response.getUrl());
 	}
 	
@@ -89,7 +92,7 @@ public class JsonCallerTest {
 		
 		String authCode = UUID.randomUUID().toString();
 		
-		PostResponse response = JsonCaller.bearerPost(ENDPOIT_POST, request, authCode, PostResponse.class);
+		PostResponse response = this.caller.bearerPost(ENDPOIT_POST, request, authCode, PostResponse.class);
 		assertEquals(ENDPOIT_POST, response.getUrl());
 		
 		assertTrue(response.getHeaders().getAdditionalProperties().containsKey("authorization"));
@@ -102,7 +105,7 @@ public class JsonCallerTest {
 		params.put("number", "1");
 		params.put("date", "2024-01-01");
 		
-		PostResponse response = JsonCaller.post(ENDPOIT_POST, params, PostResponse.class);
+		PostResponse response = this.caller.post(ENDPOIT_POST, params, PostResponse.class);
 		
 		assertEquals(ENDPOIT_POST, response.getUrl());
 		assertEquals("application/json; charset=utf-8", response.getHeaderContentType());
@@ -111,7 +114,7 @@ public class JsonCallerTest {
 	
 	//--- Test get methods ----------------------
 	@Test public void getTest1() {
-		GetResponse response = JsonCaller.get(ENDPOIT_GET, GetResponse.class);
+		GetResponse response = this.caller.get(ENDPOIT_GET, GetResponse.class);
 		assertEquals(ENDPOIT_GET, response.getUrl());
 	}
 	
@@ -122,7 +125,7 @@ public class JsonCallerTest {
 		params.put("number", "1");
 		params.put("date", "2024-01-01");
 		
-		GetResponse response = JsonCaller.get(ENDPOIT_GET, params, GetResponse.class);
+		GetResponse response = this.caller.get(ENDPOIT_GET, params, GetResponse.class);
 		
 		assertTrue(response.getUrl().startsWith(ENDPOIT_GET));
 		this.assertParameters(params, response.getArgs());
@@ -136,7 +139,7 @@ public class JsonCallerTest {
 		
 		String authCode = UUID.randomUUID().toString();
 		
-		GetResponse response = JsonCaller.bearerGet(ENDPOIT_GET, params, authCode, GetResponse.class);
+		GetResponse response = this.caller.bearerGet(ENDPOIT_GET, params, authCode, GetResponse.class);
 		
 		assertTrue(response.getUrl().startsWith(ENDPOIT_GET));
 		this.assertParameters(params, response.getArgs());
@@ -155,7 +158,7 @@ public class JsonCallerTest {
 		params.put("number", "1");
 		params.put("date", "2024-01-01");
 
-		GetResponse response = JsonCaller.get(ENDPOIT_GET, headers, params, GetResponse.class);
+		GetResponse response = this.caller.get(ENDPOIT_GET, headers, params, GetResponse.class);
 		
 		assertTrue(response.getUrl().startsWith(ENDPOIT_GET));
 		this.assertParameters(params, response.getArgs());

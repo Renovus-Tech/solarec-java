@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -24,10 +25,11 @@ import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.JsonUtil;
 
+@Service
 public class JsonCaller {
 
 	//--- Private methods -----------------------
-	private static WebClient buildWebClient() {
+	private WebClient buildWebClient() {
 		WebClient webClient = WebClient.builder()
 				.exchangeStrategies(ExchangeStrategies.builder()
 						.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024)).build())
@@ -38,7 +40,7 @@ public class JsonCaller {
 		return webClient;
 	}
 	
-	private static String buildQueryString(Map<String, String> queryParams) {
+	private String buildQueryString(Map<String, String> queryParams) {
         if (queryParams == null || queryParams.isEmpty()) {
             return null;
         }
@@ -55,7 +57,7 @@ public class JsonCaller {
         return queryStringBuilder.toString();
     }
 	
-	private static <T extends Object> T processError(String url, WebClientResponseException webClientError, Class<T> responseClass) {
+	private <T extends Object> T processError(String url, WebClientResponseException webClientError, Class<T> responseClass) {
 		try {
 			return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
 		} catch (JsonProcessingException e) {
@@ -64,7 +66,7 @@ public class JsonCaller {
 		}
 	}
 	
-	private static <T extends Object> void addHeaders(ResponseEntity<T> response) {
+	private <T extends Object> void addHeaders(ResponseEntity<T> response) {
 		if (response == null) {
 			return;
 		}
@@ -82,7 +84,7 @@ public class JsonCaller {
 		}
 	}
 	
-	private static <T extends Object> T processResponse(ResponseSpec responseSpec, Class<T> responseClass) throws WebClientResponseException {
+	private <T extends Object> T processResponse(ResponseSpec responseSpec, Class<T> responseClass) throws WebClientResponseException {
 		ResponseEntity<T> response = responseSpec.toEntity(responseClass).block();
 		addHeaders(response);
 		
@@ -90,7 +92,7 @@ public class JsonCaller {
 	}
 	
 	//--- Generators methods --------------------
-	public static String generateCompleteURL(String baseEndpoint, Map<String, String> queryParams) {
+	public String generateCompleteURL(String baseEndpoint, Map<String, String> queryParams) {
         try {
             // Create a URI with the base endpoint
             URI uri = new URI(baseEndpoint);
@@ -107,7 +109,7 @@ public class JsonCaller {
     }
 	
 	//--- Post methods --------------------------
-	public static <T extends Object> T post(String url, Object payload, Class<T> responseClass) {
+	public <T extends Object> T post(String url, Object payload, Class<T> responseClass) {
 		try {
 			ResponseSpec responseSpec = buildWebClient()
 					.post()
@@ -122,7 +124,7 @@ public class JsonCaller {
 		}
 	}
 	
-	public static <T extends Object> T post(String url, Map<String, String> headers, Object payload, Class<T> responseClass) {
+	public <T extends Object> T post(String url, Map<String, String> headers, Object payload, Class<T> responseClass) {
 		try {
 			ResponseSpec responseSpec = buildWebClient()
 					.post()
@@ -142,7 +144,7 @@ public class JsonCaller {
 		}
 	}
 
-	public static <T extends Object> T bearerPost(String url, Object payload, String authCode, Class<T> responseClass) {
+	public <T extends Object> T bearerPost(String url, Object payload, String authCode, Class<T> responseClass) {
 		try {
 			ResponseSpec responseSpec = buildWebClient()
 					.post()
@@ -158,7 +160,7 @@ public class JsonCaller {
 		}
 	}
 	
-	public static <T extends Object> T post(String url, Map<String,String> queryParams, Class<T> responseClass) {
+	public <T extends Object> T post(String url, Map<String,String> queryParams, Class<T> responseClass) {
 		MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
 		if (queryParams != null) {
 			queryParams.forEach(formData::add);
@@ -179,11 +181,11 @@ public class JsonCaller {
 	}
 	
 	//--- Get methods ---------------------------
-	public static <T extends Object> T get(String url, Class<T> responseClass) {
+	public <T extends Object> T get(String url, Class<T> responseClass) {
 		return get(url, new HashMap<>(0), responseClass);
 	}
 	
-	public static <T extends Object> T get(String url, Map<String,String> queryParams, Class<T> responseClass) {
+	public <T extends Object> T get(String url, Map<String,String> queryParams, Class<T> responseClass) {
 		try {
 			ResponseSpec responseSpec = buildWebClient()
 					.get()
@@ -196,7 +198,7 @@ public class JsonCaller {
 		}
 	}
 	
-	public static <T extends Object> T bearerGet(String url, Map<String,String> queryParams, String authCode, Class<T> responseClass) {
+	public <T extends Object> T bearerGet(String url, Map<String,String> queryParams, String authCode, Class<T> responseClass) {
 		url = generateCompleteURL(url, queryParams);
 		try {
 			ResponseSpec responseSpec = buildWebClient()
@@ -211,7 +213,7 @@ public class JsonCaller {
 		}
 	}
 	
-	public static <T extends Object> T get(String url, Map<String, String> headers, final Map<String,String> queryParams, Class<T> responseClass) {
+	public <T extends Object> T get(String url, Map<String, String> headers, final Map<String,String> queryParams, Class<T> responseClass) {
 		url = generateCompleteURL(url, queryParams);
 		try {
 			ResponseSpec responseSpec = buildWebClient()
