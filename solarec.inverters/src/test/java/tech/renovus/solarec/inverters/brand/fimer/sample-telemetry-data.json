@@ -1,0 +1,388 @@
+{
+    "result": [
+        {
+            "start": 1695351600,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695352500,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695353400,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695354300,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695355200,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695356100,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695357000,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695357900,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695358800,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695359700,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695360600,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695361500,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695362400,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695363300,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695364200,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695365100,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695366000,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695366900,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695367800,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695368700,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695369600,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695370500,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695371400,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695372300,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695373200,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695374100,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695375000,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695375900,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695376800,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695377700,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695378600,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695379500,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695380400,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695381300,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695382200,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695383100,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695384000,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695384900,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695385800,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695386700,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695387600,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695388500,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695389400,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695390300,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695391200,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695392100,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695393000,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695393900,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695394800,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695395700,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695396600,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695397500,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695398400,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695399300,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695400200,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695401100,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695402000,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695402900,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695403800,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695404700,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695405600,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695406500,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695407400,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695408300,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695409200,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695410100,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695411000,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695411900,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695412800,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695413700,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695414600,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695415500,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695416400,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695417300,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695418200,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695419100,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695420000,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695420900,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695421800,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695422700,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695423600,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695424500,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695425400,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695426300,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695427200,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695428100,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695429000,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695429900,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695430800,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695431700,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695432600,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695433500,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695434400,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695435300,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695436200,
+            "units": "kilowatt-hours"
+        },
+        {
+            "start": 1695437100,
+            "units": "kilowatt-hours"
+        }
+    ]
+}

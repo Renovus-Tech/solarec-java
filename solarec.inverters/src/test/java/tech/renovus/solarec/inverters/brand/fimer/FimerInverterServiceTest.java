@@ -1,111 +1,144 @@
 package tech.renovus.solarec.inverters.brand.fimer;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.startsWith;
+import static org.mockito.Mockito.when;
 
-import org.junit.Assume;
-import org.junit.BeforeClass;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import tech.renovus.solarec.inverters.brand.TestingUtil;
+import tech.renovus.solarec.connection.JsonCaller;
+import tech.renovus.solarec.inverters.brand.BaseInveterTest;
 import tech.renovus.solarec.inverters.brand.fimer.api.authenticate.AuthenticateResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.ipRanges.datalogger.IpRangeDataloggerResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.ipRanges.web.IpRangeWebResponse;
-import tech.renovus.solarec.inverters.brand.fimer.api.organization.OrganizationResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.status.StatusResponse;
-import tech.renovus.solarec.inverters.common.InverterService.InverterData;
+import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.energy.timeseries.TelemetryDataEnergyTimeseriesResponse;
+import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.inverters.common.InverterService.InveterServiceException;
-import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.FileUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.weather.WeatherService;
 
-public class FimerInverterServiceTest {
+@RunWith(MockitoJUnitRunner.class)
+public class FimerInverterServiceTest extends BaseInveterTest {
 
 	//--- Private properties --------------------
-	private static String user;
-	private static String password;
-	private static String key;
+	@Mock private JsonCaller jsonCaller;
+	@Mock private WeatherService weatherService;
 	
-	private static FimerInverterService service;
-	private static ClientVo client;
-	
-	//--- Init methods --------------------------
-	@BeforeClass
-	public static void init() {
-		FimerInverterServiceTest.user		= System.getProperty("fimer_user");
-		FimerInverterServiceTest.password	= System.getProperty("fimer_passsword");
-		FimerInverterServiceTest.key		= System.getProperty("fimer_key");
-		
-		boolean allDataRequired = FimerInverterServiceTest.user != null && FimerInverterServiceTest.password != null && FimerInverterServiceTest.key != null;
-		
-		Assume.assumeTrue("Skipping tests because test data is missing. Added the following system.properties to execute tests: fimer_user, fimer_passsword, fimer_key", allDataRequired);
-		
-		FimerInverterServiceTest.client = new ClientVo();
-		FimerInverterServiceTest.client.add(TestingUtil.createParameter(FimerInverterService.PARAM_USER, FimerInverterServiceTest.user));
-		FimerInverterServiceTest.client.add(TestingUtil.createParameter(FimerInverterService.PARAM_PASSWORD, FimerInverterServiceTest.password));
-		FimerInverterServiceTest.client.add(TestingUtil.createParameter(FimerInverterService.PARAM_KEY, FimerInverterServiceTest.key));
-		
-		FimerInverterServiceTest.service = new FimerInverterService();
+	@InjectMocks private FimerInverterService service = new FimerInverterService();
+
+	//--- Private methods -----------------------
+	private Path getClassLocation(Class<?> clazz) {
+		try {
+			// Get the URL where the class is loaded from
+			URL location = clazz.getProtectionDomain().getCodeSource().getLocation();
+
+			// Convert the URL to a path
+			return Paths.get(location.toURI());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	//--- Testing methods -----------------------
-	@Test
-	public void testPrivateProperties() {
-		/**
-		 * If test fails, make sure that you run the testing with the following system.properties:
-		 *   - fimer_user
-		 *   - fimer_passsword
-		 *   - fimer_key
-		 *   
-		 * Example of execution: -D<param_1>=<value_1> -D<param_2=<value_2> -D<param_n>=<value_n>
-		 */
-		assertNotNull(FimerInverterServiceTest.user);
-		assertNotNull(FimerInverterServiceTest.password);
-		assertNotNull(FimerInverterServiceTest.key);
-	}
-	
 	@Test 
-	public void testCallApi() {
-		Exception error = null;
+	public void testCallApi() throws IOException {
+		String user		= "sample";
+		String password	= "not-a-real-password";
+		String key		= "not-a-real-key";
 		
-		StatusResponse status = service.status();
-		assertNotNull(status);
+		Path classPath								= this.getClassLocation(this.getClass());
+		AuthenticateResponse authenticationResponse	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/fimer/sample-authentication.json")), AuthenticateResponse.class);
+		IpRangeDataloggerResponse ipRangeResponse	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/fimer/sample-ip-range-datalogger.json")), IpRangeDataloggerResponse.class);
+		IpRangeWebResponse ipRangeWebResponse		= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/fimer/sample-ip-range-web.json")), IpRangeWebResponse.class);
 		
-		AuthenticateResponse authentication = service.authenticate(user, password, key);
+		when(this.jsonCaller.get(FimerInverterService.URL + FimerInverterService.ENDPOINT_STATUS, StatusResponse.class)).thenReturn(null);
+		when(this.jsonCaller.get(eq(FimerInverterService.URL + FimerInverterService.ENDPOINT_AUTHENTICATE), any(), any(), any())).thenReturn(authenticationResponse);
+		when(this.jsonCaller.get(eq(FimerInverterService.URL + FimerInverterService.ENDPOINT_IP_RANGE_DATALOGGER), any(), any(), any())).thenReturn(ipRangeResponse);
+		when(this.jsonCaller.get(eq(FimerInverterService.URL + FimerInverterService.ENDPOINT_IP_RANGE_WEB), any(), any(), any())).thenReturn(ipRangeWebResponse);
+		
+		StatusResponse status = this.service.status();
+		assertNull(status);
+		
+		AuthenticateResponse authentication = this.service.authenticate(user, password, key);
 		assertNotNull(authentication);
 		assertNotNull(authentication.getResult());
 		
 		String authKey = authentication.getResult();
 		
-		IpRangeDataloggerResponse ipRangeDataLogger = service.getIpRangeDatalogger(authKey);
+		IpRangeDataloggerResponse ipRangeDataLogger = this.service.getIpRangeDatalogger(authKey);
 		assertNotNull(ipRangeDataLogger);
 		assertNotNull(ipRangeDataLogger.getResult());
 		assertNotNull(ipRangeDataLogger.getResult().getPrefixes());
 		
-		IpRangeWebResponse ipRangeDataWeb = service.getIpRangeWeb(authKey);
+		IpRangeWebResponse ipRangeDataWeb = this.service.getIpRangeWeb(authKey);
 		assertNotNull(ipRangeDataWeb);
 		assertNotNull(ipRangeDataWeb.getResult());
 		assertNotNull(ipRangeDataWeb.getResult().getPrefixes());
 		
-		OrganizationResponse organization = service.getPortafolioGroup(authKey);
-		assertNotNull(organization);
-		assertNotNull(organization.getResult());
-		
-		try {
-			service.prepareFor(client);
-			InverterData apiData = service.retrieveData();
-			
-			assertNotNull(apiData);
-			assertNotNull(apiData.getGeneratorData());
-			assertNotNull(apiData.getStationData());
-			assertTrue(CollectionUtil.notEmpty(apiData.getGeneratorData()));
-			assertTrue(CollectionUtil.notEmpty(apiData.getStationData()));
-		} catch (InveterServiceException e) {
-			error = e;
-		}
-		
-		assertNull(error);
+//		OrganizationResponse organization = this.service.getPortafolioGroup(authKey);
+//		assertNotNull(organization);
+//		assertNotNull(organization.getResult());
+	}
+
+	//--- Overridden methods --------------------
+	@Override
+	public InverterService getService() { return this.service; }
+
+	@Override
+	public ClientVo createClient() {
+		return this.buildClientWith(
+			Arrays.asList(
+				this.createClientParameter(FimerInverterService.PARAM_USER, "an_user"),
+				this.createClientParameter(FimerInverterService.PARAM_PASSWORD, "not-a-real-password"),
+				this.createClientParameter(FimerInverterService.PARAM_KEY, "not-a-real-key")
+			),
+			Arrays.asList(
+				this.createLocationParameter(FimerInverterService.PARAM_TIME_ZONE, "-3:00")
+			),
+			Arrays.asList(
+				this.createGeneratorParameter(FimerInverterService.PARAM_DEVICE_ID, "34232"),
+				this.createGeneratorParameter(FimerInverterService.PARAM_GENERATOR_LAST_RETRIEVE, "-1160481920")
+			)
+		);
 	}
 	
+	@Override public void prepareMock() throws InveterServiceException {
+		Path classPath								= this.getClassLocation(this.getClass());
+		try {
+			AuthenticateResponse authenticationResponse	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/fimer/sample-authentication.json")), AuthenticateResponse.class);
+			TelemetryDataEnergyTimeseriesResponse data	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/fimer/sample-telemetry-data.json")), TelemetryDataEnergyTimeseriesResponse.class);
+			
+			when(this.jsonCaller.get(eq(FimerInverterService.URL + FimerInverterService.ENDPOINT_AUTHENTICATE), any(), any(), any())).thenReturn(authenticationResponse);
+			when(this.jsonCaller.get(startsWith(FimerInverterService.URL + FimerInverterService.ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES), any(), any(), any())).thenReturn(data);
+
+		} catch (IOException e) {
+			throw new InveterServiceException(e);
+		}
+	}
+	
+	@Override
+	public void postDataRetrieveTest() {
+		assertTrue(this.service.continueWithStats());
+		assertNull(this.service.getReasonWhyCantRetrieve());
+	}
 	
 }

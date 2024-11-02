@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.fimer.api.authenticate.AuthenticateResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.ipRanges.datalogger.IpRangeDataloggerResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.ipRanges.web.IpRangeWebResponse;
-import tech.renovus.solarec.inverters.brand.fimer.api.organization.OrganizationResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.status.StatusResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.energy.timeseries.Result;
 import tech.renovus.solarec.inverters.brand.fimer.api.telemetryData.energy.timeseries.TelemetryDataEnergyTimeseriesResponse;
@@ -34,8 +34,8 @@ import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
+import tech.renovus.solarec.weather.WeatherService;
 import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
-import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 
 /**
  * URL: https://solis-service.solisinverters.com/en/support/solutions/articles/44002212561-api-access-soliscloud
@@ -46,16 +46,18 @@ import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 public class FimerInverterService implements InverterService {
 
 	// --- Private constants ---------------------
-	private static final String URL												= "https://api.auroravision.net/api/rest";
-	private static final String ENDPOINT_STATUS									= "/status";
-	private static final String ENDPOINT_AUTHENTICATE							= "/authenticate";
-	private static final String ENDPOINT_ORGANIZATION							= "/v1/portfolioGroup";
+	public static final String URL												= "https://api.auroravision.net/api/rest";
+	public static final String ENDPOINT_STATUS									= "/status";
+	public static final String ENDPOINT_AUTHENTICATE							= "/authenticate";
+	public static final String ENDPOINT_ORGANIZATION							= "/v1/portfolioGroup";
 
-	private static final String ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES		= "/v1/stats/power/timeseries/{entityID}/{dataType}/{valueType}";
-	private static final String ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES		= "/v1/stats/energy/timeseries/{entityID}/{dataType}/{valueType}";
+	public static final String ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES			= "/v1/stats/power/timeseries";
+	public static final String ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES		= "/v1/stats/energy/timeseries";
+	public static final String ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES_DATA	= ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES + "/{entityID}/{dataType}/{valueType}";
+	public static final String ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES_DATA	= ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES + "/{entityID}/{dataType}/{valueType}";
 	
-	private static final String ENDPOINT_IP_RANGE_DATALOGGER					= "/v1/ip-ranges/datalogger";
-	private static final String ENDPOINT_IP_RANGE_WEB							= "/v1/ip-ranges/web";
+	public static final String ENDPOINT_IP_RANGE_DATALOGGER						= "/v1/ip-ranges/datalogger";
+	public static final String ENDPOINT_IP_RANGE_WEB							= "/v1/ip-ranges/web";
 	
 	
 	public static final String DATA_TYPE_GENERATION_ENERGY						= "GenerationEnergy";
@@ -79,6 +81,9 @@ public class FimerInverterService implements InverterService {
 	public static final String PARAM_GENERATOR_LAST_RETRIEVE	= "fimer.generator.last_retrieve";
 	
 	//--- Private properties ---------------------
+	private @Autowired WeatherService weatherService;
+	private @Autowired JsonCaller jsonCaller;
+
 	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyyMMdd");
 	private ClientVo cliVo;
 	private AuthenticateResponse authentication;
@@ -147,8 +152,8 @@ public class FimerInverterService implements InverterService {
 	) {
 		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 		Map<String, String> params	= generateParams(sampleSize, startDate, endDate, timeZone); 
-		String url					= this.generateUrl(URL + ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES, entityID, dataType, valueType); 
-		TelemetryDataEnergyTimeseriesResponse response = JsonCaller.get(url, headers, params, TelemetryDataEnergyTimeseriesResponse.class);
+		String url					= this.generateUrl(URL + ENDPOINT_TELEMETRY_DATA_POWER_TIMESERIES_DATA, entityID, dataType, valueType); 
+		TelemetryDataEnergyTimeseriesResponse response = this.jsonCaller.get(url, headers, params, TelemetryDataEnergyTimeseriesResponse.class);
 		
 		return response == null ? null : response;
 	}
@@ -223,7 +228,7 @@ public class FimerInverterService implements InverterService {
 								GenDataVo lastData = generatorData.iterator().next();
 								
 								try {
-									CollectionUtil.addAll(result.getStationData(), new MeteoblueWeatherServiceImpl().retrieveWeatherData(location, station, dateFrom, dateTo));
+									CollectionUtil.addAll(result.getStationData(), this.weatherService.retrieveWeatherData(location, station, dateFrom, dateTo));
 								} catch (WeatherServiceException e) {
 									throw new InveterServiceException(e);
 								}
@@ -257,49 +262,48 @@ public class FimerInverterService implements InverterService {
 		headers.put(HttpHeaders.AUTHORIZATION, "Basic " + base64Credentials);
 		headers.put("X-AuroraVision-ApiKey", key);
 
-		AuthenticateResponse response = JsonCaller.get(URL + ENDPOINT_AUTHENTICATE, headers, null,
-				AuthenticateResponse.class);
+		AuthenticateResponse response = this.jsonCaller.get(URL + ENDPOINT_AUTHENTICATE, headers, null, AuthenticateResponse.class);
 
 		return response;
 	}
 	
-	public TelemetryDataEnergyTimeseriesResponse getTelemetryDataEnergyTimeseries(
-		String auroraVisionApiKey, 
-		int entityID, 
-		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
-		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
-		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
-	) {
-		return this.getTelemetryDataEnergyTimeseries(
-				auroraVisionApiKey, 
-				entityID, 
-				FimerInverterService.DATA_TYPE_GENERATION_ENERGY, 
-				FimerInverterService.VALUE_TYPE_DELTA, 
-				FimerInverterService.SAMPLE_SIZE_MIN_15, 
-				startDate, 
-				endDate, 
-				timeZone
-			);
-	}
-	
-	private TelemetryDataEnergyTimeseriesResponse getTelemetryDataEnergyTimeseries(
-		String auroraVisionApiKey, 
-		int entityID, 
-		String dataType, 	// REQUIRED - Available values : GenerationEnergy, DCGenerationEnergy, Insolation, StorageInEnergy, StorageOutEnergy, GridEnergyExport, GridEnergyImport, SelfConsumedEnergy, ActiveEnergyEV, SessionEnergyEV
-		String valueType, 	// REQUIRED - Available values : maximum, minimum, average, delta
-		String sampleSize,	// REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
-		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
-		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
-		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
-	) {
-		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
-		Map<String, String> params	= this.generateParams(sampleSize, startDate, endDate, timeZone); 
-		String url					= this.generateUrl(URL + ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES, entityID, dataType, valueType);
-		
-		TelemetryDataEnergyTimeseriesResponse response = JsonCaller.get(url, headers, params, TelemetryDataEnergyTimeseriesResponse.class);
-
-		return response == null ? null : response;
-	}
+//	public TelemetryDataEnergyTimeseriesResponse getTelemetryDataEnergyTimeseries(
+//		String auroraVisionApiKey, 
+//		int entityID, 
+//		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
+//		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
+//		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
+//	) {
+//		return this.getTelemetryDataEnergyTimeseries(
+//				auroraVisionApiKey, 
+//				entityID, 
+//				FimerInverterService.DATA_TYPE_GENERATION_ENERGY, 
+//				FimerInverterService.VALUE_TYPE_DELTA, 
+//				FimerInverterService.SAMPLE_SIZE_MIN_15, 
+//				startDate, 
+//				endDate, 
+//				timeZone
+//			);
+//	}
+//	
+//	private TelemetryDataEnergyTimeseriesResponse getTelemetryDataEnergyTimeseries(
+//		String auroraVisionApiKey, 
+//		int entityID, 
+//		String dataType, 	// REQUIRED - Available values : GenerationEnergy, DCGenerationEnergy, Insolation, StorageInEnergy, StorageOutEnergy, GridEnergyExport, GridEnergyImport, SelfConsumedEnergy, ActiveEnergyEV, SessionEnergyEV
+//		String valueType, 	// REQUIRED - Available values : maximum, minimum, average, delta
+//		String sampleSize,	// REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
+//		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
+//		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
+//		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
+//	) {
+//		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
+//		Map<String, String> params	= this.generateParams(sampleSize, startDate, endDate, timeZone); 
+//		String url					= this.generateUrl(URL + ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES_DATA, entityID, dataType, valueType);
+//		
+//		TelemetryDataEnergyTimeseriesResponse response = this.jsonCaller.get(url, headers, params, TelemetryDataEnergyTimeseriesResponse.class);
+//
+//		return response == null ? null : response;
+//	}
 
 	public TelemetryDataEnergyTimeseriesResponse getTelemetryDataPowerTimeseries(
 		String auroraVisionApiKey, 
@@ -330,7 +334,7 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_IP_RANGE_DATALOGGER;
-		IpRangeDataloggerResponse response = JsonCaller.get(url, headers, null, IpRangeDataloggerResponse.class);
+		IpRangeDataloggerResponse response = this.jsonCaller.get(url, headers, null, IpRangeDataloggerResponse.class);
 
 		return response == null ? null : response;
 	}
@@ -346,30 +350,33 @@ public class FimerInverterService implements InverterService {
 		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 
 		String url = URL + ENDPOINT_IP_RANGE_WEB;
-		IpRangeWebResponse response = JsonCaller.get(url, headers, null, IpRangeWebResponse.class);
+		IpRangeWebResponse response = this.jsonCaller.get(url, headers, null, IpRangeWebResponse.class);
 
 		return response == null ? null : response;
 	}
 	
-	public OrganizationResponse getPortafolioGroup(String auroraVisionApiKey) {
-		// Package api.organization
-		// Payload -
-		// Response OrganizationResponse
-		// Description
-		// Allows to retrieve info on the Organization (PortfolioGroup) the user is
-		// associated with together with the list of active portfolios contained in the
-		// Organization (portfolioGroupPortfolios).
-
-		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
-
-		OrganizationResponse response = JsonCaller.get(URL + ENDPOINT_ORGANIZATION, headers, null,
-				OrganizationResponse.class);
-
-		return response == null ? null : response;
-	}
+//	public OrganizationResponse getPortafolioGroup(String auroraVisionApiKey) {
+//		// Package api.organization
+//		// Payload -
+//		// Response OrganizationResponse
+//		// Description
+//		// Allows to retrieve info on the Organization (PortfolioGroup) the user is
+//		// associated with together with the list of active portfolios contained in the
+//		// Organization (portfolioGroupPortfolios).
+//
+//		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
+//
+//		OrganizationResponse response = this.jsonCaller.get(URL + ENDPOINT_ORGANIZATION, headers, null, OrganizationResponse.class);
+//
+//		return response == null ? null : response;
+//	}
 
 	
 	public StatusResponse status() {
-		return JsonCaller.get(URL + ENDPOINT_STATUS, StatusResponse.class);
+		return this.jsonCaller.get(URL + ENDPOINT_STATUS, StatusResponse.class);
+	}
+
+	public void setJsonCaller(JsonCaller jsonCaller) {
+		this.jsonCaller = jsonCaller;
 	}
 }
