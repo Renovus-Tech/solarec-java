@@ -1,0 +1,26 @@
+{
+    "error_msg": "",
+    "data": {
+        "energys": [
+            {
+                "date": "2023-06-01",
+                "energy": "0"
+            },
+            {
+                "date": "2023-06-02",
+                "energy": "0"
+            },
+            {
+                "date": "2023-06-03",
+                "energy": "0"
+            },
+            {
+                "date": "2023-06-04",
+                "energy": "0"
+            }
+        ],
+        "count": 4,
+        "time_unit": "day"
+    },
+    "error_code": 0
+}

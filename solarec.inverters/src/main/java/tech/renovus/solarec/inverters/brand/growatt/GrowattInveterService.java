@@ -40,28 +40,28 @@ public class GrowattInveterService implements InverterService {
 	//-- Private constants ----------------------
 	private static final String LOG_PREFIX	= "[Growatt] ";
 	
-	private static final String URL_PROD	= "";
-	private static final String URL_TEST	= "http://test.growatt.com";
-	
-	private static final String ENDPOINT_LIST_PLANTS	= "/v1/plant/list";
-	private static final String ENDPOINT_LIST_DEVICES	= "/v1/device/list";
-	private static final String ENDPOINT_PLANT_POWER	= "/v1/plant/power";
-	private static final String ENDPOINT_PLANT_ENERGY	= "/v1/plant/energy";
-	
 	private static final String HEADER_TOKEN	= "TOKEN";
 	
 	private static final int AMOUNT_PARTS	= 96; //24 * 60 / 15;
 	
 
 	//--- Public constants ----------------------
-	public static final String PARAM_BETA_MODE										= "growatt.test";
-	public static final String PARAM_APP_TOKEN										= "growatt.client.app_token";
-	protected static final String PARAM_CLI_LAST_DATE_RETRIEVE						= "growatt.client.last_retrieve";
-	protected static final String PARAM_LOC_LAST_DATE_RETRIEVE						= "growatt.location.last_retrieve";
-	protected static final String PARAM_GEN_PLANT_ID								= "growatt.generator.plant_id";
-	protected static final String PARAM_GEN_LAST_DATE_RETRIEVE						= "growatt.generator.last_retrieve";
-	
-	protected static final String PARAM_DATA_DEMO									= "growatt.data_demo";
+	public static final String URL_PROD	= "";
+	public static final String URL_TEST	= "http://test.growatt.com";
+
+	public static final String ENDPOINT_LIST_PLANTS		= "/v1/plant/list";
+	public static final String ENDPOINT_LIST_DEVICES	= "/v1/device/list";
+	public static final String ENDPOINT_PLANT_POWER		= "/v1/plant/power";
+	public static final String ENDPOINT_PLANT_ENERGY	= "/v1/plant/energy";
+
+	public static final String PARAM_BETA_MODE									= "growatt.test";
+	public static final String PARAM_APP_TOKEN									= "growatt.client.app_token";
+	public static final String PARAM_CLI_LAST_DATE_RETRIEVE						= "growatt.client.last_retrieve";
+	public static final String PARAM_LOC_LAST_DATE_RETRIEVE						= "growatt.location.last_retrieve";
+	public static final String PARAM_GEN_PLANT_ID								= "growatt.generator.plant_id";
+	public static final String PARAM_GEN_LAST_DATE_RETRIEVE						= "growatt.generator.last_retrieve";
+
+	public static final String PARAM_DATA_DEMO									= "growatt.data_demo";
 	
 	public static final String TIME_UNIT_DAY	= "day";
 	public static final String TIME_UNIT_MONTH	= "month";
@@ -69,7 +69,8 @@ public class GrowattInveterService implements InverterService {
 	
 	
 	//--- Private properties --------------------
-	@Autowired WeatherService weatherService;
+	private @Autowired WeatherService weatherService;
+	private @Autowired JsonCaller jsonCaller;
 
 	private ClientVo cliVo;
 	private boolean continueWithStats = true;
@@ -286,7 +287,7 @@ public class GrowattInveterService implements InverterService {
 	public String getUrl(boolean forProd) { return forProd ? URL_PROD : URL_TEST; }
 
 	public ListPlantsResponse listPlants(String url, String token) {
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + ENDPOINT_LIST_PLANTS, 
 				this.getHeaders(token), 
 				null, 
@@ -298,7 +299,7 @@ public class GrowattInveterService implements InverterService {
 		Map<String, String> params = new HashMap<>();
 		params.put("plant_id", plantId.toString());
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + ENDPOINT_LIST_DEVICES, 
 				this.getHeaders(token), 
 				params, 
@@ -313,7 +314,7 @@ public class GrowattInveterService implements InverterService {
 		params.put("start_date", this.formatDate.format(dateStart));
 		params.put("end_date", this.formatDate.format(dateEnd));
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + ENDPOINT_PLANT_ENERGY, 
 				this.getHeaders(token), 
 				params, 
@@ -326,11 +327,16 @@ public class GrowattInveterService implements InverterService {
 		params.put("plant_id", plantId.toString());
 		params.put("date", this.formatDate.format(date));
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + ENDPOINT_PLANT_POWER, 
 				this.getHeaders(token), 
 				params, 
 				PlantPowerResponse.class
 			);
 	}
+	
+	public void setJsonCaller(JsonCaller jsonCaller) {
+		this.jsonCaller = jsonCaller;
+	}
+
 }
