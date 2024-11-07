@@ -4,6 +4,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 
 import org.junit.Test;
@@ -74,6 +77,19 @@ public abstract class BaseInveterTest {
 		result.setDataDefParameter(paramVo);
 		
 		return result;
+	}
+	
+	public Path getClassLocation(Class<?> clazz) {
+		try {
+			// Get the URL where the class is loaded from
+			URL location = clazz.getProtectionDomain().getCodeSource().getLocation();
+
+			// Convert the URL to a path
+			return Paths.get(location.toURI());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	//--- Abstract methods ----------------------

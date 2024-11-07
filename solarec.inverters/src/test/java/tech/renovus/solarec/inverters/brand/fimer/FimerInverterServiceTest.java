@@ -10,9 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -44,20 +42,6 @@ public class FimerInverterServiceTest extends BaseInveterTest {
 	
 	@InjectMocks private FimerInverterService service = new FimerInverterService();
 
-	//--- Private methods -----------------------
-	private Path getClassLocation(Class<?> clazz) {
-		try {
-			// Get the URL where the class is loaded from
-			URL location = clazz.getProtectionDomain().getCodeSource().getLocation();
-
-			// Convert the URL to a path
-			return Paths.get(location.toURI());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
 	//--- Testing methods -----------------------
 	@Test 
 	public void testCallApi() throws IOException {

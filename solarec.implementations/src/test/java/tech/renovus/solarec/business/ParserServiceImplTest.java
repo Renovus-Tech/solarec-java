@@ -41,7 +41,6 @@ public class ParserServiceImplTest {
 		when(translationService.getLocale((UserData) null)).thenReturn(en);
 		when(translationService.forAlert(any(), anyString(), any())).thenAnswer((Answer<String>) invocation -> StringUtil.join("-", invocation.getArguments()) );
 		
-		
 		CliGenAlertVo genAlert = this.createGenAlertVo();
 		
 		assertEquals("en-generator.alertPerformanceRatioLow-null-null-null-null-null-2022-09-09-56.13432315371699-84.0792077271813-6-33.23637951506319", service.parseAlert(genAlert, en));

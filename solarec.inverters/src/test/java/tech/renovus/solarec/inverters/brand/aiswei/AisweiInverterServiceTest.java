@@ -3,92 +3,75 @@ package tech.renovus.solarec.inverters.brand.aiswei;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.junit.Assume;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-import tech.renovus.solarec.inverters.brand.TestingUtil;
+import tech.renovus.solarec.connection.JsonCaller;
+import tech.renovus.solarec.inverters.brand.BaseInveterTest;
 import tech.renovus.solarec.inverters.brand.aiswei.api.DeviceListResponse;
 import tech.renovus.solarec.inverters.brand.aiswei.api.InverterOverviewResponse;
 import tech.renovus.solarec.inverters.brand.aiswei.api.PlantListResponse;
 import tech.renovus.solarec.inverters.brand.aiswei.api.PlantOutputResponse;
 import tech.renovus.solarec.inverters.brand.aiswei.api.PlantOverviewResponse;
-import tech.renovus.solarec.inverters.common.InverterService.InverterData;
+import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.inverters.common.InverterService.InveterServiceException;
 import tech.renovus.solarec.util.BooleanUtils;
-import tech.renovus.solarec.util.CollectionUtil;
+import tech.renovus.solarec.util.FileUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.weather.WeatherService;
 
-public class AisweiInverterServiceTest {
+public class AisweiInverterServiceTest extends BaseInveterTest {
 
 	//--- Private properties --------------------
-	private static String betaMode;
-	private static String clientAppKey;
-	private static String clientUserToken;
-	private static String generatorPlantKey;
+	@Mock private JsonCaller jsonCaller;
+	@Mock private WeatherService weatherService;
 	
-	private static AisweiInverterService service;
-	private static ClientVo client;
-	
-	//--- Init methods --------------------------
-	@BeforeClass
-	public static void init() {
-		AisweiInverterServiceTest.betaMode				= System.getProperty("aiswei_beta");
-		AisweiInverterServiceTest.clientAppKey			= System.getProperty("aiswei_client_app_key");
-		AisweiInverterServiceTest.clientUserToken		= System.getProperty("aiswei_client_user_token");
-		AisweiInverterServiceTest.generatorPlantKey		= System.getProperty("aiswei_generator_plant_key");
-		
-		boolean allDataRequired = 
-				AisweiInverterServiceTest.betaMode != null && 
-				AisweiInverterServiceTest.clientAppKey != null && 
-				AisweiInverterServiceTest.clientUserToken != null && 
-				AisweiInverterServiceTest.generatorPlantKey != null;
-		
-		Assume.assumeTrue("Skipping tests because test data is missing. Added the following system.properties to execute tests: aiswei_beta, aiswei_client_app_key, aiswei_client_user_token, aiswei_generator_plant_key", allDataRequired);
-		
-		AisweiInverterServiceTest.client = new ClientVo();
-		AisweiInverterServiceTest.client.add(TestingUtil.createParameter(AisweiInverterService.PARAM_BETA_MODE, AisweiInverterServiceTest.betaMode));
-		AisweiInverterServiceTest.client.add(TestingUtil.createParameter(AisweiInverterService.PARAM_ACCESS_APP_KEY, AisweiInverterServiceTest.clientAppKey));
-		AisweiInverterServiceTest.client.add(TestingUtil.createParameter(AisweiInverterService.PARAM_GEN_PLANT_KEY, AisweiInverterServiceTest.generatorPlantKey));
-		
-		AisweiInverterServiceTest.service = new AisweiInverterService();
-	}
+	@InjectMocks private AisweiInverterService service;
 	
 	//--- Tests ---------------------------------
-	@Test
-	public void testPrivateProperties() {
-		/**
-		 * If test fails, make sure that you run the testing with the following system.properties:
-		 *   - aiswei_beta
-		 *   - aiswei_client_app_key");
-		 *   - aiswei_client_user_token");
-		 *   - aiswei_generator_plant_key");
-		 *   
-		 * Example of execution: -D<param_1>=<value_1> -D<param_2=<value_2> -D<param_n>=<value_n>
-		 */
-		assertNotNull(AisweiInverterServiceTest.betaMode);
-		assertNotNull(AisweiInverterServiceTest.clientAppKey);
-		assertNotNull(AisweiInverterServiceTest.generatorPlantKey);
-	}
-	
-	
 	@Test 
-	public void testCallApi() {
-		String url			= service.getUrl(! BooleanUtils.isTrue(AisweiInverterServiceTest.betaMode));
+	public void testCallApi() throws IOException {
+		boolean betaMode		= true;
+		String clientAppKey		= "not-real-key";
+		String clientUserToken	= "not-real-token";
+		String plantKey			= "not-real-key";
+		
+		Path classPath										= this.getClassLocation(this.getClass());
+		PlantListResponse plantListResponse					= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/aiswei/sample-plant-list.json")), PlantListResponse.class);
+		DeviceListResponse deviceListResponse				= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/aiswei/sample-device-list.json")), DeviceListResponse.class);
+		PlantOverviewResponse pantOverviewResponse			= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/aiswei/sample-plant-overview.json")), PlantOverviewResponse.class);
+		InverterOverviewResponse inverterOverviewResponse	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/aiswei/sample-inverter-overview.json")), InverterOverviewResponse.class);
+		PlantOutputResponse plantOutputResponse				= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/aiswei/sample-plant-output.json")), PlantOutputResponse.class);
+
+		when(this.jsonCaller.get(AisweiInverterService.URL_DEMO + AisweiInverterService.END_PINT_GET_PLANT_LIST, any(), any(),  PlantListResponse.class)).thenReturn(plantListResponse);
+		when(this.jsonCaller.get(AisweiInverterService.URL_DEMO + AisweiInverterService.END_PINT_GET_DEVICE_LIST, any(), any(),  DeviceListResponse.class)).thenReturn(deviceListResponse);
+		when(this.jsonCaller.get(AisweiInverterService.URL_DEMO + AisweiInverterService.END_PINT_GET_PLANT_OVERVIEW, any(), any(),  PlantOverviewResponse.class)).thenReturn(pantOverviewResponse);
+		when(this.jsonCaller.get(AisweiInverterService.URL_DEMO + AisweiInverterService.END_PINT_GET_INVERTER_OVERVIEW, any(), any(),  InverterOverviewResponse.class)).thenReturn(inverterOverviewResponse);
+		when(this.jsonCaller.get(AisweiInverterService.URL_DEMO + AisweiInverterService.END_PINT_GET_PLANT_OUTPUT, any(), any(),  PlantOutputResponse.class)).thenReturn(plantOutputResponse);
+		
+		String url			= this.service.getUrl(! BooleanUtils.isTrue(betaMode));
 		
 		assertNotNull(url);
 		
 		Exception error = null;
 		PlantListResponse plantList = null;
 		try {
-			plantList = service.getPlantList(url, AisweiInverterServiceTest.clientAppKey, AisweiInverterServiceTest.clientUserToken);
+			plantList = this.service.getPlantList(url, clientAppKey, clientUserToken);
 			
 			assertNotNull(plantList);
 			assertNotNull(plantList.getData());
@@ -99,11 +82,8 @@ public class AisweiInverterServiceTest {
 		
 		assertNull(error);
 		
-		
-		String plantKey = plantList.getData().getList().iterator().next().getApikey();
-		
 		try {
-			DeviceListResponse deviceList = service.getDeviceList(url, AisweiInverterServiceTest.clientAppKey, plantKey);
+			DeviceListResponse deviceList = this.service.getDeviceList(url, clientAppKey, plantKey);
 			
 			assertNotNull(deviceList);
 			assertNotNull(deviceList.getData());
@@ -115,7 +95,7 @@ public class AisweiInverterServiceTest {
 		assertNull(error);
 		
 		try {
-			PlantOverviewResponse plantOverview = service.getPlantOverview(url, AisweiInverterServiceTest.clientAppKey, plantKey);
+			PlantOverviewResponse plantOverview = this.service.getPlantOverview(url, clientAppKey, plantKey);
 			
 			assertNotNull(plantOverview);
 		} catch (NoSuchAlgorithmException | InvalidKeyException e) {
@@ -125,7 +105,7 @@ public class AisweiInverterServiceTest {
 		assertNull(error);
 		
 		try {
-			InverterOverviewResponse inverterOverview = service.getInverterOverview(url, AisweiInverterServiceTest.clientAppKey, plantKey);
+			InverterOverviewResponse inverterOverview = this.service.getInverterOverview(url, clientAppKey, plantKey);
 			
 			assertNotNull(inverterOverview);
 			assertNotNull(inverterOverview.getData());
@@ -141,7 +121,7 @@ public class AisweiInverterServiceTest {
 			calendar.add(Calendar.DAY_OF_YEAR, -10);
 			Date aDate			= calendar.getTime();
 
-			PlantOutputResponse plantOutput = service.getPlantOutput(url, AisweiInverterServiceTest.clientAppKey, plantKey, AisweiInverterService.PERIOD_BY_DAYS, aDate);
+			PlantOutputResponse plantOutput = this.service.getPlantOutput(url, clientAppKey, plantKey, AisweiInverterService.PERIOD_BY_DAYS, aDate);
 			
 			assertNotNull(plantOutput);
 			assertNotNull(plantOutput.getData());
@@ -150,20 +130,43 @@ public class AisweiInverterServiceTest {
 		}
 		
 		assertNull(error);
-		
+	}
+	
+	//--- Overridden methods --------------------
+	@Override
+	public InverterService getService() { return this.service; }
+
+	@Override
+	public ClientVo createClient() {
+		return this.buildClientWith(
+			Arrays.asList(
+				this.createClientParameter(AisweiInverterService.PARAM_BETA_MODE, "false"),
+				this.createClientParameter(AisweiInverterService.PARAM_ACCESS_APP_KEY, "not-a-real-password"),
+				this.createClientParameter(AisweiInverterService.PARAM_USER_TOKEN, "not-a-real-key")
+			),
+			null,
+			Arrays.asList(
+				this.createGeneratorParameter(AisweiInverterService.PARAM_GEN_PLANT_KEY, "34232"),
+				this.createGeneratorParameter(AisweiInverterService.PARAM_GEN_LAST_DATE_RETRIEVE, "-1160481920")
+			)
+		);
+	}
+	
+	@Override public void prepareMock() throws InveterServiceException {
+		Path classPath								= this.getClassLocation(this.getClass());
 		try {
-			service.prepareFor(client);
-			InverterData data = service.retrieveData();
-			
-			assertNotNull(data);
-			assertNotNull(data.getGeneratorData());
-			assertNotNull(data.getStationData());
-			assertTrue(CollectionUtil.notEmpty(data.getGeneratorData()));
-			assertTrue(CollectionUtil.notEmpty(data.getStationData()));
-		} catch (InveterServiceException e) {
-			error = e;
+			PlantOutputResponse plantOutputResponse				= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/aiswei/sample-plant-output.json")), PlantOutputResponse.class);
+
+			when(this.jsonCaller.get(AisweiInverterService.URL_DEMO + AisweiInverterService.END_PINT_GET_PLANT_OUTPUT, any(), any(),  PlantOutputResponse.class)).thenReturn(plantOutputResponse);
+
+		} catch (IOException e) {
+			throw new InveterServiceException(e);
 		}
-		
-		assertNull(error);
+	}
+	
+	@Override
+	public void postDataRetrieveTest() {
+		assertTrue(this.service.continueWithStats());
+		assertNull(this.service.getReasonWhyCantRetrieve());
 	}
 }

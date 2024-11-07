@@ -50,20 +50,19 @@ public class AisweiInverterService implements InverterService {
 
 	//--- Private constants ---------------------
 	private static final String LOG_PREFIX	= "[Aiswei] ";
-	private static final String URL_PROD	= "https://api.general.aisweicloud.com";
-	private static final String URL_DEMO	= "http://e710888d3ccb4638a723ff8d03837095-cn-qingdao.aliapi.com/demo/post";
-	
-	//--- Protected constants -------------------
-	protected static final String PARAM_BETA_MODE				= "aiswei.beta";
-	protected static final String PARAM_ACCESS_APP_KEY			= "aiswei.client.app_key";
-	protected static final String PARAM_USER_TOKEN				= "aiswei.client.user_token";
-	protected static final String PARAM_GEN_PLANT_KEY			= "aiswei.generator.plant_key";
-	protected static final String PARAM_CLI_LAST_DATE_RETRIEVE	= "aiswei.client.last_retrieve";
-	protected static final String PARAM_LOC_LAST_DATE_RETRIEVE	= "aiswei.location.last_retrieve";
-	protected static final String PARAM_GEN_LAST_DATE_RETRIEVE	= "aiswei.generator.last_retrieve";
-
 	
 	//--- Public constants ----------------------
+	public static final String PARAM_BETA_MODE				= "aiswei.beta";
+	public static final String PARAM_ACCESS_APP_KEY			= "aiswei.client.app_key";
+	public static final String PARAM_USER_TOKEN				= "aiswei.client.user_token";
+	public static final String PARAM_GEN_PLANT_KEY			= "aiswei.generator.plant_key";
+	public static final String PARAM_CLI_LAST_DATE_RETRIEVE	= "aiswei.client.last_retrieve";
+	public static final String PARAM_LOC_LAST_DATE_RETRIEVE	= "aiswei.location.last_retrieve";
+	public static final String PARAM_GEN_LAST_DATE_RETRIEVE	= "aiswei.generator.last_retrieve";
+	
+	public static final String URL_PROD	= "https://api.general.aisweicloud.com";
+	public static final String URL_DEMO	= "http://e710888d3ccb4638a723ff8d03837095-cn-qingdao.aliapi.com/demo/post";
+
 	public static final String END_PINT_GET_PLANT_OVERVIEW		= "/getPlantOverview";
 	public static final String END_PINT_GET_PLANT_OUTPUT		= "/getPlantOutput";
 	public static final String END_PINT_GET_INVERTER_OVERVIEW	= "/getInverterOverview";
@@ -77,6 +76,7 @@ public class AisweiInverterService implements InverterService {
 	
 	//--- Private properties --------------------
 	@Autowired WeatherService weatherService;
+	@Autowired JsonCaller jsonCaller;
 	
 	private final SimpleDateFormat formatPeriodTime		= new SimpleDateFormat("HH:MM");
 	private final SimpleDateFormat formatPeriodDate		= new SimpleDateFormat("yyyy-MM-dd");
@@ -341,7 +341,7 @@ public class AisweiInverterService implements InverterService {
 		Map<String, String> params = new HashMap<>();
 		params.put("key", plantKey);
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + END_PINT_GET_PLANT_OVERVIEW, 
 				this.generateHeaders(url, appKey, ""), 
 				params, 
@@ -355,7 +355,7 @@ public class AisweiInverterService implements InverterService {
 		params.put("period", period);
 		params.put("date", this.formatDate(period, aDate));
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + END_PINT_GET_PLANT_OUTPUT, 
 				this.generateHeaders(url, appKey, ""), 
 				params, 
@@ -367,7 +367,7 @@ public class AisweiInverterService implements InverterService {
 		Map<String, String> params = new HashMap<>();
 		params.put("key", plantKey);
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + END_PINT_GET_INVERTER_OVERVIEW, 
 				this.generateHeaders(url, appKey, ""), 
 				params, 
@@ -381,7 +381,7 @@ public class AisweiInverterService implements InverterService {
 		params.put("page", "");
 		params.put("size", "20");
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + END_PINT_GET_PLANT_LIST, 
 				this.generateHeaders(url, appKey, ""), 
 				params, 
@@ -393,12 +393,16 @@ public class AisweiInverterService implements InverterService {
 		Map<String, String> params = new HashMap<>();
 		params.put("key", plantKey);
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + END_PINT_GET_DEVICE_LIST, 
 				this.generateHeaders(url, appKey, ""), 
 				params, 
 				DeviceListResponse.class
 			);
 	}
-	
+
+	public void setJsonCaller(JsonCaller jsonCaller) {
+		this.jsonCaller = jsonCaller;
+	}
+
 }
