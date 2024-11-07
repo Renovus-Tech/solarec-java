@@ -1,25 +1,45 @@
 package tech.renovus.solarec.weather.meteoblue;
 
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import tech.renovus.solarec.connection.JsonCaller;
+import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.FileUtil;
 import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.StaDataVo;
+import tech.renovus.solarec.vo.db.data.StationVo;
+import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
 import tech.renovus.solarec.weather.meteoblue.api.WeatherData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MeteoblueWeatherServiceImplTest {
 
-	@Mock public MeteoblueWeatherServiceImpl service;
+	@Mock private JsonCaller jsonCaller;
+	
+	@InjectMocks private MeteoblueWeatherServiceImpl service = new MeteoblueWeatherServiceImpl();
 	
 	private Path getClassLocation(Class<?> clazz) {
 		try {
@@ -37,43 +57,57 @@ public class MeteoblueWeatherServiceImplTest {
 	// --- Tests ---------------------------------
 	@Test
 	public void testService() throws IOException {
-		Path classPath			= getClassLocation(this.getClass());
-		String sampleString		= FileUtil.readFile(new File(classPath.toFile(), "sample-meteoblue-data.json"));
+		Path classPath			= this.getClassLocation(this.getClass());
+		String sampleString		= FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/weather/meteoblue/sample-data.json"));
 		WeatherData sampleData	= JsonUtil.toObject(sampleString, WeatherData.class);
 		
 		MeteoblueConfiguration configuration = new MeteoblueConfiguration();
 		configuration.setMaxDaysPast(Integer.valueOf(7));
-		this.service = new MeteoblueWeatherServiceImpl(configuration);
+
+		this.service.setConfig(configuration);
 
 		LocationVo locVo = new LocationVo();
 		locVo.setLocCoordLat(-25.635967);
 		locVo.setLocCoordLng(-54.505396);
 
-		//wroking in mock
+		when(
+			this.jsonCaller.get(any(String.class), any(Map.class), any(Class.class))
+		).thenReturn(sampleData);
+
+		StationVo staVo = new StationVo();
+		Exception error = null;
+
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -5);
+		Date dateTo = cal.getTime();
+		cal.add(Calendar.DAY_OF_YEAR, -1);
+		Date dateFrom = cal.getTime();
+
+
+		try {
+			Collection<StaDataVo> data = this.service.retrieveWeatherData(locVo, staVo, dateFrom, dateTo);
+			assertNotNull(data);
+			assertTrue(CollectionUtil.notEmpty(data));
+		} catch (WeatherServiceException e) {
+			error = e;
+		}
+
+		assertNull(error);
 		
-//		when(
-//			this.service.retrieveData(locVo, any(Date.class), any(Date.class), false)
-//		).thenReturn(sampleData);
-//		
-//
-//		StationVo staVo = new StationVo();
-//		Exception error = null;
-//
-//		Calendar cal = GregorianCalendar.getInstance();
-//		cal.add(Calendar.DAY_OF_YEAR, -5);
-//		Date dateTo = cal.getTime();
-//		cal.add(Calendar.DAY_OF_YEAR, -1);
-//		Date dateFrom = cal.getTime();
-//
-//
-//		try {
-//			Collection<StaDataVo> data = service.retrieveWeatherData(locVo, staVo, dateFrom, dateTo);
-//			assertNotNull(data);
-//			assertTrue(CollectionUtil.notEmpty(data));
-//		} catch (WeatherServiceException e) {
-//			error = e;
-//		}
-//
-//		assertNull(error);
+		cal = GregorianCalendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -(configuration.getMaxDaysPast() + 2));
+		dateTo = cal.getTime();
+		cal.add(Calendar.DAY_OF_YEAR, -1);
+		dateFrom = cal.getTime();
+		
+		try {
+			Collection<StaDataVo> data = this.service.retrieveWeatherData(locVo, staVo, dateFrom, dateTo);
+			assertNotNull(data);
+			assertFalse(CollectionUtil.notEmpty(data));
+		} catch (WeatherServiceException e) {
+			error = e;
+		}
+		
+		assertNull(error);
 	}
 }

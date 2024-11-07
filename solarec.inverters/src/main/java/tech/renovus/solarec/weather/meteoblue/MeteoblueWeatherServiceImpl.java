@@ -459,8 +459,10 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 	private static final String URL_SOLAR	= "https://my.meteoblue.com/packages/basic-1h_clouds-1h_solar-1h";
 	
 	//--- Resources -----------------------------
-	@Autowired MeteoblueConfiguration config;
+	private @Autowired MeteoblueConfiguration config;
+	private @Autowired JsonCaller jsonCaller;
 	
+	//--- Constructors --------------------------
 	public MeteoblueWeatherServiceImpl() {}
 	
 	public MeteoblueWeatherServiceImpl(MeteoblueConfiguration config) {
@@ -533,7 +535,7 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 		LoggerService.weatherLogger().info("[Meteoblue] Start data retrieve from " + DATE_FORMATTER.format(dateFrom) + " from " + DATE_FORMATTER.format(dateTo) + " for coords: " + locVo.getLocCoordLat() + " - " + locVo.getLocCoordLng());
 		
 		Calendar cal = GregorianCalendar.getInstance();
-		cal.add(Calendar.DAY_OF_MONTH, this.config.getMaxDaysPast().intValue());
+		cal.add(Calendar.DAY_OF_MONTH, - this.config.getMaxDaysPast().intValue());
 		cal.set(Calendar.HOUR,0);
 		cal.set(Calendar.MINUTE,0);
 		cal.set(Calendar.SECOND,0);
@@ -590,7 +592,7 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 
 	public WeatherData retrieveData(LocationVo locVo, Date dateFrom, Date dateTo, boolean periodInRange) {
 		Map<String, String> params		= this.getParams(locVo, dateFrom, dateTo, false);
-		WeatherData data				= periodInRange ? JsonCaller.get(URL_SOLAR, params, WeatherData.class) : null;
+		WeatherData data				= periodInRange ? this.jsonCaller.get(URL_SOLAR, params, WeatherData.class) : null;
 		return data;
 	}
 
