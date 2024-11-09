@@ -49,11 +49,11 @@ public class FroniusInverterServiceTest extends BaseInveterTest {
 	//--- Test methods --------------------------
 	@Test
 	public void testCallApi() throws IOException {
-		Boolean betaMode			= false;
+		Boolean betaMode		= false;
 		String accessKeyId		= "not-a-real-key-id";
 		String accessKeyValue	= "not-a-real-key-value";
 
-		Path classPath			= this.getClassLocation(this.getClass());
+		Path classPath								= this.getClassLocation(this.getClass());
 		
 		InfoReleaseResponse infoReleaseResponseMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/fronius/sample-info-release.json")), InfoReleaseResponse.class);
 		InfoUserResponse infoUserResponseMock		= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/fronius/sample-info-user.json")), InfoUserResponse.class);
