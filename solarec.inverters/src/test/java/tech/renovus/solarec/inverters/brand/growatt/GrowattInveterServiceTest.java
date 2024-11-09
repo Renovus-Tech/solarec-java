@@ -36,28 +36,38 @@ public class GrowattInveterServiceTest extends BaseInveterTest {
 	@Mock private JsonCaller jsonCaller;
 	@Mock private WeatherService weatherService;
 	
-	@InjectMocks private static GrowattInveterService service = null;
+	@InjectMocks private GrowattInveterService service = new GrowattInveterService();
 	
 	
 	//--- Test methods --------------------------
 	@Test
-	public void testCallApi() {
-		boolean prodMode = false;
-		String token = "not-a-real-token";
-		Integer plantId = Integer.valueOf(-1);
+	public void testCallApi() throws IOException {
+		boolean prodMode	= false;
+		String token		= "not-a-real-token";
+		Integer plantId		= Integer.valueOf(-1);
+		Date dateStart		= new Date();
+		Date dateEnd		= new Date();
+		String url			= this.service.getUrl(prodMode);
 		
-		Date dateStart = new Date();
-		Date dateEnd = new Date();
-		String url = service.getUrl(prodMode);
+		Path classPath								= this.getClassLocation(this.getClass());
 		
-		ListPlantsResponse plants = service.listPlants(url, token);
+		ListPlantsResponse plantsMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/growatt/sample-list-plants.json")), ListPlantsResponse.class);
+		PlantEnergyResponse dataMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/growatt/sample-plant-energy.json")), PlantEnergyResponse.class);
+		PlantPowerResponse data2Mock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/growatt/sample-plant-power.json")), PlantPowerResponse.class);
+
+		
+		when(this.jsonCaller.get(eq(GrowattInveterService.URL_TEST + GrowattInveterService.ENDPOINT_LIST_PLANTS), any(), any(), any())).thenReturn(plantsMock);
+		when(this.jsonCaller.get(eq(GrowattInveterService.URL_TEST + GrowattInveterService.ENDPOINT_PLANT_ENERGY), any(), any(), any())).thenReturn(dataMock);
+		when(this.jsonCaller.get(eq(GrowattInveterService.URL_TEST + GrowattInveterService.ENDPOINT_PLANT_POWER), any(), any(), any())).thenReturn(data2Mock);
+		
+		ListPlantsResponse plants = this.service.listPlants(url, token);
 		assertNotNull(plants);
 		assertTrue(plants != null && plants.getData() != null && CollectionUtil.notEmpty(plants.getData().getPlants()));
 
-		PlantEnergyResponse data = service.getPlantEnergy(url, token, plantId, GrowattInveterService.TIME_UNIT_DAY, dateStart, dateEnd);
+		PlantEnergyResponse data = this.service.getPlantEnergy(url, token, plantId, GrowattInveterService.TIME_UNIT_DAY, dateStart, dateEnd);
 		assertNotNull(data);
 		
-		PlantPowerResponse data2 = service.getPlantPower(url, token, plantId, dateStart);
+		PlantPowerResponse data2 = this.service.getPlantPower(url, token, plantId, dateStart);
 		assertNotNull(data2);
 	}
 	

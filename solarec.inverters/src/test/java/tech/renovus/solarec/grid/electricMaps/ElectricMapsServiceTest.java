@@ -1,26 +1,35 @@
 package tech.renovus.solarec.grid.electricMaps;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import tech.renovus.solarec.grid.DataGridService;
+import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.grid.DataGridService.DataGridServiceException;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.CountryVo;
 import tech.renovus.solarec.vo.db.data.CtrDataVo;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ElectricMapsServiceTest {
 	
 	//--- Private properties --------------------
+	@Mock private JsonCaller jsonCaller;
+	
+	@InjectMocks private ElectricMapsService service = new ElectricMapsService();
+	
 	private static String key;
 
 	//--- Init methods --------------------------
@@ -43,11 +52,9 @@ public class ElectricMapsServiceTest {
 		
 		assertEquals(ElectricMapsServiceTest.key, config.getKey());
 		
-		DataGridService service = new ElectricMapsService(config);
-		
 		DataGridServiceException exception = null;
 		try {
-			Collection<CtrDataVo> data = service.retrieveGridData(ctrVo);
+			Collection<CtrDataVo> data = this.service.retrieveGridData(ctrVo);
 			
 			assertNotNull(data);
 			assertTrue(CollectionUtil.notEmpty(data));
