@@ -1,0 +1,14 @@
+{
+	"plant": {
+		"plantId": "13",
+		"name": "Testplant 1",
+		"timezone": "Europe/Berlin"
+	},
+	"device": {
+		"deviceId": "16",
+		"name": "My Inverter 1",
+		"timezone": "Europe/Berlin"
+	},
+	"setType": "EnergyAndPowerPv",
+	"set": []
+}

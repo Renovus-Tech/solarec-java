@@ -1,0 +1,10 @@
+{
+	"access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIyMmVlODZkMy03OTExLTQyMmYtOGU0YraNhD0yg",
+	"expires_in": 300,
+	"refresh_expires_in": 1800,
+	"refresh_token": "eyJhbGciOiJIUzI1NiIso6R8Uk",
+	"token_type": "Bearer",
+	"not-before-policy": 0,
+	"session_state": "a006a8ec-4cff-4b18-b0b7-573b377b9cbe",
+	"scope": "monitoringApi:read"
+}

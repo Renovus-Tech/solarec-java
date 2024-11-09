@@ -3,12 +3,13 @@ package tech.renovus.solarec.inverters.brand.sma;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.sma.api.authorization.AuthResponse;
@@ -20,20 +21,18 @@ import tech.renovus.solarec.inverters.brand.sma.api.monitoring.plant.PlantDevice
 import tech.renovus.solarec.inverters.brand.sma.api.monitoring.plant.PlantsResponse;
 import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.inverters.common.InvertersUtil;
-import tech.renovus.solarec.inverters.common.InverterService.InveterServiceException;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
-import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
+import tech.renovus.solarec.weather.WeatherService;
 import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
-import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 
 /**
  * URL: https://sandbox.smaapis.de/monitoring/index.html
@@ -45,32 +44,32 @@ import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 public class SmaInverterService implements InverterService {
 
 	//--- Private constants ---------------------
-	private static final String LOG_PREFIX				= "[SMA] ";
-	private static final String PROD_URL_AUTH			= "https://auth.smaapis.de";
-	private static final String SANDBOX_URL_AUTH		= "https://sandbox-auth.smaapis.de";
+	public static final String LOG_PREFIX							= "[SMA] ";
+	public static final String PROD_URL_AUTH						= "https://auth.smaapis.de";
+	public static final String SANDBOX_URL_AUTH						= "https://sandbox-auth.smaapis.de";
 
-	private static final String PROD_URL_DATA			= "https://smaapis.de";
-	private static final String SANDBOX_URL_DATA		= "https://sandbox.smaapis.de";
+	public static final String PROD_URL_DATA						= "https://smaapis.de";
+	public static final String SANDBOX_URL_DATA						= "https://sandbox.smaapis.de";
 
-	private static final String ENDPOINT_TOKEN						= "/oauth2/token";
-	private static final String ENDPOINT_BC_AUTHORIZE				= "/oauth2/v2/bc-authorize";
-	private static final String ENDPOINT_BC_AUTHROIZE_STATUS		= "/oauth2/v2/bc-authorize/{emailAddressResourceOwner}/status";
-	private static final String ENDPOINT_BC_AUTHROIZE_TOKEN			= "/oauth2/v2/bc-authorize/{emailAddressResourceOwner}";
+	public static final String ENDPOINT_TOKEN						= "/oauth2/token";
+	public static final String ENDPOINT_BC_AUTHORIZE				= "/oauth2/v2/bc-authorize";
+	public static final String ENDPOINT_BC_AUTHROIZE_STATUS			= "/oauth2/v2/bc-authorize/{emailAddressResourceOwner}/status";
+	public static final String ENDPOINT_BC_AUTHROIZE_TOKEN			= "/oauth2/v2/bc-authorize/{emailAddressResourceOwner}";
 
-	private static final String ENDPOINT_MONITORING_PLANTS			= "/monitoring/v1/plants";
-	private static final String ENDPOINT_MONITORING_PLAT_DEVICES	= "/monitoring/v1/plants/{plantId}/devices";
+	public static final String ENDPOINT_MONITORING_PLANTS			= "/monitoring/v1/plants";
+	public static final String ENDPOINT_MONITORING_PLAT_DEVICES		= "/monitoring/v1/plants/{plantId}/devices";
 
-	private static final String ENDPOINT_MEASUREMENTS_DEVICE		= "/monitoring/v1/devices/{deviceId}/measurements/sets/{setType}/{period}";
+	public static final String ENDPOINT_MEASUREMENTS_DEVICE			= "/monitoring/v1/devices/{deviceId}/measurements/sets/{setType}/{period}";
 
+	//--- Public constants ----------------------
 	public static final String PARAM_SANBOX							= "sma.sandbox";
 	public static final String PARAM_CLIENT_CLIENT_ID				= "sma.client.client_id";
 	public static final String PARAM_CLIENT_CLIENT_SECRET			= "sma.client.client_secret";
 	public static final String PARAM_CLIENT_RESOURCE_OWNER			= "sma.client.resource_owner";
-	private static final String PARAM_LOCATION_PLANT_ID				= "sma.location.plant_id";
-	private static final String PARAM_GENERATOR_DEVICE_ID			= "sma.generator.device_id";
-	private static final String PARAM_GEN_LAST_DATE_RETRIEVE		= "sma.generator.last_retrieve";
+	public static final String PARAM_LOCATION_PLANT_ID				= "sma.location.plant_id";
+	public static final String PARAM_GENERATOR_DEVICE_ID			= "sma.generator.device_id";
+	public static final String PARAM_GEN_LAST_DATE_RETRIEVE			= "sma.generator.last_retrieve";
 	
-	//--- Public constants ----------------------
 	public static final String AUTHORIZE_ACCEPTED = "Accepted";
 		
 	public static final String SET_TYPE_ENERGY_AND_POWER_BATTERY		= "EnergyAndPowerBattery";
@@ -91,11 +90,14 @@ public class SmaInverterService implements InverterService {
 	
 	public static final String DEVICE_TYPE_SOLAR_INVETER	= "Solar Inverters";
 
+	//--- Autowired properties ------------------
+	@Autowired WeatherService weatherService;
+	@Autowired JsonCaller jsonCaller;
+	
 	//--- Private properties --------------------
 	private ClientVo cliVo;
 	private AuthResponse auth;
 	private BcAuthorizeResponse authorize;
-
 	
 	//--- Private methods -----------------------
 	private String getUrlAuth(boolean sandboxMode) { return sandboxMode ? SANDBOX_URL_AUTH : PROD_URL_AUTH; }
@@ -166,7 +168,7 @@ public class SmaInverterService implements InverterService {
 						boolean sandboxMode		= BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_SANBOX));
 						
 						this.auth		= this.retrieveToken(sandboxMode, clientId, clientSecret);
-						this.authorize	= this.retrieveBcAutorizeToken(sandboxMode, this.auth, resourceOwner);
+						this.authorize	= this.retrieveBcAuthorizeToken(sandboxMode, this.auth, resourceOwner);
 
 						if (this.isAuthorized()) {
 							String deviceId			= InvertersUtil.getParameter(generator, PARAM_GENERATOR_DEVICE_ID);
@@ -193,7 +195,7 @@ public class SmaInverterService implements InverterService {
 								GenDataVo lastData = generatorData.iterator().next();
 								
 								try {
-									CollectionUtil.addAll(result.getStationData(), new MeteoblueWeatherServiceImpl().retrieveWeatherData(location, station, dateFrom, lastData.getDataDate()));
+									CollectionUtil.addAll(result.getStationData(), this.weatherService.retrieveWeatherData(location, station, dateFrom, lastData.getDataDate()));
 								} catch (WeatherServiceException e) {
 									throw new InveterServiceException(e);
 								}
@@ -218,7 +220,7 @@ public class SmaInverterService implements InverterService {
 		params.put("client_id", clientId);
 		params.put("client_secret", clientSecret);
 		
-		return JsonCaller.post(
+		return this.jsonCaller.post(
 				this.getUrlAuth(sandboxMode) + ENDPOINT_TOKEN, 
 				params, 
 				AuthResponse.class
@@ -226,7 +228,7 @@ public class SmaInverterService implements InverterService {
 	}
 //	
 //	public BcAuthorizeResponse retrieveBcAuthorize(AuthResponse auth, String clientEmail) {
-//		return JsonCaller.bearerPost(
+//		return this.jsonCaller.bearerPost(
 //				this.getUrlAuth(sandboxMode) + ENDPOINT_BC_AUTHORIZE, 
 //				new BcAuthorizeRequest().withLoginHint(clientEmail), 
 //				auth.getAccessToken(),
@@ -235,7 +237,7 @@ public class SmaInverterService implements InverterService {
 //	}
 //	
 //	public BcAuthorizeResponse retrieveBcAuthorizeStatus(AuthResponse auth, String clientEmail) {
-//		return JsonCaller.bearerGet(
+//		return this.jsonCaller.bearerGet(
 //				(this.getUrlAuth(sandboxMode) + ENDPOINT_BC_AUTHROIZE_STATUS).replaceFirst("\\{emailAddressResourceOwner\\}", clientEmail), 
 //				null, 
 //				auth.getAccessToken(),
@@ -243,8 +245,8 @@ public class SmaInverterService implements InverterService {
 //			);
 //	}
 	
-	public BcAuthorizeResponse retrieveBcAutorizeToken(boolean sandboxMode, AuthResponse auth, String clientEmail) {
-		return JsonCaller.bearerGet(
+	public BcAuthorizeResponse retrieveBcAuthorizeToken(boolean sandboxMode, AuthResponse auth, String clientEmail) {
+		return this.jsonCaller.bearerGet(
 				(this.getUrlData(sandboxMode) + ENDPOINT_BC_AUTHROIZE_TOKEN).replaceFirst("\\{emailAddressResourceOwner\\}", clientEmail), 
 				null, 
 				auth.getAccessToken(),
@@ -253,7 +255,7 @@ public class SmaInverterService implements InverterService {
 	}
 	
 	public PlantsResponse retrievePlants(boolean sandboxMode, AuthResponse auth) {
-		return JsonCaller.bearerGet(
+		return this.jsonCaller.bearerGet(
 				this.getUrlData(sandboxMode) + ENDPOINT_MONITORING_PLANTS, 
 				null, 
 				auth.getAccessToken(),
@@ -262,7 +264,7 @@ public class SmaInverterService implements InverterService {
 	}
 
 	public PlantDevicesResponse retrievePlantDevices(boolean sandboxMode, AuthResponse auth, String plantId) {
-		return JsonCaller.bearerGet(
+		return this.jsonCaller.bearerGet(
 				(this.getUrlData(sandboxMode) + ENDPOINT_MONITORING_PLAT_DEVICES).replaceFirst("\\{plantId\\}", plantId), 
 				null, 
 				auth.getAccessToken(),
@@ -276,7 +278,7 @@ public class SmaInverterService implements InverterService {
 		
 		params.put("Date", date);
 		
-		return JsonCaller.bearerGet(
+		return this.jsonCaller.bearerGet(
 				(this.getUrlData(sandboxMode) + ENDPOINT_MEASUREMENTS_DEVICE)
 					.replaceFirst("\\{deviceId\\}", deviceId) 
 					.replaceFirst("\\{setType\\}", setType) 
@@ -289,5 +291,10 @@ public class SmaInverterService implements InverterService {
 	
 	public boolean isInveter(Device device) {
 		return device != null && ClassUtil.equals(device.getType(), DEVICE_TYPE_SOLAR_INVETER);
+	}
+	
+	//--- Getters and Setters -------------------
+	public void setJsonCaller(JsonCaller jsonCaller) {
+		this.jsonCaller = jsonCaller;
 	}
 }

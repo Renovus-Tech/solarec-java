@@ -1,0 +1,49 @@
+{
+	"plants": [
+		{
+			"plantId": "13",
+			"name": "Testplant 1",
+			"timezone": "Europe/Berlin"
+		},
+		{
+			"plantId": "24",
+			"name": "TestPlant2",
+			"timezone": "Europe/Berlin"
+		},
+		{
+			"plantId": "35",
+			"name": "TestPlant3",
+			"timezone": "Europe/Berlin"
+		},
+		{
+			"plantId": "46",
+			"name": "TestPlant4",
+			"timezone": "Europe/Berlin"
+		},
+		{
+			"plantId": "57",
+			"name": "TestPlant5",
+			"timezone": "Europe/Berlin"
+		},
+		{
+			"plantId": "68",
+			"name": "TestPlant6",
+			"timezone": "Europe/Berlin"
+		},
+		{
+			"plantId": "79",
+			"name": "TestPlant7",
+			"timezone": "Europe/Berlin"
+		},
+		{
+			"plantId": "90",
+			"name": "TestPlant8",
+			"timezone": "Europe/Berlin"
+		},
+		{
+			"plantId": "101",
+			"name": "TestPlant9",
+			"timezone": "Europe/Berlin"
+		}
+	]
+}
