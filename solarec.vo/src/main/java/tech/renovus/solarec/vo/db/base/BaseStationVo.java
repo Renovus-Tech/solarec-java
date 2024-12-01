@@ -7,7 +7,7 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 @javax.annotation.Generated(value = "Renovus") public class BaseStationVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
-	public static final String COLUMN_CLI_ID = "cli_id";
+	public static final String COLUMN_FRQ_ID = "frq_id";
 	public static final String COLUMN_STA_ID = "sta_id_auto";
 	public static final String COLUMN_DATA_DEF_ID = "data_def_id";
 	public static final String COLUMN_LOC_ID = "loc_id";
@@ -15,24 +15,25 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 	public static final String COLUMN_STA_COORD_LNG = "sta_coord_lng";
 	public static final String COLUMN_STA_DATA_DATE_MAX = "sta_data_date_max";
 	public static final String COLUMN_STA_DATA_DATE_MIN = "sta_data_date_min";
-	public static final String COLUMN_STA_FLAGS = "sta_flags";
+	public static final String COLUMN_CLI_ID = "cli_id";
 	public static final String COLUMN_STA_NAME = "sta_name";
 	public static final String COLUMN_STA_DESCRIPTION = "sta_description";
 	public static final String COLUMN_STA_CODE = "sta_code";
 	public static final String COLUMN_STA_CERT_PROV_DATA = "sta_cert_prov_data";
+	public static final String COLUMN_STA_FLAGS = "sta_flags";
 
-	public static final int LENGTH_COLUMN_STA_FLAGS =  20;
 	public static final int LENGTH_COLUMN_STA_NAME =  100;
 	public static final int LENGTH_COLUMN_STA_DESCRIPTION =  200;
 	public static final int LENGTH_COLUMN_STA_CODE =  100;
 	public static final int LENGTH_COLUMN_STA_CERT_PROV_DATA =  2000;
+	public static final int LENGTH_COLUMN_STA_FLAGS =  20;
 
 	//--- Implemented methods -------------------
 	@Override public String getFlags() { return this.staFlags; }
 	@Override public void setFlags(String staFlags) { this.staFlags = staFlags; }
 
 	//--- Private properties --------------------
-	private Integer cliId;
+	private Integer frqId;
 	private Integer staId;
 	private Integer dataDefId;
 	private Integer locId;
@@ -40,11 +41,12 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 	private Double staCoordLng;
 	private java.util.Date staDataDateMax;
 	private java.util.Date staDataDateMin;
-	private String staFlags;
+	private Integer cliId;
 	private String staName;
 	private String staDescription;
 	private String staCode;
 	private String staCertProvData;
+	private String staFlags;
 
 	//--- Public methods ------------------------
 	public boolean validData() {
@@ -83,6 +85,9 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 		if (! this.equals(obj)) return false;
 		
 		BaseStationVo aObj = (BaseStationVo) obj;
+		if (!ClassUtil.equals(this.frqId,aObj.frqId)) {
+			return false;
+		}
 		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
 			return false;
 		}
@@ -101,9 +106,6 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 		if (!ClassUtil.equals(this.staDataDateMin,aObj.staDataDateMin)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.staFlags,aObj.staFlags)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.staName,aObj.staName)) {
 			return false;
 		}
@@ -114,6 +116,9 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 			return false;
 		}
 		if (!ClassUtil.equals(this.staCertProvData,aObj.staCertProvData)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.staFlags,aObj.staFlags)) {
 			return false;
 		}
 		return true;
@@ -133,11 +138,11 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 	}
 
 	//--- Getters and Setters -------------------
-	public Integer getCliId() {
-		return this.cliId;
+	public Integer getFrqId() {
+		return this.frqId;
 	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
+	public void setFrqId(Integer frqId) {
+		this.frqId = frqId;
 	}
 
 	public Integer getStaId() {
@@ -189,11 +194,11 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 		this.staDataDateMin = staDataDateMin;
 	}
 
-	public String getStaFlags() {
-		return this.staFlags;
+	public Integer getCliId() {
+		return this.cliId;
 	}
-	public void setStaFlags(String staFlags) {
-		this.staFlags = staFlags;
+	public void setCliId(Integer cliId) {
+		this.cliId = cliId;
 	}
 
 	public String getStaName() {
@@ -222,6 +227,13 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 	}
 	public void setStaCertProvData(String staCertProvData) {
 		this.staCertProvData = staCertProvData;
+	}
+
+	public String getStaFlags() {
+		return this.staFlags;
+	}
+	public void setStaFlags(String staFlags) {
+		this.staFlags = staFlags;
 	}
 
 }

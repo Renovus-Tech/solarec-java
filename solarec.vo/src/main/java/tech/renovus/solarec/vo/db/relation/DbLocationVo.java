@@ -10,6 +10,7 @@ import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseLocationVo;
 import tech.renovus.solarec.vo.db.data.CountryVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
+import tech.renovus.solarec.vo.db.data.FrequencyVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocAlertVo;
@@ -27,6 +28,7 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 	
 	//--- Protected properties ------------------
 	protected DataDefinitionVo dataDefinitionVo;
+	protected FrequencyVo frequencyVo;
 	
 	protected CountryVo countryVo;
 	protected LocTypeVo locTypeVo;
@@ -42,7 +44,7 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 	protected Collection<LocSdgVo> sdgs;
 	
 	protected Collection<GenDataVo> generatorData;
-	
+
 	//--- Constructors --------------------------
 	public DbLocationVo() {
 	}
@@ -298,5 +300,11 @@ public class DbLocationVo extends BaseLocationVo implements ISynchronizable<DbLo
 
 	public void setGeneratorData(Collection<GenDataVo> generatorData) {
 		this.generatorData = generatorData;
+	}
+	public FrequencyVo getFrequencyVo() {
+		return frequencyVo;
+	}
+	public void setFrequencyVo(FrequencyVo frequencyVo) {
+		this.frequencyVo = frequencyVo;
 	}
 }

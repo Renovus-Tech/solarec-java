@@ -9,6 +9,7 @@ import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseStationVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
+import tech.renovus.solarec.vo.db.data.FrequencyVo;
 import tech.renovus.solarec.vo.db.data.StaAlertVo;
 import tech.renovus.solarec.vo.db.data.StaDataVo;
 import tech.renovus.solarec.vo.db.data.StaMetadataVo;
@@ -17,6 +18,7 @@ public class DbStationVo extends BaseStationVo implements ISynchronizable<DbStat
 
 	//--- Protected properties ------------------
 	protected DataDefinitionVo dataDefinitionVo;
+	protected FrequencyVo frequencyVo;
 	protected Collection<StaDataVo> datas;
 	protected Collection<StaAlertVo> alerts;
 	protected Collection<StaMetadataVo> metadata;
@@ -107,5 +109,11 @@ public class DbStationVo extends BaseStationVo implements ISynchronizable<DbStat
 	}
 	public void setMetadata(Collection<StaMetadataVo> metadata) {
 		this.metadata = metadata;
+	}
+	public FrequencyVo getFrequencyVo() {
+		return frequencyVo;
+	}
+	public void setFrequencyVo(FrequencyVo frequencyVo) {
+		this.frequencyVo = frequencyVo;
 	}
 }
