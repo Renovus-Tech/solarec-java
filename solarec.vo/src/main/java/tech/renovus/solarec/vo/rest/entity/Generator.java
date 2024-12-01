@@ -48,6 +48,7 @@ public class Generator extends BaseEntity {
 	
 	private Integer dataDefinitionId;
 	private DataDefinition dataDefinition;
+	private Frequency frequency;
 	
 	private Collection<Power> powerCurve;
 	private Collection<Integer> neighbors;
@@ -130,5 +131,11 @@ public class Generator extends BaseEntity {
 	}
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	public Frequency getFrequency() {
+		return frequency;
+	}
+	public void setFrequency(Frequency frequency) {
+		this.frequency = frequency;
 	}
 }

@@ -24,6 +24,7 @@ import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
 import tech.renovus.solarec.vo.db.data.DocTypeVo;
 import tech.renovus.solarec.vo.db.data.DocumentVo;
+import tech.renovus.solarec.vo.db.data.FrequencyVo;
 import tech.renovus.solarec.vo.db.data.FunctionalityVo;
 import tech.renovus.solarec.vo.db.data.GenNeighbourVo;
 import tech.renovus.solarec.vo.db.data.GenPowerVo;
@@ -42,6 +43,7 @@ import tech.renovus.solarec.vo.rest.entity.DataDefinition;
 import tech.renovus.solarec.vo.rest.entity.DataDefinitionTrigger;
 import tech.renovus.solarec.vo.rest.entity.DocType;
 import tech.renovus.solarec.vo.rest.entity.Document;
+import tech.renovus.solarec.vo.rest.entity.Frequency;
 import tech.renovus.solarec.vo.rest.entity.Functionality;
 import tech.renovus.solarec.vo.rest.entity.Generator;
 import tech.renovus.solarec.vo.rest.entity.Location;
@@ -289,6 +291,7 @@ public class RestFactory {
 		result.setEnabled(FlagUtil.getFlagValue(vo, LocationVo.FLAG_ENABLED));
 		
 		result.setDataDefinition(convert(vo.getDataDefinitionVo()));
+		result.setFrequency(convert(vo.getFrequencyVo()));
 		
 		if (CollectionUtil.notEmpty(vo.getGenerators())) {
 			Collection<GeneratorVo> sorted = new TreeSet<>(GeneratorGenCodeAsNumberComparator.getInstance());
@@ -334,6 +337,7 @@ public class RestFactory {
 		result.setRatePower(vo.getGenRatePower());
 		result.setEnabled(FlagUtil.getFlagValue(vo, GeneratorVo.FLAG_ENABLED));
 		
+		result.setFrequency(convert(vo.getFrequencyVo()));
 		result.setPowerCurve(convertPower(vo.getPowerCurve()));
 		result.setNeighbors(convertNeighbours(vo.getNeighbours()));
 		
@@ -391,6 +395,34 @@ public class RestFactory {
 		result.setLatitude(vo.getStaCoordLat());
 		result.setLongitude(vo.getStaCoordLng());
 		result.setEnabled(FlagUtil.getFlagValue(vo, StationVo.FLAG_ENABLED));
+		result.setFrequency(convert(vo.getFrequencyVo()));
+		
+		return result;
+	}
+	
+	public Frequency convert(FrequencyVo vo) {
+		if (vo == null) {
+			return null;
+		}
+		
+		Frequency result = new Frequency();
+		Frequency.Period period = new Frequency.Period();
+		Frequency.GroupBy groupBy = new Frequency.GroupBy();
+		
+		result.setId(vo.getFrqId());
+		result.setName(vo.getFrqName());
+		result.setPeriods(period);
+		result.setGroupby(groupBy);
+		
+		period.setYesterday(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_YESTERDAY));
+		period.setCurrentMonth(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_MONTH));
+		period.setCurrentYear(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_YEAR));
+		period.setRange(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_RANGE));
+
+		groupBy.setDay(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_GROUP_BY_DAY));
+		groupBy.setWeek(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_GROUP_BY_WEEK));
+		groupBy.setMonth(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_GROUP_BY_MONTH));
+		groupBy.setYear(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_GROUP_BY_YEAR));
 		
 		return result;
 	}

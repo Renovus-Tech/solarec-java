@@ -49,6 +49,7 @@ public class Location {
 	private Integer dataDefinitionId;
 	
 	private DataDefinition dataDefinition;
+	private Frequency frequency;
 	private List<Station> stations;
 	private List<Generator> generators;
 	private List<Sdg> sdgs;
@@ -203,5 +204,13 @@ public class Location {
 	}
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public Frequency getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(Frequency frequency) {
+		this.frequency = frequency;
 	}
 }

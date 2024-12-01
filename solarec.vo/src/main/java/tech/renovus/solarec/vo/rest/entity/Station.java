@@ -13,6 +13,7 @@ public class Station extends BaseEntity {
 	
 	private Integer dataDefinitionId;
 	private DataDefinition dataDefinition;
+	private Frequency frequency;
 	
 	//--- Getters and Setters -------------------
 	public Integer getId() {
@@ -56,5 +57,11 @@ public class Station extends BaseEntity {
 	}
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	public Frequency getFrequency() {
+		return frequency;
+	}
+	public void setFrequency(Frequency frequency) {
+		this.frequency = frequency;
 	}
 }
