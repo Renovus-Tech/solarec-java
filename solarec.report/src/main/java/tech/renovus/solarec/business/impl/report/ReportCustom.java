@@ -29,7 +29,7 @@ public class ReportCustom extends BaseReport {
 			return null;
 		}
 		
-		LocationVo locVo = this.locationDao.findVo(request.getCliId(), request.getCliId());
+		LocationVo locVo = this.locationDao.findVo(request.getCliId(), request.getLocId());
 		
 		Collection<IReportHtml<ChartFilter>> reports = new ArrayList<>();
 		if (CollectionUtil.notEmpty(request.getSections())) {
