@@ -25,6 +25,7 @@ import tech.renovus.solarec.db.data.dao.interfaces.CliUserDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CountryDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
+import tech.renovus.solarec.db.data.dao.interfaces.FrequencyDao;
 import tech.renovus.solarec.db.data.dao.interfaces.FunctionalityDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocSdgDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocTypeDao;
@@ -78,6 +79,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Resource LocSdgDao locSdgDao;
 	@Resource LocTypeDao locTypeDao;
 	@Resource CountryDao countryDao;
+	@Resource FrequencyDao frequencyDao;
 	
 	//--- Private methods -----------------------
 	private void logout(UserData userData) {
@@ -137,6 +139,7 @@ public class SecurityServiceImpl implements SecurityService {
 		if (userData.getLocationVo() != null) {
 			userData.getLocationVo().setSdgs(this.locSdgDao.getAllForLocation(userData.getLocationVo().getCliId(), userData.getLocationVo().getLocId()));
 			userData.getLocationVo().setLocTypeVo(this.locTypeDao.findVo(userData.getLocationVo().getLocTypeId()));
+			userData.getLocationVo().setFrequencyVo(this.frequencyDao.findVo(userData.getLocationVo().getFrqId()));
 		}
 	}
 
@@ -201,6 +204,7 @@ public class SecurityServiceImpl implements SecurityService {
 		
 		if (locVo != null && FlagUtil.getFlagValue(locVo, LocationVo.FLAG_ENABLED)) {
 			locVo.setSdgs(this.locSdgDao.getAllForLocation(locVo.getCliId(), locVo.getLocId()));
+			locVo.setFrequencyVo(this.frequencyDao.findVo(locVo.getFrqId()));
 			userData.setLocationVo(locVo);
 		}
 	}
