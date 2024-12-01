@@ -12,6 +12,7 @@ public class OverviewChart extends AbstractChart {
 	//--- Overridden methods --------------------
 	@Override public Object execute() {
 		this.setAllGeneratorsToChartFilter();
+		this.setFrequency();
 		
 		if (CollectionUtil.isEmpty(this.chartFilter.getStations())) this.setAllStationsToFilter();
 

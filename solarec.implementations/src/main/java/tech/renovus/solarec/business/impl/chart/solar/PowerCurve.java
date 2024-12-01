@@ -14,6 +14,7 @@ public class PowerCurve extends AbstractChart {
 		
 		if (CollectionUtil.isEmpty(this.chartFilter.getGenerators())) this.setAllGeneratorsToChartFilter();
 		this.setAllStationsToFilter();
+		this.setFrequency();
 		
 		this.chartFilter.setGroupBy(null);
 		

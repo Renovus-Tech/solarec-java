@@ -14,6 +14,7 @@ public class Climate extends AbstractChart {
 		
 		if (CollectionUtil.isEmpty(this.chartFilter.getGenerators())) this.setAllGeneratorsToChartFilter();
 		if (CollectionUtil.isEmpty(this.chartFilter.getStations())) this.setAllStationsToFilter();
+		this.setFrequency();
 		
 		try {
 			JsonNode jsonNode = this.retrieveChartInformation(this.config.getChartClimateUrl());
