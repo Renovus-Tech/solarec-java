@@ -22,6 +22,7 @@ public class DataTypeVo extends DbDataTypeVo {
 	
 	public static final int TYPE_SOLAR_INVERTER_DC_POWER								= 501; //Production DC KW //totalDCProductionMwh
 	public static final int TYPE_SOLAR_INVERTER_AC_POWER								= 502; //Production KW //totalACProductionMwh
+	public static final int TYPE_SOLAR_INVERTER_AC_POWER_PREDICTION						= 508; //Production KW/h //totalACProductionMwh
 
 	public static final int TYPE_SOLAR_STATION_AMBIENT_TEMPERATURE						= 503; //Temperature
 	public static final int TYPE_SOLAR_STATION_MODULE_TEMPERATURE						= 504; //Cell temperature

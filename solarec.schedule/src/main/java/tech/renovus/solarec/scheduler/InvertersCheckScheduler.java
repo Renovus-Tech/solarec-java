@@ -124,17 +124,47 @@ public class InvertersCheckScheduler {
 		return text.toString();
 	}
 	
+	private void doAnomalyDetection(DataProcessingVo dataProVo) throws CoreException {
+		try {
+			DataProcessing request = new DataProcessing(dataProVo);
+			LoggerService.inverterLogger().info("Anomaly detection for: " + JsonUtil.toString(dataProVo));
+			
+			if (StringUtil.isEmpty(this.config.getAnomalyDetection())) {
+				LoggerService.inverterLogger().info("Request skipped, URL is empty: tech.renovus.solarec.python.anomalyDetection.url");
+				
+			} else {
+				LoggerService.inverterLogger().info("Request (" + this.config.getAnomalyDetection() + "): " + JsonUtil.toString(request));
+				
+				Map<String, Object> params = new HashMap<>();
+				params.put("param_json", JsonUtil.toString(request));
+				
+				String jsonResponse			= JsonUtil.get(this.config.getAnomalyDetection(), params);
+				LoggerService.inverterLogger().info("Response: " + jsonResponse);
+			}
+			
+		} catch (JsonProcessingException e) {
+			LoggerService.inverterLogger().error("Error: " + e.getLocalizedMessage() + StringUtil.NEW_LINE + StringUtil.toString(e));
+			throw new CoreException(e);
+		}
+	}
+	
 	private void doCalculation(DataProcessingVo dataProVo) throws CoreException {
 		try {
 			DataProcessing request = new DataProcessing(dataProVo);
 			LoggerService.inverterLogger().info("Calculation for: " + JsonUtil.toString(dataProVo));
-			LoggerService.inverterLogger().info("Request (" + this.config.getAlertCalculations() + "): " + JsonUtil.toString(request));
 			
-			Map<String, Object> params = new HashMap<>();
-			params.put("param_json", JsonUtil.toString(request));
-			
-			String jsonResponse			= JsonUtil.get(this.config.getAlertCalculations(), params);
-			LoggerService.inverterLogger().info("Response: " + jsonResponse);
+			if (StringUtil.isEmpty(this.config.getAlertCalculations())) {
+				LoggerService.inverterLogger().info("Request skipped, URL is empty: tech.renovus.solarec.python.alertCalculations.url");
+				
+			} else {
+				LoggerService.inverterLogger().info("Request (" + this.config.getAlertCalculations() + "): " + JsonUtil.toString(request));
+				
+				Map<String, Object> params = new HashMap<>();
+				params.put("param_json", JsonUtil.toString(request));
+				
+				String jsonResponse			= JsonUtil.get(this.config.getAlertCalculations(), params);
+				LoggerService.inverterLogger().info("Response: " + jsonResponse);
+			}
 			
 		} catch (JsonProcessingException e) {
 			LoggerService.inverterLogger().error("Error: " + e.getLocalizedMessage() + StringUtil.NEW_LINE + StringUtil.toString(e));
@@ -231,6 +261,7 @@ public class InvertersCheckScheduler {
 				LoggerService.inverterLogger().info( "\tStation data: " + CollectionUtil.size(newData.getStationData()));
 				LoggerService.inverterLogger().info( "\tLocation alerts: " + CollectionUtil.size(newData.getLocationAlerts()));
 				LoggerService.inverterLogger().info( "\tGenerator alerts: " + CollectionUtil.size(newData.getGeneratorAlerts()));
+				LoggerService.inverterLogger().info( "\tContinue with stats: " + continueWithStats);
 				
 				this.genDataDao.synchronize(newData.getGeneratorData());
 				this.staDataDao.synchronize(newData.getStationData());
@@ -243,7 +274,10 @@ public class InvertersCheckScheduler {
 				this.cliLocAlertDao.synchronize(newData.getLocationAlerts());
 				this.cliGenAlertDao.synchronize(newData.getGeneratorAlerts());
 				
-				if (continueWithStats) this.doCalculation(dataProVo);
+				if (continueWithStats) {
+					this.doAnomalyDetection(dataProVo);
+					this.doCalculation(dataProVo);
+				}
 				
 			} else {
 				dataProVo.setDataProResult(DataProcessingVo.RESULT_PROCESSING_ERROR);
