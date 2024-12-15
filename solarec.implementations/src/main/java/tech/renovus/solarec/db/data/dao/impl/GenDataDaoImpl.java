@@ -168,8 +168,8 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 		MapSqlParameterSource binding = new MapSqlParameterSource()
 											.addValue(GenDataVo.COLUMN_CLI_ID, cliId)
 											.addValue(GenDataVo.COLUMN_GEN_ID, genId)
-											.addValue(GeneratorVo.COLUMN_GEN_DATA_DATE_MIN, genDataDateMin)
-											.addValue(GeneratorVo.COLUMN_GEN_DATA_DATE_MAX, genDataDateMax);
+											.addValue("data_date_min", genDataDateMin)
+											.addValue("data_date_max", genDataDateMax);
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append(GET_FOR_CLI_GEN_DATE_PERIOD_CODES);

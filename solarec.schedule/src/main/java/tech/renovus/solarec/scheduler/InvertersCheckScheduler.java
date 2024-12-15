@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import tech.renovus.solarec.business.AlertService;
 import tech.renovus.solarec.business.CalculationService;
+import tech.renovus.solarec.business.ProcessingService;
 import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.db.data.dao.interfaces.CliDataDefParameterDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CliGenAlertDao;
@@ -47,12 +48,12 @@ import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.inverters.common.InverterService.InverterData;
 import tech.renovus.solarec.inverters.common.InverterService.InveterServiceException;
 import tech.renovus.solarec.logger.LoggerService;
-import tech.renovus.solarec.scheduler.data.DataProcessing;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.FlagUtil;
 import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
+import tech.renovus.solarec.vo.custom.chart.DataProcessing;
 import tech.renovus.solarec.vo.db.data.AlertProcessingVo;
 import tech.renovus.solarec.vo.db.data.CliGenAlertVo;
 import tech.renovus.solarec.vo.db.data.CliLocAlertVo;
@@ -80,6 +81,7 @@ public class InvertersCheckScheduler {
 	
 	@Resource CalculationService calculationService;
 	@Resource AlertService alertService;
+	@Resource ProcessingService processingService;
 	
 	@Resource ClientDao clientDao;
 	@Resource GenDataDao genDataDao;
@@ -125,51 +127,13 @@ public class InvertersCheckScheduler {
 	}
 	
 	private void doAnomalyDetection(DataProcessingVo dataProVo) throws CoreException {
-		try {
-			DataProcessing request = new DataProcessing(dataProVo);
-			LoggerService.inverterLogger().info("Anomaly detection for: " + JsonUtil.toString(dataProVo));
-			
-			if (StringUtil.isEmpty(this.config.getAnomalyDetection())) {
-				LoggerService.inverterLogger().info("Request skipped, URL is empty: tech.renovus.solarec.python.anomalyDetection.url");
-				
-			} else {
-				LoggerService.inverterLogger().info("Request (" + this.config.getAnomalyDetection() + "): " + JsonUtil.toString(request));
-				
-				Map<String, Object> params = new HashMap<>();
-				params.put("param_json", JsonUtil.toString(request));
-				
-				String jsonResponse			= JsonUtil.get(this.config.getAnomalyDetection(), params);
-				LoggerService.inverterLogger().info("Response: " + jsonResponse);
-			}
-			
-		} catch (JsonProcessingException e) {
-			LoggerService.inverterLogger().error("Error: " + e.getLocalizedMessage() + StringUtil.NEW_LINE + StringUtil.toString(e));
-			throw new CoreException(e);
-		}
+		DataProcessing request = new DataProcessing(dataProVo);
+		this.processingService.doAnomalyDetection(request);
 	}
 	
 	private void doCalculation(DataProcessingVo dataProVo) throws CoreException {
-		try {
-			DataProcessing request = new DataProcessing(dataProVo);
-			LoggerService.inverterLogger().info("Calculation for: " + JsonUtil.toString(dataProVo));
-			
-			if (StringUtil.isEmpty(this.config.getAlertCalculations())) {
-				LoggerService.inverterLogger().info("Request skipped, URL is empty: tech.renovus.solarec.python.alertCalculations.url");
-				
-			} else {
-				LoggerService.inverterLogger().info("Request (" + this.config.getAlertCalculations() + "): " + JsonUtil.toString(request));
-				
-				Map<String, Object> params = new HashMap<>();
-				params.put("param_json", JsonUtil.toString(request));
-				
-				String jsonResponse			= JsonUtil.get(this.config.getAlertCalculations(), params);
-				LoggerService.inverterLogger().info("Response: " + jsonResponse);
-			}
-			
-		} catch (JsonProcessingException e) {
-			LoggerService.inverterLogger().error("Error: " + e.getLocalizedMessage() + StringUtil.NEW_LINE + StringUtil.toString(e));
-			throw new CoreException(e);
-		}
+		DataProcessing request = new DataProcessing(dataProVo);
+		this.processingService.doCalculation(request);
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW)

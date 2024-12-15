@@ -1,4 +1,4 @@
-package tech.renovus.solarec.scheduler.data;
+package tech.renovus.solarec.vo.custom.chart;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -58,5 +58,4 @@ public class DataProcessing {
 	public DataProcessing(DataProcessingVo dataProVo) {
 		this.dataProId = dataProVo.getDataProId();
 	}
-
 }

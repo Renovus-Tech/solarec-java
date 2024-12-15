@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.exceptions.CoreException;
+import tech.renovus.solarec.vo.custom.chart.DataProcessing;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
@@ -19,4 +20,8 @@ public interface ProcessingService {
 	Collection<DataProcessingVo> findAllClient(Integer cliId, UserData userData);
 	
 	DataProcessingVo doProcessing(DataDefinitionVo dataDefVo, Processing request, File fileToProcess, ClientVo cliVo) throws CoreException;
+	
+	void doAnomalyDetection(DataProcessing request) throws CoreException;
+	void doCalculation(DataProcessing request) throws CoreException;
 }
+
