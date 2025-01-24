@@ -22,7 +22,6 @@ import tech.renovus.solarec.inverters.common.InvertersUtil;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
-import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
@@ -38,14 +37,13 @@ import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
 
 public class SolarEdgeInverterService implements InverterService {
 
-	//--- Private constants ---------------------
-	private static final String LOG_PREFIX						= "[Solar] ";
-	private static final String URL_PROD						= "https://monitoringapi.solaredge.com";
-	
-	private static final String ENDPOINT_SITE_LIST				= "/sites/list";
-	private static final String ENDPOINT_SITE_ENERGY			= "/site/1/energy";
-	
 	//--- Protected constants -------------------
+	public static final String LOG_PREFIX						= "[Solar] ";
+	public static final String URL_PROD							= "https://monitoringapi.solaredge.com";
+	
+	public static final String ENDPOINT_SITE_LIST				= "/sites/list";
+	public static final String ENDPOINT_SITE_ENERGY				= "/site/1/energy";
+	
 	protected static final String PARAM_ACCESS_APP_KEY			= "solarEdge.client.api_key";
 	protected static final String PARAM_GEN_SITE_ID				= "solarEdge.generator.site_id";
 	protected static final String PARAM_CLI_LAST_DATE_RETRIEVE	= "solarEdge.client.last_retrieve";
@@ -62,7 +60,8 @@ public class SolarEdgeInverterService implements InverterService {
 	public static final String TIME_UNIT_YEAR				= "YEAR";
 
 	//--- Private properties --------------------
-	@Autowired WeatherService weatherService;
+	private @Autowired WeatherService weatherService;
+	private @Autowired JsonCaller jsonCaller;
 	private final SimpleDateFormat formatDateTime	= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private final SimpleDateFormat formatDate		= new SimpleDateFormat("yyyy-MM-dd");
 	private ClientVo cliVo;
@@ -78,7 +77,9 @@ public class SolarEdgeInverterService implements InverterService {
 			for (Value aData : data.getEnergy().getValues()) {
 				Date dataDate = this.formatDateTime.parse(aData.getDate());
 				
-				if (dataDate.before(fromDate)) continue;
+				if (dataDate.before(fromDate)) {
+					continue;
+				}
 				
 				GenDataVo genData = new GenDataVo();
 				genData.setCliId(generator.getCliId());
@@ -121,7 +122,9 @@ public class SolarEdgeInverterService implements InverterService {
 				cal.setTime(lastDate);
 				cal.add(Calendar.MINUTE, 15); //we need next 15 min due to aggregation
 				
-				if (! cal.getTime().equals(dateFrom) && cal.getTime().before(to)) this.retrieveData(inverterData, location, station, generator, cal.getTime(), to);
+				if (! cal.getTime().equals(dateFrom) && cal.getTime().before(to)) {
+					this.retrieveData(inverterData, location, station, generator, cal.getTime(), to);
+				}
 				
 			}
 			
@@ -188,7 +191,7 @@ public class SolarEdgeInverterService implements InverterService {
 		Map<String, String> params = new HashMap<>();
 		params.put("api_key", apiKey);
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + ENDPOINT_SITE_LIST,
 				params, 
 				SiteListResponse.class
@@ -203,10 +206,15 @@ public class SolarEdgeInverterService implements InverterService {
 		params.put("endDate", this.formatDate.format(endDate));
 		params.put("timeUnit", timeUnit);
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url + ENDPOINT_SITE_ENERGY, 
 				params, 
 				SiteEnergyResponse.class
 			);
+	}
+
+	//--- Getters and Setters -------------------
+	public void setJsonCaller(JsonCaller jsonCaller) {
+		this.jsonCaller = jsonCaller;
 	}
 }

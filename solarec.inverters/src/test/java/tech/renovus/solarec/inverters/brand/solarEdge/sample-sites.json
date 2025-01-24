@@ -1,0 +1,69 @@
+{
+    "Sites": {
+        "count": 1567,
+        "list": [
+            {
+                "id": 1,
+                "name": "Test",
+                "accountId": 0,
+                "status": "Active",
+                "peakPower": 10.0,
+                "currency": "EUR",
+                "installationDate": "2012-06-08 00:00:00",
+                "ptoDate": "2017-05-11",
+                "notes": "test notes",
+                "type": "Optimizers & Inverters",
+                "location": {
+                    "country": "the country",
+                    "state": "the state",
+                    "city": "the city",
+                    "address": "the address",
+                    "address2": "the address2",
+                    "zip": "00000",
+                    "timeZone": "GMT"
+                },
+                "alertQuantity": 0,
+                "alertSeverity": "NONE",
+                "uris": {
+                    "PUBLIC_URL": "the public URL name",
+                    "IMAGE_URI": "the site image link"
+                },
+                "publicSettings": {
+                    "name": "the public name",
+                    "isPublic": true
+                }
+            },
+            {
+                "id": 2,
+                "name": "Test",
+                "accountId": 0,
+                "status": "Active",
+                "peakPower": 10.0,
+                "currency": "EUR",
+                "installationDate": "2012-06-08 00:00:00",
+                "ptoDate": "2017-05-11",
+                "notes": "test notes",
+                "type": "Optimizers & Inverters",
+                "location": {
+                    "country": "the country",
+                    "state": "the state",
+                    "city": "the city",
+                    "address": "the address",
+                    "address2": "the address2",
+                    "zip": "00000",
+                    "timeZone": "GMT"
+                },
+                "alertQuantity": 0,
+                "alertSeverity": "NONE",
+                "uris": {
+                    "PUBLIC_URL": "the public URL name",
+                    "IMAGE_URI": "the site image link"
+                },
+                "publicSettings": {
+                    "name": "the public name",
+                    "isPublic": true
+                }
+            }
+        ]
+    }
+}
