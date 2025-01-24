@@ -47,16 +47,16 @@ public class SofarInverterService implements InverterService {
 
 	
 	//--- Protected properties ------------------
-	private static final String LOG_PREFIX						= "[Sofar] ";
-	private static final String URL_PRD							= "https://api.solarmanpv.com";
-	private static final String URL_BETA						= "http://120.195.219.223:30032";
+	public static final String LOG_PREFIX						= "[Sofar] ";
+	public static final String URL_PRD							= "https://api.solarmanpv.com";
+	public static final String URL_BETA							= "http://120.195.219.223:30032";
 	
-	private static final String ENDPOINT_AUTHORIZATION			= "/account/v1.0/token";
-	private static final String ENDPOINT_PERMISSION				= "/account/v1.0/role?language=en";
-	private static final String ENDPOINT_DEVICE_LIST			= "/device/v1.0/list?language=en";
-	private static final String ENDPOINT_STATION_LIST			= "/station/v1.0/list?language=en";
-	private static final String ENDPOINT_STATION_DEVICE_LIST	= "/station/v1.0/device?language=en";
-	private static final String ENDPOINT_STATION_HISTORY_DATA	= "/station/v1.0/history?language=en";
+	public static final String ENDPOINT_AUTHORIZATION			= "/account/v1.0/token";
+	public static final String ENDPOINT_PERMISSION				= "/account/v1.0/role?language=en";
+	public static final String ENDPOINT_DEVICE_LIST				= "/device/v1.0/list?language=en";
+	public static final String ENDPOINT_STATION_LIST			= "/station/v1.0/list?language=en";
+	public static final String ENDPOINT_STATION_DEVICE_LIST		= "/station/v1.0/device?language=en";
+	public static final String ENDPOINT_STATION_HISTORY_DATA	= "/station/v1.0/history?language=en";
 	
 	protected static final String PARAM_BETA_MODE				= "sofar.beta";
 	protected static final String PARAM_ACCESS_APP_ID			= "sofar.client.app_id";
@@ -71,6 +71,8 @@ public class SofarInverterService implements InverterService {
 	
 	//--- Private properties --------------------
 	@Autowired WeatherService weatherService;
+	@Autowired JsonCaller jsonCaller;
+
 	private final SimpleDateFormat formatDate			= new SimpleDateFormat("yyyy-MM-dd");
 	private final SimpleDateFormat formatDateTime		= new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	private ClientVo cliVo;
@@ -95,7 +97,9 @@ public class SofarInverterService implements InverterService {
 						.toString();
 				Date dataDate = this.formatDateTime.parse(aDate);
 				
-				if (dataDate.before(fromDate)) continue;
+				if (dataDate.before(fromDate)) {
+					continue;
+				}
 				
 				GenDataVo genData = new GenDataVo();
 				genData.setCliId(generator.getCliId());
@@ -146,7 +150,9 @@ public class SofarInverterService implements InverterService {
 				cal.setTime(lastDate);
 				cal.add(Calendar.MINUTE, 15); //we need next 15 min due to aggregation
 				
-				if (! cal.getTime().equals(dateFrom) && cal.getTime().before(to)) this.retrieveData(inverterData, location, station, generator, cal.getTime(), to);
+				if (! cal.getTime().equals(dateFrom) && cal.getTime().before(to)) {
+					this.retrieveData(inverterData, location, station, generator, cal.getTime(), to);
+				}
 				
 			}
 			
@@ -227,15 +233,15 @@ public class SofarInverterService implements InverterService {
 				.withOrgId(orgId)
 				.withPassword(password);
 		
-		return JsonCaller.post(
-				JsonCaller.generateCompleteURL(url + ENDPOINT_AUTHORIZATION, params), 
+		return this.jsonCaller.post(
+				this.jsonCaller.generateCompleteURL(url + ENDPOINT_AUTHORIZATION, params), 
 				request, 
 				AuthorizationResponse.class
 			);
 	}
 	
 	public PermissionResponse getPermission(String url, String authCode) {
-		return JsonCaller.bearerPost(
+		return this.jsonCaller.bearerPost(
 				url + ENDPOINT_PERMISSION,
 				null, 
 				authCode, 
@@ -244,7 +250,7 @@ public class SofarInverterService implements InverterService {
 	}
 	
 	public DevideListResponse getDeviveList(String url, String authCode) {
-		return JsonCaller.bearerPost(
+		return this.jsonCaller.bearerPost(
 				url + ENDPOINT_DEVICE_LIST, 
 				ListRequest.DEFAULT_VALUES, 
 				authCode, 
@@ -253,7 +259,7 @@ public class SofarInverterService implements InverterService {
 	}
 	
 	public StationListResponse getStationList(String url, String authCode) {
-		return JsonCaller.bearerPost(
+		return this.jsonCaller.bearerPost(
 				url + ENDPOINT_STATION_LIST, 
 				ListRequest.DEFAULT_VALUES, 
 				authCode, 
@@ -268,7 +274,7 @@ public class SofarInverterService implements InverterService {
 				.withStationId(stationId)
 				.withDeviceType(Device.TYPE_INVERTER);
 		
-		return JsonCaller.bearerPost(
+		return this.jsonCaller.bearerPost(
 				url + ENDPOINT_STATION_DEVICE_LIST, 
 				request, 
 				authCode, 
@@ -283,11 +289,16 @@ public class SofarInverterService implements InverterService {
 				.withStartTime(this.formatDate.format(dateFrom))
 				.withEndTime(this.formatDate.format(dateTo));
 		
-		return JsonCaller.bearerPost(
+		return this.jsonCaller.bearerPost(
 				url + ENDPOINT_STATION_HISTORY_DATA, 
 				request, 
 				authCode, 
 				StationHistoryDataResponse.class
 			);
+	}
+	
+	//--- Getters and Setters -------------------
+	public void setjsonCaller(JsonCaller jsonCaller) {
+		this.jsonCaller = jsonCaller;
 	}
 }

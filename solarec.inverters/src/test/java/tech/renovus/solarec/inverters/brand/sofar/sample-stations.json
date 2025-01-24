@@ -1,0 +1,33 @@
+{
+    "code": null,
+    "msg": null,
+    "success": true,
+    "requestId": "c6645d538e7b41b6b8f7b406783ec4ee",
+    "total": 6,
+    "stationList": [
+        {
+            "id": 895,
+            "name": "001_OPENAPI_报警",
+            "locationLat": 32.025278437978635,
+            "locationLng": 120.4771381250024,
+            "locationAddress": "苏州张家港市",
+            "regionNationId": 44,
+            "regionLevel1": 156922,
+            "regionLevel2": 158778,
+            "regionLevel3": 158861,
+            "regionLevel4": null,
+            "regionLevel5": null,
+            "regionTimezone": "PRC",
+            "type": "HOUSE_ROOF",
+            "gridInterconnectionType": "BATTERY_BACKUP",
+            "installedCapacity": 6754.0,
+            "startOperatingTime": 1577030400.0,
+            "stationImage": null,
+            "createdDate": 1577069449.0,
+            "batterySoc": 56.0,
+            "networkStatus": "ALL_OFFLINE",
+            "generationPower": 678.0,
+            "lastUpdateTime": 1580621692.0
+        }
+    ]
+}

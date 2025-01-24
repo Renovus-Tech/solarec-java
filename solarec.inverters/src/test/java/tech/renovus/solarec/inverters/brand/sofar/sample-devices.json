@@ -1,0 +1,23 @@
+{
+    "code": null,
+    "msg": null,
+    "success": true,
+    "requestId": "9300c3b735c6470bb583a0bf58d4daa5",
+    "total": 27,
+    "deviceList": [
+        {
+            "deviceSn": "1800072201",
+            "deviceId": 200197997,
+            "deviceType": "COLLECTOR",
+            "deviceState": 3,
+            "updateTime": 1582772840
+        },
+        {
+            "deviceSn": "1800072201-Igen",
+            "deviceId": 200206455,
+            "deviceType": "INVERTER",
+            "deviceState": 3,
+            "updateTime": 1582772840
+        }
+    ]
+}

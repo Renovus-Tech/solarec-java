@@ -3,111 +3,75 @@ package tech.renovus.solarec.inverters.brand.sofar;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.junit.Assume;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-import tech.renovus.solarec.inverters.brand.TestingUtil;
+import tech.renovus.solarec.connection.JsonCaller;
+import tech.renovus.solarec.inverters.brand.BaseInveterTest;
 import tech.renovus.solarec.inverters.brand.sofar.api.AuthorizationResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.DevideListResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.PermissionResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.StationHistoryDataResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.StationListResponse;
-import tech.renovus.solarec.inverters.common.InverterService.InverterData;
+import tech.renovus.solarec.inverters.common.InverterService;
 import tech.renovus.solarec.inverters.common.InverterService.InveterServiceException;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.CollectionUtil;
-import tech.renovus.solarec.util.StringUtil;
+import tech.renovus.solarec.util.FileUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.weather.WeatherService;
 
-public class SofarInverterServiceTest {
+public class SofarInverterServiceTest extends BaseInveterTest {
 
 	//--- Private properties --------------------
-	private static String sofarBeta						= null;
-	private static String sofarClientAppId				= null;
-	private static String sofarClientAppSecret			= null;
-	private static Integer sofarClientApporgId			= null;
-	private static String sofarClientAppUser			= null;
-	private static String sofarClientAppPassword		= null;
-
-	private static SofarInverterService service;
-	private static ClientVo client;
+	@Mock private JsonCaller jsonCaller;
+	@Mock private WeatherService weatherService;
 	
-	//--- Init methods --------------------------
-	@BeforeClass
-	public static void init() {
-		SofarInverterServiceTest.sofarBeta					= System.getProperty("sofar_beta");
-		SofarInverterServiceTest.sofarClientAppId			= System.getProperty("sofar_client_app_id");
-		SofarInverterServiceTest.sofarClientAppSecret		= System.getProperty("sofar_client_app_secret");
-		try {SofarInverterServiceTest.sofarClientApporgId	= Integer.valueOf(System.getProperty("sofar_client_app_org_id")); } catch (Exception e) { /* do nothing */ }
-		SofarInverterServiceTest.sofarClientAppUser			= System.getProperty("sofar_client_app_user");
-		SofarInverterServiceTest.sofarClientAppPassword		= System.getProperty("sofar_client_app_password");
-		
-		boolean allDataRequired = 
-				SofarInverterServiceTest.sofarBeta != null && 
-				SofarInverterServiceTest.sofarClientAppId != null && 
-				SofarInverterServiceTest.sofarClientAppSecret != null && 
-				SofarInverterServiceTest.sofarClientApporgId != null && 
-				SofarInverterServiceTest.sofarClientAppUser != null && 
-				SofarInverterServiceTest.sofarClientAppPassword != null;
-		
-		Assume.assumeTrue("Skipping tests because test data is missing. Added the following system.properties to execute tests: sofar_beta, sofar_client_app_id, sofar_client_app_secret, sofar_client_app_org_id, sofar_client_app_user, sofar_client_app_password", allDataRequired);
-
-		SofarInverterServiceTest.client = new ClientVo();
-		SofarInverterServiceTest.client.add(TestingUtil.createParameter(SofarInverterService.PARAM_BETA_MODE, SofarInverterServiceTest.sofarBeta));
-		SofarInverterServiceTest.client.add(TestingUtil.createParameter(SofarInverterService.PARAM_ACCESS_APP_ID, SofarInverterServiceTest.sofarClientAppId));
-		SofarInverterServiceTest.client.add(TestingUtil.createParameter(SofarInverterService.PARAM_ACCESS_APP_SECRET, SofarInverterServiceTest.sofarClientAppSecret));
-		SofarInverterServiceTest.client.add(TestingUtil.createParameter(SofarInverterService.PARAM_ACCESS_APP_ORG_ID, StringUtil.toString(SofarInverterServiceTest.sofarClientApporgId)));
-		SofarInverterServiceTest.client.add(TestingUtil.createParameter(SofarInverterService.PARAM_ACCESS_APP_USER, SofarInverterServiceTest.sofarClientAppUser));
-		SofarInverterServiceTest.client.add(TestingUtil.createParameter(SofarInverterService.PARAM_ACCESS_APP_PASSWORD, SofarInverterServiceTest.sofarClientAppPassword));
-		
-		SofarInverterServiceTest.service = new SofarInverterService();
-	}
+	@InjectMocks private SofarInverterService service;
 	
-	//--- Tests ---------------------------------
-	@Test
-	public void testPrivateProperties() {
-		/**
-		 * If test fails, make sure that you run the testing with the following system.properties:
-		 *   - sofar_beta
-		 *   - sofar_client_app_id
-		 *   - sofar_client_app_secret
-		 *   - sofar_client_app_org_id
-		 *   - sofar_client_app_user
-		 *   - sofar_client_app_password
-		 *   
-		 * Example of execution: -D<param_1>=<value_1> -D<param_2=<value_2> -D<param_n>=<value_n>
-		 */
-		assertNotNull(SofarInverterServiceTest.sofarBeta);
-		assertNotNull(SofarInverterServiceTest.sofarClientAppId);
-		assertNotNull(SofarInverterServiceTest.sofarClientAppSecret);
-		assertNotNull(SofarInverterServiceTest.sofarClientApporgId);
-		assertNotNull(SofarInverterServiceTest.sofarClientAppUser);
-		assertNotNull(SofarInverterServiceTest.sofarClientAppPassword);
-	}
-	
-	
+	//--- Tests methods -------------------------
 	@Test 
-	public void testCallApi() {
-		String url			= service.getUrl(! BooleanUtils.isTrue(SofarInverterServiceTest.sofarBeta));
+	public void testCallApi() throws IOException {
+		String url			= service.getUrl(true);
+		String appId		= "not real app id";
+		String appSecret 	= "not real app secret";
+		Integer orgId 		= Integer.valueOf(860);
+		String userName 	= "not real user";
+		String password 	= "not real password";
 		
-		assertNotNull(url);
 		
-		Exception error = null;
-	
-		AuthorizationResponse authorization = service.getAuthorize(
-				url, 
-				sofarClientAppId, 
-				sofarClientAppSecret, 
-				sofarClientApporgId, 
-				sofarClientAppUser, 
-				sofarClientAppPassword
-			);
+		Path classPath								= this.getClassLocation(this.getClass());
+		
+		AuthorizationResponse authorizationMock		= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-authorization.json")), AuthorizationResponse.class);
+		PermissionResponse permissionMock			= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-permission.json")), PermissionResponse.class);
+		DevideListResponse devicesMock				= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-devices.json")), DevideListResponse.class);
+		StationListResponse stationsMock			= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-stations.json")), StationListResponse.class);
+		DevideListResponse stationDevicesMock		= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-station-devices.json")), DevideListResponse.class);
+		StationHistoryDataResponse dataMock			= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-station-history-data.json")), StationHistoryDataResponse.class);
+		
+		
+		when(this.jsonCaller.post(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_AUTHORIZATION), any(), any(), any())).thenReturn(authorizationMock);
+		when(this.jsonCaller.bearerGet(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_PERMISSION), any(), any(), any())).thenReturn(permissionMock);
+		when(this.jsonCaller.bearerGet(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_DEVICE_LIST), any(), any(), any())).thenReturn(devicesMock);
+		when(this.jsonCaller.bearerGet(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_LIST), any(), any(), any())).thenReturn(stationsMock);
+		when(this.jsonCaller.bearerGet( eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_DEVICE_LIST), any(), any(), any())).thenReturn(stationDevicesMock);
+		when(this.jsonCaller.bearerGet( eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_HISTORY_DATA), any(), any(), any())).thenReturn(dataMock);
+		
+		AuthorizationResponse authorization = service.getAuthorize(url, appId, appSecret, orgId, userName, password);
 		
 		assertNotNull(authorization);
 		assertTrue(authorization.getSuccess());
@@ -154,20 +118,46 @@ public class SofarInverterServiceTest {
 		assertNotNull(data);
 		assertNotNull(data.getStationDataItems());
 		assertTrue(CollectionUtil.notEmpty(data.getStationDataItems()));
-		
+	}
+	
+	//--- Overridden methods --------------------
+	@Override
+	public InverterService getService() { return this.service; }
+	
+	@Override
+	public ClientVo createClient() {
+		return this.buildClientWith(
+			Arrays.asList(
+				this.createClientParameter(SofarInverterService.PARAM_BETA_MODE, "true"),
+				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_ID, "not-a-real-app-id"),
+				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_SECRET, "not-a-real-app-secret"),
+				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_ORG_ID, "not-a-real-app-org-id"),
+				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_USER, "not-a-real-app-user"),
+				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_PASSWORD, "not-a-real-app-password")
+			),
+			null,
+			Arrays.asList(
+				this.createGeneratorParameter(SofarInverterService.PARAM_GEN_STATION_ID, "34232"),
+				this.createGeneratorParameter(SofarInverterService.PARAM_GEN_LAST_DATE_RETRIEVE, "-1160481920")
+			)
+		);
+	}
+	
+	@Override public void prepareMock() throws InveterServiceException {
+		Path classPath								= this.getClassLocation(this.getClass());
 		try {
-			service.prepareFor(client);
-			InverterData apiData = service.retrieveData();
+			StationHistoryDataResponse dataMock			= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-station-history-data.json")), StationHistoryDataResponse.class);
 			
-			assertNotNull(apiData);
-			assertNotNull(apiData.getGeneratorData());
-			assertNotNull(apiData.getStationData());
-			assertTrue(CollectionUtil.notEmpty(apiData.getGeneratorData()));
-			assertTrue(CollectionUtil.notEmpty(apiData.getStationData()));
-		} catch (InveterServiceException e) {
-			error = e;
+			when(this.jsonCaller.bearerGet(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_HISTORY_DATA), any(), any(), any())).thenReturn(dataMock);
+
+		} catch (IOException e) {
+			throw new InveterServiceException(e);
 		}
-		
-		assertNull(error);
+	}
+	
+	@Override
+	public void postDataRetrieveTest() {
+		assertTrue(this.service.continueWithStats());
+		assertNull(this.service.getReasonWhyCantRetrieve());
 	}
 }

@@ -1,0 +1,16 @@
+{
+    "code": null,
+    "msg": null,
+    "success": true,
+    "requestId": "b9bba24b99e045d981f5040411b08246",
+    "total": 2,
+    "deviceListItems": [
+        {
+            "deviceSn": "1800078009-Igen",
+            "deviceId": 200203165,
+            "deviceType": "INVERTER",
+            "connectStatus": 0,
+            "collectionTime": 1580621692
+        }
+    ]
+}

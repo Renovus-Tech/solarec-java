@@ -1,0 +1,15 @@
+{
+    "code": null,
+    "msg": null,
+    "success": true,
+    "requestId": "a5a7c7a7e8f8459f9ed04ebb3faaaa13",
+    "viewStationList": 1,
+    "viewStationInfo": 1,
+    "viewStationDeviceList": 1,
+    "viewStationData": 1,
+    "viewStationAlertList": 1,
+    "viewDeviceList": 1,
+    "viewDeviceData": 1,
+    "viewDeviceAlertList": 1,
+    "viewDeviceAlertData": 1
+}
