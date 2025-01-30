@@ -21,6 +21,7 @@ import tech.renovus.solarec.inverters.brand.sofar.api.DevideListResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.ListRequest;
 import tech.renovus.solarec.inverters.brand.sofar.api.PermissionResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.StationDataItem;
+import tech.renovus.solarec.inverters.brand.sofar.api.StationDeviceListResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.StationDeviceRequest;
 import tech.renovus.solarec.inverters.brand.sofar.api.StationHistoryDataRequest;
 import tech.renovus.solarec.inverters.brand.sofar.api.StationHistoryDataResponse;
@@ -267,7 +268,7 @@ public class SofarInverterService implements InverterService {
 			);
 	}
 	
-	public DevideListResponse getStationDeviceList(String url, String authCode, Integer stationId) {
+	public StationDeviceListResponse getStationDeviceList(String url, String authCode, Integer stationId) {
 		StationDeviceRequest request = new StationDeviceRequest()
 				.withPage(Integer.valueOf(1))
 				.withSize(Integer.valueOf(50))
@@ -278,7 +279,7 @@ public class SofarInverterService implements InverterService {
 				url + ENDPOINT_STATION_DEVICE_LIST, 
 				request, 
 				authCode, 
-				DevideListResponse.class
+				StationDeviceListResponse.class
 			);
 	}
 	

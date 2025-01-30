@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -16,14 +17,17 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.BaseInveterTest;
 import tech.renovus.solarec.inverters.brand.sofar.api.AuthorizationResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.DevideListResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.PermissionResponse;
+import tech.renovus.solarec.inverters.brand.sofar.api.StationDeviceListResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.StationHistoryDataResponse;
 import tech.renovus.solarec.inverters.brand.sofar.api.StationListResponse;
 import tech.renovus.solarec.inverters.common.InverterService;
@@ -35,6 +39,7 @@ import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.weather.WeatherService;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SofarInverterServiceTest extends BaseInveterTest {
 
 	//--- Private properties --------------------
@@ -53,23 +58,22 @@ public class SofarInverterServiceTest extends BaseInveterTest {
 		String userName 	= "not real user";
 		String password 	= "not real password";
 		
-		
 		Path classPath								= this.getClassLocation(this.getClass());
 		
-		AuthorizationResponse authorizationMock		= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-authorization.json")), AuthorizationResponse.class);
-		PermissionResponse permissionMock			= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-permission.json")), PermissionResponse.class);
-		DevideListResponse devicesMock				= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-devices.json")), DevideListResponse.class);
-		StationListResponse stationsMock			= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-stations.json")), StationListResponse.class);
-		DevideListResponse stationDevicesMock		= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-station-devices.json")), DevideListResponse.class);
-		StationHistoryDataResponse dataMock			= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-station-history-data.json")), StationHistoryDataResponse.class);
+		AuthorizationResponse authorizationMock			= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-authorization.json")), AuthorizationResponse.class);
+		PermissionResponse permissionMock				= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-permission.json")), PermissionResponse.class);
+		DevideListResponse devicesMock					= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-devices.json")), DevideListResponse.class);
+		StationListResponse stationsMock				= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-stations.json")), StationListResponse.class);
+		StationDeviceListResponse stationDevicesMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-station-devices.json")), StationDeviceListResponse.class);
+		StationHistoryDataResponse dataMock				= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-station-history-data.json")), StationHistoryDataResponse.class);
 		
-		
-		when(this.jsonCaller.post(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_AUTHORIZATION), any(), any(), any())).thenReturn(authorizationMock);
-		when(this.jsonCaller.bearerGet(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_PERMISSION), any(), any(), any())).thenReturn(permissionMock);
-		when(this.jsonCaller.bearerGet(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_DEVICE_LIST), any(), any(), any())).thenReturn(devicesMock);
-		when(this.jsonCaller.bearerGet(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_LIST), any(), any(), any())).thenReturn(stationsMock);
-		when(this.jsonCaller.bearerGet( eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_DEVICE_LIST), any(), any(), any())).thenReturn(stationDevicesMock);
-		when(this.jsonCaller.bearerGet( eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_HISTORY_DATA), any(), any(), any())).thenReturn(dataMock);
+		when(this.jsonCaller.generateCompleteURL(anyString(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+		when(this.jsonCaller.post(      eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_AUTHORIZATION), any(Object.class), any())).thenReturn(authorizationMock);
+		when(this.jsonCaller.bearerPost( eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_PERMISSION), any(), any(), any())).thenReturn(permissionMock);
+		when(this.jsonCaller.bearerPost( eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_DEVICE_LIST), any(), any(), any())).thenReturn(devicesMock);
+		when(this.jsonCaller.bearerPost( eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_LIST), any(), any(), any())).thenReturn(stationsMock);
+		when(this.jsonCaller.bearerPost( eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_DEVICE_LIST), any(), any(), any())).thenReturn(stationDevicesMock);
+		when(this.jsonCaller.bearerPost( eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_HISTORY_DATA), any(), any(), any())).thenReturn(dataMock);
 		
 		AuthorizationResponse authorization = service.getAuthorize(url, appId, appSecret, orgId, userName, password);
 		
@@ -99,10 +103,10 @@ public class SofarInverterServiceTest extends BaseInveterTest {
 		assertTrue(stations.getTotal().intValue() > 0);
 		
 		Integer stationId = stations.getStationList().iterator().next().getId();
-		DevideListResponse stationDevices = service.getStationDeviceList(url, authCode, stationId);
+		StationDeviceListResponse stationDevices = service.getStationDeviceList(url, authCode, stationId);
 		assertNotNull(stationDevices);
 		assertNotNull(stationDevices.getTotal());
-		assertNotNull(stationDevices.getDeviceList());
+		assertNotNull(stationDevices.getDeviceListItems());
 		assertTrue(stationDevices.getTotal().intValue() > 0);
 		
 		Calendar cal = GregorianCalendar.getInstance();
@@ -131,7 +135,7 @@ public class SofarInverterServiceTest extends BaseInveterTest {
 				this.createClientParameter(SofarInverterService.PARAM_BETA_MODE, "true"),
 				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_ID, "not-a-real-app-id"),
 				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_SECRET, "not-a-real-app-secret"),
-				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_ORG_ID, "not-a-real-app-org-id"),
+				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_ORG_ID, "123"),
 				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_USER, "not-a-real-app-user"),
 				this.createClientParameter(SofarInverterService.PARAM_ACCESS_APP_PASSWORD, "not-a-real-app-password")
 			),
@@ -146,10 +150,13 @@ public class SofarInverterServiceTest extends BaseInveterTest {
 	@Override public void prepareMock() throws InveterServiceException {
 		Path classPath								= this.getClassLocation(this.getClass());
 		try {
+			AuthorizationResponse authorizationMock		= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-authorization.json")), AuthorizationResponse.class);
 			StationHistoryDataResponse dataMock			= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/inverters/brand/sofar/sample-station-history-data.json")), StationHistoryDataResponse.class);
 			
-			when(this.jsonCaller.bearerGet(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_HISTORY_DATA), any(), any(), any())).thenReturn(dataMock);
-
+			when(this.jsonCaller.generateCompleteURL(anyString(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+			when(this.jsonCaller.post(      eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_AUTHORIZATION), any(Object.class), any())).thenReturn(authorizationMock);
+			when(this.jsonCaller.bearerPost(eq(SofarInverterService.URL_BETA + SofarInverterService.ENDPOINT_STATION_HISTORY_DATA), any(), any(), any())).thenReturn(dataMock);
+			
 		} catch (IOException e) {
 			throw new InveterServiceException(e);
 		}
