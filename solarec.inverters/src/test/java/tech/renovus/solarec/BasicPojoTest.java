@@ -17,7 +17,7 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import tech.renovus.solarec.util.CollectionUtil;
 
-public class BasicPojoTester {
+public class BasicPojoTest {
 
 	@Test public void testDrecs()			throws Exception { this.testPackage(false, "tech.renovus.solarec.certificate.drecs.api"); }
 	@Test public void testIrecBr()			throws Exception { this.testPackage(false, "tech.renovus.solarec.certificate.irec.br.api"); }
@@ -34,6 +34,10 @@ public class BasicPojoTester {
 	@Test public void testSma()				throws Exception { this.testPackage(true, "tech.renovus.solarec.inverters.brand.sma.api"); }
 	@Test public void testSofar()			throws Exception { this.testPackage(true, "tech.renovus.solarec.inverters.brand.sofar.api"); }
 	@Test public void testSolarEdge()		throws Exception { this.testPackage(true, "tech.renovus.solarec.inverters.brand.solarEdge.api"); }
+	@Test public void testSolis()			throws Exception { this.testPackage(true, "tech.renovus.solarec.inverters.brand.solis.api"); }
+	
+	@Test public void testMeteoblue()		throws Exception { this.testPackage(true, "tech.renovus.solarec.weather.meteoblue.api"); }
+	@Test public void testOpenmeteo()		throws Exception { this.testPackage(true, "tech.renovus.solarec.weather.openmeteo.api"); }
 	
 	private void testPackage(boolean isRest, String packageName) throws Exception {
 		try (

@@ -41,7 +41,7 @@ import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImplTest;
 	
 	MeteoblueWeatherServiceImplTest.class,
 	WeatherServiceTest.class,
-	BasicPojoTester.class
+	BasicPojoTest.class
 })
 
 public class SolarecInveretersTest {

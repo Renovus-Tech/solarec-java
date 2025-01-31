@@ -35,8 +35,7 @@ public class JsonCallerTest {
 			try {
 				assertEquals(response.getAdditionalProperties().get(entry.getKey()), URLEncoder.encode(entry.getValue(), "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-				assertTrue(e != null);
+				assertNotNull(e);
 			}
 		}
 	}
@@ -48,6 +47,7 @@ public class JsonCallerTest {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void assertTestRequest(TestRequest request, PostResponse response) {
 		assertEquals(request.getText(), ((Map<String, Object>) response.getAdditionalProperties().get("data")).get("text"));
 		assertEquals(request.getNumber(), ((Map<String, Object>) response.getAdditionalProperties().get("data")).get("number"));
