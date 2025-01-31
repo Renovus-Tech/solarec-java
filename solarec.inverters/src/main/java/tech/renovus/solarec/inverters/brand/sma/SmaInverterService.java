@@ -1,5 +1,6 @@
 package tech.renovus.solarec.inverters.brand.sma;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,6 +28,7 @@ import tech.renovus.solarec.util.ClassUtil;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
+import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
@@ -89,6 +91,7 @@ public class SmaInverterService implements InverterService {
 	public static final String PERIOD_TOTAL		= "Total";
 	
 	public static final String DEVICE_TYPE_SOLAR_INVETER	= "Solar Inverters";
+	public static final String DATA_TIME_FORMAT				= "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS";
 
 	//--- Autowired properties ------------------
 	@Autowired WeatherService weatherService;
@@ -103,29 +106,27 @@ public class SmaInverterService implements InverterService {
 	private String getUrlAuth(boolean sandboxMode) { return sandboxMode ? SANDBOX_URL_AUTH : PROD_URL_AUTH; }
 	private String getUrlData(boolean sandboxMode) { return sandboxMode ? SANDBOX_URL_DATA : PROD_URL_DATA; }
 
-	private List<GenDataVo> process(GeneratorVo generator, MeasurementsResponse data, Date fromDate) {
+	private List<GenDataVo> process(GeneratorVo generator, MeasurementsResponse data, Date fromDate) throws InveterServiceException {
 		List<GenDataVo> result = new ArrayList<>();
 		
 		if (data != null && CollectionUtil.notEmpty(data.getSet())) {
-			for (Set aData : data.getSet()) {
-//				if (CollectionUtil.notEmpty(aData.getChannels())) {
-//					for (Channel aChannel : aData.getChannels()) {
-//						if (! "EnergySelfConsumption".equals(aChannel.getChannelName())) continue;
-//						
-//						Date dataDate = DATE_FORMATTER.parse(aData.getLogDateTime());
-//						
-//						if (dataDate.before(fromDate)) continue;
-//						
-//						GenDataVo genData = new GenDataVo();
-//						genData.setCliId(generator.getCliId());
-//						genData.setGenId(generator.getGenId());
-//						genData.setDataDate(dataDate);
-//						genData.setDataTypeId(DataTypeVo.TYPE_GENERATOR_POWER_KWH);
-//						genData.setDataValue(aChannel.getValue() == null ? null : Double.valueOf(aChannel.getValue().intValue()));
-//						
-//						result.add(genData);
-//					}
-//				}
+			SimpleDateFormat formatter = new SimpleDateFormat(DATA_TIME_FORMAT);
+			try {
+				for (Set aData : data.getSet()) {
+					Date dataDate = formatter.parse(aData.getTime());
+					Double dataValue = aData.getPvGeneration();
+					
+					GenDataVo genData = new GenDataVo();
+					genData.setCliId(generator.getCliId());
+					genData.setGenId(generator.getGenId());
+					genData.setDataDate(dataDate);
+					genData.setDataTypeId(DataTypeVo.TYPE_SOLAR_INVERTER_DC_POWER);
+					genData.setDataValue(dataValue);
+					
+					result.add(genData);
+				}
+			} catch (ParseException e) {
+                throw new InveterServiceException(e);
 			}
 		}
 		
@@ -133,7 +134,7 @@ public class SmaInverterService implements InverterService {
 	}
 	
 	private boolean isAuthorized() {
-		return AUTHORIZE_ACCEPTED.equals(this.authorize.getState());
+		return this.authorize != null && AUTHORIZE_ACCEPTED.equals(this.authorize.getState());
 	}
 	
 	//--- Implemented methods -------------------

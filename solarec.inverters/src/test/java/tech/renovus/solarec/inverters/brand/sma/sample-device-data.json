@@ -1,14 +1,56 @@
 {
-	"plant": {
-		"plantId": "13",
-		"name": "Testplant 1",
-		"timezone": "Europe/Berlin"
-	},
-	"device": {
-		"deviceId": "16",
-		"name": "My Inverter 1",
-		"timezone": "Europe/Berlin"
-	},
-	"setType": "EnergyAndPowerPv",
-	"set": []
+    "plant": {
+        "plantId": "13",
+        "name": "Testplant 1",
+        "timezone": "Europe/Berlin"
+    },
+    "device": {
+        "deviceId": "16",
+        "name": "My Inverter 1",
+        "timezone": "Europe/Berlin"
+    },
+    "set": [
+        {
+            "time": "2025-01-31T00:37:01.2024073",
+            "pvGeneration": 3445.543,
+            "directConsumption": 143.53,
+            "totalConsumption": 3445.543,
+            "batteryCharging": 234.54,
+            "batteryDischarging": 456.125,
+            "batteryStateOfCharge": 64.65,
+            "dieselGeneration": 463.34,
+            "combinedHeatAndPowerGeneration": 3445.543,
+            "hydroGeneration": 345.543,
+            "gridFeedIn": 245.783,
+            "gridConsumption": 75.33,
+            "totalGeneration": 764.5,
+            "selfConsumption": 56.8,
+            "autarkyRate": 0.8,
+            "selfConsumptionRate": 0.3,
+            "selfSupply": 75.42
+        },
+        {
+            "time": "2025-01-31T00:37:01.2024145",
+            "setPointFeedInPower": 42,
+            "setPointReactivePower": 66
+        }
+    ],
+    "total": {
+        "pvGeneration": 4445.543,
+        "directConsumption": 243.53,
+        "totalConsumption": 4445.543,
+        "batteryCharging": 334.54,
+        "batteryDischarging": 556.125,
+        "batteryStateOfCharge": 74.65,
+        "dieselGeneration": 563.34,
+        "combinedHeatAndPowerGeneration": 4445.543,
+        "hydroGeneration": 445.543,
+        "gridFeedIn": 345.783,
+        "gridConsumption": 85.33,
+        "totalGeneration": 864.5,
+        "selfConsumption": 66.8,
+        "autarkyRate": 0.7,
+        "selfConsumptionRate": 0.3,
+        "selfSupply": 85.42
+    }
 }
