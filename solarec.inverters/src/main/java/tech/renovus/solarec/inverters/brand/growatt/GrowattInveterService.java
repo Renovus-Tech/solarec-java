@@ -134,7 +134,7 @@ public class GrowattInveterService implements InverterService {
 		this.continueWithStats	= false;
 		String appKey			= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_APP_TOKEN);
 		String paramPlantId		= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_GEN_PLANT_ID);
-		boolean betaMode		= BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_BETA_MODE));
+		boolean proMode			= ! BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_BETA_MODE));
 		
 		Integer plantId			= null;
 		try {
@@ -167,7 +167,7 @@ public class GrowattInveterService implements InverterService {
 		
 		InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_PARAMETER_DATE_TIME), DateUtil.formatDateTime(to, DateUtil.FMT_PARAMETER_DATE_TIME));
 		
-		PlantEnergyResponse data = this.getPlantEnergy(this.getUrl(betaMode), appKey, plantId, GrowattInveterService.TIME_UNIT_DAY, dateFrom, to);
+		PlantEnergyResponse data = this.getPlantEnergy(this.getUrl(proMode), appKey, plantId, GrowattInveterService.TIME_UNIT_DAY, dateFrom, to);
 		
 		if (data == null || data.hasError()) {
 			String errorMessage = data == null ? "No data response from server." : "Error parsing data: " + data.getErrorCode() + " - " + data.getErrorMsg();
@@ -221,6 +221,7 @@ public class GrowattInveterService implements InverterService {
 				
 			}
 			
+			this.continueWithStats = true;
 			InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
 		} catch (ParseException e) {
 			LoggerService.inverterLogger().error(LOG_PREFIX + "Error parsing data: " + e.getLocalizedMessage(), e);

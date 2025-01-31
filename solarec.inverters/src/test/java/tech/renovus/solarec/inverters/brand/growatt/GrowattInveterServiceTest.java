@@ -14,8 +14,12 @@ import java.util.Arrays;
 import java.util.Date;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.BaseInveterTest;
@@ -30,6 +34,7 @@ import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.weather.WeatherService;
 
+@RunWith(MockitoJUnitRunner.class)
 public class GrowattInveterServiceTest extends BaseInveterTest {
 
 	//--- Private properties --------------------
@@ -49,16 +54,7 @@ public class GrowattInveterServiceTest extends BaseInveterTest {
 		Date dateEnd		= new Date();
 		String url			= this.service.getUrl(prodMode);
 		
-		Path classPath								= this.getClassLocation(this.getClass());
-		
-		ListPlantsResponse plantsMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/growatt/sample-list-plants.json")), ListPlantsResponse.class);
-		PlantEnergyResponse dataMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/growatt/sample-plant-energy.json")), PlantEnergyResponse.class);
-		PlantPowerResponse data2Mock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/growatt/sample-plant-power.json")), PlantPowerResponse.class);
-
-		
-		when(this.jsonCaller.get(eq(GrowattInveterService.URL_TEST + GrowattInveterService.ENDPOINT_LIST_PLANTS), any(), any(), any())).thenReturn(plantsMock);
-		when(this.jsonCaller.get(eq(GrowattInveterService.URL_TEST + GrowattInveterService.ENDPOINT_PLANT_ENERGY), any(), any(), any())).thenReturn(dataMock);
-		when(this.jsonCaller.get(eq(GrowattInveterService.URL_TEST + GrowattInveterService.ENDPOINT_PLANT_POWER), any(), any(), any())).thenReturn(data2Mock);
+		this.setMocks();
 		
 		ListPlantsResponse plants = this.service.listPlants(url, token);
 		assertNotNull(plants);
@@ -69,6 +65,18 @@ public class GrowattInveterServiceTest extends BaseInveterTest {
 		
 		PlantPowerResponse data2 = this.service.getPlantPower(url, token, plantId, dateStart);
 		assertNotNull(data2);
+	}
+
+	private void setMocks() throws JsonProcessingException, IOException {
+		Path classPath								= this.getClassLocation(this.getClass());
+		
+		ListPlantsResponse plantsMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/growatt/sample-list-plants.json")), ListPlantsResponse.class);
+		PlantEnergyResponse dataMock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/growatt/sample-plant-energy.json")), PlantEnergyResponse.class);
+		PlantPowerResponse data2Mock	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/growatt/sample-plant-power.json")), PlantPowerResponse.class);
+		
+		when(this.jsonCaller.get(eq(GrowattInveterService.URL_TEST + GrowattInveterService.ENDPOINT_LIST_PLANTS), any(), any(), any())).thenReturn(plantsMock);
+		when(this.jsonCaller.get(eq(GrowattInveterService.URL_TEST + GrowattInveterService.ENDPOINT_PLANT_ENERGY), any(), any(), any())).thenReturn(dataMock);
+		when(this.jsonCaller.get(eq(GrowattInveterService.URL_TEST + GrowattInveterService.ENDPOINT_PLANT_POWER), any(), any(), any())).thenReturn(data2Mock);
 	}
 	
 	//--- Overridden methods --------------------
@@ -91,12 +99,8 @@ public class GrowattInveterServiceTest extends BaseInveterTest {
 	}
 	
 	@Override public void prepareMock() throws InveterServiceException {
-		Path classPath								= this.getClassLocation(this.getClass());
 		try {
-			PlantEnergyResponse plantEnergyResponse	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "/tech/renovus/solarec/inverters/brand/growatt/sample-plant-energy.json")), PlantEnergyResponse.class);
-			
-			when(this.jsonCaller.get(eq(GrowattInveterService.URL_TEST + GrowattInveterService.ENDPOINT_PLANT_ENERGY), any(), any(), any())).thenReturn(plantEnergyResponse);
-
+			this.setMocks();
 		} catch (IOException e) {
 			throw new InveterServiceException(e);
 		}
