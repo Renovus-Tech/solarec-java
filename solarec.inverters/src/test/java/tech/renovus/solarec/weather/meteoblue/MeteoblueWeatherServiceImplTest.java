@@ -58,8 +58,7 @@ public class MeteoblueWeatherServiceImplTest {
 	@Test
 	public void testService() throws IOException {
 		Path classPath			= this.getClassLocation(this.getClass());
-		String sampleString		= FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/weather/meteoblue/sample-data.json"));
-		WeatherData sampleData	= JsonUtil.toObject(sampleString, WeatherData.class);
+		WeatherData sampleData	= JsonUtil.toObject(FileUtil.readFile(new File(classPath.toFile(), "tech/renovus/solarec/weather/meteoblue/sample-data.json")), WeatherData.class);
 		
 		MeteoblueConfiguration configuration = new MeteoblueConfiguration();
 		configuration.setMaxDaysPast(Integer.valueOf(7));
