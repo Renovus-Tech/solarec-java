@@ -52,13 +52,14 @@ public class SurentisService implements CertificateService {
 	//--- Private properties --------------------
 	private @Autowired SurentisConfiguration config; 
 	private @Resource GenDataDao genDataDao;
-	
+	private @Autowired JsonCaller jsonCaller;
+
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'sss'Z'");
 	
 	//--- Private methods -----------------------
 	private <T extends Object, R extends Object> R doPostCall(String endPoint, T payload, Class<R> responseClass) throws JsonProcessingException {
 		LoggerService.certificateLogger().info("Calling 'POST " + endPoint + "' with payload: " + JsonUtil.toString(payload));
-		R response = JsonCaller.post(this.config.getUrl() + endPoint, payload, responseClass);
+		R response = this.jsonCaller.post(this.config.getUrl() + endPoint, payload, responseClass);
 		LoggerService.certificateLogger().info("Call ended 'POST " + endPoint + "' with result: " + JsonUtil.toString(response));
 		
 		return response;
@@ -67,7 +68,7 @@ public class SurentisService implements CertificateService {
 	
 	private <R extends Object> R doGetCall(String endPoint, Class<R> responseClass) throws JsonProcessingException {
 		LoggerService.certificateLogger().info("Calling 'GET " + endPoint + "'");
-		R response =  JsonCaller.get(this.config.getUrl() + endPoint, responseClass);
+		R response =  this.jsonCaller.get(this.config.getUrl() + endPoint, responseClass);
 		LoggerService.certificateLogger().info("Call ended 'GET " + endPoint + "' with result: " + JsonUtil.toString(response));
 		return response;
 	}

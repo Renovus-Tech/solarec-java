@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.solis.api.inverterDay.InverterDayRequest;
 import tech.renovus.solarec.inverters.brand.solis.api.inverterDay.InverterDayResponse;
@@ -68,8 +67,8 @@ public class SolisInverterService implements InverterService {
 	private static final String PARAM_GEN_LAST_DATE_RETRIEVE	= "solis.generator.last_retrieve";
 
 	//--- Resources -----------------------------
-	@Autowired RenovusSolarecConfiguration configuration;
-	@Autowired WeatherService weatherService;
+	private @Autowired WeatherService weatherService;
+	private @Autowired JsonCaller jsonCaller;
 
 	//--- Private properties --------------------
 	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyy'-'MM'-'dd");
@@ -281,7 +280,7 @@ public class SolisInverterService implements InverterService {
 		
 		String url = URL_PROD + ENDPOINT_DEVICE_LIST;
 		
-		return JsonCaller.post(url, this.getHeaders(request, appId, apiSecret, ENDPOINT_DEVICE_LIST), request, InveterListResponse.class);
+		return this.jsonCaller.post(url, this.getHeaders(request, appId, apiSecret, ENDPOINT_DEVICE_LIST), request, InveterListResponse.class);
 	}
 
 	
@@ -295,7 +294,7 @@ public class SolisInverterService implements InverterService {
 		String url = URL_PROD + ENDPOINT_INVERTER_DAY;
 		
 		try {
-			return JsonCaller.post(url, this.getHeaders(request, appId, apiSecret, ENDPOINT_INVERTER_DAY), request, InverterDayResponse.class);
+			return this.jsonCaller.post(url, this.getHeaders(request, appId, apiSecret, ENDPOINT_INVERTER_DAY), request, InverterDayResponse.class);
 		} catch (InvalidKeyException | JsonProcessingException | NoSuchAlgorithmException e) {
 			throw new InveterServiceException(e);
 		}

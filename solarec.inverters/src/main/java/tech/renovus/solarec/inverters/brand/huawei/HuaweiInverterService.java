@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.huawei.api.LoginRequest;
 import tech.renovus.solarec.inverters.brand.huawei.api.LoginResponse;
@@ -26,7 +28,7 @@ public class HuaweiInverterService implements InverterService {
 	private static final String ENDPOINT_LOGIN				= "/thirdData/login";
 	private static final String ENDPOINT_PLANT_LIST			= "/thirdData/getStationList";
 	private static final String ENDPOINT_KPI_STATION_HOUR	= "/thirdData/getKpiStationHour";
-	private static final String ENDPOINT_KPI_STATION_MONTH	= "/thirdData/getKpiStationMOnth";
+	private static final String ENDPOINT_KPI_STATION_MONTH	= "/thirdData/getKpiStationMonth";
 	
 	
 	//--- Public constants ----------------------
@@ -39,6 +41,8 @@ public class HuaweiInverterService implements InverterService {
 	protected static final String PARAM_GEN_LAST_DATE_RETRIEVE						= "huawei.generator.last_retrieve";
 
 	//--- Private properties --------------------
+	private @Autowired JsonCaller jsonCaller;
+	
 	private ClientVo cliVo;
 
 	//--- Private methods -----------------------
@@ -91,7 +95,7 @@ public class HuaweiInverterService implements InverterService {
 				.withUserName(userName)
 				.withSystemCode(systemCode);
 		
-		LoginResponse response = JsonCaller.post(url + ENDPOINT_LOGIN, request, LoginResponse.class);
+		LoginResponse response = this.jsonCaller.post(url + ENDPOINT_LOGIN, request, LoginResponse.class);
 		
 		return response.getXsrfToken();
 	}
@@ -99,7 +103,7 @@ public class HuaweiInverterService implements InverterService {
 	public Object getPlantList(boolean forProd, String auth, String stationCode, Date date) {
 		String url			= this.getUrl(forProd);
 		
-		return JsonCaller.post(url + ENDPOINT_PLANT_LIST, this.getHeaders(auth), "{}", String.class);
+		return this.jsonCaller.post(url + ENDPOINT_PLANT_LIST, this.getHeaders(auth), "{}", String.class);
 	}
 	
 	public Object getStationHourData(boolean forProd, String auth, String stationCode, Date date) {
@@ -109,7 +113,7 @@ public class HuaweiInverterService implements InverterService {
 				.withStationCodes(stationCode)
 				.withCollectTime(date.getTime());
 		
-		return JsonCaller.post(url + ENDPOINT_KPI_STATION_HOUR, this.getHeaders(auth), request, PowerStationHourResponse.class);
+		return this.jsonCaller.post(url + ENDPOINT_KPI_STATION_HOUR, this.getHeaders(auth), request, PowerStationHourResponse.class);
 	}
 	
 	public Object getStationMonthData(boolean forProd, String auth, String stationCode, Date date) {
@@ -119,6 +123,6 @@ public class HuaweiInverterService implements InverterService {
 				.withStationCodes(stationCode)
 				.withCollectTime(date.getTime());
 		
-		return JsonCaller.post(url + ENDPOINT_KPI_STATION_MONTH, this.getHeaders(auth), request, PowerStationMonthResponse.class);
+		return this.jsonCaller.post(url + ENDPOINT_KPI_STATION_MONTH, this.getHeaders(auth), request, PowerStationMonthResponse.class);
 	}
 }

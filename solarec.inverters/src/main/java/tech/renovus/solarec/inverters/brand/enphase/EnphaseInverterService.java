@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.enphase.api.TokenResponse;
 import tech.renovus.solarec.inverters.brand.enphase.api.data.Interval;
@@ -29,8 +31,8 @@ import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
+import tech.renovus.solarec.weather.WeatherService;
 import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
-import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 
 /**
  * Documentation: https://developer-v4.enphase.com/docs/quickstart.html
@@ -74,6 +76,9 @@ public class EnphaseInverterService implements InverterService {
 	public static final String PARAM_GENERATOR_LAST_RETRIEVE	= "enphase.generator.last_retrieve";
 	
 	//--- Private properties --------------------
+	private @Autowired WeatherService weatherService;
+	private @Autowired JsonCaller jsonCaller;
+
 	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyy-MM-dd");
 	private ClientVo cliVo;
 	private TokenResponse authentication;
@@ -229,7 +234,7 @@ public class EnphaseInverterService implements InverterService {
 								GenDataVo lastData = generatorData.iterator().next();
 								
 								try {
-									CollectionUtil.addAll(result.getStationData(), new MeteoblueWeatherServiceImpl().retrieveWeatherData(location, station, dateFrom, dateTo));
+									CollectionUtil.addAll(result.getStationData(), this.weatherService.retrieveWeatherData(location, station, dateFrom, dateTo));
 								} catch (WeatherServiceException e) {
 //									throw new InveterServiceException(e);
 								}
@@ -266,11 +271,11 @@ public class EnphaseInverterService implements InverterService {
 		Map<String, String> headers = new HashMap<>();
 		headers.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes()));
 		
-		return JsonCaller.post(url, headers, null, TokenResponse.class);
+		return this.jsonCaller.post(url, headers, null, TokenResponse.class);
 	}
 	
 	public SystemsResponse retrieveSystems(String authCode, String apiKey) {
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				URL_PROD + ENDPOINT_SYSTEMS, 
 				this.getHeaders(authCode, apiKey), 
 				null, 
@@ -281,7 +286,7 @@ public class EnphaseInverterService implements InverterService {
 	public DevicesResponse retrieveDevices(String authCode, String apiKey, String systemId) {
 		String url = URL_PROD + ENDPOINT_SYSTEM_DEVICES;
 		url = StringUtil.replace(url, "${system_id}", systemId);
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url,
 				this.getHeaders(authCode, apiKey),
 				null,
@@ -297,7 +302,7 @@ public class EnphaseInverterService implements InverterService {
 		url = StringUtil.replace(url, "{start_at}", this.formatDate.format(date));
 		url = StringUtil.replace(url, "{granularity}", granularity);
 		
-		return JsonCaller.get(
+		return this.jsonCaller.get(
 				url,
 				this.getHeaders(authCode, apiKey),
 				null,

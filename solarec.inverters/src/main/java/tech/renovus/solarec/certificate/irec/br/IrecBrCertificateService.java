@@ -57,10 +57,11 @@ public class IrecBrCertificateService implements CertificateService {
 	private static final String ENDPOINT_RECS			= "/recs";
 	
 	//--- Resouces ------------------------------
-	@Autowired IrecBrConfiguration configuration;
-	@Autowired UsersDao usersDao;
-	@Autowired GenDataDao genDataDao;
-	
+	private @Autowired IrecBrConfiguration configuration;
+	private @Autowired UsersDao usersDao;
+	private @Autowired GenDataDao genDataDao;
+	private @Autowired JsonCaller jsonCaller;
+
 	//--- Private methods -----------------------
 	private Map<String, String> generateHeaders(String authorizationKey) {
 		Map<String, String> result = new HashMap<>();
@@ -177,7 +178,7 @@ public class IrecBrCertificateService implements CertificateService {
 
 	//--- API methods ---------------------------
 	public LoginResponse login(String email, String password) {
-		return JsonCaller.post(
+		return this.jsonCaller.post(
 				this.configuration.getUrl() + ENDPOINT_LOGIN, 
 				new LoginRequest()
 					.withEmail(email)
@@ -197,7 +198,7 @@ public class IrecBrCertificateService implements CertificateService {
 		String priceIrec,
 		String priceRecBrazil
 	) {
-		return JsonCaller.post(
+		return this.jsonCaller.post(
 			this.configuration.getUrl() +  ENDPOINT_REGISTRANTS, 
 			this.generateHeaders(authorizationKey),
 			new RegistrantRequest()
@@ -221,7 +222,7 @@ public class IrecBrCertificateService implements CertificateService {
 		Integer variation,
 		Integer efficency
 	) {
-		return JsonCaller.post(
+		return this.jsonCaller.post(
 			this.configuration.getUrl() +  ENDPOINT_SOURCES, 
 			this.generateHeaders(authorizationKey),
 			new SourceRequest()
@@ -236,7 +237,7 @@ public class IrecBrCertificateService implements CertificateService {
 		String authorizationKey,
 		String name
 	) {
-		return JsonCaller.post(
+		return this.jsonCaller.post(
 			this.configuration.getUrl() +  ENDPOINT_TECHNOLOGIES, 
 			this.generateHeaders(authorizationKey),
 			new TechnologyRequest()
@@ -260,7 +261,7 @@ public class IrecBrCertificateService implements CertificateService {
 	) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
-		return JsonCaller.post(
+		return this.jsonCaller.post(
 			this.configuration.getUrl() +  ENDPOINT_BUSINESS, 
 			this.generateHeaders(authorizationKey),
 			new BusinessRequest()
@@ -283,7 +284,7 @@ public class IrecBrCertificateService implements CertificateService {
 		String name,
 		String irec
 	) {
-		return JsonCaller.post(
+		return this.jsonCaller.post(
 			this.configuration.getUrl() +  ENDPOINT_PARTICIPANTS, 
 			this.generateHeaders(authorizationKey),
 			new ParticipantRequest()
@@ -305,7 +306,7 @@ public class IrecBrCertificateService implements CertificateService {
 	) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
-		return JsonCaller.post(
+		return this.jsonCaller.post(
 			this.configuration.getUrl() +  ENDPOINT_RECS,
 			this.generateHeaders(authorizationKey),
 			new RecRequest()

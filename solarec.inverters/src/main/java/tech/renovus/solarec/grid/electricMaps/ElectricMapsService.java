@@ -40,8 +40,9 @@ public class ElectricMapsService implements DataGridService {
 	private static final String EMISSION_FACTOR_TYPE_LIFECYCLE	= "lifecycle";
 	
 	//--- Resources -----------------------------
-	@Autowired ElectricMapsConfiguration config;
-	
+	private @Autowired ElectricMapsConfiguration config;
+	private @Autowired JsonCaller jsonCaller;
+
 	private SimpleDateFormat dateTimeFormat	= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	
 	//--- Constructors --------------------------
@@ -71,7 +72,7 @@ public class ElectricMapsService implements DataGridService {
 		params.put("zone", ctrVo.getCtrCode2());
 		params.put("emissionFactorType", EMISSION_FACTOR_TYPE_DIRECT);
 		
-		CarbonIntensityHistory response = JsonCaller.get(
+		CarbonIntensityHistory response = this.jsonCaller.get(
 				URL + ENDPOINT_CARBON_INTENSITY_HISTORY, 
 				this.getAuthenticationHeader(), 
 				params, 

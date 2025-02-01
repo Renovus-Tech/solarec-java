@@ -33,6 +33,8 @@ public class DRecsService implements CertificateService {
 	
 	//--- Protected properties ------------------
 	protected @Autowired DRecsConfiguration drecsConfig;
+	protected @Autowired JsonCaller jsonCaller;
+
 
 	//--- Private methods -----------------------
 	private Organization createOrganizationFrom(ClientVo clientVo) {
@@ -84,7 +86,7 @@ public class DRecsService implements CertificateService {
 				.withUsername(this.drecsConfig.getUser())
 				.withPassword(this.drecsConfig.getPassword());
 
-		return JsonCaller.post(ENDPOINT_AUTH, jsonRequest, AuthResponse.class);
+		return this.jsonCaller.post(ENDPOINT_AUTH, jsonRequest, AuthResponse.class);
 	}
 
 	/**
@@ -95,7 +97,7 @@ public class DRecsService implements CertificateService {
 		AuthResponse authentication = this.authenticate();
 		
 		Organization organization = this.createOrganizationFrom(clientVo);
-		OrganizationResponse response = JsonCaller.bearerPost(ENDPOINT_ORGANIZATION, organization, authentication.getAccessToken(), OrganizationResponse.class);
+		OrganizationResponse response = this.jsonCaller.bearerPost(ENDPOINT_ORGANIZATION, organization, authentication.getAccessToken(), OrganizationResponse.class);
 		
 		InvertersUtil.setParameter(clientVo, PARAM_CLIENT_ID, response.getId().toString());
 	}
@@ -107,7 +109,7 @@ public class DRecsService implements CertificateService {
 		AuthResponse authentication = this.authenticate();
 
 		Device device = this.createDeviceFrom(generatorVo);
-		DeviceResponse response = JsonCaller.bearerPost(ENDPOINT_DEVICE, device, authentication.getAccessToken(), DeviceResponse.class);
+		DeviceResponse response = this.jsonCaller.bearerPost(ENDPOINT_DEVICE, device, authentication.getAccessToken(), DeviceResponse.class);
 
 		// do somthing with the response
 	}
