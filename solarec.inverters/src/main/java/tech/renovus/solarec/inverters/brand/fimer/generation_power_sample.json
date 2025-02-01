@@ -1,0 +1,35 @@
+{
+	"_url": "{{baseUrl}}/api/rest/v1/stats/power/timeseries/{{entityID}}/GenerationPower/average?sampleSize=Day&startDate=20240905&endDate=20240910&timeZone=America/Uruguay",
+    "result": [
+        {
+            "start": 1725418800,
+            "units": "watts",
+            "value": 12740.602484797755
+        },
+        {
+            "start": 1725505200,
+            "units": "watts",
+            "value": 20933.883287540535
+        },
+        {
+            "start": 1725591600,
+            "units": "watts",
+            "value": 17926.35680279567
+        },
+        {
+            "start": 1725678000,
+            "units": "watts",
+            "value": 19456.023593639504
+        },
+        {
+            "start": 1725764400,
+            "units": "watts",
+            "value": 19124.61151207818
+        },
+        {
+            "start": 1725850800,
+            "units": "watts",
+            "value": 5475.712561547756
+        }
+    ]
+}

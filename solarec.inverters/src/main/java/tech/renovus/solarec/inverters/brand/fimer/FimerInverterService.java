@@ -1,19 +1,28 @@
 package tech.renovus.solarec.inverters.brand.fimer;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.fimer.api.authenticate.AuthenticateResponse;
 import tech.renovus.solarec.inverters.brand.fimer.api.ipRanges.datalogger.IpRangeDataloggerResponse;
@@ -27,15 +36,17 @@ import tech.renovus.solarec.inverters.common.InvertersUtil;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
 import tech.renovus.solarec.vo.db.data.GeneratorVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
+import tech.renovus.solarec.vo.db.data.StaDataVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
+import tech.renovus.solarec.weather.WeatherService;
 import tech.renovus.solarec.weather.WeatherService.WeatherServiceException;
-import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 
 /**
  * URL: https://solis-service.solisinverters.com/en/support/solutions/articles/44002212561-api-access-soliscloud
@@ -46,6 +57,7 @@ import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImpl;
 public class FimerInverterService implements InverterService {
 
 	// --- Private constants ---------------------
+	private static final String LOG_PREFIX										= "FIMER";
 	private static final String URL												= "https://api.auroravision.net/api/rest";
 	private static final String ENDPOINT_STATUS									= "/status";
 	private static final String ENDPOINT_AUTHENTICATE							= "/authenticate";
@@ -67,19 +79,24 @@ public class FimerInverterService implements InverterService {
 	public static final String SAMPLE_SIZE_MIN_15								= "Min15";
 	
 	//--- Public constants ----------------------
-	public static final String PARAM_USER						= "fimer.client.user";
-	public static final String PARAM_PASSWORD					= "fimer.client.password";
-	public static final String PARAM_KEY						= "fimer.client.key";
-	public static final String PARAM_TIME_ZONE					= "fimer.client.timezone";
-	public static final String PARAM_PORTAFOLIO_ID				= "fimer.client.portafolioId";
-	public static final String PARAM_PLANT_ID					= "fimer.location.plantId";
-	public static final String PARAM_DEVICE_ID					= "fimer.generator.deviceId";
-	public static final String PARAM_CLIENT_LAST_RETRIEVE		= "fimer.client.last_retrieve";
-	public static final String PARAM_LOCATION_LAST_RETRIEVE		= "fimer.location.last_retrieve";
-	public static final String PARAM_GENERATOR_LAST_RETRIEVE	= "fimer.generator.last_retrieve";
+	public static final String PARAM_USER										= "fimer.client.user";
+	public static final String PARAM_PASSWORD									= "fimer.client.password";
+	public static final String PARAM_KEY										= "fimer.client.key";
+	public static final String PARAM_TIME_ZONE									= "fimer.client.timezone";
+	public static final String PARAM_PORTAFOLIO_ID								= "fimer.client.portafolioId";
+	public static final String PARAM_PLANT_ID									= "fimer.location.plantId";
+	public static final String PARAM_DEVICE_ID									= "fimer.generator.deviceId";
+	public static final String PARAM_CLIENT_LAST_RETRIEVE						= "fimer.client.last_retrieve";
+	public static final String PARAM_LOCATION_LAST_RETRIEVE						= "fimer.location.last_retrieve";
+	public static final String PARAM_GENERATOR_LAST_RETRIEVE					= "fimer.generator.last_retrieve";
 	
+	//--- Resources -----------------------------
+	@Autowired RenovusSolarecConfiguration configuration;
+	@Autowired WeatherService weatherService;
+
 	//--- Private properties ---------------------
-	private final SimpleDateFormat formatDate							= new SimpleDateFormat("yyyyMMdd");
+	
+	private final SimpleDateFormat formatDate									= new SimpleDateFormat("yyyyMMdd");
 	private ClientVo cliVo;
 	private AuthenticateResponse authentication;
 	
@@ -90,22 +107,28 @@ public class FimerInverterService implements InverterService {
 		return headers;
 	}
 
-	private List<GenDataVo> process(GeneratorVo generator, TelemetryDataEnergyTimeseriesResponse data, Date dateFrom) {
+	private List<GenDataVo> process(GeneratorVo generator, TelemetryDataEnergyTimeseriesResponse data, Date dateFrom, ZoneId zoneId) {
 		List<GenDataVo> result = new ArrayList<>();
 		
 		if (data != null && CollectionUtil.notEmpty(data.getResult())) {
 			for (Result aData : data.getResult()) {
-				Date dataDate = new Date(aData.getStart().intValue() * 1000);
+				Instant instant = Instant.ofEpochSecond(aData.getStart().intValue());
+				ZonedDateTime zonedDateTime = instant.atZone(zoneId);
+				Date dataDate = Date.from(zonedDateTime.toInstant());
+
 				if (dataDate.before(dateFrom)) {
 					continue;
 				}
+				
+				Double value = aData.getValue();
+				if (value == null) value = Double.valueOf(0);
 				
 				GenDataVo genData = new GenDataVo();
 				genData.setCliId(generator.getCliId());
 				genData.setGenId(generator.getGenId());
 				genData.setDataDate(dataDate);
 				genData.setDataTypeId(DataTypeVo.TYPE_SOLAR_INVERTER_AC_POWER);
-				genData.setDataValue(aData.getValue());
+				genData.setDataValue(value);
 				
 				result.add(genData);
 			}
@@ -142,7 +165,7 @@ public class FimerInverterService implements InverterService {
 		String valueType, 	// REQUIRED - Available values : maximum, minimum, average, delta
 		String sampleSize,	// REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
 		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
-		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
+		Date endDate, 		// REQUIRED - Pattern: yyyyMMdd
 		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
 	) {
 		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
@@ -153,6 +176,25 @@ public class FimerInverterService implements InverterService {
 		return response == null ? null : response;
 	}
 
+	private Collection<StaDataVo> retrieveWeatherData(LocationVo location, StationVo station, Date dateFrom, Date lastDate, String gmt) throws WeatherServiceException {
+		Collection<StaDataVo> result = this.weatherService.retrieveWeatherData(location, station, dateFrom, lastDate);
+		
+		if (CollectionUtil.notEmpty(result)) result.forEach(data -> data.setDataDate(this.adjustGmt(data.getDataDate(), gmt)));
+		
+		return result;
+	}
+
+	private Date adjustGmt(Date aDate, String gmt) {
+		if (StringUtil.isEmpty(gmt)) return aDate;
+		String[] parts = StringUtil.split(gmt, ":");
+		if (parts == null || parts.length != 2) return aDate;
+		int hours = Integer.parseInt(parts[0]);
+		int minutes = Integer.parseInt(parts[1]);
+		
+		if (hours < 0) minutes *= -1;
+		return DateUtil.addUnit(aDate, Calendar.MINUTE, (hours * 60) + minutes);
+	}
+	
 	// --- Implemented methods -------------------
 	@Override public void prepareFor(ClientVo client) {
 		this.cliVo = client;
@@ -165,17 +207,17 @@ public class FimerInverterService implements InverterService {
 	@Override public String getReasonWhyCantRetrieve() { return null; }
 	
 	@Override public InverterData retrieveData() throws InveterServiceException {
-		long t = System.currentTimeMillis();
-		LoggerService.inverterLogger().info("[{}] Start retrieve for: {} ({})", t, this.cliVo.getCliName(), this.cliVo.getCliId());
-		InverterData result = new InverterData(new ArrayList<>(), new ArrayList<>());
+		LoggerService.inverterLogger().info("[{}] [{}] Start retrieve for: {} ({})", LOG_PREFIX, this.cliVo.getCliName(), this.cliVo.getCliId());
+		InverterData inverterData = new InverterData(new ArrayList<>(), new ArrayList<>());
 
-		Calendar cal = GregorianCalendar.getInstance();
+		Date today		= new Date();
+		Calendar cal	= GregorianCalendar.getInstance();
 		
 		if (CollectionUtil.notEmpty(this.cliVo.getLocations())) {
 			for (LocationVo location : this.cliVo.getLocations()) {
 				if (CollectionUtil.notEmpty(location.getGenerators())) {
 					if (CollectionUtil.isEmpty(location.getStations())) {
-						LoggerService.inverterLogger().error("Can't fina station for client: " + this.cliVo.getCliName() + " - location: " + location.getLocName());
+						LoggerService.inverterLogger().error("[{}] Can't find station for client: {} - location: {}", LOG_PREFIX, this.cliVo.getCliName(), location.getLocName());
 						continue;
 					}
 					
@@ -190,23 +232,27 @@ public class FimerInverterService implements InverterService {
 						
 						boolean authenticated = this.isAuthenticated();
 
-						LoggerService.inverterLogger().info("[{}] Authentication ok: {} ", t, authenticated);
+						LoggerService.inverterLogger().info("[{}] [{}] Authentication ok: {} ", LOG_PREFIX, authenticated);
 						if (authenticated) {
-							String timeZone = InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_TIME_ZONE);
-
-							int deviceId			= Integer.parseInt(InvertersUtil.getParameter(generator, PARAM_DEVICE_ID));
-							String getLastRetrieve	= InvertersUtil.getParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE);
-							Date dateFrom 			= InvertersUtil.calculateDateFrom(getLastRetrieve);
+							String timeZone				= InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_TIME_ZONE);
+							int deviceId				= Integer.parseInt(InvertersUtil.getParameter(generator, PARAM_DEVICE_ID));
+							String getLastRetrieve		= InvertersUtil.getParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE);
+							Date dateFrom 				= InvertersUtil.calculateDateFrom(getLastRetrieve);
+							ZoneId zoneId				= ZoneId.of(timeZone);
+							ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
+							ZoneOffset zoneOffset 		= zonedDateTime.getOffset();
+							String gmtToUse				= zoneOffset.toString();
 							
 							cal.setTime(dateFrom);
 							cal.add(Calendar.DAY_OF_YEAR, 1);
-							cal.add(Calendar.MILLISECOND, -1);
 							
 							Date dateTo = cal.getTime();
+							
+							if (dateTo.after(today)) continue;
 	
 							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE), DateUtil.formatDateTime(dateTo, DateUtil.FMT_DATE));
 							
-							TelemetryDataEnergyTimeseriesResponse data = this.getTelemetryDataPowerTimeseries(
+							TelemetryDataEnergyTimeseriesResponse data = this.getTelemetryDataEnergyTimeseries(
 									this.authentication.getResult(), 
 									deviceId, 
 									dateFrom, 
@@ -214,40 +260,53 @@ public class FimerInverterService implements InverterService {
 									timeZone
 								);
 							
-							List<GenDataVo> generatorData = this.process(generator, data, dateFrom);
+							JsonUtil.saveToFile(
+									new File(
+										this.configuration.getPathLog() + File.separator + "FImer", 
+										StringUtil.join("_", this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE_TIME))+ ".json"),
+									data
+								);
 							
+//							TelemetryDataEnergyTimeseriesResponse data = loadFromfile("C:\\dev\\eclipse-workspace\\grinplus_java\\_files\\logs\\FImer\\Gerardo Lapetina_UY-1_UY-1-1_20230922-000000.json", TelemetryDataEnergyTimeseriesResponse.class);
+							
+							List<GenDataVo> generatorData = this.process(generator, data, dateFrom, zoneId);
+							
+							Date lastDate = null;
 							if (CollectionUtil.notEmpty(generatorData)) {
-								CollectionUtil.addAll(result.getGeneratorData(), generatorData);
+								CollectionUtil.addAll(inverterData.getGeneratorData(), generatorData);
 								
 								Collections.reverse(generatorData);
-								GenDataVo lastData = generatorData.iterator().next();
+								lastDate = generatorData.stream().max(Comparator.comparing(GenDataVo::getDataDate)).get().getDataDate();
 								
 								try {
-									CollectionUtil.addAll(result.getStationData(), new MeteoblueWeatherServiceImpl().retrieveWeatherData(location, station, dateFrom, dateTo));
+									CollectionUtil.addAll(inverterData.getStationData(), this.retrieveWeatherData(location, station, dateFrom, lastDate, gmtToUse));
 								} catch (WeatherServiceException e) {
 									throw new InveterServiceException(e);
 								}
 								
-								InvertersUtil.setParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE, Long.toString(lastData.getDataDate().getTime()));
+//								lastDate = DateUtil.addUnit(lastDate, Calendar.MINUTE, 15); //add 15 for next period execution
 							}
+							lastDate = dateTo;
+							
+							InvertersUtil.setParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE, Long.toString(lastDate.getTime()));
 							
 							InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_END, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), Integer.valueOf(CollectionUtil.size(generatorData)));
 						} else {
 							String error = authentication == null ? "n/a" : authentication.getError();
 							String message = authentication == null ? "n/a" : authentication.getMessage();
 							String exception = authentication == null ? "n/a" : authentication.getException();
-							LoggerService.inverterLogger().error("[{}] Error: {} | {} | {}", t, error, message, exception);
+							LoggerService.inverterLogger().error("[{}] Error: {} | {} | {}", LOG_PREFIX, error, message, exception);
 						}
 					}
 				}
 			}
 		}
 
-		LoggerService.inverterLogger().info("[{t}] End retrieve for: {client} ({cliId})", t, this.cliVo.getCliName(), this.cliVo.getCliId());
+		LoggerService.inverterLogger().info("[{}] End retrieve for: {} ({})", LOG_PREFIX, this.cliVo.getCliName(), this.cliVo.getCliId());
 
-		return result;
+		return inverterData;
 	}
-
+	
 	// --- Public methods ------------------------
 	public AuthenticateResponse authenticate(String user, String password, String key) {
 		String credentials = user + ":" + password;
@@ -267,7 +326,7 @@ public class FimerInverterService implements InverterService {
 		String auroraVisionApiKey, 
 		int entityID, 
 		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
-		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
+		Date endDate, 		// REQUIRED - Pattern: yyyyMMdd
 		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
 	) {
 		return this.getTelemetryDataEnergyTimeseries(
@@ -289,9 +348,13 @@ public class FimerInverterService implements InverterService {
 		String valueType, 	// REQUIRED - Available values : maximum, minimum, average, delta
 		String sampleSize,	// REQUIRED - Available values : Min5, Min15, Hour, Day, Month, Year
 		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
-		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
+		Date endDate, 		// REQUIRED - Pattern: yyyyMMdd
 		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
 	) {
+		//Need to add one day due to test asking 2024-09-22 an result starts with 2024-09-21
+		startDate	= DateUtil.addUnit(startDate, Calendar.DAY_OF_MONTH, 1);
+		endDate		= DateUtil.addUnit(endDate, Calendar.DAY_OF_MONTH, 1);
+		
 		Map<String, String> headers = this.generateHeaders(auroraVisionApiKey);
 		Map<String, String> params	= this.generateParams(sampleSize, startDate, endDate, timeZone); 
 		String url					= this.generateUrl(URL + ENDPOINT_TELEMETRY_DATA_ENERGY_TIMESERIES, entityID, dataType, valueType);
@@ -305,7 +368,7 @@ public class FimerInverterService implements InverterService {
 		String auroraVisionApiKey, 
 		int entityID, 
 		Date startDate, 	// REQUIRED - Pattern: yyyyMMdd
-		Date endDate, 	// REQUIRED - Pattern: yyyyMMdd
+		Date endDate, 		// REQUIRED - Pattern: yyyyMMdd
 		String timeZone		// REQUIRED - Plant Time Zone (Format: Civilian abbreviation or Country/City) - Example: Europe/Rome
 	) {
 		return this.getTelemetryDataPowerTimeseries(
