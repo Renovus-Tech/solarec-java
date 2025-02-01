@@ -117,9 +117,15 @@ public class InvertersCheckScheduler {
 	private String generateLogText(ClientVo clientVo, LocationVo locationVo, GeneratorVo generatorVo) {
 		StringBuilder text = new StringBuilder();
 		
-		if (clientVo != null) text.append(clientVo.getCliName()).append(" (").append(clientVo.getCliId()).append(") ");
-		if (locationVo != null) text.append(locationVo.getLocName()).append(" (").append(locationVo.getLocId()).append(") ");
-		if (generatorVo != null) text.append(generatorVo.getGenName()).append(" (").append(generatorVo.getGenId()).append(") ");
+		if (clientVo != null) {
+			text.append(clientVo.getCliName()).append(" (").append(clientVo.getCliId()).append(") ");
+		}
+		if (locationVo != null) {
+			text.append(locationVo.getLocName()).append(" (").append(locationVo.getLocId()).append(") ");
+		}
+		if (generatorVo != null) {
+			text.append(generatorVo.getGenName()).append(" (").append(generatorVo.getGenId()).append(") ");
+		}
 		
 		return text.toString();
 	}
@@ -176,39 +182,41 @@ public class InvertersCheckScheduler {
 				boolean continueWithStats = service.continueWithStats();
 				dataProVo.setDataProResult(continueWithStats ? DataProcessingVo.RESULT_PROCESSING_OK : DataProcessingVo.RESULT_PROCESSING_OK_PARTIAL);
 				
-				if (CollectionUtil.notEmpty(newData.getGeneratorData())) {
-					for (GenDataVo dataVo : newData.getGeneratorData()) {
-						dataVo.setCliId(genVo.getCliId());
-						dataVo.setGenId(genVo.getGenId());
-						dataVo.setDataDateAdded(currentDate);
-						dataVo.setDataProId(dataProVo.getDataProId());
-						dataVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
+				if (newData != null) {
+					if (CollectionUtil.notEmpty(newData.getGeneratorData())) {
+						for (GenDataVo dataVo : newData.getGeneratorData()) {
+							dataVo.setCliId(genVo.getCliId());
+							dataVo.setGenId(genVo.getGenId());
+							dataVo.setDataDateAdded(currentDate);
+							dataVo.setDataProId(dataProVo.getDataProId());
+							dataVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
+						}
 					}
-				}
-				
-				if (CollectionUtil.notEmpty(newData.getStationData())) {
-					for (StaDataVo dataVo : newData.getStationData()) {
-						dataVo.setCliId(staVo.getCliId());
-						dataVo.setStaId(staVo.getStaId());
-						dataVo.setDataDateAdded(currentDate);
-						dataVo.setDataProId(dataProVo.getDataProId());
-						dataVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
+					
+					if (CollectionUtil.notEmpty(newData.getStationData())) {
+						for (StaDataVo dataVo : newData.getStationData()) {
+							dataVo.setCliId(staVo.getCliId());
+							dataVo.setStaId(staVo.getStaId());
+							dataVo.setDataDateAdded(currentDate);
+							dataVo.setDataProId(dataProVo.getDataProId());
+							dataVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
+						}
 					}
-				}
-				
-				if (CollectionUtil.notEmpty(newData.getGeneratorAlerts())) {
-					for (CliGenAlertVo alertVo : newData.getGeneratorAlerts()) {
-						alertVo.setCliId(genVo.getCliId());
-						alertVo.setGenId(genVo.getGenId());
-						alertVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
+					
+					if (CollectionUtil.notEmpty(newData.getGeneratorAlerts())) {
+						for (CliGenAlertVo alertVo : newData.getGeneratorAlerts()) {
+							alertVo.setCliId(genVo.getCliId());
+							alertVo.setGenId(genVo.getGenId());
+							alertVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
+						}
 					}
-				}
-				
-				if (CollectionUtil.notEmpty(newData.getLocationAlerts())) {
-					for (CliLocAlertVo alertVo : newData.getLocationAlerts()) {
-						alertVo.setCliId(genVo.getCliId());
-						alertVo.setLocId(genVo.getGenId());
-						alertVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
+					
+					if (CollectionUtil.notEmpty(newData.getLocationAlerts())) {
+						for (CliLocAlertVo alertVo : newData.getLocationAlerts()) {
+							alertVo.setCliId(genVo.getCliId());
+							alertVo.setLocId(genVo.getGenId());
+							alertVo.setSyncType(GeneratorVo.SYNC_INSERT_UPDATE);
+						}
 					}
 				}
 				
@@ -222,28 +230,39 @@ public class InvertersCheckScheduler {
 				locVo.synchronizeForce(GeneratorVo.SYNC_INSERT_UPDATE);
 				cliVo.synchronizeForce(GeneratorVo.SYNC_INSERT_UPDATE);
 				
-				if (CollectionUtil.notEmpty(genVo.getDataDefParameters())) genVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getGenDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
-				if (CollectionUtil.notEmpty(locVo.getDataDefParameters())) locVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getLocDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
-				if (CollectionUtil.notEmpty(cliVo.getDataDefParameters())) cliVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getCliDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
+				if (CollectionUtil.notEmpty(genVo.getDataDefParameters())) {
+					genVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getGenDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
+				}
+				if (CollectionUtil.notEmpty(locVo.getDataDefParameters())) {
+					locVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getLocDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
+				}
+				if (CollectionUtil.notEmpty(cliVo.getDataDefParameters())) {
+					cliVo.getDataDefParameters().forEach(x -> x.setSyncType(StringUtil.isEmpty(x.getCliDataDefParValue()) ? GenDataDefParameterVo.SYNC_INIT : x.getSyncType()));
+				}
 				
 				LoggerService.inverterLogger().info( "Doing synchronization of data to databaes... ");
-				LoggerService.inverterLogger().info( "\tGenerator data: " + CollectionUtil.size(newData.getGeneratorData()));
-				LoggerService.inverterLogger().info( "\tStation data: " + CollectionUtil.size(newData.getStationData()));
-				LoggerService.inverterLogger().info( "\tLocation alerts: " + CollectionUtil.size(newData.getLocationAlerts()));
-				LoggerService.inverterLogger().info( "\tGenerator alerts: " + CollectionUtil.size(newData.getGeneratorAlerts()));
+				LoggerService.inverterLogger().info( "\tGenerator data: " + CollectionUtil.size(newData == null ? null : newData.getGeneratorData()));
+				LoggerService.inverterLogger().info( "\tStation data: " + CollectionUtil.size(newData == null ? null : newData.getStationData()));
+				LoggerService.inverterLogger().info( "\tLocation alerts: " + CollectionUtil.size(newData == null ? null : newData.getLocationAlerts()));
+				LoggerService.inverterLogger().info( "\tGenerator alerts: " + CollectionUtil.size(newData == null ? null : newData.getGeneratorAlerts()));
 				
-				this.genDataDao.synchronize(newData.getGeneratorData());
-				this.staDataDao.synchronize(newData.getStationData());
 				this.genDataDefParameterDao.synchronize(genVo.getDataDefParameters());
 				this.locDataDefParameterDao.synchronize(locVo.getDataDefParameters());
 				this.cliDataDefParameterDao.synchronize(cliVo.getDataDefParameters());
 				this.genMetadataDao.synchronize(genVo.getMetadata());
 				this.locMetadataDao.synchronize(locVo.getMetadata());
 				this.cliMetadataDao.synchronize(cliVo.getMetadata());
-				this.cliLocAlertDao.synchronize(newData.getLocationAlerts());
-				this.cliGenAlertDao.synchronize(newData.getGeneratorAlerts());
 				
-				if (continueWithStats) this.doCalculation(dataProVo);
+				if (newData != null) {
+					this.genDataDao.synchronize(newData.getGeneratorData());
+					this.staDataDao.synchronize(newData.getStationData());
+					this.cliLocAlertDao.synchronize(newData.getLocationAlerts());
+					this.cliGenAlertDao.synchronize(newData.getGeneratorAlerts());
+				}
+				
+				if (continueWithStats) {
+					this.doCalculation(dataProVo);
+				}
 				
 			} else {
 				dataProVo.setDataProResult(DataProcessingVo.RESULT_PROCESSING_ERROR);
