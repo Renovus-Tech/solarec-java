@@ -3,6 +3,7 @@ package tech.renovus.solarec.business.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -20,6 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.db.data.dao.interfaces.CountryDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
+import tech.renovus.solarec.db.data.dao.interfaces.FrequencyDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocEstimationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
@@ -45,6 +47,7 @@ public class LocationServiceImplTest {
 	@Mock private DataDefinitionDao dataDefinitionDao;
 	@Mock private LocEstimationDao locEstimationDao;
 	@Mock private CountryDao countryDao;
+	@Mock private FrequencyDao frequencyDao;
 	
 	@InjectMocks LocationServiceImpl service = new LocationServiceImpl();
 	
@@ -74,6 +77,7 @@ public class LocationServiceImplTest {
 		when(this.countryDao.findVo(locVo.getCtrId())).thenReturn(new CountryVo());
 		when(this.dao.findAllForUser(cliVo.getCliId(), usrVo.getUsrId(), false)).thenReturn(Arrays.asList(locVo));
 		when(this.locEstimationDao.findAll(cliVo.getCliId(), locId)).thenReturn(new ArrayList<>());
+		when(this.frequencyDao.findVo(any())).thenReturn(null);
 		
 		//findall
 		try {

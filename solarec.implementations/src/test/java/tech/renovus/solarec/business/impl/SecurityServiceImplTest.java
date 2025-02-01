@@ -31,6 +31,7 @@ import tech.renovus.solarec.db.data.dao.interfaces.CliUserDao;
 import tech.renovus.solarec.db.data.dao.interfaces.ClientDao;
 import tech.renovus.solarec.db.data.dao.interfaces.CountryDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
+import tech.renovus.solarec.db.data.dao.interfaces.FrequencyDao;
 import tech.renovus.solarec.db.data.dao.interfaces.FunctionalityDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocSdgDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocTypeDao;
@@ -67,6 +68,7 @@ public class SecurityServiceImplTest {
 	@Mock private LocSdgDao locSdgDao;
 	@Mock private LocTypeDao locTypeDao;
 	@Mock private CountryDao countryDao;
+	@Mock private FrequencyDao frequencyDao;
 	
 	@InjectMocks SecurityServiceImpl service = new SecurityServiceImpl();
 	
@@ -139,6 +141,7 @@ public class SecurityServiceImplTest {
 		when(this.clientsDao.findVo(cliId)).thenReturn(cliVo);
 		when(this.locationDao.findAllForUser(cliId, usrId, true)).thenReturn(Arrays.asList(locVo));
 		when(this.locationDao.findForUser(usrId, cliId, locId)).thenReturn(locVo);
+		when(this.frequencyDao.findVo(any())).thenReturn(null);
 		
 		this.service.setClient(cliId, userData);
 		
