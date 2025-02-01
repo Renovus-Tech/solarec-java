@@ -27,7 +27,7 @@ public class DataGridCheckSchedulerTest {
 	@Mock private CountryDao countryDao;
 	@Mock private CtrDataDao ctrDataDao;
 	
-	@InjectMocks private DataGridCheckScheduler srevice;
+	@InjectMocks private DataGridCheckScheduler service;
 	
 	@Test public void testScheduler() throws Exception {
 		CountryVo ctrVo = new CountryVo();
@@ -41,7 +41,7 @@ public class DataGridCheckSchedulerTest {
 		doNothing().when(countryDao).synchronize(ctrVo);
 		doNothing().when(ctrDataDao).synchronize(datas);
 		
-		this.srevice.checkDataGrid();
+		this.service.checkDataGrid();
 		
 		verify(dataGridService, times(1)).retrieveGridData(ctrVo);
 		verify(countryDao, times(1)).getCountriesInUse();
