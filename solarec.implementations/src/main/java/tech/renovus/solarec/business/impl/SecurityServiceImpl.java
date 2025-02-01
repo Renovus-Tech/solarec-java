@@ -140,6 +140,7 @@ public class SecurityServiceImpl implements SecurityService {
 			userData.getLocationVo().setSdgs(this.locSdgDao.getAllForLocation(userData.getLocationVo().getCliId(), userData.getLocationVo().getLocId()));
 			userData.getLocationVo().setLocTypeVo(this.locTypeDao.findVo(userData.getLocationVo().getLocTypeId()));
 			userData.getLocationVo().setFrequencyVo(this.frequencyDao.findVo(userData.getLocationVo().getFrqId()));
+			userData.getLocationVo().setCountryVo(this.countryDao.findVo(userData.getLocationVo().getCtrId()));
 		}
 	}
 
