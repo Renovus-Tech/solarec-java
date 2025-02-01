@@ -3,7 +3,6 @@ package tech.renovus.solarec.scheduler;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -16,8 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import tech.renovus.solarec.business.AlertService;
 import tech.renovus.solarec.business.CalculationService;
@@ -51,7 +48,6 @@ import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.FlagUtil;
-import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.custom.chart.DataProcessing;
 import tech.renovus.solarec.vo.db.data.AlertProcessingVo;
@@ -329,8 +325,8 @@ public class InvertersCheckScheduler {
 		
 		LoggerService.inverterLogger().info("Starting check of inverters data");
 		
-		try {
-			for (GeneratorVo genVo : candidate) {
+		for (GeneratorVo genVo : candidate) {
+			try {
 				if (! FlagUtil.getFlagValue(genVo, GeneratorVo.FLAG_ENABLED)) {
 					LoggerService.inverterLogger().info("Skkiping (not enabled): " + this.generateLogText(null, null, genVo));
 					continue;
@@ -341,6 +337,7 @@ public class InvertersCheckScheduler {
 				}
 				
 				DataDefinitionVo dataDefVo	= definitions.get(genVo.getDataDefId());
+				
 				DataProcessingVo dataProVo	= this.generateDataProcessing(genVo, currentDate);
 				try {
 					this.process(dataProVo, dataDefVo, genVo, currentDate);
@@ -355,11 +352,10 @@ public class InvertersCheckScheduler {
 				}
 				
 				this.processStatsAndAlerts(dataDefVo, dataProVo);
+			} catch (Exception e) {
+				LoggerService.inverterLogger().error("Error during data retrieval (skipping): " + e.getLocalizedMessage(), e);
 			}
-		} catch (Exception e) {
-			LoggerService.inverterLogger().error("Error during data retrieval (all stoped): " + e.getLocalizedMessage(), e);
-		} finally {
-			LoggerService.inverterLogger().info("End check of inverters data");
 		}
+		LoggerService.inverterLogger().info("End check of inverters data");
 	}
 }
