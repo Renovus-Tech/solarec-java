@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
@@ -460,6 +461,7 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 	
 	//--- Resources -----------------------------
 	@Autowired MeteoblueConfiguration config;
+	@Autowired RenovusSolarecConfiguration configuration;
 	
 	public MeteoblueWeatherServiceImpl() {}
 	
@@ -547,6 +549,7 @@ public class MeteoblueWeatherServiceImpl implements WeatherService {
 		LoggerService.weatherLogger().warn("[Meteoblue] Period out of range in past (" + this.config.getMaxDaysPast() + ").");
 		
 		WeatherData data 				= this.retrieveData(locVo, dateFrom, dateTo, periodInRange);
+		
 		int startIndex					= 0;
 		int endIndex					= -1;
 		Collection<StaDataVo> result	= new ArrayList<>();

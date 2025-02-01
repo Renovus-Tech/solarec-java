@@ -1,6 +1,5 @@
 package tech.renovus.solarec.inverters.brand.fimer;
 
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -36,7 +35,6 @@ import tech.renovus.solarec.inverters.common.InvertersUtil;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
-import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.DataTypeVo;
@@ -259,16 +257,6 @@ public class FimerInverterService implements InverterService {
 									dateTo, 
 									timeZone
 								);
-							
-							JsonUtil.saveToFile(
-									new File(
-										this.configuration.getPathLog() + File.separator + "FImer", 
-										StringUtil.join("_", this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE_TIME))+ ".json"),
-									data
-								);
-							
-//							TelemetryDataEnergyTimeseriesResponse data = loadFromfile("C:\\dev\\eclipse-workspace\\grinplus_java\\_files\\logs\\FImer\\Gerardo Lapetina_UY-1_UY-1-1_20230922-000000.json", TelemetryDataEnergyTimeseriesResponse.class);
-							
 							List<GenDataVo> generatorData = this.process(generator, data, dateFrom, zoneId);
 							
 							Date lastDate = null;
@@ -283,9 +271,8 @@ public class FimerInverterService implements InverterService {
 								} catch (WeatherServiceException e) {
 									throw new InveterServiceException(e);
 								}
-								
-//								lastDate = DateUtil.addUnit(lastDate, Calendar.MINUTE, 15); //add 15 for next period execution
 							}
+							
 							lastDate = dateTo;
 							
 							InvertersUtil.setParameter(generator, PARAM_GENERATOR_LAST_RETRIEVE, Long.toString(lastDate.getTime()));

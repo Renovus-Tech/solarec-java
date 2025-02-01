@@ -1,6 +1,5 @@
 package tech.renovus.solarec.inverters.brand.fronius;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,8 +32,6 @@ import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.BooleanUtils;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
-import tech.renovus.solarec.util.FileUtil;
-import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.vo.custom.chart.alerts.AlertTrigger;
 import tech.renovus.solarec.vo.db.data.ClientVo;
@@ -129,7 +126,7 @@ public class FroniusInverterService implements InverterService {
 		List<GenDataVo> result = new ArrayList<>();
 		
 		if (data != null && CollectionUtil.notEmpty(data.getData())) {
-			InvertersUtil.logInfo("Amount of data: {0}", Integer.toString(CollectionUtil.size(data.getData())));
+			InvertersUtil.logInfo(LOG_PREFIX + "Amount of data: {0}", Integer.toString(CollectionUtil.size(data.getData())));
 			for (Datum aData : data.getData()) {
 				if (CollectionUtil.notEmpty(aData.getChannels())) {
 					for (Channel aChannel : aData.getChannels()) {
@@ -151,7 +148,7 @@ public class FroniusInverterService implements InverterService {
 				}
 			}
 		} else {
-			InvertersUtil.logInfo("No data to process");
+			InvertersUtil.logInfo(LOG_PREFIX + "No data to process");
 		}
 		
 		return result;
@@ -194,13 +191,10 @@ public class FroniusInverterService implements InverterService {
 		boolean betaMode 		= BooleanUtils.isTrue(InvertersUtil.getParameter(generator, location, this.cliVo, PARAM_BETA_MODE));
 		
 		InvertersUtil.logInfo(InvertersUtil.INFO_DATA_RETRIEVE_START, this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_PARAMETER_DATE_TIME), DateUtil.formatDateTime(to, DateUtil.FMT_PARAMETER_DATE_TIME));
-		
-		HistoryDataResponse data = this.getPvSystemsHistData(betaMode, accessKeyId, accessKeyValue, pvSystemsId, dateFrom, to);
-		
-		File jsonFile = new File(this.configuration.getPathLog() + File.separator + "Fronius", StringUtil.join("_", this.cliVo.getCliName(), location.getLocName(), generator.getGenName(), DateUtil.formatDateTime(dateFrom, DateUtil.FMT_DATE_TIME))+ ".json");
-		File parent = jsonFile.getParentFile();
-		if (! parent.exists()) parent.mkdirs();
-		FileUtil.saveToFile(JsonUtil.toStringPretty(data), jsonFile);
+
+		Date maxDateTo = DateUtil.addUnit(dateFrom, Calendar.DAY_OF_MONTH, 1);
+		if (maxDateTo.after(to)) maxDateTo = to;
+		HistoryDataResponse data = this.getPvSystemsHistData(betaMode, accessKeyId, accessKeyValue, pvSystemsId, dateFrom, maxDateTo);
 		
 		if (data == null || data.hasError()) {
 			this.continueWithStats = false;
@@ -307,7 +301,14 @@ public class FroniusInverterService implements InverterService {
 							dateFrom = cal.getTime();
 						}
 						
-						cal.add(Calendar.DAY_OF_YEAR, 1);
+//						cal.add(Calendar.DAY_OF_YEAR, 1);
+						
+						cal.setTimeInMillis(System.currentTimeMillis());
+						cal.set(Calendar.HOUR,0);
+						cal.set(Calendar.MINUTE,0);
+						cal.set(Calendar.SECOND,0);
+						cal.set(Calendar.MILLISECOND,0);
+						cal.set(Calendar.AM_PM,Calendar.AM);
 						cal.add(Calendar.MILLISECOND, -1);
 						
 						Date to = cal.getTime();
