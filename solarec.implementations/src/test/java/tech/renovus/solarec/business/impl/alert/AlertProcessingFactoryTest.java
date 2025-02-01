@@ -29,7 +29,6 @@ public class AlertProcessingFactoryTest {
 			assertTrue(result instanceof DataProcessingTest);
 		} catch (CoreException e) {
 			exception = e;
-			e.printStackTrace();
 		}
 		
 		assertNull(exception);
