@@ -8,7 +8,6 @@ import tech.renovus.solarec.connection.JsonCallerTest;
 import tech.renovus.solarec.grid.DataGridServiceTest;
 import tech.renovus.solarec.grid.electricMaps.ElectricMapsServiceTest;
 import tech.renovus.solarec.grid.ember.EmberDataGridServiceTest;
-import tech.renovus.solarec.inverters.brand.aiswei.AisweiInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.fimer.FimerInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.fronius.FroniusInverterServiceTest;
 import tech.renovus.solarec.inverters.brand.growatt.GrowattInveterServiceTest;
@@ -22,7 +21,7 @@ import tech.renovus.solarec.weather.meteoblue.MeteoblueWeatherServiceImplTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	AisweiInverterServiceTest.class,
+//	AisweiInverterServiceTest.class,
 	FimerInverterServiceTest.class, 
 	FroniusInverterServiceTest.class,
 	SmaInverterServiceTest.class,

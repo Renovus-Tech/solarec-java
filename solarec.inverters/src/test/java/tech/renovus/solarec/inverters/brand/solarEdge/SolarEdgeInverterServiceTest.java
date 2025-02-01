@@ -16,8 +16,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.inverters.brand.BaseInveterTest;
@@ -31,6 +33,7 @@ import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.weather.WeatherService;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SolarEdgeInverterServiceTest extends BaseInveterTest {
 
 	//--- Private properties --------------------
@@ -86,7 +89,7 @@ public class SolarEdgeInverterServiceTest extends BaseInveterTest {
 			),
 			null,
 			Arrays.asList(
-				this.createGeneratorParameter(SolarEdgeInverterService.PARAM_GEN_SITE_ID, "not-real-site-id"),
+				this.createGeneratorParameter(SolarEdgeInverterService.PARAM_GEN_SITE_ID, "-1"),
 				this.createGeneratorParameter(SolarEdgeInverterService.PARAM_GEN_LAST_DATE_RETRIEVE, "-1160481920")
 			)
 		);

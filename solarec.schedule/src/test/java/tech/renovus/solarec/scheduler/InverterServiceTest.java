@@ -32,7 +32,7 @@ public class InverterServiceTest implements InverterService {
 	@Override
 	public boolean continueWithStats() {
 		InverterServiceTest.calledContinueWithStats = true;
-		return true;
+		return false;
 	}
 
 	@Override
