@@ -342,8 +342,8 @@ public class InvertersCheckScheduler {
 		
 		LoggerService.inverterLogger().info("Starting check of inverters data");
 		
-		try {
-			for (GeneratorVo genVo : candidate) {
+		for (GeneratorVo genVo : candidate) {
+			try {
 				if (! FlagUtil.getFlagValue(genVo, GeneratorVo.FLAG_ENABLED)) {
 					LoggerService.inverterLogger().info("Skkiping (not enabled): " + this.generateLogText(null, null, genVo));
 					continue;
@@ -354,6 +354,7 @@ public class InvertersCheckScheduler {
 				}
 				
 				DataDefinitionVo dataDefVo	= definitions.get(genVo.getDataDefId());
+				
 				DataProcessingVo dataProVo	= this.generateDataProcessing(genVo, currentDate);
 				try {
 					this.process(dataProVo, dataDefVo, genVo, currentDate);
@@ -368,11 +369,10 @@ public class InvertersCheckScheduler {
 				}
 				
 				this.processStatsAndAlerts(dataDefVo, dataProVo);
+			} catch (Exception e) {
+				LoggerService.inverterLogger().error("Error during data retrieval (skipping): " + e.getLocalizedMessage(), e);
 			}
-		} catch (Exception e) {
-			LoggerService.inverterLogger().error("Error during data retrieval (all stoped): " + e.getLocalizedMessage(), e);
-		} finally {
-			LoggerService.inverterLogger().info("End check of inverters data");
 		}
+		LoggerService.inverterLogger().info("End check of inverters data");
 	}
 }

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import tech.renovus.solarec.configuration.RenovusSolarecConfiguration;
 import tech.renovus.solarec.connection.JsonCaller;
 import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
@@ -43,8 +44,8 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 	
 	//--- Resources -----------------------------
 	@Autowired JsonCaller jsonCaller;
-
-	//--- Constructors --------------------------
+	@Autowired RenovusSolarecConfiguration configuration;
+	
 	public OpenMeteoWeatherServiceImpl() { /* required for fast testing */ }
 	
 	//--- Private methods -----------------------
