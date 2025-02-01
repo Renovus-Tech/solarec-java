@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +37,14 @@ import tech.renovus.solarec.weather.openmeteo.api.WeatherData;
 @ConditionalOnProperty(name = "solarec.service.weather.provider", havingValue = "openmeteo")
 public class OpenMeteoWeatherServiceImpl implements WeatherService {
 
-	//--- Private constants --------------------
-	private static final String URL_SOLAR				= "https://api.open-meteo.com/v1/forecast";
-	private static final String URL_SOLAR_HISTORICAL	= "https://historical-forecast-api.open-meteo.com/v1/forecast";
+	//--- Public constants ----------------------
+	public static final String URL_SOLAR_FORECAST		= "https://api.open-meteo.com/v1/forecast";
+	public static final String URL_SOLAR_HISTORICAL		= "https://historical-forecast-api.open-meteo.com/v1/forecast";
 	
 	//--- Resources -----------------------------
+	@Autowired JsonCaller jsonCaller;
+
+	//--- Constructors --------------------------
 	public OpenMeteoWeatherServiceImpl() { /* required for fast testing */ }
 	
 	//--- Private methods -----------------------
@@ -106,10 +110,10 @@ public class OpenMeteoWeatherServiceImpl implements WeatherService {
 		cal.add(Calendar.MONTH, -1);
 		
 		boolean forHistorical			= dateFrom.before(cal.getTime());
-		String urlToUse					= forHistorical ? URL_SOLAR_HISTORICAL : URL_SOLAR;
+		String urlToUse					= forHistorical ? URL_SOLAR_HISTORICAL : URL_SOLAR_FORECAST;
 		
 		Map<String, String> params		= this.getParams(locVo, dateFrom, dateTo, false);
-		WeatherData data				= JsonCaller.get(urlToUse, params, WeatherData.class);
+		WeatherData data				= this.jsonCaller.get(urlToUse, params, WeatherData.class);
 		Collection<StaDataVo> result	= new ArrayList<>();
 		
 		if (data == null || data.getHourly() == null || CollectionUtil.isEmpty(data.getHourly().getTime())) {
