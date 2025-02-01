@@ -94,5 +94,22 @@ public class LocationVoTest {
 		assertEquals(locMetadataVo, vo.getMetadataVo(metadataName));
 		assertEquals(locDataDefParamVo, vo.getDataDefParameterVo(dadDefParName));
 		
+		vo.add(new GeneratorVo());
+		vo.add(new StationVo());
+		vo.add(new LocDataVo());
+		vo.add(new LocAlertVo());
+		vo.add(new LocEstimationVo());
+		vo.add(new LocDataDefParameterVo());
+		vo.add(new LocMetadataVo());
+		vo.add(new LocSdgVo());
+		
+		assertEquals(2, CollectionUtil.size(vo.getStations()));
+		assertEquals(2, CollectionUtil.size(vo.getGenerators()));
+		assertEquals(2, CollectionUtil.size(vo.getDatas()));
+		assertEquals(2, CollectionUtil.size(vo.getAlerts()));
+		assertEquals(2, CollectionUtil.size(vo.getEstimations()));
+		assertEquals(2, CollectionUtil.size(vo.getDataDefParameters()));
+		assertEquals(2, CollectionUtil.size(vo.getMetadata()));
+		assertEquals(2, CollectionUtil.size(vo.getSdgs()));
 	}
 }

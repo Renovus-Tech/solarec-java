@@ -25,8 +25,12 @@ public class LocationReport implements Comparable<LocationReport> {
 	//--- Overridden methods --------------------
 	@Override public int compareTo(LocationReport obj) {
 		int result = 0;
-		if (result == 0) result = this.locId.compareTo(obj.locId);
-		if (result == 0) result = this.repId.compareTo(obj.repId);
+		if (result == 0) {
+			result = this.locId.compareTo(obj.locId);
+		}
+		if (result == 0) {
+			result = this.repId.compareTo(obj.repId);
+		}
 		
 		return result;
 	}

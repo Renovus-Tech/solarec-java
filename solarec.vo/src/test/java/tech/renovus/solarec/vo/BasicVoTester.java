@@ -89,9 +89,9 @@ public class BasicVoTester {
 		}
 	}
 	
-	private void testGettersSetters(Class<?> clazz) throws Exception {
+	public <T> T testGettersSetters(Class<T> clazz) throws Exception {
 		if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
-			return;
+			return null;
 		}
 		
 		Map<String, Method> withs	= new HashMap<>();
@@ -117,9 +117,9 @@ public class BasicVoTester {
 			parentClazz = parentClazz.getSuperclass();
 		}
 
-		Object obj					= clazz.getConstructor().newInstance();
-		Object objEmpty				= clazz.getConstructor().newInstance();
-		String testingClass			= clazz.getCanonicalName();
+		T obj					= clazz.getConstructor().newInstance();
+		T objEmpty				= clazz.getConstructor().newInstance();
+		String testingClass		= clazz.getCanonicalName();
 		
 		if (obj instanceof BaseDbVo) {
 			BaseDbVo dbVo = (BaseDbVo) obj;
@@ -176,6 +176,7 @@ public class BasicVoTester {
 			sync.synchronizeForce(BaseDbVo.SYNC_INIT);
 		}
 		
+		return obj;
 	}
 
 	private Object getTestValue(Class<?> paramType) {
