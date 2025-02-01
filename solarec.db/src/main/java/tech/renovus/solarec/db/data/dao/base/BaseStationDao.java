@@ -10,14 +10,14 @@ import org.springframework.jdbc.support.KeyHolder;
 import tech.renovus.solarec.db.data.dao.wrapper.StationRowWrapper;
 import tech.renovus.solarec.vo.db.data.StationVo;
 
-@javax.annotation.Generated(value = "Renovus") public abstract class BaseStationDao <T extends StationVo > {
+public abstract class BaseStationDao <T extends StationVo > {
 	//--- Protected constants -------------------
 	protected static final String SQL_SELECT_ALL		= "SELECT * FROM station";
-	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM station WHERE cli_id = :cli_id AND sta_id_auto = :sta_id_auto";
-	protected String SQL_INSERT					= "INSERT INTO station (cli_id, data_def_id, loc_id, sta_coord_lat, sta_coord_lng, sta_data_date_max, sta_data_date_min, sta_flags, sta_name, sta_description, sta_code, sta_cert_prov_data) VALUES (:cli_id, :data_def_id, :loc_id, :sta_coord_lat, :sta_coord_lng, :sta_data_date_max, :sta_data_date_min, :sta_flags, :sta_name, :sta_description, :sta_code, :sta_cert_prov_data)";
-	protected String SQL_UPDATE					= "UPDATE station SET data_def_id = :data_def_id, loc_id = :loc_id, sta_coord_lat = :sta_coord_lat, sta_coord_lng = :sta_coord_lng, sta_data_date_max = :sta_data_date_max, sta_data_date_min = :sta_data_date_min, sta_flags = :sta_flags, sta_name = :sta_name, sta_description = :sta_description, sta_code = :sta_code, sta_cert_prov_data = :sta_cert_prov_data WHERE cli_id = :cli_id AND sta_id_auto = :sta_id_auto";
-	protected String SQL_DELETE					= "DELETE FROM station WHERE cli_id = :cli_id AND sta_id_auto = :sta_id_auto";
-	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (cli_id, sta_id_auto) DO UPDATE SET data_def_id = EXCLUDED.data_def_id, loc_id = EXCLUDED.loc_id, sta_coord_lat = EXCLUDED.sta_coord_lat, sta_coord_lng = EXCLUDED.sta_coord_lng, sta_data_date_max = EXCLUDED.sta_data_date_max, sta_data_date_min = EXCLUDED.sta_data_date_min, sta_flags = EXCLUDED.sta_flags, sta_name = EXCLUDED.sta_name, sta_description = EXCLUDED.sta_description, sta_code = EXCLUDED.sta_code, sta_cert_prov_data = EXCLUDED.sta_cert_prov_data";
+	protected static final String SQL_SELECT_BY_ID		= "SELECT * FROM station WHERE sta_id_auto = :sta_id_auto AND cli_id = :cli_id";
+	protected String SQL_INSERT					= "INSERT INTO station (frq_id, data_def_id, loc_id, sta_coord_lat, sta_coord_lng, sta_data_date_max, sta_data_date_min, cli_id, sta_name, sta_description, sta_code, sta_cert_prov_data, sta_flags) VALUES (:frq_id, :data_def_id, :loc_id, :sta_coord_lat, :sta_coord_lng, :sta_data_date_max, :sta_data_date_min, :cli_id, :sta_name, :sta_description, :sta_code, :sta_cert_prov_data, :sta_flags)";
+	protected String SQL_UPDATE					= "UPDATE station SET frq_id = :frq_id, data_def_id = :data_def_id, loc_id = :loc_id, sta_coord_lat = :sta_coord_lat, sta_coord_lng = :sta_coord_lng, sta_data_date_max = :sta_data_date_max, sta_data_date_min = :sta_data_date_min, sta_name = :sta_name, sta_description = :sta_description, sta_code = :sta_code, sta_cert_prov_data = :sta_cert_prov_data, sta_flags = :sta_flags WHERE sta_id_auto = :sta_id_auto AND cli_id = :cli_id";
+	protected String SQL_DELETE					= "DELETE FROM station WHERE sta_id_auto = :sta_id_auto AND cli_id = :cli_id";
+	protected String SQL_ON_CONFLICT_PK_UPDATE	= " ON CONFLICT (sta_id_auto, cli_id) DO UPDATE SET frq_id = EXCLUDED.frq_id, data_def_id = EXCLUDED.data_def_id, loc_id = EXCLUDED.loc_id, sta_coord_lat = EXCLUDED.sta_coord_lat, sta_coord_lng = EXCLUDED.sta_coord_lng, sta_data_date_max = EXCLUDED.sta_data_date_max, sta_data_date_min = EXCLUDED.sta_data_date_min, sta_name = EXCLUDED.sta_name, sta_description = EXCLUDED.sta_description, sta_code = EXCLUDED.sta_code, sta_cert_prov_data = EXCLUDED.sta_cert_prov_data, sta_flags = EXCLUDED.sta_flags";
 
 	protected String[] AUTO_INCREMENT_COLUMNS	= new String[] {"sta_id_auto"};
 
@@ -32,7 +32,7 @@ import tech.renovus.solarec.vo.db.data.StationVo;
 	//--- Protected methods ---------------------
 	protected MapSqlParameterSource createInsertMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
-			.addValue(StationVo.COLUMN_CLI_ID, vo.getCliId())
+			.addValue(StationVo.COLUMN_FRQ_ID, vo.getFrqId())
 			.addValue(StationVo.COLUMN_STA_ID, vo.getStaId())
 			.addValue(StationVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
 			.addValue(StationVo.COLUMN_LOC_ID, vo.getLocId())
@@ -40,28 +40,30 @@ import tech.renovus.solarec.vo.db.data.StationVo;
 			.addValue(StationVo.COLUMN_STA_COORD_LNG, vo.getStaCoordLng())
 			.addValue(StationVo.COLUMN_STA_DATA_DATE_MAX, vo.getStaDataDateMax())
 			.addValue(StationVo.COLUMN_STA_DATA_DATE_MIN, vo.getStaDataDateMin())
-			.addValue(StationVo.COLUMN_STA_FLAGS, vo.getStaFlags())
+			.addValue(StationVo.COLUMN_CLI_ID, vo.getCliId())
 			.addValue(StationVo.COLUMN_STA_NAME, vo.getStaName())
 			.addValue(StationVo.COLUMN_STA_DESCRIPTION, vo.getStaDescription())
 			.addValue(StationVo.COLUMN_STA_CODE, vo.getStaCode())
-			.addValue(StationVo.COLUMN_STA_CERT_PROV_DATA, vo.getStaCertProvData());
+			.addValue(StationVo.COLUMN_STA_CERT_PROV_DATA, vo.getStaCertProvData())
+			.addValue(StationVo.COLUMN_STA_FLAGS, vo.getStaFlags());
 	}
 	
 	protected MapSqlParameterSource craeteUpdateMapSqlParameterSource(T vo) {
 		return new MapSqlParameterSource()
+			.addValue(StationVo.COLUMN_FRQ_ID, vo.getFrqId())
 			.addValue(StationVo.COLUMN_DATA_DEF_ID, vo.getDataDefId())
 			.addValue(StationVo.COLUMN_LOC_ID, vo.getLocId())
 			.addValue(StationVo.COLUMN_STA_COORD_LAT, vo.getStaCoordLat())
 			.addValue(StationVo.COLUMN_STA_COORD_LNG, vo.getStaCoordLng())
 			.addValue(StationVo.COLUMN_STA_DATA_DATE_MAX, vo.getStaDataDateMax())
 			.addValue(StationVo.COLUMN_STA_DATA_DATE_MIN, vo.getStaDataDateMin())
-			.addValue(StationVo.COLUMN_STA_FLAGS, vo.getStaFlags())
 			.addValue(StationVo.COLUMN_STA_NAME, vo.getStaName())
 			.addValue(StationVo.COLUMN_STA_DESCRIPTION, vo.getStaDescription())
 			.addValue(StationVo.COLUMN_STA_CODE, vo.getStaCode())
 			.addValue(StationVo.COLUMN_STA_CERT_PROV_DATA, vo.getStaCertProvData())
-			.addValue(StationVo.COLUMN_CLI_ID, vo.getCliId())
-			.addValue(StationVo.COLUMN_STA_ID, vo.getStaId());
+			.addValue(StationVo.COLUMN_STA_FLAGS, vo.getStaFlags())
+			.addValue(StationVo.COLUMN_STA_ID, vo.getStaId())
+			.addValue(StationVo.COLUMN_CLI_ID, vo.getCliId());
 	}
 	
 	protected MapSqlParameterSource craeteDeleteMapSqlParameterSource(T vo) {

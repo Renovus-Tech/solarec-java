@@ -49,6 +49,9 @@ public class ChartFilter implements IFilter {
 	private String type;
 	private List<Angle> angles;
 	private Boolean sendAverage;
+	private String frq;
+	private Integer frqNumber;
+	private String frqUnit;
 	
 	private boolean forReport = false;
 	
@@ -150,20 +153,34 @@ public class ChartFilter implements IFilter {
 	public void setAngles(List<Angle> angles) {
 		this.angles = angles;
 	}
-
 	public Boolean getSendAverage() {
 		return sendAverage;
 	}
-
 	public void setSendAverage(Boolean sendAverage) {
 		this.sendAverage = sendAverage;
 	}
-
 	public boolean isForReport() {
 		return forReport;
 	}
-
 	public void setForReport(boolean forReport) {
 		this.forReport = forReport;
+	}
+	public String getFrq() {
+		return frq;
+	}
+	public void setFrq(String frq) {
+		this.frq = frq;
+	}
+	public Integer getFrqNumber() {
+		return frqNumber;
+	}
+	public void setFrqNumber(Integer frqNumber) {
+		this.frqNumber = frqNumber;
+	}
+	public String getFrqUnit() {
+		return frqUnit;
+	}
+	public void setFrqUnit(String frqUnit) {
+		this.frqUnit = frqUnit;
 	}
 }

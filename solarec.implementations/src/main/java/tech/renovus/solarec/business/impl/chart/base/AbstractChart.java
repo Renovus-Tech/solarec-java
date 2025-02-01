@@ -50,6 +50,14 @@ public abstract class AbstractChart {
 	public abstract Object execute();
 	
 	//--- Protected methods ---------------------
+	protected void setFrequency() {
+		if (this.userData != null && this.userData.getLocationVo() != null && this.userData.getLocationVo().getFrequencyVo() != null) {
+			this.chartFilter.setFrqUnit(this.userData.getLocationVo().getFrequencyVo().getFrqUnit());
+			this.chartFilter.setFrqNumber(this.userData.getLocationVo().getFrequencyVo().getFrqAmount());
+			this.chartFilter.setFrq(this.userData.getLocationVo().getFrequencyVo().toString());
+		}
+	}
+	
 	protected void setAllGeneratorsToChartFilter() {
 		Collection<GeneratorVo> generators = new TreeSet<>(GeneratorGenCodeAsNumberComparator.getInstance());
 		CollectionUtil.addAll(generators, this.genDao.findAll(this.userData.getCliId(), this.chartFilter.getLocation()));
@@ -107,6 +115,10 @@ public abstract class AbstractChart {
 		result.setTo(this.chartFilter.getTo());
 		result.setGroupBy(this.chartFilter.getGroupBy());
 
+		result.setFrq(this.chartFilter.getFrq());
+		result.setFrqNumber(this.chartFilter.getFrqNumber());
+		result.setFrqUnit(this.chartFilter.getFrqUnit());
+		
 		result.setGenerators(this.chartFilter.getGenerators());
 		result.setStations(this.chartFilter.getStations());
 		

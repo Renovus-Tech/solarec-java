@@ -29,6 +29,7 @@ public class RenovusSolarecConfiguration {
 	@Value("${tech.renovus.solarec.python.emissons.url}")			private String chartEmissionsUrl;
 	
 	@Value("${tech.renovus.solarec.python.alertCalculations.url}")	private String alertCalculations;
+	@Value("${tech.renovus.solarec.python.anomalyDetection.url}")	private String anomalyDetection;
 	
 	//--- Getters -------------------------------
 	public String getSiteUrl() {
@@ -78,5 +79,8 @@ public class RenovusSolarecConfiguration {
 	}
 	public void setSiteLocale(String siteLocale) {
 		this.siteLocale = siteLocale;
+	}
+	public String getAnomalyDetection() {
+		return anomalyDetection;
 	}
 }

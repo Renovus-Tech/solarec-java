@@ -23,6 +23,10 @@ public class Chart {
 	private String groupBy;
 	private Boolean sendAverage;
 	
+	private String frq;
+	private Integer frqNumber;
+	private String frqUnit;
+	
 	private List<Angle> angles;
 	private List<Integer> generators;
 	private List<Integer> stations;
@@ -81,5 +85,23 @@ public class Chart {
 	}
 	public void setSendAverage(Boolean sendAverage) {
 		this.sendAverage = sendAverage;
+	}
+	public String getFrq() {
+		return frq;
+	}
+	public void setFrq(String frq) {
+		this.frq = frq;
+	}
+	public Integer getFrqNumber() {
+		return frqNumber;
+	}
+	public void setFrqNumber(Integer frqNumber) {
+		this.frqNumber = frqNumber;
+	}
+	public String getFrqUnit() {
+		return frqUnit;
+	}
+	public void setFrqUnit(String frqUnit) {
+		this.frqUnit = frqUnit;
 	}
 }

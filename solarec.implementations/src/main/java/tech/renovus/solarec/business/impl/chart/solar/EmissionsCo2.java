@@ -14,6 +14,7 @@ public class EmissionsCo2 extends AbstractChart {
 		
 		if (CollectionUtil.isEmpty(this.chartFilter.getGenerators())) this.setAllGeneratorsToChartFilter();
 		this.chartFilter.setGroupBy(null); //force to have all that in one group
+		this.setFrequency();
 		
 		try {
 			JsonNode jsonNode = this.retrieveChartInformation(this.config.getChartEmissionsUrl());

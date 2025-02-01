@@ -61,7 +61,7 @@ public class JsonCaller {
 		try {
 			return JsonUtil.toObject(webClientError.getResponseBodyAsString(), responseClass);
 		} catch (JsonProcessingException e) {
-			LoggerService.inverterLogger().error("Error calling URL: " + url, e);
+			LoggerService.systemLogger().error("Error calling URL: " + url, e);
 			return null;
 		}
 	}

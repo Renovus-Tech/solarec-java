@@ -9,6 +9,7 @@ import tech.renovus.solarec.util.db.BaseDbVo;
 import tech.renovus.solarec.util.interfaces.ISynchronizable;
 import tech.renovus.solarec.vo.db.base.BaseGeneratorVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
+import tech.renovus.solarec.vo.db.data.FrequencyVo;
 import tech.renovus.solarec.vo.db.data.GenAlertVo;
 import tech.renovus.solarec.vo.db.data.GenDataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.GenDataVo;
@@ -20,6 +21,8 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 
 	//--- Protected properties ------------------
 	protected DataDefinitionVo dataDefinitionVo;
+	protected FrequencyVo frequencyVo;
+
 	protected Collection<GenPowerVo> powerCurve;
 	
 	protected Collection<GenDataVo> datas;
@@ -171,5 +174,10 @@ public class DbGeneratorVo extends BaseGeneratorVo implements ISynchronizable<Db
 	public void setMetadata(Collection<GenMetadataVo> metadata) {
 		this.metadata = metadata;
 	}
-
+	public FrequencyVo getFrequencyVo() {
+		return frequencyVo;
+	}
+	public void setFrequencyVo(FrequencyVo frequencyVo) {
+		this.frequencyVo = frequencyVo;
+	}
 }

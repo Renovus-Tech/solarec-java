@@ -7,63 +7,64 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 @javax.annotation.Generated(value = "Renovus") public class BaseGeneratorVo extends BaseDbVo implements IFlags {
 
 	//--- Columns name --------------------------
+	public static final String COLUMN_CLI_ID = "cli_id";
 	public static final String COLUMN_GEN_ID = "gen_id_auto";
 	public static final String COLUMN_DATA_DEF_ID = "data_def_id";
-	public static final String COLUMN_GEN_RATE_POWER = "gen_rate_power";
+	public static final String COLUMN_LOC_ID = "loc_id";
 	public static final String COLUMN_GEN_COORD_LAT = "gen_coord_lat";
 	public static final String COLUMN_GEN_COORD_LNG = "gen_coord_lng";
+	public static final String COLUMN_GEN_RATE_POWER = "gen_rate_power";
 	public static final String COLUMN_GEN_DATA_DATE_MAX = "gen_data_date_max";
 	public static final String COLUMN_GEN_DATA_DATE_MIN = "gen_data_date_min";
-	public static final String COLUMN_CLI_ID = "cli_id";
-	public static final String COLUMN_LOC_ID = "loc_id";
+	public static final String COLUMN_FRQ_ID = "frq_id";
+	public static final String COLUMN_GEN_SERIAL_NUM = "gen_serial_num";
 	public static final String COLUMN_GEN_CERT_PROV_DATA = "gen_cert_prov_data";
 	public static final String COLUMN_GEN_NAME = "gen_name";
 	public static final String COLUMN_GEN_DESCRIPTION = "gen_description";
-	public static final String COLUMN_GEN_BRAND = "gen_brand";
-	public static final String COLUMN_GEN_MODEL = "gen_model";
-	public static final String COLUMN_GEN_SERIAL_NUM = "gen_serial_num";
 	public static final String COLUMN_GEN_FLAGS = "gen_flags";
 	public static final String COLUMN_GEN_CODE = "gen_code";
+	public static final String COLUMN_GEN_BRAND = "gen_brand";
+	public static final String COLUMN_GEN_MODEL = "gen_model";
 
+	public static final int LENGTH_COLUMN_GEN_SERIAL_NUM =  100;
 	public static final int LENGTH_COLUMN_GEN_CERT_PROV_DATA =  2000;
 	public static final int LENGTH_COLUMN_GEN_NAME =  100;
 	public static final int LENGTH_COLUMN_GEN_DESCRIPTION =  200;
-	public static final int LENGTH_COLUMN_GEN_BRAND =  100;
-	public static final int LENGTH_COLUMN_GEN_MODEL =  100;
-	public static final int LENGTH_COLUMN_GEN_SERIAL_NUM =  100;
 	public static final int LENGTH_COLUMN_GEN_FLAGS =  20;
 	public static final int LENGTH_COLUMN_GEN_CODE =  100;
+	public static final int LENGTH_COLUMN_GEN_BRAND =  100;
+	public static final int LENGTH_COLUMN_GEN_MODEL =  100;
 
 	//--- Implemented methods -------------------
 	@Override public String getFlags() { return this.genFlags; }
 	@Override public void setFlags(String genFlags) { this.genFlags = genFlags; }
 
 	//--- Private properties --------------------
+	private Integer cliId;
 	private Integer genId;
 	private Integer dataDefId;
-	private Double genRatePower;
+	private Integer locId;
 	private Double genCoordLat;
 	private Double genCoordLng;
+	private Double genRatePower;
 	private java.util.Date genDataDateMax;
 	private java.util.Date genDataDateMin;
-	private Integer cliId;
-	private Integer locId;
+	private Integer frqId;
+	private String genSerialNum;
 	private String genCertProvData;
 	private String genName;
 	private String genDescription;
-	private String genBrand;
-	private String genModel;
-	private String genSerialNum;
 	private String genFlags;
 	private String genCode;
+	private String genBrand;
+	private String genModel;
 
 	//--- Public methods ------------------------
-	@Override
 	public boolean validData() {
-		if (this.genId == null) {
+		if (this.cliId == null) {
 			return false;
 		}
-		if (this.cliId == null) {
+		if (this.genId == null) {
 			return false;
 		}
 		return true;
@@ -71,18 +72,14 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 
 	//--- Overridden methods --------------------
 	@Override public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof BaseGeneratorVo)) {
-			return false;
-		}
+		if (obj == null) return false;
+		if (!(obj instanceof BaseGeneratorVo)) return false;
 		
 		BaseGeneratorVo aObj = (BaseGeneratorVo) obj;
-		if (!ClassUtil.equals(this.genId,aObj.genId)) {
+		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.cliId,aObj.cliId)) {
+		if (!ClassUtil.equals(this.genId,aObj.genId)) {
 			return false;
 		}
 		return true;
@@ -90,25 +87,19 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 
 	@Override public int hashCode() {
 		int hashCode = 1;
-		if (this.genId != null) {
-			hashCode += this.genId.hashCode();
-		}
-		if (this.cliId != null) {
-			hashCode += this.cliId.hashCode();
-		}
+		if (this.cliId != null) hashCode += this.cliId.hashCode();
+		if (this.genId != null) hashCode += this.genId.hashCode();
 		return hashCode;
 	}
 
 	@Override public boolean isSame(Object obj) {
-		if (! this.equals(obj)) {
-			return false;
-		}
+		if (! this.equals(obj)) return false;
 		
 		BaseGeneratorVo aObj = (BaseGeneratorVo) obj;
 		if (!ClassUtil.equals(this.dataDefId,aObj.dataDefId)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.genRatePower,aObj.genRatePower)) {
+		if (!ClassUtil.equals(this.locId,aObj.locId)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.genCoordLat,aObj.genCoordLat)) {
@@ -117,13 +108,19 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 		if (!ClassUtil.equals(this.genCoordLng,aObj.genCoordLng)) {
 			return false;
 		}
+		if (!ClassUtil.equals(this.genRatePower,aObj.genRatePower)) {
+			return false;
+		}
 		if (!ClassUtil.equals(this.genDataDateMax,aObj.genDataDateMax)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.genDataDateMin,aObj.genDataDateMin)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.locId,aObj.locId)) {
+		if (!ClassUtil.equals(this.frqId,aObj.frqId)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.genSerialNum,aObj.genSerialNum)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.genCertProvData,aObj.genCertProvData)) {
@@ -135,19 +132,16 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 		if (!ClassUtil.equals(this.genDescription,aObj.genDescription)) {
 			return false;
 		}
-		if (!ClassUtil.equals(this.genBrand,aObj.genBrand)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.genModel,aObj.genModel)) {
-			return false;
-		}
-		if (!ClassUtil.equals(this.genSerialNum,aObj.genSerialNum)) {
-			return false;
-		}
 		if (!ClassUtil.equals(this.genFlags,aObj.genFlags)) {
 			return false;
 		}
 		if (!ClassUtil.equals(this.genCode,aObj.genCode)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.genBrand,aObj.genBrand)) {
+			return false;
+		}
+		if (!ClassUtil.equals(this.genModel,aObj.genModel)) {
 			return false;
 		}
 		return true;
@@ -167,6 +161,13 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 	}
 
 	//--- Getters and Setters -------------------
+	public Integer getCliId() {
+		return this.cliId;
+	}
+	public void setCliId(Integer cliId) {
+		this.cliId = cliId;
+	}
+
 	public Integer getGenId() {
 		return this.genId;
 	}
@@ -181,11 +182,11 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 		this.dataDefId = dataDefId;
 	}
 
-	public Double getGenRatePower() {
-		return this.genRatePower;
+	public Integer getLocId() {
+		return this.locId;
 	}
-	public void setGenRatePower(Double genRatePower) {
-		this.genRatePower = genRatePower;
+	public void setLocId(Integer locId) {
+		this.locId = locId;
 	}
 
 	public Double getGenCoordLat() {
@@ -202,6 +203,13 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 		this.genCoordLng = genCoordLng;
 	}
 
+	public Double getGenRatePower() {
+		return this.genRatePower;
+	}
+	public void setGenRatePower(Double genRatePower) {
+		this.genRatePower = genRatePower;
+	}
+
 	public java.util.Date getGenDataDateMax() {
 		return this.genDataDateMax;
 	}
@@ -216,18 +224,18 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 		this.genDataDateMin = genDataDateMin;
 	}
 
-	public Integer getCliId() {
-		return this.cliId;
+	public Integer getFrqId() {
+		return this.frqId;
 	}
-	public void setCliId(Integer cliId) {
-		this.cliId = cliId;
+	public void setFrqId(Integer frqId) {
+		this.frqId = frqId;
 	}
 
-	public Integer getLocId() {
-		return this.locId;
+	public String getGenSerialNum() {
+		return this.genSerialNum;
 	}
-	public void setLocId(Integer locId) {
-		this.locId = locId;
+	public void setGenSerialNum(String genSerialNum) {
+		this.genSerialNum = genSerialNum;
 	}
 
 	public String getGenCertProvData() {
@@ -251,27 +259,6 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 		this.genDescription = genDescription;
 	}
 
-	public String getGenBrand() {
-		return this.genBrand;
-	}
-	public void setGenBrand(String genBrand) {
-		this.genBrand = genBrand;
-	}
-
-	public String getGenModel() {
-		return this.genModel;
-	}
-	public void setGenModel(String genModel) {
-		this.genModel = genModel;
-	}
-
-	public String getGenSerialNum() {
-		return this.genSerialNum;
-	}
-	public void setGenSerialNum(String genSerialNum) {
-		this.genSerialNum = genSerialNum;
-	}
-
 	public String getGenFlags() {
 		return this.genFlags;
 	}
@@ -284,6 +271,20 @@ import tech.renovus.solarec.util.interfaces.IFlags;
 	}
 	public void setGenCode(String genCode) {
 		this.genCode = genCode;
+	}
+
+	public String getGenBrand() {
+		return this.genBrand;
+	}
+	public void setGenBrand(String genBrand) {
+		this.genBrand = genBrand;
+	}
+
+	public String getGenModel() {
+		return this.genModel;
+	}
+	public void setGenModel(String genModel) {
+		this.genModel = genModel;
 	}
 
 }

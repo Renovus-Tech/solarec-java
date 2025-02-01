@@ -13,6 +13,7 @@ public class PerformanceIndex extends AbstractChart {
 	@Override public Object execute() {
 		if (CollectionUtil.isEmpty(this.chartFilter.getGenerators())) this.setAllGeneratorsToChartFilter();
 		this.setAllStationsToFilter();
+		this.setFrequency();
 
 		try {
 			JsonNode jsonNode = this.retrieveChartInformation(this.config.getChartPerformanceIndexUrl());

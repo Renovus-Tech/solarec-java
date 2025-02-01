@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.AlertService;
@@ -42,11 +46,14 @@ import tech.renovus.solarec.db.data.dao.interfaces.StaDataDao;
 import tech.renovus.solarec.db.data.dao.interfaces.StationDao;
 import tech.renovus.solarec.exceptions.CoreException;
 import tech.renovus.solarec.exceptions.ProcessingException;
+import tech.renovus.solarec.logger.LoggerService;
 import tech.renovus.solarec.util.CollectionUtil;
 import tech.renovus.solarec.util.DateUtil;
 import tech.renovus.solarec.util.FileUtil;
+import tech.renovus.solarec.util.JsonUtil;
 import tech.renovus.solarec.util.StringUtil;
 import tech.renovus.solarec.util.interfaces.IData;
+import tech.renovus.solarec.vo.custom.chart.DataProcessing;
 import tech.renovus.solarec.vo.db.data.AlertProcessingVo;
 import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
@@ -497,5 +504,51 @@ public class ProcessingServiceImpl implements ProcessingService {
 
 	@Override public Collection<DataProcessingVo> findAllClient(Integer cliId, UserData userData) {
 		return CollectionUtil.subCollection(this.dataProcessingDao.finaAll(cliId), 0, 10);
+	}
+
+	@Override public void doAnomalyDetection(DataProcessing request) throws CoreException {
+		try {
+			LoggerService.inverterLogger().info("Anomaly detection for: " + JsonUtil.toString(request));
+			
+			if (StringUtil.isEmpty(this.config.getAnomalyDetection())) {
+				LoggerService.inverterLogger().info("Request skipped, URL is empty: tech.renovus.solarec.python.anomalyDetection.url");
+				
+			} else {
+				LoggerService.inverterLogger().info("Request (" + this.config.getAnomalyDetection() + "): " + JsonUtil.toString(request));
+				
+				Map<String, Object> params = new HashMap<>();
+				params.put("param_json", JsonUtil.toString(request));
+				
+				String jsonResponse			= JsonUtil.get(this.config.getAnomalyDetection(), params);
+				LoggerService.inverterLogger().info("Response: " + jsonResponse);
+			}
+			
+		} catch (JsonProcessingException e) {
+			LoggerService.inverterLogger().error("Error: " + e.getLocalizedMessage() + StringUtil.NEW_LINE + StringUtil.toString(e));
+			throw new CoreException(e);
+		}
+	}
+	
+	@Override public void doCalculation(DataProcessing request) throws CoreException {
+		try {
+			LoggerService.inverterLogger().info("Calculation for: " + JsonUtil.toString(request));
+			
+			if (StringUtil.isEmpty(this.config.getAlertCalculations())) {
+				LoggerService.inverterLogger().info("Request skipped, URL is empty: tech.renovus.solarec.python.alertCalculations.url");
+				
+			} else {
+				LoggerService.inverterLogger().info("Request (" + this.config.getAlertCalculations() + "): " + JsonUtil.toString(request));
+				
+				Map<String, Object> params = new HashMap<>();
+				params.put("param_json", JsonUtil.toString(request));
+				
+				String jsonResponse			= JsonUtil.get(this.config.getAlertCalculations(), params);
+				LoggerService.inverterLogger().info("Response: " + jsonResponse);
+			}
+			
+		} catch (JsonProcessingException e) {
+			LoggerService.inverterLogger().error("Error: " + e.getLocalizedMessage() + StringUtil.NEW_LINE + StringUtil.toString(e));
+			throw new CoreException(e);
+		}
 	}
 }

@@ -14,6 +14,7 @@ import tech.renovus.solarec.UserData;
 import tech.renovus.solarec.business.LocationService;
 import tech.renovus.solarec.db.data.dao.interfaces.CountryDao;
 import tech.renovus.solarec.db.data.dao.interfaces.DataDefinitionDao;
+import tech.renovus.solarec.db.data.dao.interfaces.FrequencyDao;
 import tech.renovus.solarec.db.data.dao.interfaces.GeneratorDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocEstimationDao;
 import tech.renovus.solarec.db.data.dao.interfaces.LocationDao;
@@ -37,6 +38,7 @@ public class LocationServiceImpl implements LocationService {
 	@Resource DataDefinitionDao dataDefinitionDao;
 	@Resource LocEstimationDao locEstimationDao;
 	@Resource CountryDao countryDao;
+	@Resource FrequencyDao frequencyDao;
 	
 	//--- Overridden methods ------------------------
 	@Override public Collection<LocationVo> findAll(Integer offset, Integer size, String name, UserData userData) throws CoreException {
@@ -56,6 +58,7 @@ public class LocationServiceImpl implements LocationService {
 			result.addStations(this.stationsDao.findAll(result.getCliId(), result.getLocId()));
 			result.addEstimations(this.locEstimationDao.findAll(result.getCliId(), result.getLocId()));
 			result.setCountryVo(this.countryDao.findVo(result.getCtrId()));
+			result.setFrequencyVo(this.frequencyDao.findVo(result.getFrqId()));
 		}
 		
 		return result;
