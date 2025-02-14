@@ -126,7 +126,7 @@ public class ReportScheduler {
 	}
 	
 	//--- Schedule methods ----------------------
-	@Scheduled(cron="0 30 8 * * MON") //All monday at 08:30
+	@Scheduled(cron="${solarec.scheduler.report.weekly:0 30 8 * * MON}") //All monday at 08:30
 	public void weekly() {
 		Date date = new Date();
 		date = DateUtil.clearTime(date);

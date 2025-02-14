@@ -61,7 +61,7 @@ public class DataGridCheckScheduler {
 	
 
 	//--- Public methods ------------------------
-	@Scheduled(cron="0 0 */6 * * *") // every 6 hours
+	@Scheduled(cron="${solarec.scheduler.grid.check:0 0 0 1 * *}") // every 1st day of the month
 	public void checkDataGrid() {
 		Collection<CountryVo> countriesInUse = this.countryDao.getCountriesInUse();
 		

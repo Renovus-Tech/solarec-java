@@ -54,11 +54,21 @@ solarec.service.weather.provider =
 solarec.service.grid.provider = 
 solarec.service.certificate.provider = 
 
+#Schedulers
+solarec.scheduler.report.weekly = 0 30 8 * * MON
+solarec.scheduler.inverters.check = 0 0 02 * * *
+solarec.scheduler.grid.check = 0 0 0 1 * *
+solarec.scheduler.alert.notification = 0 0 06 * * *
+
+##Extarnal services
 #Meteoblue
 solarec.meteoblue.key = 
 
 #ElectirMaps
-solarec.electricmaps.key = vZlGDaShfLe3V
+solarec.electricmaps.key = 
+
+#EmberAPI
+solarec.ember.api.key = 
 
 #Surentis
 surentis.url = 

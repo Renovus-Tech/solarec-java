@@ -138,7 +138,7 @@ public class AlertNotificationSend {
 	}
 	
 	//--- Schedule methods ----------------------
-	//@Scheduled(cron="0 0 06 * * *") // all days at 6am
+	//@Scheduled(cron="${solarec.scheduler.alert.notification:0 0 06 * * *}") // all days at 6am
 	public void send() {
  		LoggerService.emailLogger().info("Start alert notification check");
 		this.sendCliLocationAlerts();

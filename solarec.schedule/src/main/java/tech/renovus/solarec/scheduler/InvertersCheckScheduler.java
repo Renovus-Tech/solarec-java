@@ -315,7 +315,7 @@ public class InvertersCheckScheduler {
 	}
 
 	//--- Public methods ------------------------
-	@Scheduled(cron="0 0 02 * * *") // daily at 2am
+	@Scheduled(cron="${solarec.scheduler.inverters.check:0 0 02 * * *}") // daily at 2am
 	public void checkInverters() {
 		Collection<GeneratorVo> candidate = this.generatorDao.getAllGeneratorsWithDataDefinitionInverter();
 		Collection<DataDefinitionVo> dataDefinitions = this.dataDefinitionDao.getAllInvertersDefinitions();
