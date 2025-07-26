@@ -20,6 +20,7 @@ import tech.renovus.solarec.vo.comparator.GeneratorGenCodeAsNumberComparator;
 import tech.renovus.solarec.vo.db.data.CliDataDefTriggerVo;
 import tech.renovus.solarec.vo.db.data.ClientVo;
 import tech.renovus.solarec.vo.db.data.CountryVo;
+import tech.renovus.solarec.vo.db.data.DataDefParameterVo;
 import tech.renovus.solarec.vo.db.data.DataDefinitionVo;
 import tech.renovus.solarec.vo.db.data.DataProcessingVo;
 import tech.renovus.solarec.vo.db.data.DocTypeVo;
@@ -34,12 +35,14 @@ import tech.renovus.solarec.vo.db.data.LocTypeVo;
 import tech.renovus.solarec.vo.db.data.LocWeatherDataVo;
 import tech.renovus.solarec.vo.db.data.LocationVo;
 import tech.renovus.solarec.vo.db.data.RepTypeVo;
+import tech.renovus.solarec.vo.db.data.SettingsVo;
 import tech.renovus.solarec.vo.db.data.StationVo;
 import tech.renovus.solarec.vo.db.data.WeaDefinitionVo;
 import tech.renovus.solarec.vo.rest.background.Processing;
 import tech.renovus.solarec.vo.rest.entity.Client;
 import tech.renovus.solarec.vo.rest.entity.Country;
 import tech.renovus.solarec.vo.rest.entity.DataDefinition;
+import tech.renovus.solarec.vo.rest.entity.DataDefinitionParameter;
 import tech.renovus.solarec.vo.rest.entity.DataDefinitionTrigger;
 import tech.renovus.solarec.vo.rest.entity.DocType;
 import tech.renovus.solarec.vo.rest.entity.Document;
@@ -66,19 +69,32 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (DataProcessingVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		
 		return result;
 	}
 
+	public List<DataDefinitionParameter> convertDataDefinitionParameters(Collection<DataDefParameterVo> vos) {
+		List<DataDefinitionParameter> result = new ArrayList<>(CollectionUtil.size(vos));
+		
+		if (CollectionUtil.notEmpty(vos) ) {
+			for (DataDefParameterVo vo : vos) {
+				result.add(this.convert(vo));
+			}
+		}
+		
+		
+		return result;
+	}
+	
 	public List<DataDefinition> convertDataDefinitions(Collection<DataDefinitionVo> vos) {
 		List<DataDefinition> result = new ArrayList<>(CollectionUtil.size(vos));
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (DataDefinitionVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		
@@ -90,7 +106,7 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (LocationVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		
@@ -102,7 +118,7 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (CountryVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		
@@ -114,7 +130,7 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (StationVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		
@@ -126,7 +142,7 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (GeneratorVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		
@@ -138,7 +154,7 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (FunctionalityVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		
@@ -150,7 +166,7 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (ISetting vo : vos) {
-				result.add(convert(vo, userData));
+				result.add(this.convert(vo, userData));
 			}
 		}
 		
@@ -162,7 +178,7 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (ClientVo vo : vos) {
-				result.add(convert(vo, userData));
+				result.add(this.convert(vo, userData));
 			}
 		}
 		
@@ -174,7 +190,7 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (DocTypeVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		
@@ -186,7 +202,7 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (DocumentVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		
@@ -198,7 +214,7 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vos)) {
 			for (GenPowerVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		
@@ -209,7 +225,7 @@ public class RestFactory {
 		List<WeatherDefinition> result = new ArrayList<>(CollectionUtil.size(vos));
 		if (CollectionUtil.notEmpty(vos)) {
 			for (WeaDefinitionVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		return result;
@@ -219,7 +235,7 @@ public class RestFactory {
 		Collection<GenPowerVo> result = new ArrayList<>(CollectionUtil.size(vos));
 		if (CollectionUtil.notEmpty(vos)) {
 			for (Generator.Power vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		return result;
@@ -229,7 +245,7 @@ public class RestFactory {
 		List<Report> result = new ArrayList<>(CollectionUtil.size(vos));
 		if (CollectionUtil.notEmpty(vos)) {
 			for (RepTypeVo vo : vos) {
-				result.add(convert(vo));
+				result.add(this.convert(vo));
 			}
 		}
 		return result;
@@ -242,15 +258,20 @@ public class RestFactory {
 		}
 		
 		Country result = new Country();
-		result.setId(vo.getCtrId());
-		result.setName(vo.getCtrName());
-		result.setIso2(vo.getCtrCode2());
-		result.setIso3(vo.getCtrCode3());
-		result.setPhone(vo.getCtrCodePhone());
-		result.setLatitude(vo.getCtrCoordLat());
-		result.setLongitude(vo.getCtrCoordLng());
+		this.populate(result, vo);
 		
 		return result;
+	}
+
+	public void populate(Country country, CountryVo vo) {
+		country.setId(vo.getCtrId());
+		country.setName(vo.getCtrName());
+		country.setNameShow(vo.getCtrNameShow());
+		country.setIso2(vo.getCtrCode2());
+		country.setIso3(vo.getCtrCode3());
+		country.setPhone(vo.getCtrCodePhone());
+		country.setLatitude(vo.getCtrCoordLat());
+		country.setLongitude(vo.getCtrCoordLng());
 	}
 	
 	public Location.Type convert(LocTypeVo vo) {
@@ -259,10 +280,14 @@ public class RestFactory {
 		}
 		
 		Location.Type result = new Location.Type();
-		result.setCode(vo.getLocTypeCode());
-		result.setText(vo.getLocTypeText());
+		this.populate(result, vo);
 		
 		return result;
+	}
+
+	public void populate(Location.Type result, LocTypeVo vo) {
+		result.setCode(vo.getLocTypeCode());
+		result.setText(vo.getLocTypeText());
 	}
 	
 	public Location convert(LocationVo vo) {
@@ -272,48 +297,53 @@ public class RestFactory {
 		
 		Location result = new Location();
 		
-		result.setId(vo.getLocId());
-		result.setCode(vo.getLocCode());
-		result.setName(vo.getLocName());
-		result.setAddress(vo.getLocAddress());
-		result.setState(vo.getLocState());
-		result.setCountry(this.convert(vo.getCountryVo()));
-		result.setTypeOf(this.convert(vo.getLocTypeVo()));
-		result.setLatitude(vo.getLocCoordLat());
-		result.setLongitude(vo.getLocCoordLng());
-		result.setOutputCapacity(vo.getLocOutputCapacity());
-		result.setOutputTotalCapacity(vo.getLocOutputTotalCapacity());
-		result.setReferenceDensity(vo.getLocReferenceDensity());
-		result.setDataDefinitionId(vo.getDataDefId());
-		result.setType(vo.getLocType());
-		result.setDemoDate(vo.getLocDemoDate());
-		result.setGridConnected(FlagUtil.getFlagValue(vo, LocationVo.FLAG_CONNECTED_TO_GRID));
-		result.setEnabled(FlagUtil.getFlagValue(vo, LocationVo.FLAG_ENABLED));
+		this.populate(result, vo);
 		
-		result.setDataDefinition(convert(vo.getDataDefinitionVo()));
-		result.setFrequency(convert(vo.getFrequencyVo()));
+		return result;
+	}
+
+	public void populate(Location location, LocationVo vo) {
+		location.setId(vo.getLocId());
+		location.setCode(vo.getLocCode());
+		location.setName(vo.getLocName());
+		location.setAddress(vo.getLocAddress());
+		location.setState(vo.getLocState());
+		location.setCountry(this.convert(vo.getCountryVo()));
+		location.setTypeOf(this.convert(vo.getLocTypeVo()));
+		location.setLatitude(vo.getLocCoordLat());
+		location.setLongitude(vo.getLocCoordLng());
+		location.setOutputCapacity(vo.getLocOutputCapacity());
+		location.setOutputTotalCapacity(vo.getLocOutputTotalCapacity());
+		location.setReferenceDensity(vo.getLocReferenceDensity());
+		location.setDataDefinitionId(vo.getDataDefId());
+		location.setType(vo.getLocType());
+		location.setDemoDate(vo.getLocDemoDate());
+		location.setGridConnected(FlagUtil.getFlagValue(vo, LocationVo.FLAG_CONNECTED_TO_GRID));
+		location.setEnabled(FlagUtil.getFlagValue(vo, LocationVo.FLAG_ENABLED));
+		location.setManualInputEnabled(FlagUtil.getFlagValue(vo, LocationVo.FLAG_MANUAL_INPUT_ENABLED));
+		
+		location.setDataDefinition(convert(vo.getDataDefinitionVo()));
+		location.setFrequency(convert(vo.getFrequencyVo()));
 		
 		if (CollectionUtil.notEmpty(vo.getGenerators())) {
 			Collection<GeneratorVo> sorted = new TreeSet<>(GeneratorGenCodeAsNumberComparator.getInstance());
 			CollectionUtil.addAll(sorted, vo.getGenerators());
 			for (GeneratorVo genVo : sorted) {
-				result.add(this.convert(genVo));
+				location.add(this.convert(genVo));
 			}
 		}
 		
 		if (CollectionUtil.notEmpty(vo.getStations())) {
 			for (StationVo staVo : vo.getStations()) {
-				result.add(this.convert(staVo));
+				location.add(this.convert(staVo));
 			}
 		}
 		
 		if (CollectionUtil.notEmpty(vo.getSdgs())) {
 			for (LocSdgVo locSdgVo : vo.getSdgs()) {
-				result.add(this.convert(locSdgVo));
+				location.add(this.convert(locSdgVo));
 			}
 		}
-		
-		return result;
 	}
 	
 	public Generator convert(GeneratorVo vo) {
@@ -323,25 +353,29 @@ public class RestFactory {
 		
 		Generator result = new Generator();
 		
-		result.setId(vo.getGenId());
-		result.setLocationId(vo.getLocId());
-		result.setDataDefinitionId(vo.getDataDefId());
-		result.setCode(vo.getGenCode());
-		result.setName(vo.getGenName());
-		result.setDescription(vo.getGenDescription());
-		result.setLatitude(vo.getGenCoordLat());
-		result.setLongitude(vo.getGenCoordLng());
-		result.setBrand(vo.getGenBrand());
-		result.setModel(vo.getGenModel());
-		result.setSerialNumber(vo.getGenSerialNum());
-		result.setRatePower(vo.getGenRatePower());
-		result.setEnabled(FlagUtil.getFlagValue(vo, GeneratorVo.FLAG_ENABLED));
-		
-		result.setFrequency(convert(vo.getFrequencyVo()));
-		result.setPowerCurve(convertPower(vo.getPowerCurve()));
-		result.setNeighbors(convertNeighbours(vo.getNeighbours()));
+		this.populate(result, vo);
 		
 		return result;
+	}
+
+	public void populate(Generator generator, GeneratorVo vo) {
+		generator.setId(vo.getGenId());
+		generator.setLocationId(vo.getLocId());
+		generator.setDataDefinitionId(vo.getDataDefId());
+		generator.setCode(vo.getGenCode());
+		generator.setName(vo.getGenName());
+		generator.setDescription(vo.getGenDescription());
+		generator.setLatitude(vo.getGenCoordLat());
+		generator.setLongitude(vo.getGenCoordLng());
+		generator.setBrand(vo.getGenBrand());
+		generator.setModel(vo.getGenModel());
+		generator.setSerialNumber(vo.getGenSerialNum());
+		generator.setRatePower(vo.getGenRatePower());
+		generator.setEnabled(FlagUtil.getFlagValue(vo, GeneratorVo.FLAG_ENABLED));
+		
+		generator.setFrequency(convert(vo.getFrequencyVo()));
+		generator.setPowerCurve(convertPower(vo.getPowerCurve()));
+		generator.setNeighbors(convertNeighbours(vo.getNeighbours()));
 	}
 	
 	private Collection<Integer> convertNeighbours(Collection<GenNeighbourVo> neighbours) {
@@ -386,6 +420,12 @@ public class RestFactory {
 		
 		Station result = new Station();
 		
+		this.populate(result, vo);
+		
+		return result;
+	}
+
+	public void populate(Station result, StationVo vo) {
 		result.setId(vo.getStaId());
 		result.setLocationId(vo.getLocId());
 		result.setDataDefinitionId(vo.getDataDefId());
@@ -395,9 +435,7 @@ public class RestFactory {
 		result.setLatitude(vo.getStaCoordLat());
 		result.setLongitude(vo.getStaCoordLng());
 		result.setEnabled(FlagUtil.getFlagValue(vo, StationVo.FLAG_ENABLED));
-		result.setFrequency(convert(vo.getFrequencyVo()));
-		
-		return result;
+		result.setFrequency(this.convert(vo.getFrequencyVo()));
 	}
 	
 	public Frequency convert(FrequencyVo vo) {
@@ -415,9 +453,13 @@ public class RestFactory {
 		result.setGroupby(groupBy);
 		
 		period.setYesterday(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_YESTERDAY));
-		period.setCurrentMonth(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_MONTH));
-		period.setCurrentYear(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_YEAR));
+		period.setCurrentMonth(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_CURRENT_MONTH));
+		period.setPreviousMonth(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_PREVIOUS_MONTH));
+		period.setPreviousWeek(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_PREVIOUS_WEEK));
+		period.setCurrentYear(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_CURRENT_YEAR));
 		period.setRange(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_RANGE));
+		period.setRangeLimitedSelection(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_RANGE_LIMIT_DATE_SELECTION));
+		period.setLast7Days(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_PERIOD_LAST_7_DAYS));
 
 		groupBy.setDay(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_GROUP_BY_DAY));
 		groupBy.setWeek(FlagUtil.getFlagValue(vo, FrequencyVo.FLAG_GROUP_BY_WEEK));
@@ -436,6 +478,22 @@ public class RestFactory {
 		
 		result.setId(vo.getDataDefId());
 		result.setName(vo.getDataDefName());
+		result.setDescription(vo.getDataDefDescription());
+		
+		result.setParameters(this.convertDataDefinitionParameters(vo.getParams()));
+		
+		return result;
+	}
+	
+	public DataDefinitionParameter convert(DataDefParameterVo vo) {
+		if (vo == null) {
+			return null;
+		}
+		
+		DataDefinitionParameter result = new DataDefinitionParameter();
+		
+		result.setId(vo.getDataDefParId());
+		result.setName(vo.getDataDefParName());
 		result.setDescription(vo.getDataDefDescription());
 		
 		return result;
@@ -466,7 +524,7 @@ public class RestFactory {
 		result.setName(vo.getName());
 		result.setValue(vo.getValue());
 		
-		if (vo.getSettingVo() != null) {
+		if (vo.getSettingVo() != null && FlagUtil.getFlagValue(vo.getSettingVo(), SettingsVo.FLAG_VISIBLE)) {
 			Locale locale = this.translation == null ? Locale.getDefault() : this.translation.getLocale(userData);
 			result.setLabel(this.translation == null ? vo.getSettingVo().getSetName() : this.translation.forSetting(locale, vo.getSettingVo().getSetName()));
 			result.setCategoryLabel(this.translation == null ? vo.getSettingVo().getSetCatName() : this.translation.forSettingCategory(locale, vo.getSettingVo().getSetCatName()));
@@ -490,18 +548,23 @@ public class RestFactory {
 		
 		Client client = new Client();
 		
+		this.populate(client, vo);
+		
+		client.setSettings(convertSettings(vo.getSettings(), userData));
+		
+		return client;
+	}
+
+	public void populate(Client client, ClientVo vo) {
 		client.setId(vo.getCliId());
 		client.setName(vo.getCliName());
 		client.setLegalName(vo.getCliNameLegal());
 		client.setAddress(vo.getCliNameAddress());
 		client.setDataDefinitionId(vo.getDataDefId());
 		client.setDataDefinition(convert(vo.getDataDefinitionVo()));
-		client.setSettings(convertSettings(vo.getSettings(), userData));
 		client.setDemoDate(vo.getCliDemoDate());
 		client.setEnabled(FlagUtil.getFlagValue(vo, ClientVo.FLAG_ENABLED));
 		client.setCountry(this.convert(vo.getCountryVo()));
-		
-		return client;
 	}
 	
 	public Processing convert(DataProcessingVo vo) {
@@ -604,12 +667,12 @@ public class RestFactory {
 		
 		if (CollectionUtil.notEmpty(vo.getGenerators())) {
 			for (Generator genVo : vo.getGenerators()) {
-				result.add(convert(genVo));
+				result.add(this.convert(genVo));
 			}
 		}
 		if (CollectionUtil.notEmpty(vo.getStations())) {
 			for (Station staVo : vo.getStations()) {
-				result.add(convert(staVo));
+				result.add(this.convert(staVo));
 			}
 		}
 		

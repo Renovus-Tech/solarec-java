@@ -14,6 +14,8 @@ public class CliGenUsrAlertDaoImpl extends BaseCliGenUsrAlertDao implements CliG
 	//--- Constructors --------------------------
 	@Autowired public CliGenUsrAlertDaoImpl(NamedParameterJdbcTemplate jdbc) {
 		super(jdbc);
+		
+		this.SQL_INSERT += this.SQL_ON_CONFLICT_PK_UPDATE;
 	}
 
 	//--- Overridden methods --------------------

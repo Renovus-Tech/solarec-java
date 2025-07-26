@@ -25,6 +25,7 @@ public class UserData implements Serializable {
 	private Collection<FunctionalityVo> locationFunctionalities;
 
 	private Locale locale = Locale.ENGLISH;
+	private String language = null;
 	private long sessionId;
 	private boolean logged;
 	
@@ -115,12 +116,16 @@ public class UserData implements Serializable {
 	public void setLocationFunctionalities(Collection<FunctionalityVo> locationFunctionalities) {
 		this.locationFunctionalities = locationFunctionalities;
 	}
-
 	public String getAuthenticationErrorMessage() {
 		return authenticationErrorMessage;
 	}
-
 	public void setAuthenticationErrorMessage(String authenticationErrorMessage) {
 		this.authenticationErrorMessage = authenticationErrorMessage;
+	}
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }

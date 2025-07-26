@@ -1,5 +1,7 @@
 package tech.renovus.solarec.db.data.dao.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -254,4 +257,16 @@ public class GenDataDaoImpl extends BaseGenDataDao implements GenDataDao {
 		}
 	}
 	
+	public static class Simple implements RowMapper<Integer> {
+
+		@Override
+		public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+			return rs.getInt(1);
+		}
+		
+	}
+	
+	public Collection<Integer> getAllDataProId(Integer cliId) {
+		return (Collection<Integer>) this.jdbc.query("select distinct data_pro_id from gen_data where cli_id = " + cliId, new Simple());
+	}
 }
