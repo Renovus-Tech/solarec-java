@@ -2,6 +2,7 @@ package tech.renovus.solarec.business.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,16 +105,16 @@ public class SolarServiceImpl extends BaseServiceImpl implements SolarService {
 	@Override public Object retrieveOverviewCo2(ChartFilter filter, UserData userData) throws CoreException 	{ return this.execute(StatDefinitionVo.ID_SOLAR_OVERVIEW_CO2, filter, userData); }
 	@Override public Object revenue(ChartFilter filter, UserData userData) throws CoreException 				{ return this.execute(StatDefinitionVo.ID_SOLAR_REVENUE, filter, userData); }
 	@Override public Object revenueSales(ChartFilter filter, UserData userData) throws CoreException			{ return this.execute(StatDefinitionVo.ID_SOLAR_SALES, filter, userData); }
+	@Override public Object expectedPower(ChartFilter filter, UserData userData) throws CoreException			{ return this.execute(StatDefinitionVo.ID_SOLAR_EXPECTED_POWER, filter, userData); }
+	@Override public Object dataAvailability(ChartFilter filter, UserData userData) throws CoreException		{ return this.execute(StatDefinitionVo.ID_SOLAR_DATA_AVAILABILITY, filter, userData); }
 
 	@Override public Object retrieveOverviewAlerts(ChartFilter filter, UserData userData) throws CoreException		{
 		if (filter == null) {
 			filter = new ChartFilter(ChartFilter.PERIOD_YESTERDAY);
-		} else {
-			filter.setPeriod(ChartFilter.PERIOD_YESTERDAY);
 		}
-		filter = this.validate(filter, userData);
+//		filter = this.validate(filter, userData);
 		
-		Collection<Alert> alerts = new ArrayList<>();
+		Collection<Alert> alerts = new TreeSet<>();
 		CollectionUtil.addAll(alerts, this.retrieveLocationAlerts(filter.createCopy(), userData));
 		CollectionUtil.addAll(alerts, this.retrieveGeneratorsAlerts(filter.createCopy(), userData));
 		
