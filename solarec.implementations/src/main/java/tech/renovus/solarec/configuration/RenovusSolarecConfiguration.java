@@ -27,9 +27,11 @@ public class RenovusSolarecConfiguration {
 	@Value("${tech.renovus.solarec.python.solarSales.url}")			private String chartSolarSalesUrl;
 	@Value("${tech.renovus.solarec.python.solarCertificate.url}")	private String chartSolarCertificateUrl;
 	@Value("${tech.renovus.solarec.python.emissons.url}")			private String chartEmissionsUrl;
-	
 	@Value("${tech.renovus.solarec.python.alertCalculations.url}")	private String alertCalculations;
 	@Value("${tech.renovus.solarec.python.anomalyDetection.url}")	private String anomalyDetection;
+	@Value("${tech.renovus.solarec.ptyhon.expectedPower}")			private String expectedPower;
+	@Value("${tech.renovus.solarec.ptyhon.dataAvailability}")		private String dataAvailability;
+	
 	
 	//--- Getters -------------------------------
 	public String getSiteUrl() {
@@ -82,5 +84,11 @@ public class RenovusSolarecConfiguration {
 	}
 	public String getAnomalyDetection() {
 		return anomalyDetection;
+	}
+	public String getExpectedPower() {
+		return expectedPower;
+	}
+	public String getDataAvailability() {
+		return dataAvailability;
 	}
 }

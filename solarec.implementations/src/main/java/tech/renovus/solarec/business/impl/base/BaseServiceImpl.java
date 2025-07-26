@@ -113,6 +113,30 @@ public class BaseServiceImpl {
 
 					break;
 				
+				case ChartFilter.PERIOD_PREIOUS_MONTH:
+					aCalendar = Calendar.getInstance();
+					aCalendar.setTime(currentDate);
+					aCalendar.set(Calendar.DAY_OF_MONTH, 1);
+					aCalendar.add(Calendar.DAY_OF_MONTH, -1);
+					filter.setTo(aCalendar.getTime());
+					
+					aCalendar.set(Calendar.DAY_OF_MONTH, 1);
+					filter.setFrom(aCalendar.getTime());
+					
+					break;
+					
+				case ChartFilter.PERIOD_PREIOUS_WEEK:
+					aCalendar = Calendar.getInstance();
+					aCalendar.setTime(currentDate);
+					aCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+					aCalendar.add(Calendar.DAY_OF_MONTH, -1);
+					filter.setTo(aCalendar.getTime());
+					
+					aCalendar.set(Calendar.WEEK_OF_YEAR, -1);
+					filter.setFrom(aCalendar.getTime());
+					
+					break;
+					
 				case ChartFilter.PERIOD_FILTER_WEEK:
 					aCalendar = Calendar.getInstance();
 					aCalendar.setTime(currentDate);
@@ -123,11 +147,11 @@ public class BaseServiceImpl {
 						aCalendar.setTime(filter.getTo());
 					}
 					
-					filter.setFrom(aCalendar.getTime());
-					
-					aCalendar.add(Calendar.WEEK_OF_YEAR, 1);
-					aCalendar.add(Calendar.DAY_OF_MONTH, -1);
 					filter.setTo(aCalendar.getTime());
+					
+					aCalendar.add(Calendar.WEEK_OF_YEAR, -1);
+					aCalendar.add(Calendar.DAY_OF_MONTH, 1);
+					filter.setFrom(aCalendar.getTime());
 					
 					break;
 					
