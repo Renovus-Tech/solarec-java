@@ -29,7 +29,7 @@ public class BasicController {
 		return userData;
 	}
 	
-	private UserData createUserData(HttpSession session) {
+	protected UserData createUserData(HttpSession session) {
 		UserData userData = new UserData();
 		session.setAttribute(USER_DATA, userData);
 		
