@@ -40,6 +40,12 @@ public class SolarController extends BasicController {
 	@GetMapping(path = { EndPointFactory.REST_CHART_REVENUE_SALES }, produces = { MediaType.APPLICATION_JSON_VALUE } )
 	public Object getRevenueSales(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException { return this.revenueSales(filter, session); }
 	
+	@GetMapping(path = { EndPointFactory.REST_API_SOLAR_EXPECTED_POWER }, produces = { MediaType.APPLICATION_JSON_VALUE } )
+	public Object getExpectedPower(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException { return this.expectedPower(filter, session); }
+	
+	@GetMapping(path = { EndPointFactory.REST_API_SOLAR_DATA_AVAILABILITY }, produces = { MediaType.APPLICATION_JSON_VALUE } )
+	public Object getDataAvailability(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException { return this.dataAvailability(filter, session); }
+	
 	//--- Post mapping methods ------------------
 	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_OVERVIEW }, produces = { MediaType.APPLICATION_JSON_VALUE } )
 	public Object overview(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException {
@@ -81,5 +87,17 @@ public class SolarController extends BasicController {
 	public Object revenueSales(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException {
 		filter = this.service.validate(filter, this.getLoggedUserData(session));
 		return this.service.revenueSales(filter, this.getLoggedUserData(session));
+	}
+	
+	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_EXPECTED_POWER }, produces = { MediaType.APPLICATION_JSON_VALUE } )
+	public Object expectedPower(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException {
+		filter = this.service.validate(filter, this.getLoggedUserData(session));
+		return this.service.expectedPower(filter, this.getLoggedUserData(session));
+	}
+	
+	@PostMapping(path = { EndPointFactory.REST_API_SOLAR_DATA_AVAILABILITY }, produces = { MediaType.APPLICATION_JSON_VALUE } )
+	public Object dataAvailability(@RequestBody(required = false) ChartFilter filter, HttpSession session) throws CoreException {
+		filter = this.service.validate(filter, this.getLoggedUserData(session));
+		return this.service.dataAvailability(filter, this.getLoggedUserData(session));
 	}
 }

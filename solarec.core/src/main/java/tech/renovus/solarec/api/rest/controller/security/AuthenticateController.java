@@ -76,7 +76,7 @@ public class AuthenticateController extends BasicController {
 	
 	@PostMapping(EndPointFactory.REST_SECURITY_AUTHENTICATE)
 	public User authenticate(@RequestBody Authentication authentication, HttpSession session) throws CoreException {
-		UserData userData = this.getUserData(session);
+		UserData userData = this.createUserData(session);
 		this.service.authenticate(authentication, userData);
 		return this.restFactory.convert(userData);
 	}
