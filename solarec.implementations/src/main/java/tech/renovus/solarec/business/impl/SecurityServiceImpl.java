@@ -92,18 +92,27 @@ public class SecurityServiceImpl implements SecurityService {
 		userData.setAuthenticationError(SecurityService.AUTHENTICATION_NOT_LOGGED);
 	}
 	
-	private void login(UserData userData, UsersVo usrVo, ClientVo cliVo, Collection<FunctionalityVo> functionalities, String preferLanguage) {
+	private void setClientLocationSettings(UserData userData, UsersVo usrVo, ClientVo cliVo, Date currentDate) {
 		userData.setUserVo(usrVo);
 		userData.setClientVo(cliVo);
-		userData.setFunctionalities(functionalities);
+		userData.setFunctionalities(this.functionalitiesDao.findFor(usrVo.getUsrId(), cliVo.getCliId()));
 		userData.setLogged(true);
 		
+		this.cliUserDao.setAccessDate(cliVo.getCliId(), usrVo.getUsrId(), currentDate);
+		
+		usrVo.setSettings(this.usrSettingDao.findAllFor(usrVo.getUsrId()));
+		cliVo.setSettings(this.cliSettingDao.findAllFor(cliVo.getCliId()));
+		cliVo.setCountryVo(this.countryDao.findVo(cliVo.getCtrId()));
+	
 		UsrSettingVo settingVo = usrVo.getSetting(SettingsVo.PREFER_LANGUAGE);
 		if (settingVo != null) {
 			userData.setLocale(this.translationService.getLocale(settingVo.getValue()));
 		} else {
-			userData.setLocale(this.translationService.getLocale(preferLanguage));
+			userData.setLocale(this.translationService.getLocale(userData.getLanguage()));
 		}
+		
+		this.cliUserDao.setAccessDate(userData.getCliId(), userData.getUsrId(), new Date());
+		this.setDefaultLocation(userData);
 	}
 
 	private boolean accessEnable(UsersVo usrVo, ClientVo cliVo) {
@@ -159,6 +168,7 @@ public class SecurityServiceImpl implements SecurityService {
 			return;
 		}
 		userData.setAuthenticationError(SecurityService.AUTHENTICATION_LOGGED);
+		userData.setLanguage(authentication.getLanguage());
 		
 		if (! this.customFlow.afterAuthentication(authentication, userData)) {
 			return;
@@ -166,14 +176,8 @@ public class SecurityServiceImpl implements SecurityService {
 		
 		Date currentDate = new Date();
 		this.usersDao.setLoginDate(usrVo.getUsrId(), currentDate);
-		this.cliUserDao.setAccessDate(cliVo.getCliId(), usrVo.getUsrId(), currentDate);
 		
-		usrVo.setSettings(this.usrSettingDao.findAllFor(usrVo.getUsrId()));
-		cliVo.setSettings(this.cliSettingDao.findAllFor(cliVo.getCliId()));
-		cliVo.setCountryVo(this.countryDao.findVo(cliVo.getCtrId()));
-		
-		this.login(userData, usrVo, cliVo, this.functionalitiesDao.findFor(usrVo.getUsrId(), cliVo.getCliId()), authentication.getLanguage());
-		this.setDefaultLocation(userData);
+		this.setClientLocationSettings(userData, usrVo, cliVo, currentDate);
 		
 		this.customFlow.beforeSendingToHomepage(userData);
 	}
@@ -195,9 +199,8 @@ public class SecurityServiceImpl implements SecurityService {
 		if (cliVo.getDataDefId() != null) {
 			cliVo.setDataDefinitionVo(this.dataDefinitionDao.findVo(cliVo.getDataDefId()));
 		}
-		userData.setClientVo(cliVo);
-		this.cliUserDao.setAccessDate(cliUsrVo.getCliId(), cliUsrVo.getUsrId(), new Date());
-		this.setDefaultLocation(userData);
+		
+		this.setClientLocationSettings(userData, userData.getUserVo(), cliVo, new Date());
 	}
 	
 	@Override public void setLocation(Integer locId, UserData userData) {
